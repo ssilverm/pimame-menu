@@ -5,6 +5,7 @@ from pmconfig import *
 from pmheader import *
 from pmselection import *
 from pmlabel import *
+from pmutil import *
 
 
 class PMMenu:
@@ -15,8 +16,10 @@ class PMMenu:
 		self.screen = self.cfg.screen
 		self.header = PMHeader(self.cfg.options)
 		self.selection = PMSelection(self.cfg.options)
-		self.ip_addr = PMLabel('127.0.0.1', self.cfg.options)
 		self.clock = pygame.time.Clock()
+
+		if self.cfg.options.show_ip:
+			self.ip_addr = PMLabel('Your IP is: ' + PMUtil.get_ip_addr(), self.cfg.options)
 
 	def get_selected_item(self):
 		return self.cfg.menu_items.sprites()[self.selected_index]
@@ -54,8 +57,9 @@ class PMMenu:
 		header.draw(self.screen)
 
 	def draw_ip_addr(self):
-		label = pygame.sprite.RenderPlain((self.ip_addr))
-		label.draw(self.screen)
+		if self.cfg.options.show_ip:
+			label = pygame.sprite.RenderPlain((self.ip_addr))
+			label.draw(self.screen)
 
 	def draw_selection(self):
 		selection = pygame.sprite.RenderPlain((self.selection))

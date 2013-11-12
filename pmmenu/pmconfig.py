@@ -28,6 +28,7 @@ class PMCfg:
 class PMOptions:
 	def __init__(self, opts):
 		self.max_fps = opts['max_fps']
+		self.show_ip = opts['show_ip']
 		self.fullscreen = opts['fullscreen']
 		self.num_items_per_row = opts['num_items_per_row']
 		self.resolution = self.get_screen_size(opts['resolution'])

@@ -10,9 +10,11 @@ class PMLabel(pygame.sprite.Sprite):
 		text = font.render(label_text, 1, (0, 0, 0))
 		text_rect = text.get_rect()
 
-		self.image = pygame.Surface([text_rect.w, text_rect.h])
-		self.image.fill((255, 0, 0))
+		colorkey_color = (255, 255, 255)
 
+		self.image = pygame.Surface([text_rect.w, text_rect.h])
+		self.image.fill(colorkey_color)
+		self.image.set_colorkey(colorkey_color)
 		
 
 		self.image.blit(text, text_rect)
