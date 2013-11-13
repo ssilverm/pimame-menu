@@ -1,4 +1,5 @@
-import os
+from os import listdir
+from os.path import isfile, isdir, join
 import pygame
 
 
@@ -30,7 +31,24 @@ class PMMenuItem(pygame.sprite.Sprite):
 
 		self.image.blit(text, textpos)
 
-		# self.image.set_alpha(128)
+		
+
+		# draw rom text
+		num_roms = self.get_num_roms()
+
+		if num_roms == 0:
+			self.image.set_alpha(64)
+		else:
+			# draw rom circle
+			rom_rect = (item_width - global_opts.padding - 30, global_opts.item_height - global_opts.padding - 30, 30, 30)
+			pygame.draw.rect(self.image, global_opts.rom_dot_color, rom_rect)
+
+			text = font.render(str(num_roms), 1, (255, 255, 255))
+			textpos = text.get_rect()
+
+			textpos.centerx = rom_rect[0] + rom_rect[2] / 2
+			textpos.centery = rom_rect[1] + rom_rect[3] / 2
+			self.image.blit(text, textpos)
 
 		self.rect = self.image.get_rect()
 		#print self.command
@@ -43,6 +61,13 @@ class PMMenuItem(pygame.sprite.Sprite):
 
 	#def get_pos(self):
 	#	return self.sprite.x + ',' + self.sprite.y
+
+	def get_num_roms(self):
+		if not isdir(self.roms):
+			return 0
+
+		files = [ f for f in listdir(self.roms) if isfile(join(self.roms,f)) ]
+		return len(files)
 
 	def run_command(self):
 		print self.command

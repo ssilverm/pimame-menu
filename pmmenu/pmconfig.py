@@ -40,6 +40,7 @@ class PMOptions:
 		self.selection_color = self.get_color(opts['selection_color'])
 		self.item_color = self.get_color(opts['item_color'])
 		self.header_color = self.get_color(opts['header_color'])
+		self.rom_dot_color = self.get_color(opts['rom_dot_color'])
 		self.icon_pack_path = opts['icon_pack_path']
 		self.font_size = opts['font_size']
 		self.font_file = opts['font_file']

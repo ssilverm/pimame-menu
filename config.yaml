@@ -13,6 +13,7 @@ options:
   selection_color: "74,239,76"
   item_color: "255,255,255"
   header_color: "255,255,255"
+  rom_dot_color: "228,56,65"
   icon_pack_path: "icons/default/"
   font_size: 14
   font_file: "assets/fonts/Lato-Bold.ttf"
@@ -20,29 +21,29 @@ menu_items:
   - label: SNES
     visible: Yes
     icon_file: snes.jpg
-    roms: /home/pi/roms/snes/
+    roms: roms/snes/
     command: ls #/home/emulators/dgen/dgen %rom
 
-  - label: SNES
+  - label: NES
     visible: Yes
     icon_file: snes.jpg
-    roms: /home/pi/roms/snes/
+    roms: roms/nes/
     command: ifconfig #/home/emulators/dgen/dgen %rom
 
-  - label: SNES
+  - label: Genesis
     visible: Yes
     icon_file: snes.jpg
-    roms: /home/pi/roms/snes/
+    roms: roms/genesis/
     command: ifconfig #/home/emulators/dgen/dgen %rom
 
-  - label: SNES
+  - label: Turbographix-16
     visible: Yes
     icon_file: snes.jpg
-    roms: /home/pi/roms/snes/
+    roms: roms/tg16/
     command: ifconfig #/home/emulators/dgen/dgen %rom
 
-  - label: SNES
+  - label: Atari 2600
     visible: Yes
     icon_file: snes.jpg
-    roms: /home/pi/roms/snes/
+    roms: roms/2600/
     command: ifconfig #/home/emulators/dgen/dgen %rom

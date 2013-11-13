@@ -87,6 +87,11 @@ class PMMenu:
 
 			i += 1
 
+		# @TODO: make this background ahead of time!
+		# @TODO: use this get_width() method everywhere instead of get_info()!
+		background = pygame.Surface((self.screen.get_width(), self.screen.get_height()))
+		background.fill(self.cfg.options.background_color)     # fill white
+		self.cfg.menu_items.clear(self.screen, background)
 		self.cfg.menu_items.draw(self.screen)
 
 	def run(self):

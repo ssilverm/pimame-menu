@@ -17,7 +17,8 @@ class PMSelection(pygame.sprite.Sprite):
 		self.image = pygame.Surface([item_width, global_opts.item_height])
 		self.image.fill(colorkey_color)
 		self.image.set_colorkey(colorkey_color)
-		pygame.draw.lines(self.image, global_opts.selection_color, True, [(0, 0), (item_width, 0), (item_width, item_height), (0, item_height)], global_opts.selection_size)
+		pygame.draw.rect(self.image, global_opts.selection_color, (0, 0, item_width, global_opts.item_height), global_opts.selection_size)
+		#pygame.draw.lines(self.image, global_opts.selection_color, True, [(0, 0), (item_width, 0), (item_width, item_height), (0, item_height)], global_opts.selection_size)
 
 		self.rect = self.image.get_rect()
 
