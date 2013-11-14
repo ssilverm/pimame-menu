@@ -1,4 +1,4 @@
-from os import listdir
+from os import listdir, system
 from os.path import isfile, isdir, join
 import pygame
 
@@ -71,4 +71,4 @@ class PMMenuItem(pygame.sprite.Sprite):
 
 	def run_command(self):
 		print self.command
-		os.system(self.command)
+		system(self.command)

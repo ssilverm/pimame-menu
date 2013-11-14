@@ -67,13 +67,13 @@ class PMDirection:
 
 
 #@TODO - change to menu item collection
-class PMMenuItems(pygame.sprite.Group):
+class PMMenuItems(pygame.sprite.OrderedUpdates):
 	#menu_items = []
 	# menu_items_by_sprite = None
 	options = None
 
 	def __init__(self, menu_item_cfgs, opts):
-		pygame.sprite.Group.__init__(self)
+		pygame.sprite.OrderedUpdates.__init__(self)
 
 		self.options = opts
 
