@@ -1,4 +1,34 @@
+import pygame
 from pmmenu import pmmenu
+from pmmenu.pmconfig import *
+from pmmenu.scenemanager import *
 
-menu = pmmenu.PMMenu('config.yaml')
-menu.draw()
+#menu = pmmenu.PMMenu('config.yaml')
+#menu.draw()
+
+
+
+def main():
+	cfg = PMCfg('config.yaml')
+	
+	#pygame.init()
+	#screen = pygame.display.set_mode(DISPLAY, FLAGS, DEPTH)
+	pygame.display.set_caption('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+	timer = pygame.time.Clock()
+	running = True
+
+	manager = SceneManager(cfg)
+
+	while running:
+		timer.tick(cfg.options.max_fps)
+
+		if pygame.event.get(pygame.QUIT):
+			running = False
+			return
+		manager.scene.handle_events(pygame.event.get())
+		manager.scene.update()
+		manager.scene.render(cfg.screen)
+		pygame.display.flip()
+
+if __name__ == "__main__":
+	main()
