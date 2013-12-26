@@ -69,6 +69,17 @@ class PMMenuItem(pygame.sprite.Sprite):
 		files = [ f for f in listdir(self.roms) if isfile(join(self.roms,f)) ]
 		return len(files)
 
+	def get_rom_list(self):
+		#@TODO - am I using the type field?
+		return [
+			{
+				'title': f,
+				'type': 'command',
+				'command': self.command + ' \'' + self.roms + f +'\'' 
+			}
+			for f in listdir(self.roms) if isfile(join(self.roms, f))
+		]
+
 	def run_command(self):
 		print self.command
 		system(self.command)

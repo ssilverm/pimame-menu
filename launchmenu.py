@@ -13,7 +13,7 @@ def main():
 	
 	#pygame.init()
 	#screen = pygame.display.set_mode(DISPLAY, FLAGS, DEPTH)
-	pygame.display.set_caption('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+	pygame.display.set_caption('PiMAME')
 	timer = pygame.time.Clock()
 	running = True
 

@@ -5,6 +5,7 @@ from pmheader import *
 from pmselection import *
 from pmlabel import *
 from pmutil import *
+from romlistscene import *
 
 class MainScene(object):
 	selected_index = 0
@@ -137,7 +138,11 @@ class MainScene(object):
 				elif event.key == pygame.K_RETURN:
 					self.run_command_and_quit(self.get_selected_item())
 
+	#@TODO - change name:
 	def run_command_and_quit(self, sprite):
-		sprite.run_command()
-		pygame.quit()
-		sys.exit()
+		#sprite.run_command()
+		#print 'here'
+		#print sprite.get_rom_list()
+		self.manager.go_to(RomListScene(sprite.get_rom_list()))
+		#pygame.quit()
+		#sys.exit()

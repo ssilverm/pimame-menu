@@ -22,7 +22,7 @@ menu_items:
     visible: Yes
     icon_file: snes.jpg
     roms: roms/snes/
-    command: ls #/home/emulators/dgen/dgen %rom
+    command: echo #/home/emulators/dgen/dgen %rom
 
   - label: NES
     visible: Yes
