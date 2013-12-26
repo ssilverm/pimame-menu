@@ -5,6 +5,8 @@ from pmlist import *
 
 class RomListScene(object):
 
+	selected_index = 0
+
 	def __init__(self, rom_list):
 		super(RomListScene, self).__init__()
 		#self.font = pygame.font.SysFont('Arial', 52)
@@ -21,18 +23,10 @@ class RomListScene(object):
 		#screen.blit(text1, (200, 50))
 		#screen.blit(text2, (200, 350))
 
-		#x = 0
-		y = 0
-		#i = 0
+		self.draw_list()
+		self.update_selection()
 
-		for sprite in self.list.sprites():
-			sprite.rect.x = 0
-			sprite.rect.y = y
-
-			y += sprite.rect.height
-
-		self.list.clear(self.screen, self.cfg.options.background_color)
-		self.list.draw(self.screen)
+		
 
 
 	def update(self):
@@ -52,17 +46,50 @@ class RomListScene(object):
 				if len(clicked_sprites) > 0:
 					sprite = clicked_sprites[0]
 					self.run_command_and_quit(sprite)
-			# elif event.type == pygame.KEYUP:
-			# 	if event.key == pygame.K_LEFT:
-			# 		self.set_selected_index(self.selected_index - 1)
-			# 	elif event.key == pygame.K_RIGHT:
-			# 		self.set_selected_index(self.selected_index + 1)
-			# 	elif event.key == pygame.K_UP:
-			# 		self.set_selected_index(self.selected_index - self.cfg.options.num_items_per_row)
-			# 	elif event.key == pygame.K_DOWN:
-			# 		self.set_selected_index(self.selected_index + self.cfg.options.num_items_per_row)
-			# 	elif event.key == pygame.K_RETURN:
-			# 		self.run_command_and_quit(self.get_selected_item())
+			elif event.type == pygame.KEYUP:
+				if event.key == pygame.K_UP:
+					self.set_selected_index(self.selected_index - 1)
+				elif event.key == pygame.K_DOWN:
+					self.set_selected_index(self.selected_index + 1)
+				elif event.key == pygame.K_RETURN:
+					self.run_command_and_quit(self.get_selected_item())
+
+	def set_selected_index(self, new_selected_index):
+		print 'set selected index'
+		print new_selected_index
+		num_menu_items = len(self.list.sprites())
+		print num_menu_items
+
+		if new_selected_index < 0:
+			new_selected_index = 0
+		elif new_selected_index >= num_menu_items:
+			new_selected_index = num_menu_items - 1
+
+		self.selected_index = new_selected_index
+
+		self.draw_list()
+		self.update_selection()
+
+	def get_selected_item(self):
+		return self.list.sprites()[self.selected_index]
+
+	def draw_list(self):
+		#x = 0
+		y = 0
+		#i = 0
+
+		for sprite in self.list.sprites():
+			sprite.rect.x = 0
+			sprite.rect.y = y
+
+			y += sprite.rect.height
+
+		#self.list.clear(self.screen, self.cfg.options.background_color)
+		self.list.draw(self.screen)
+
+	def update_selection(self):
+		rect = self.get_selected_item().rect
+		pygame.draw.rect(self.screen, self.cfg.options.rom_dot_color, rect)
 
 	def run_command_and_quit(self, sprite):
 		print sprite
