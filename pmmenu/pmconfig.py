@@ -37,6 +37,8 @@ class PMOptions:
 		self.selection_size = opts['selection_size']
 		self.header_height = opts['header_height']
 		self.background_color = self.get_color(opts['background_color'])
+		self.text_color = self.get_color(opts['text_color'])
+		self.text_highlight_color = self.get_color(opts['text_highlight_color'])
 		self.selection_color = self.get_color(opts['selection_color'])
 		self.item_color = self.get_color(opts['item_color'])
 		self.header_color = self.get_color(opts['header_color'])

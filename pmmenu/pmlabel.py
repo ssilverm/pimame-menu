@@ -13,7 +13,7 @@ class PMLabel(pygame.sprite.Sprite):
 		text = font.render(label_text, 1, color_fg, color_bg)
 		text_rect = text.get_rect()
 
-		colorkey_color = (255, 255, 255)
+		#colorkey_color = (255, 255, 255)
 
 		self.image = pygame.Surface([text_rect.w, text_rect.h])
 		#self.image.fill(colorkey_color)

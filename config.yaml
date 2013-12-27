@@ -11,11 +11,13 @@ options:
   disabled_alpha: 128
   background_color: "200,200,200"
   selection_color: "74,239,76"
+  text_color: "0,0,0"
+  text_highlight_color: "255,255,255"
   item_color: "255,255,255"
   header_color: "255,255,255"
   rom_dot_color: "228,56,65"
   icon_pack_path: "icons/default/"
-  font_size: 14
+  font_size: 19
   font_file: "assets/fonts/Lato-Bold.ttf"
 menu_items:
   - label: SNES

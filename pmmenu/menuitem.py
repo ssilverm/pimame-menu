@@ -1,6 +1,7 @@
 from os import listdir, system
 from os.path import isfile, isdir, join
 import pygame
+from pmlabel import *
 
 
 class PMMenuItem(pygame.sprite.Sprite):
@@ -24,12 +25,13 @@ class PMMenuItem(pygame.sprite.Sprite):
 		icon = pygame.transform.scale(icon, (50,50))
 		self.image.blit(icon, (0, 0))
 
-		font = pygame.font.Font(global_opts.font_file, global_opts.font_size)
-		text = font.render(self.label, 1, (0, 0, 0))
-		textpos = text.get_rect()
+		#font = pygame.font.Font(global_opts.font_file, global_opts.font_size)
+		#text = font.render(self.label, 1, (0, 0, 0))
+		label = PMLabel(self.label, global_opts.font, global_opts.text_color, global_opts.item_color)
+		textpos = label.rect
 		textpos.y = 50
 
-		self.image.blit(text, textpos)
+		self.image.blit(label.image, textpos)
 
 		
 
@@ -43,12 +45,13 @@ class PMMenuItem(pygame.sprite.Sprite):
 			rom_rect = (item_width - global_opts.padding - 30, global_opts.item_height - global_opts.padding - 30, 30, 30)
 			pygame.draw.rect(self.image, global_opts.rom_dot_color, rom_rect)
 
-			text = font.render(str(num_roms), 1, (255, 255, 255))
-			textpos = text.get_rect()
+			#text = font.render(str(num_roms), 1, (255, 255, 255))
+			label = PMLabel(str(num_roms), global_opts.font, global_opts.text_highlight_color, global_opts.rom_dot_color)
+			textpos = label.rect
 
 			textpos.centerx = rom_rect[0] + rom_rect[2] / 2
 			textpos.centery = rom_rect[1] + rom_rect[3] / 2
-			self.image.blit(text, textpos)
+			self.image.blit(label.image, textpos)
 
 		self.rect = self.image.get_rect()
 		#print self.command

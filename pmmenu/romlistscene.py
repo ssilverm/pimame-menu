@@ -90,13 +90,17 @@ class RomListScene(object):
 
 	def update_selection(self):
 		#rect = self.get_selected_item().rect
-		#pygame.draw.rect(self.screen, self.cfg.options.rom_dot_color, rect)
+		#
 
 		sel_item = self.get_selected_item()
 		text = sel_item.text
 		rect = sel_item.rect
 
-		selected_label = PMLabel(text, self.cfg.options.font, (255, 255, 255), self.cfg.options.rom_dot_color)
+		rect.width = pygame.display.Info().current_w
+
+		pygame.draw.rect(self.screen, self.cfg.options.rom_dot_color, rect)
+
+		selected_label = PMLabel(text, self.cfg.options.font, self.cfg.options.text_highlight_color, self.cfg.options.rom_dot_color)
 		#selected_sprite = pygame.sprite.RenderPlain((selected_label))
 		#selected_sprite.y = sel_item.rect.y
 		#selected_sprite.draw(self.screen)

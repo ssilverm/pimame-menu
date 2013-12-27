@@ -11,6 +11,6 @@ class PMList(pygame.sprite.OrderedUpdates):
 
 		for list_item in rom_list:
 			#print list_item
-			label = PMLabel(list_item['title'], global_opts.font,(0,0,0),(255,255,255))
+			label = PMLabel(list_item['title'], global_opts.font, global_opts.text_color, global_opts.background_color)
 			label.command = list_item['command']
 			self.add(label)
