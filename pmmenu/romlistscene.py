@@ -46,7 +46,8 @@ class RomListScene(object):
 				if len(clicked_sprites) > 0:
 					sprite = clicked_sprites[0]
 					self.run_command_and_quit(sprite)
-			elif event.type == pygame.KEYUP:
+			elif event.type == pygame.KEYDOWN:
+				print 'handle event'
 				if event.key == pygame.K_UP:
 					self.set_selected_index(self.selected_index - 1)
 				elif event.key == pygame.K_DOWN:
@@ -88,8 +89,18 @@ class RomListScene(object):
 		self.list.draw(self.screen)
 
 	def update_selection(self):
-		rect = self.get_selected_item().rect
-		pygame.draw.rect(self.screen, self.cfg.options.rom_dot_color, rect)
+		#rect = self.get_selected_item().rect
+		#pygame.draw.rect(self.screen, self.cfg.options.rom_dot_color, rect)
+
+		sel_item = self.get_selected_item()
+		text = sel_item.text
+		rect = sel_item.rect
+
+		selected_label = PMLabel(text, self.cfg.options.font, (255, 255, 255), self.cfg.options.rom_dot_color)
+		#selected_sprite = pygame.sprite.RenderPlain((selected_label))
+		#selected_sprite.y = sel_item.rect.y
+		#selected_sprite.draw(self.screen)
+		self.screen.blit(selected_label.image, rect)
 
 	def run_command_and_quit(self, sprite):
 		print sprite

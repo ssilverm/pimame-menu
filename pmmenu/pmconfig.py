@@ -45,6 +45,9 @@ class PMOptions:
 		self.font_size = opts['font_size']
 		self.font_file = opts['font_file']
 
+		pygame.font.init()
+		self.font = pygame.font.Font(self.font_file, self.font_size)
+
 		#self.item_width = ((self.resolution[0] - self.padding) / self.num_items_per_row) - self.padding
 
 	def get_color(self, color_str):
