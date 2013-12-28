@@ -5,6 +5,8 @@ from pmlabel import *
 
 
 class PMMenuItem(pygame.sprite.Sprite):
+	num_roms = 0
+
 	def __init__(self, item_opts, global_opts):
 		pygame.sprite.Sprite.__init__(self)
 
@@ -35,10 +37,9 @@ class PMMenuItem(pygame.sprite.Sprite):
 
 		
 
-		# draw rom text
-		num_roms = self.get_num_roms()
+		self.update_num_roms()
 
-		if num_roms == 0:
+		if self.num_roms == 0:
 			self.image.set_alpha(64)
 		else:
 			# draw rom circle
@@ -46,7 +47,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 			pygame.draw.rect(self.image, global_opts.rom_dot_color, rom_rect)
 
 			#text = font.render(str(num_roms), 1, (255, 255, 255))
-			label = PMLabel(str(num_roms), global_opts.font, global_opts.text_highlight_color, global_opts.rom_dot_color)
+			label = PMLabel(str(self.num_roms), global_opts.font, global_opts.text_highlight_color, global_opts.rom_dot_color)
 			textpos = label.rect
 
 			textpos.centerx = rom_rect[0] + rom_rect[2] / 2
@@ -65,12 +66,13 @@ class PMMenuItem(pygame.sprite.Sprite):
 	#def get_pos(self):
 	#	return self.sprite.x + ',' + self.sprite.y
 
-	def get_num_roms(self):
+	def update_num_roms(self):
 		if not isdir(self.roms):
 			return 0
 
 		files = [ f for f in listdir(self.roms) if isfile(join(self.roms,f)) ]
-		return len(files)
+
+		self.num_roms = len(files)
 
 	def get_rom_list(self):
 		#@TODO - am I using the type field?

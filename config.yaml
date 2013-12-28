@@ -19,24 +19,27 @@ options:
   icon_pack_path: "icons/default/"
   font_size: 19
   font_file: "assets/fonts/Lato-Bold.ttf"
+  sort_items_alphanum: No
+  sort_items_with_roms_first: Yes
+  hide_items_without_roms: No
 menu_items:
   - label: SNES
     visible: Yes
     icon_file: snes.jpg
     roms: roms/snes/
-    command: echo #/home/emulators/dgen/dgen %rom
-
-  - label: NES
-    visible: Yes
-    icon_file: snes.jpg
-    roms: roms/nes/
-    command: ifconfig #/home/emulators/dgen/dgen %rom
+    command: echo snes #/home/emulators/dgen/dgen %rom
 
   - label: Genesis
     visible: Yes
     icon_file: snes.jpg
     roms: roms/genesis/
     command: ifconfig #/home/emulators/dgen/dgen %rom
+
+  - label: NES
+    visible: Yes
+    icon_file: snes.jpg
+    roms: roms/nes/
+    command: echo nes #/home/emulators/dgen/dgen %rom
 
   - label: Turbographix-16
     visible: Yes

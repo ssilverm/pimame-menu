@@ -46,6 +46,9 @@ class PMOptions:
 		self.icon_pack_path = opts['icon_pack_path']
 		self.font_size = opts['font_size']
 		self.font_file = opts['font_file']
+		self.sort_items_alphanum = opts['sort_items_alphanum']
+		self.sort_items_with_roms_first = opts['sort_items_with_roms_first']
+		self.hide_items_without_roms = opts['hide_items_without_roms']
 
 		pygame.font.init()
 		self.font = pygame.font.Font(self.font_file, self.font_size)
@@ -82,9 +85,28 @@ class PMMenuItems(pygame.sprite.OrderedUpdates):
 
 		self.options = opts
 
+		if self.options.sort_items_alphanum:
+			print menu_item_cfgs
+			menu_item_cfgs.sort(key=lambda x: x['label'])
+
+		pm_menu_items = []
+
 		for menu_item in menu_item_cfgs:
-			pm_menu_item = PMMenuItem(menu_item, opts)
+			#print menu_item
+			if menu_item['visible']:
+				pm_menu_item = PMMenuItem(menu_item, opts)
+				#self.add(pm_menu_item)
+				pm_menu_items.append(pm_menu_item)
+
+		if self.options.sort_items_with_roms_first:
+			pm_menu_items.sort(key=lambda x: x.num_roms, reverse=True)
+
+		if self.options.hide_items_without_roms:
+			pm_menu_items = [x for x in pm_menu_items if x.num_roms > 0]
+		
+		for pm_menu_item in pm_menu_items:
 			self.add(pm_menu_item)
+
 
 	# def get_item_having_sprite(self, sprite):
 	# 	#return self.menu_items_by_sprite[self.get_sprite_pos(sprite)]

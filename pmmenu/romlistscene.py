@@ -12,22 +12,19 @@ class RomListScene(object):
 		#self.font = pygame.font.SysFont('Arial', 52)
 		#self.sfont = pygame.font.SysFont('Arial', 32)
 		self.rom_list = rom_list
-		
 
-	def render(self, screen):
+	def draw_bg(self):
+		self.screen.fill(self.cfg.options.background_color)
+
+	def pre_render(self, screen):
 		self.list = PMList(self.rom_list, self.cfg.options)
-		# ugly! 
-		screen.fill(self.cfg.options.background_color)
-		#text1 = self.font.render('Crazy Game', True, (255, 255, 255))
-		#text2 = self.sfont.render('> press space to start <', True, (255, 255, 255))
-		#screen.blit(text1, (200, 50))
-		#screen.blit(text2, (200, 350))
 
+		self.draw_bg()
 		self.draw_list()
 		self.update_selection()
 
-		
-
+	def render(self, screen):
+		pass
 
 	def update(self):
 		pass
@@ -91,6 +88,8 @@ class RomListScene(object):
 	def update_selection(self):
 		#rect = self.get_selected_item().rect
 		#
+		self.draw_bg()
+		self.draw_list()
 
 		sel_item = self.get_selected_item()
 		text = sel_item.text

@@ -20,6 +20,8 @@ class MainScene(object):
 		return self.cfg.menu_items.sprites()[self.selected_index]
 
 	def set_selected_index(self, new_selected_index):
+		print 'set sel index'
+		print new_selected_index
 		num_menu_items = len(self.cfg.menu_items.sprites())
 
 		if new_selected_index < 0:
@@ -88,12 +90,7 @@ class MainScene(object):
 
 
 
-
-
-	def render(self, screen):
-		# ugly! 
-		#screen.fill((255, 255, 255))
-
+	def pre_render(self, screen):
 		self.header = PMHeader(self.cfg.options)
 		self.selection = PMSelection(self.cfg.options)
 		#self.clock = pygame.time.Clock()
@@ -107,6 +104,9 @@ class MainScene(object):
 		self.draw_items()
 		#self.draw_selection()
 		self.set_selected_index(0)
+
+	def render(self, screen):
+		pass
 
 
 	def update(self):
