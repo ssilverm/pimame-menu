@@ -20,8 +20,6 @@ class MainScene(object):
 		return self.cfg.menu_items.sprites()[self.selected_index]
 
 	def set_selected_index(self, new_selected_index):
-		print 'set sel index'
-		print new_selected_index
 		num_menu_items = len(self.cfg.menu_items.sprites())
 
 		if new_selected_index < 0:

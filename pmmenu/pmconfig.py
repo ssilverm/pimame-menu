@@ -14,7 +14,6 @@ class PMCfg:
 		self.menu_items = PMMenuItems(self.config['menu_items'], self.options)
 
 	def init_screen(self, size, fullscreen):
-		print size
 		pygame.init()
 		#return pygame.display.set_mode(size,0,32)
 

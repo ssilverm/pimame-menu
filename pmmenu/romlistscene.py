@@ -44,7 +44,6 @@ class RomListScene(object):
 					sprite = clicked_sprites[0]
 					self.run_command_and_quit(sprite)
 			elif event.type == pygame.KEYDOWN:
-				print 'handle event'
 				if event.key == pygame.K_UP:
 					self.set_selected_index(self.selected_index - 1)
 				elif event.key == pygame.K_DOWN:
@@ -53,10 +52,7 @@ class RomListScene(object):
 					self.run_command_and_quit(self.get_selected_item())
 
 	def set_selected_index(self, new_selected_index):
-		print 'set selected index'
-		print new_selected_index
 		num_menu_items = len(self.list.sprites())
-		print num_menu_items
 
 		if new_selected_index < 0:
 			new_selected_index = 0
@@ -106,7 +102,6 @@ class RomListScene(object):
 		self.screen.blit(selected_label.image, rect)
 
 	def run_command_and_quit(self, sprite):
-		print sprite
 		system(sprite.command)
 		#sprite.run_command()
 		#print 'here'
