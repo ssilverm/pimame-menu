@@ -124,7 +124,7 @@ class MainScene(object):
 				if len(clicked_sprites) > 0:
 					sprite = clicked_sprites[0]
 					self.run_command_and_quit(sprite)
-			elif event.type == pygame.KEYUP:
+			elif event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_LEFT:
 					self.set_selected_index(self.selected_index - 1)
 				elif event.key == pygame.K_RIGHT:
@@ -138,9 +138,4 @@ class MainScene(object):
 
 	#@TODO - change name:
 	def run_command_and_quit(self, sprite):
-		#sprite.run_command()
-		#print 'here'
-		#print sprite.get_rom_list()
 		self.manager.go_to(RomListScene(sprite.get_rom_list()))
-		#pygame.quit()
-		#sys.exit()

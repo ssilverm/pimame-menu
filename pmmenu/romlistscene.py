@@ -102,10 +102,13 @@ class RomListScene(object):
 		self.screen.blit(selected_label.image, rect)
 
 	def run_command_and_quit(self, sprite):
-		system(sprite.command)
-		#sprite.run_command()
-		#print 'here'
-		#print sprite.get_rom_list()
-		#self.manager.go_to(RomListScene(sprite.get_rom_list()))
-		pygame.quit()
-		sys.exit()
+		if(sprite.type == 'back'):
+			self.manager.back()
+		else:
+			system(sprite.command)
+			#sprite.run_command()
+			#print 'here'
+			#print sprite.get_rom_list()
+			#self.manager.go_to(RomListScene(sprite.get_rom_list()))
+			pygame.quit()
+			sys.exit()
