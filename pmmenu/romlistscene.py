@@ -106,9 +106,9 @@ class RomListScene(object):
 		if(sprite.type == 'back'):
 			self.manager.back()
 		else:
-			pygame.quit
+			pygame.quit()
 			time.sleep(1)
-                        system(sprite.command + " && python " + sys.argv[0])
+			system(sprite.command + " && python " + sys.argv[0])
 			#sprite.run_command()
 			#print 'here'
 			#print sprite.get_rom_list()

@@ -26,29 +26,48 @@ menu_items:
   - label: SNES
     visible: Yes
     icon_file: snes.jpg
-    roms: roms/snes/
-    command: echo snes #/home/emulators/dgen/dgen %rom
+    roms: /home/pi/roms/snes/
+    full_path: yes
+    command: /home/pi/emulators/pisnes/snes9x #/home/emulators/dgen/dgen %rom
+
+  - label: MAME
+    visible: Yes
+    icon_file: snes.jpg
+    roms: /home/pi/roms/
+    full_path: no
+    command: advmame
+
+  - label: AdvMAME
+    visible: Yes
+    icon_file: snes.jpg
+    roms: /home/pi/roms/mame4all
+    full_path: no
+    command: /home/pi/emulators/mame4all-pi/mame
 
   - label: Genesis
     visible: Yes
     icon_file: snes.jpg
     roms: roms/genesis/
+    full_path: no
     command: ifconfig #/home/emulators/dgen/dgen %rom
 
   - label: NES
     visible: Yes
     icon_file: snes.jpg
     roms: roms/nes/
+    full_path: no
     command: echo nes #/home/emulators/dgen/dgen %rom
 
   - label: Turbographix-16
     visible: Yes
     icon_file: snes.jpg
     roms: roms/tg16/
+    full_path: no
     command: ifconfig #/home/emulators/dgen/dgen %rom
 
   - label: Atari 2600
     visible: Yes
     icon_file: snes.jpg
     roms: roms/2600/
+    full_path: no
     command: ifconfig #/home/emulators/dgen/dgen %rom

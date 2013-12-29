@@ -1,5 +1,5 @@
 from os import listdir, system
-from os.path import isfile, isdir, join
+from os.path import isfile, isdir, join, splitext, basename
 import pygame
 from pmlabel import *
 
@@ -13,6 +13,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 		self.label = item_opts['label']
 		self.command = item_opts['command']
 		self.roms = item_opts['roms']
+		self.full_path = item_opts['full_path']
 
 		#@TODO this code is duplicated
 		screen_width = pygame.display.Info().current_w
@@ -76,6 +77,17 @@ class PMMenuItem(pygame.sprite.Sprite):
 
 	def get_rom_list(self):
 		#@TODO - am I using the type field?
+		if self.full_path == False:
+			return [
+				{
+					'title': f,
+					'type': 'command',
+					'command': self.command + " " +  os.path.splitext(os.path.basename(f))[0] 
+				}
+				for f in listdir(self.roms) if isfile(join(self.roms, f))
+			]
+
+
 		return [
 			{
 				'title': f,
