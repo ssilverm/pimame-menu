@@ -1,5 +1,6 @@
 import pygame
 import sys
+import time
 from os import system
 from pmlist import *
 
@@ -105,10 +106,12 @@ class RomListScene(object):
 		if(sprite.type == 'back'):
 			self.manager.back()
 		else:
+			pygame.quit
+			time.sleep(1)
 			system(sprite.command)
 			#sprite.run_command()
 			#print 'here'
 			#print sprite.get_rom_list()
 			#self.manager.go_to(RomListScene(sprite.get_rom_list()))
-			pygame.quit()
+			#pygame.quit()
 			sys.exit()
