@@ -108,7 +108,7 @@ class RomListScene(object):
 		else:
 			pygame.quit
 			time.sleep(1)
-			system(sprite.command)
+                        system(sprite.command + " && python " + sys.argv[0])
 			#sprite.run_command()
 			#print 'here'
 			#print sprite.get_rom_list()
