@@ -7,6 +7,12 @@ from pmlabel import *
 from pmutil import *
 from romlistscene import *
 
+pygame.joystick.init()
+js_count = pygame.joystick.get_count()
+for i in range(js_count):
+  js = pygame.joystick.Joystick(i)
+  js.init()
+
 class MainScene(object):
 	selected_index = 0
 
@@ -112,6 +118,7 @@ class MainScene(object):
 
 	def handle_events(self, events):
 		for event in events:
+
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				sys.exit()
@@ -135,6 +142,15 @@ class MainScene(object):
 					self.set_selected_index(self.selected_index + self.cfg.options.num_items_per_row)
 				elif event.key == pygame.K_RETURN:
 					self.run_command_and_quit(self.get_selected_item())
+			elif event.type == pygame.JOYAXISMOTION:
+				if event.dict['axis'] == 0 and event.dict['value'] < 0:
+					self.set_selected_index(self.selected_index - 1)
+				elif event.dict['axis'] == 0 and event.dict['value'] > 0:
+					self.set_selected_index(self.selected_index + 1)
+				elif event.dict['axis'] == 1 and event.dict['value'] < 0:
+					self.set_selected_index(self.selected_index - self.cfg.options.num_items_per_row)
+				elif event.dict['axis'] == 1 and event.dict['value'] > 0:
+					self.set_selected_index(self.selected_index + self.cfg.options.num_items_per_row)
 
 	#@TODO - change name:
 	def run_command_and_quit(self, sprite):
