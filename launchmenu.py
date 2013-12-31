@@ -2,6 +2,7 @@ import pygame
 from pmmenu import pmmenu
 from pmmenu.pmconfig import *
 from pmmenu.scenemanager import *
+from pmmenu.mainscene import *
 
 #menu = pmmenu.PMMenu('config.yaml')
 #menu.draw()
@@ -17,7 +18,7 @@ def main():
 	timer = pygame.time.Clock()
 	running = True
 
-	manager = SceneManager(cfg)
+	manager = SceneManager(cfg, MainScene())
 
 	while running:
 		timer.tick(cfg.options.max_fps)
