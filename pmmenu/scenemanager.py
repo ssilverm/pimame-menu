@@ -1,11 +1,9 @@
-from mainscene import *
-
 class SceneManager(object):
 	history = []
 
-	def __init__(self, cfg):
+	def __init__(self, cfg, initial_scene):
 		self.cfg = cfg
-		self.go_to(MainScene())
+		self.go_to(initial_scene)
 
 	def go_to(self, scene):
 		self.history.append(scene)
