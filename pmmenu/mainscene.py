@@ -23,10 +23,10 @@ class MainScene(object):
 
 
 	def get_selected_item(self):
-		return self.cfg.menu_items.sprites()[self.selected_index]
+		return self.grid.sprites()[self.selected_index]
 
 	def set_selected_index(self, new_selected_index):
-		num_menu_items = len(self.cfg.menu_items.sprites())
+		num_menu_items = len(self.grid.sprites())
 
 		if new_selected_index < 0:
 			new_selected_index = 0
@@ -38,8 +38,6 @@ class MainScene(object):
 		self.selection.update(self.get_selected_item())
 		self.draw_items()
 		self.draw_selection()
-
-
 
 	def draw_bg(self):
 		self.screen.fill(self.cfg.options.background_color)
@@ -67,7 +65,7 @@ class MainScene(object):
 		y = self.header.rect.h + padding
 		i = 1
 
-		sprites = self.cfg.menu_items.sprites()
+		sprites = self.grid.sprites()
 		for menu_item in sprites:
 			menu_item.rect.x = x
 			menu_item.rect.y = y
@@ -84,8 +82,8 @@ class MainScene(object):
 		# @TODO: use this get_width() method everywhere instead of get_info()!
 		background = pygame.Surface((self.screen.get_width(), self.screen.get_height()))
 		background.fill(self.cfg.options.background_color)     # fill white
-		self.cfg.menu_items.clear(self.screen, background)
-		self.cfg.menu_items.draw(self.screen)
+		self.grid.clear(self.screen, background)
+		self.grid.draw(self.screen)
 
 
 
@@ -97,10 +95,7 @@ class MainScene(object):
 	def pre_render(self, screen):
 		self.header = PMHeader(self.cfg.options)
 		self.selection = PMSelection(self.cfg.options)
-		#self.clock = pygame.time.Clock()
-
-		###if self.cfg.options.show_ip:
-		###	self.ip_addr = PMLabel('Your IP is: ' + PMUtil.get_ip_addr(), self.cfg.options)
+		self.grid = PMGrid(self.cfg.config['menu_items'], self.cfg.options)
 
 		self.draw_bg()
 		self.draw_header()
@@ -126,11 +121,11 @@ class MainScene(object):
 				pos = pygame.mouse.get_pos()
 
 				# get all rects under cursor
-				clicked_sprites = [s for s in self.cfg.menu_items if s.rect.collidepoint(pos)]
+				clicked_sprites = [s for s in self.grid if s.rect.collidepoint(pos)]
 
 				if len(clicked_sprites) > 0:
 					sprite = clicked_sprites[0]
-					self.run_command_and_quit(sprite)
+					self.do_menu_item_action(sprite)
 			elif event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_LEFT:
 					self.set_selected_index(self.selected_index - 1)
@@ -141,7 +136,7 @@ class MainScene(object):
 				elif event.key == pygame.K_DOWN:
 					self.set_selected_index(self.selected_index + self.cfg.options.num_items_per_row)
 				elif event.key == pygame.K_RETURN:
-					self.run_command_and_quit(self.get_selected_item())
+					self.do_menu_item_action(self.get_selected_item())
 			elif event.type == pygame.JOYAXISMOTION:
 				if event.dict['axis'] == 0 and event.dict['value'] < 0:
 					self.set_selected_index(self.selected_index - 1)
@@ -153,5 +148,15 @@ class MainScene(object):
 					self.set_selected_index(self.selected_index + self.cfg.options.num_items_per_row)
 
 	#@TODO - change name:
-	def run_command_and_quit(self, sprite):
-		self.manager.go_to(RomListScene(sprite.get_rom_list()))
+	def do_menu_item_action(self, sprite):
+		print sprite.type
+		print sprite.command
+		if sprite.type == PMMenuItem.COMMAND:
+			self.manager.go_to(RomListScene(sprite.get_rom_list()))
+		else:
+			if sprite.command == PMMenuItem.PREV_PAGE:
+				self.grid.prev_page()
+			else:
+				self.grid.next_page()
+			#@TODO - need to do something about the highlight
+			self.draw_items()

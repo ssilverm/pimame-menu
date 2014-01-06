@@ -5,6 +5,11 @@ from pmlabel import *
 
 
 class PMMenuItem(pygame.sprite.Sprite):
+	COMMAND = 'command'
+	NAVIGATION = 'nav'
+	NEXT_PAGE = 'next'
+	PREV_PAGE = 'prev'
+
 	num_roms = 0
 
 	def __init__(self, item_opts, global_opts):
@@ -14,6 +19,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 		self.command = item_opts['command']
 		self.roms = item_opts['roms']
 		self.full_path = item_opts['full_path']
+		self.type = self.COMMAND
 
 		#@TODO this code is duplicated
 		screen_width = pygame.display.Info().current_w

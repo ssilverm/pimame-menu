@@ -1,6 +1,7 @@
 import yaml
 import pygame
 from menuitem import *
+from pmgrid import *
 
 class PMCfg:
 	def __init__(self, config_path):
@@ -10,8 +11,6 @@ class PMCfg:
 		self.options = PMOptions(self.config['options'])
 
 		self.screen = self.init_screen(self.options.resolution, self.options.fullscreen)
-
-		self.menu_items = PMMenuItems(self.config['menu_items'], self.options)
 
 	def init_screen(self, size, fullscreen):
 		pygame.init()
@@ -66,72 +65,3 @@ class PMDirection:
 	UP = 1
 	RIGHT = 2
 	DOWN = 3
-
-
-# class PMMenuItem(pygame.sprite.Sprite):
-# 	def __init__(self, opts):
-# 		pygame.sprite.Sprite.__init__(self)
-
-
-#@TODO - change to menu item collection
-class PMMenuItems(pygame.sprite.OrderedUpdates):
-	#menu_items = []
-	# menu_items_by_sprite = None
-	options = None
-
-	def __init__(self, menu_item_cfgs, opts):
-		pygame.sprite.OrderedUpdates.__init__(self)
-
-		self.options = opts
-
-		if self.options.sort_items_alphanum:
-			print menu_item_cfgs
-			menu_item_cfgs.sort(key=lambda x: x['label'])
-
-		pm_menu_items = []
-
-		for menu_item in menu_item_cfgs:
-			#print menu_item
-			if menu_item['visible']:
-				pm_menu_item = PMMenuItem(menu_item, opts)
-				#self.add(pm_menu_item)
-				pm_menu_items.append(pm_menu_item)
-
-		if self.options.sort_items_with_roms_first:
-			pm_menu_items.sort(key=lambda x: x.num_roms, reverse=True)
-
-		if self.options.hide_items_without_roms:
-			pm_menu_items = [x for x in pm_menu_items if x.num_roms > 0]
-		
-		for pm_menu_item in pm_menu_items:
-			self.add(pm_menu_item)
-
-
-	# def get_item_having_sprite(self, sprite):
-	# 	#return self.menu_items_by_sprite[self.get_sprite_pos(sprite)]
-	# 	if self.menu_items_by_sprite == None:
-	# 		self.menu_items_by_sprite = {}
-
-	# 		for menu_item in self.menu_items:
-	# 			self.menu_items_by_sprite[self.get_sprite_pos(menu_item.sprite)] = menu_item
-
-	# 	return self.menu_items_by_sprite[self.get_sprite_pos(sprite)]
-
-	def get_adjacent_item(self, item, direction):
-		index = self.menu_items.index(item)
-		adj_index = None
-
-		if(direction == PMDirection.LEFT):
-			adj_index = index - 1
-		elif(direction == PMDirection.RIGHT):
-			adj_index = index + 1
-		elif(direction == PMDirection.TOP):
-			adj_index = index - options.num_items_per_row
-		elif(direction == PMDirection.BOTTOM):
-			adj_index = index + options.num_items_per_row
-
-		if adj_index == None:
-			return None
-
-		return self.menu_items[adj_index]
-
