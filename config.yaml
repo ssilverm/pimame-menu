@@ -1,10 +1,10 @@
 options:
   max_fps: 20
   show_ip: Yes
-  num_items_per_row: 4
-  fullscreen: No
-  resolution: "800,600"
-  item_height: 100
+  num_items_per_row: 5
+  fullscreen: Yes
+  resolution: "0,0"
+  item_height: 220
   padding: 10
   selection_size: 11
   header_height: 140
@@ -25,7 +25,7 @@ options:
 menu_items:
   - label: SNES
     visible: Yes
-    icon_file: snes.jpg
+    icon_file: snes_.jpg
     roms: /home/pi/roms/snes/
     full_path: yes
     command: /home/pi/emulators/pisnes/snes9x #/home/emulators/dgen/dgen %rom
@@ -53,7 +53,7 @@ menu_items:
 
   - label: NES
     visible: Yes
-    icon_file: snes.jpg
+    icon_file: snes_.jpg
     roms: roms/nes/
     full_path: no
     command: echo nes #/home/emulators/dgen/dgen %rom

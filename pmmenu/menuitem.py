@@ -24,15 +24,38 @@ class PMMenuItem(pygame.sprite.Sprite):
 
 		icon_file_path = global_opts.icon_pack_path + item_opts['icon_file']
 		icon = pygame.image.load(icon_file_path).convert_alpha()
-		
-		icon = pygame.transform.scale(icon, (50,50))
-		self.image.blit(icon, (0, 0))
+
+		# resize and center icon:
+		icon_size = icon.get_size()
+		avail_icon_width = item_width - global_opts.padding * 2
+		avail_icon_height = global_opts.item_height - global_opts.padding * 2
+		while True:
+			icon_width = icon_size[0]
+			icon_height = icon_size[1]
+			icon_ratio = float(icon_height) / float(icon_width)
+			icon_width_diff = avail_icon_width - icon_width
+			icon_height_diff = avail_icon_height - icon_height
+			if icon_width_diff < icon_height_diff:
+				diff = icon_width_diff
+				icon_size = (icon_width + diff, icon_height + diff * icon_ratio)
+			else:
+				diff = icon_height_diff
+				icon_size = (icon_width + diff / icon_ratio, icon_height + diff)
+
+			icon_size = (int(icon_size[0]), int(icon_size[1]))
+
+			if icon_size[0] <= avail_icon_width and icon_size[1] <= avail_icon_height:
+				break
+
+		icon = pygame.transform.scale(icon, icon_size)
+		self.image.blit(icon, ((avail_icon_width - icon_size[0]) / 2 + global_opts.padding, (avail_icon_height - icon_size[1]) / 2 + global_opts.padding))
 
 		#font = pygame.font.Font(global_opts.font_file, global_opts.font_size)
 		#text = font.render(self.label, 1, (0, 0, 0))
 		label = PMLabel(self.label, global_opts.font, global_opts.text_color, global_opts.item_color)
 		textpos = label.rect
-		textpos.y = 50
+		textpos.x = global_opts.padding
+		textpos.y = global_opts.item_height - textpos.height - global_opts.padding
 
 		self.image.blit(label.image, textpos)
 
