@@ -51,7 +51,10 @@ class MainScene(object):
 
 	def draw_ip_addr(self):
 		if self.cfg.options.show_ip:
-			self.ip_addr = PMLabel(PMUtil.get_ip_addr(), self.cfg.options.font, self.cfg.options.text_color, self.cfg.options.item_color)
+			try:
+			    self.ip_addr = PMLabel(PMUtil.get_ip_addr(), self.cfg.options.font, self.cfg.options.text_color, self.cfg.options.item_color)
+			except:
+			    self.ip_addr = PMLabel("No Network Connection", self.cfg.options.font, self.cfg.options.text_color, self.cfg.options.item_color)
 			label = pygame.sprite.RenderPlain((self.ip_addr))
 			textpos = self.ip_addr.rect
 			textpos.x = pygame.display.Info().current_w - textpos.width
