@@ -51,7 +51,10 @@ class MainScene(object):
 
 	def draw_ip_addr(self):
 		if self.cfg.options.show_ip:
+			self.ip_addr = PMLabel(PMUtil.get_ip_addr(), self.cfg.options.font, self.cfg.options.text_color, self.cfg.options.item_color)
 			label = pygame.sprite.RenderPlain((self.ip_addr))
+			textpos = self.ip_addr.rect
+			textpos.x = pygame.display.Info().current_w - textpos.width
 			label.draw(self.screen)
 
 	def draw_selection(self):
@@ -97,14 +100,10 @@ class MainScene(object):
 	def pre_render(self, screen):
 		self.header = PMHeader(self.cfg.options)
 		self.selection = PMSelection(self.cfg.options)
-		#self.clock = pygame.time.Clock()
-
-		###if self.cfg.options.show_ip:
-		###	self.ip_addr = PMLabel('Your IP is: ' + PMUtil.get_ip_addr(), self.cfg.options)
 
 		self.draw_bg()
 		self.draw_header()
-		###self.draw_ip_addr()
+		self.draw_ip_addr()
 		self.draw_items()
 		#self.draw_selection()
 		self.set_selected_index(0)
