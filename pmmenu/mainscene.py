@@ -142,6 +142,9 @@ class MainScene(object):
 					self.set_selected_index(self.selected_index + self.cfg.options.num_items_per_row)
 				elif event.key == pygame.K_RETURN:
 					self.run_command_and_quit(self.get_selected_item())
+				elif event.key == pygame.K_ESCAPE:
+					pygame.quit()
+					sys.exit()
 			elif event.type == pygame.JOYAXISMOTION:
 				if event.dict['axis'] == 0 and event.dict['value'] < 0:
 					self.set_selected_index(self.selected_index - 1)
