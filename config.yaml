@@ -71,3 +71,25 @@ menu_items:
     roms: ~/roms/2600/
     full_path: no
     command: stella %rom
+
+  - label: Playstation 1
+    visible: Yes
+    icon_file: snes.jpg
+    roms: ~/roms/psx/
+    full_path: no
+    command: ~/emulators/psx/psx %rom
+
+  - label: Commodore 64
+    visible: Yes
+    icon_file: snes.jpg
+    roms: ~/roms/c64/
+    full_path: no
+    command: ~/emulators/vice/vice %rom
+
+
+  - label: ScummVM
+    visible: Yes
+    icon_file: snes.jpg
+    roms: ~/roms/scummvm/
+    full_path: no
+    command: ~/emulators/scummvm/scummvm %rom
