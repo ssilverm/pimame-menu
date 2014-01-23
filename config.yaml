@@ -25,7 +25,7 @@ options:
 menu_items:
   - label: SNES
     visible: Yes
-    icon_file: snes_.jpg
+    icon_file: snes.jpg
     roms: ~/roms/snes/
     full_path: yes
     command: ~/emulators/pisnes/snes9x  %rom
@@ -53,7 +53,7 @@ menu_items:
 
   - label: NES
     visible: Yes
-    icon_file: snes_.jpg
+    icon_file: snes.jpg
     roms: ~/roms/nes/
     full_path: no
     command: ~/emulators/nes/fceux %rom
