@@ -49,14 +49,14 @@ menu_items:
     icon_file: genesis.jpg
     roms: /home/pi/roms/genesis/
     full_path: no
-    command: /home/pi/emulators/dgen/dgen %rom
+    command: /home/pi/emulators/dgen/dgen
 
   - label: NES
     visible: Yes
     icon_file: nes.jpg
     roms: /home/pi/roms/nes/
     full_path: no
-    command: /home/pi/emulators/nes/fceux %rom
+    command: /home/pi/emulators/nes/fceux
 
   - label: Turbographix-16
     visible: Yes
@@ -77,14 +77,14 @@ menu_items:
     icon_file: psx.jpg
     roms: /home/pi/roms/psx/
     full_path: no
-    command: /home/pi/emulators/psx/psx %rom
+    command: /home/pi/emulators/psx/psx
 
   - label: Commodore 64
     visible: Yes
     icon_file: c64.jpg
     roms: /home/pi/roms/c64/
     full_path: no
-    command: /home/pi/emulators/vice/vice %rom
+    command: /home/pi/emulators/vice/vice
 
 
   - label: ScummVM
@@ -92,4 +92,18 @@ menu_items:
     icon_file: scummvm.jpg
     roms: /home/pi/roms/scummvm/
     full_path: no
-    command: /home/pi/emulators/scummvm/scummvm %rom
+    command: /home/pi/emulators/scummvm/scummvm
+    
+  - label: Gameboy
+    visible: Yes
+    icon_file: gameboy.jpg
+    roms: /home/pi/roms/gameboy/
+    full_path: no
+    command: /home/pi/emulators/gameboy/gameboy
+    
+  - label: Gameboy Advance
+    visible: Yes
+    icon_file: gba.jpg
+    roms: /home/pi/roms/gba/
+    full_path: no
+    command: /home/pi/emulators/gba/gba
