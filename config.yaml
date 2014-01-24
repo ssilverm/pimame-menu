@@ -25,49 +25,71 @@ options:
 menu_items:
   - label: SNES
     visible: Yes
-    icon_file: snes_.jpg
-    roms: /home/pi/roms/snes/
-    full_path: yes
-    command: /home/pi/emulators/pisnes/snes9x #/home/emulators/dgen/dgen %rom
-
-  - label: MAME
-    visible: Yes
     icon_file: snes.jpg
-    roms: /home/pi/roms/
+    roms: ~/roms/snes/
+    full_path: yes
+    command: ~/emulators/pisnes/snes9x  %rom
+
+  - label: MAME4All
+    visible: Yes
+    icon_file: mame4all.jpg
+    roms: ~/roms/mame
     full_path: no
-    command: advmame
+    command: mame4all %rom
 
   - label: AdvMAME
     visible: Yes
-    icon_file: snes.jpg
-    roms: /home/pi/roms/mame4all
+    icon_file: advmame.jpg
+    roms: ~/roms/mame
     full_path: no
-    command: /home/pi/emulators/mame4all-pi/mame
+    command: advmame %rom
 
   - label: Genesis
     visible: Yes
-    icon_file: snes.jpg
-    roms: roms/genesis/
+    icon_file: genesis.jpg
+    roms: ~/roms/genesis/
     full_path: no
-    command: ifconfig #/home/emulators/dgen/dgen %rom
+    command: ~/emulators/dgen/dgen %rom
 
   - label: NES
     visible: Yes
-    icon_file: snes_.jpg
-    roms: roms/nes/
+    icon_file: nes.jpg
+    roms: ~/roms/nes/
     full_path: no
-    command: echo nes #/home/emulators/dgen/dgen %rom
+    command: ~/emulators/nes/fceux %rom
 
   - label: Turbographix-16
     visible: Yes
-    icon_file: snes.jpg
-    roms: roms/tg16/
+    icon_file: tg16.jpg
+    roms: ~/roms/tg16/
     full_path: no
-    command: ifconfig #/home/emulators/dgen/dgen %rom
+    command: ifconfig
 
   - label: Atari 2600
     visible: Yes
-    icon_file: snes.jpg
-    roms: roms/2600/
+    icon_file: 2600.jpg
+    roms: ~/roms/2600/
     full_path: no
-    command: ifconfig #/home/emulators/dgen/dgen %rom
+    command: stella %rom
+
+  - label: Playstation 1
+    visible: Yes
+    icon_file: psx.jpg
+    roms: ~/roms/psx/
+    full_path: no
+    command: ~/emulators/psx/psx %rom
+
+  - label: Commodore 64
+    visible: Yes
+    icon_file: c64.jpg
+    roms: ~/roms/c64/
+    full_path: no
+    command: ~/emulators/vice/vice %rom
+
+
+  - label: ScummVM
+    visible: Yes
+    icon_file: scummvm.jpg
+    roms: ~/roms/scummvm/
+    full_path: no
+    command: ~/emulators/scummvm/scummvm %rom
