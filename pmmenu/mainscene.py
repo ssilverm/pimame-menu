@@ -156,6 +156,12 @@ class MainScene(object):
 					self.set_selected_index(self.selected_index - self.cfg.options.num_items_per_row)
 				elif event.dict['axis'] == 1 and event.dict['value'] > 0:
 					self.set_selected_index(self.selected_index + self.cfg.options.num_items_per_row)
+			elif event.type == pygame.JOYBUTTONDOWN:
+				if event.button == 0:
+					self.run_command_and_quit(self.get_selected_item())
+				if event.button == 1:
+					pygame.quit()
+					sys.exit()
 
 	#@TODO - change name:
 	def run_command_and_quit(self, sprite):
