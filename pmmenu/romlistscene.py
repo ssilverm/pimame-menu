@@ -63,6 +63,14 @@ class RomListScene(object):
 					self.run_command_and_quit(self.selected_item)
 				elif event.key == pygame.K_ESCAPE:
 					self.manager.back()
+			elif event.type == pygame.JOYAXISMOTION:
+				if event.dict['axis'] == 1 and event.dict['value'] < 0:
+					self.set_selected_index(self.DIRECTION_UP)
+				elif event.dict['axis'] == 1 and event.dict['value'] > 0:
+					self.set_selected_index(self.DIRECTION_DOWN)
+			elif event.type == pygame.JOYBUTTONDOWN:
+				if event.button == 0:
+					self.run_command_and_quit(self.selected_item)
 
 	def set_selected_index(self, direction):
 		if direction == self.DIRECTION_UP:
