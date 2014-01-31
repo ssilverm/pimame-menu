@@ -62,11 +62,11 @@ menu_items:
     visible: Yes
     icon_file: genesis.jpg
     roms: /home/pi/pimame/roms/genesis/
-    full_path: no
+    full_path: yes
     command: /home/pi/pimame/emulators/dgen-sdl-1.32/dgen
 
   - label: NES
-    visible: Yes
+    visible: No
     icon_file: nes.jpg
     roms: /home/pi/pimame/roms/nes/
     full_path: no
@@ -75,14 +75,12 @@ menu_items:
   - label: Atari 2600
     visible: Yes
     icon_file: 2600.jpg
-    roms: /home/pi/pimame/roms/2600/
     full_path: no
     command: stella
 
   - label: Playstation 1
     visible: Yes
     icon_file: psx.jpg
-    roms: /home/pi/pimame/roms/psx/
     full_path: no
     command: /home/pi/pimame/emulators/pcsx_rearmed/pcsx
 
@@ -96,7 +94,6 @@ menu_items:
   - label: ScummVM
     visible: Yes
     icon_file: scummvm.jpg
-    roms: /home/pi/pimame/roms/scummvm/
     full_path: no
     command: scummvm
 
@@ -104,12 +101,11 @@ menu_items:
     visible: Yes
     icon_file: gameboy.jpg
     roms: /home/pi/pimame/roms/gameboy/
-    full_path: no
+    full_path: yes
     command: /home/pi/pimame/emulators/Gearboy/platforms/raspberrypi/Gearboy/gearboy.bin
 
   - label: Gameboy Advance
     visible: Yes
     icon_file: gba.jpg
-    roms: /home/pi/pimame/roms/gba/
     full_path: no
     command: /home/pi/pimame/emulators/gpsp/raspberrypi/gpsp 
