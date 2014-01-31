@@ -1,4 +1,5 @@
 import subprocess
+import re
 
 class PMUtil:
 	@staticmethod
@@ -11,5 +12,8 @@ class PMUtil:
 			myip += wlan
 		if ether != '':
 			myip += ' ' + ether
+
+		m = re.search(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}", myip)
+		myip = m.group(0)
 
 		return myip

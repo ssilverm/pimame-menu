@@ -4,6 +4,8 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 	#menu_items = []
 	# menu_items_by_sprite = None
 	options = None
+	next_icon = '../../assets/images/nav-next.png'
+	back_icon = '../../assets/images/nav-back.png'
 
 	def __init__(self, menu_item_cfgs, opts):
 		pygame.sprite.OrderedUpdates.__init__(self)
@@ -13,7 +15,6 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 		self.first_index = self.last_index = 0
 
 		if self.options.sort_items_alphanum:
-			print menu_item_cfgs
 			menu_item_cfgs.sort(key=lambda x: x['label'])
 
 		for menu_item in menu_item_cfgs:
@@ -30,24 +31,7 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 			self.menu_items = [x for x in self.menu_items if x.num_roms > 0]
 
 
-
-		self.set_num_items_per_page(10)
-		self.set_page(0)
-		print self.pages
-		#for pm_menu_item in self.menu_items:
-		#	self.add(pm_menu_item)
-
-
-  # - label: SNES
-  #   visible: Yes
-  #   icon_file: snes.jpg
-  #   roms: /home/pi/roms/snes/
-  #   full_path: yes
-  #   command: /home/pi/emulators/pisnes/snes9x #/home/emulators/dgen/dgen %rom
-
-
-
-	def create_nav_menu_item(self, label, icon_file):
+	def create_nav_menu_item(self, label, icon_file = False):
 		item = {}
 		item['label'] = label
 		item['visible'] = True
@@ -56,8 +40,7 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 		item['roms'] = ''
 		item['full_path'] = True
 
-		menu_item = PMMenuItem(item, self.options)
-		menu_item.type = PMMenuItem.NAVIGATION
+		menu_item = PMMenuItem(item, self.options, PMMenuItem.NAVIGATION)
 
 		return menu_item
 
@@ -67,49 +50,32 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 		# create pages
 		self.pages = []
 
-		# i = 0
-		# first = 0
-		# last = self.num_items_per_page - 1
-		# while True:
-		# 	self.pages[i] = []
-
-		# 	if first != 0:
-		# 		back = self.create_nav_menu_item('Back', '')
-		# 		self.pages[i].insert(0, back)
-
-		# 	if last >= len(self.menu_items) - 1:
-		# 		self.pages[i] = self.menu_items[first:last]
-		# 		break
-		# 	else:
-		# 		last -= 1
-		# 		self.pages[i] = self.menu_items[first:last]
-		# 		next = self.create_nav_menu_item('Next', '')
-		# 		self.pages[i].append(next)
-
 		num_menu_items = len(self.menu_items)
 		if num_menu_items <= self.num_items_per_page:
 			self.pages.append(self.menu_items[:])
 		else:
 			page = self.menu_items[:self.num_items_per_page - 1]
-			next = self.create_nav_menu_item('Next', 'snes.jpg')
+			next = self.create_nav_menu_item('Next', self.next_icon)
 			next.command = PMMenuItem.NEXT_PAGE
 			page.append(next)
 			self.pages.append(page)
 			r = range(self.num_items_per_page - 1, num_menu_items - self.num_items_per_page + 1, self.num_items_per_page - 2)
 			for i in r:
 				page = self.menu_items[i:i + self.num_items_per_page - 2]
-				back = self.create_nav_menu_item('Back', 'snes.jpg')
+				back = self.create_nav_menu_item('Back', self.back_icon)
 				back.command = PMMenuItem.PREV_PAGE
-				next = self.create_nav_menu_item('Next', 'snes.jpg')
+				next = self.create_nav_menu_item('Next', self.next_icon)
 				next.command = PMMenuItem.NEXT_PAGE
 				page.insert(0, back)
 				page.append(next)
 				self.pages.append(page)
 			last_page = self.menu_items[self.num_items_per_page - 1 + len(r) * (self.num_items_per_page - 2):]
-			back = self.create_nav_menu_item('Back', 'snes.jpg')
+			back = self.create_nav_menu_item('Back', self.back_icon)
 			back.command = PMMenuItem.PREV_PAGE
 			last_page.insert(0, back)
 			self.pages.append(last_page)
+
+		self.set_page(0)
 
 	def set_page(self, page_index):
 		self.page_index = page_index
