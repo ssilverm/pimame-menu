@@ -4,7 +4,7 @@ from menuitem import *
 
 class PMCfg:
 	def __init__(self, config_path):
-		stream = file('config.yaml', 'r')
+		stream = file('/home/pi/pimame/pimame-menu/config.yaml', 'r')
 		self.config = yaml.load(stream)
 
 		self.options = PMOptions(self.config['options'])

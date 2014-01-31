@@ -10,7 +10,7 @@ from pmmenu.mainscene import *
 
 
 def main():
-	cfg = PMCfg('config.yaml')
+	cfg = PMCfg('/home/pi/pimame/pimame-menu/config.yaml')
 	
 	#pygame.init()
 	#screen = pygame.display.set_mode(DISPLAY, FLAGS, DEPTH)

@@ -26,84 +26,90 @@ menu_items:
   - label: SNES
     visible: Yes
     icon_file: snes.jpg
-    roms: /home/pi/roms/snes/
+    roms: /home/pi/pimame/roms/snes/
     full_path: yes
-    command: /home/pi/emulators/pisnes/snes9x
+    command: /home/pi/pimame/emulators/pisnes/snes9x
 
   - label: MAME4All
     visible: Yes
     icon_file: mame4all.jpg
-    roms: /home/pi/roms/mame
+    roms: /home/pi/pimame/roms/mame4all
     full_path: no
-    command: mame4all
+    command: /home/pi/pimame/emulators/mame4all/mame 
+
+  - label: Neo Geo
+    visible: Yes
+    icon_file: neogeo.jpg
+    roms: /home/pi/pimame/roms/neogeo
+    full_path: no
+    command: /home/pi/pimame/emulators/gngeo-0.8/src/gngeo 
 
   - label: AdvMAME
     visible: Yes
     icon_file: advmame.jpg
-    roms: /home/pi/roms/mame
+    roms: /home/pi/pimame/roms/advmame
     full_path: no
-    command: advmame
+    command: /home/pi/pimame/emulators/advancemame-1.2/advmame 
+
+  - label: Final Burn
+    visible: Yes
+    icon_file: fba.jpg
+    roms: /home/pi/pimame/roms/pifba
+    full_path: no
+    command: /home/pi/pimame/emulators/pifba/fba2x 
 
   - label: Genesis
     visible: Yes
     icon_file: genesis.jpg
-    roms: /home/pi/roms/genesis/
+    roms: /home/pi/pimame/roms/genesis/
     full_path: no
-    command: /home/pi/emulators/dgen/dgen
+    command: /home/pi/pimame/emulators/dgen-sdl-1.32/dgen
 
   - label: NES
     visible: Yes
     icon_file: nes.jpg
-    roms: /home/pi/roms/nes/
+    roms: /home/pi/pimame/roms/nes/
     full_path: no
-    command: /home/pi/emulators/nes/fceux
-
-  - label: Turbographix-16
-    visible: Yes
-    icon_file: tg16.jpg
-    roms: /home/pi/roms/tg16/
-    full_path: no
-    command: ifconfig
+    command: /home/pi/pimame/emulators/advancemess-0.102.0.1/advmess 
 
   - label: Atari 2600
     visible: Yes
     icon_file: 2600.jpg
-    roms: /home/pi/roms/2600/
+    roms: /home/pi/pimame/roms/2600/
     full_path: no
     command: stella
 
   - label: Playstation 1
     visible: Yes
     icon_file: psx.jpg
-    roms: /home/pi/roms/psx/
+    roms: /home/pi/pimame/roms/psx/
     full_path: no
-    command: /home/pi/emulators/psx/psx
+    command: /home/pi/pimame/emulators/pcsx_rearmed/pcsx
 
   - label: Commodore 64
-    visible: Yes
+    visible: No
     icon_file: c64.jpg
     roms: /home/pi/roms/c64/
     full_path: no
     command: /home/pi/emulators/vice/vice
 
-
   - label: ScummVM
     visible: Yes
     icon_file: scummvm.jpg
-    roms: /home/pi/roms/scummvm/
+    roms: /home/pi/pimame/roms/scummvm/
     full_path: no
-    command: /home/pi/emulators/scummvm/scummvm
-    
+    command: scummvm
+
   - label: Gameboy
     visible: Yes
     icon_file: gameboy.jpg
-    roms: /home/pi/roms/gameboy/
+    roms: /home/pi/pimame/roms/gameboy/
     full_path: no
-    command: /home/pi/emulators/gameboy/gameboy
-    
+    command: /home/pi/pimame/emulators/Gearboy/platforms/raspberrypi/Gearboy/gearboy.bin
+
   - label: Gameboy Advance
     visible: Yes
     icon_file: gba.jpg
-    roms: /home/pi/roms/gba/
+    roms: /home/pi/pimame/roms/gba/
     full_path: no
-    command: /home/pi/emulators/gba/gba
+    command: /home/pi/pimame/emulators/gpsp/raspberrypi/gpsp 
