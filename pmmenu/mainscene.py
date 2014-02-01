@@ -23,9 +23,14 @@ class MainScene(object):
 
 
 	def get_selected_item(self):
-		return self.grid.sprites()[self.selected_index]
+		try:
+			return self.grid.sprites()[self.selected_index]
+		except:
+			return False
 
 	def set_selected_index(self, new_selected_index):
+		self.erase_selection()
+
 		num_menu_items = len(self.grid.sprites())
 
 		if new_selected_index < 0:
@@ -36,7 +41,7 @@ class MainScene(object):
 		self.selected_index = new_selected_index
 		#self.selection.clear(self.screen)
 		self.selection.update(self.get_selected_item())
-		self.draw_items()
+		#self.draw_items()
 		self.draw_selection()
 
 	def draw_bg(self):
@@ -57,6 +62,13 @@ class MainScene(object):
 			textpos = self.ip_addr.rect
 			textpos.x = pygame.display.Info().current_w - textpos.width
 			label.draw(self.screen)
+
+	def erase_selection(self):
+		selected_item = self.get_selected_item()
+
+		if selected_item:
+			self.screen.fill(self.cfg.options.background_color, selected_item.rect)
+			pygame.sprite.RenderPlain(selected_item).draw(self.screen)
 
 	def draw_selection(self):
 		selection = pygame.sprite.RenderPlain((self.selection))
@@ -171,9 +183,9 @@ class MainScene(object):
 		else:
 			if sprite.command == PMMenuItem.PREV_PAGE:
 				self.grid.prev_page()
+				self.draw_items()
+				self.set_selected_index(len(self.grid.sprites()) - 1)
 			else:
 				self.grid.next_page()
-			#@TODO - Need to draw items here to the selection that
-			#gets updated in set_selected_index is correctly positioned
-			self.draw_items()
-			self.set_selected_index(0)
+				self.draw_items()
+				self.set_selected_index(0)
