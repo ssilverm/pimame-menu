@@ -1,5 +1,9 @@
+import pygame
 import subprocess
 import re
+import sys
+import time
+from os import system
 
 class PMUtil:
 	@staticmethod
@@ -17,3 +21,10 @@ class PMUtil:
 		myip = m.group(0)
 
 		return myip
+
+	@staticmethod
+	def run_command_and_continue(command):
+		pygame.quit()
+		time.sleep(1)
+		system(command + " && python " + sys.argv[0])
+		sys.exit()

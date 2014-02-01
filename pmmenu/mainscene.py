@@ -1,5 +1,4 @@
 import pygame
-import sys
 from pmconfig import *
 from pmheader import *
 from pmselection import *
@@ -184,7 +183,9 @@ class MainScene(object):
 	def do_menu_item_action(self, sprite):
 		if sprite.type == PMMenuItem.ROM_LIST:
 			self.manager.go_to(RomListScene(sprite.get_rom_list()))
-		else:
+		elif sprite.type == PMMenuItem.COMMAND:
+			PMUtil.run_command_and_continue(sprite.command)
+		elif sprite.type == PMMenuItem.NAVIGATION:
 			if sprite.command == PMMenuItem.PREV_PAGE:
 				self.grid.prev_page()
 				self.draw_items()

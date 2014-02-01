@@ -1,8 +1,6 @@
 import pygame
-import sys
-import time
-from os import system
 from pmlist import *
+from pmutil import *
 
 class RomListScene(object):
 
@@ -53,14 +51,14 @@ class RomListScene(object):
 
 				if len(clicked_sprites) > 0:
 					sprite = clicked_sprites[0]
-					self.run_command_and_quit(sprite)
+					self.run_sprite_command(sprite)
 			elif event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_UP:
 					self.set_selected_index(self.DIRECTION_UP)
 				elif event.key == pygame.K_DOWN:
 					self.set_selected_index(self.DIRECTION_DOWN)
 				elif event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:
-					self.run_command_and_quit(self.selected_item)
+					self.run_sprite_command(self.selected_item)
 				elif event.key == pygame.K_ESCAPE:
 					self.manager.back()
 			elif event.type == pygame.JOYAXISMOTION:
@@ -70,7 +68,7 @@ class RomListScene(object):
 					self.set_selected_index(self.DIRECTION_DOWN)
 			elif event.type == pygame.JOYBUTTONDOWN:
 				if event.button == 0:
-					self.run_command_and_quit(self.selected_item)
+					self.run_sprite_command(self.selected_item)
 
 	def set_selected_index(self, direction):
 		if direction == self.DIRECTION_UP:
@@ -126,11 +124,8 @@ class RomListScene(object):
 		selected_label = PMLabel(text, self.cfg.options.font, self.cfg.options.text_highlight_color, self.cfg.options.rom_dot_color)
 		self.screen.blit(selected_label.image, rect)
 
-	def run_command_and_quit(self, sprite):
+	def run_sprite_command(self, sprite):
 		if(sprite.type == 'back'):
 			self.manager.back()
 		else:
-			pygame.quit()
-			time.sleep(1)
-			system(sprite.command + " && python " + sys.argv[0])
-			sys.exit()
+			PMUtil.run_command_and_continue(sprite.command)

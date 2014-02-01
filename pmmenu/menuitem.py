@@ -18,10 +18,18 @@ class PMMenuItem(pygame.sprite.Sprite):
 
 		self.label = item_opts['label']
 		self.command = item_opts['command']
-		self.roms = item_opts['roms']
 		self.full_path = item_opts['full_path']
+
+		try:
+			self.roms = item_opts['roms']
+		except KeyError:
+			self.roms = False
+
 		if type == False:
-			self.type = self.ROM_LIST
+			if self.roms:
+				self.type = self.ROM_LIST
+			else:
+				self.type = self.COMMAND
 		else:
 			self.type = type
 
