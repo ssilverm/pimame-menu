@@ -15,6 +15,7 @@ for i in range(js_count):
 
 class MainScene(object):
 	selected_index = 0
+	pre_rendered = False
 
 	def __init__(self):
 		super(MainScene, self).__init__()
@@ -113,10 +114,12 @@ class MainScene(object):
 
 
 	def pre_render(self, screen):
-		self.header = PMHeader(self.cfg.options)
-		self.selection = PMSelection(self.cfg.options)
-		self.grid = PMGrid(self.cfg.config['menu_items'], self.cfg.options)
-		self.grid.set_num_items_per_page(self.calc_num_items_per_page())
+		if not self.pre_rendered:
+			self.header = PMHeader(self.cfg.options)
+			self.selection = PMSelection(self.cfg.options)
+			self.grid = PMGrid(self.cfg.config['menu_items'], self.cfg.options)
+			self.grid.set_num_items_per_page(self.calc_num_items_per_page())
+			self.pre_rendered = True
 
 		self.draw_bg()
 		self.draw_header()
@@ -124,6 +127,7 @@ class MainScene(object):
 		self.draw_items()
 		#self.draw_selection()
 		self.set_selected_index(0)
+
 
 	def render(self, screen):
 		pass
