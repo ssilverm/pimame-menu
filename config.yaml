@@ -35,28 +35,28 @@ menu_items:
     icon_file: mame4all.jpg
     roms: /home/pi/pimame/roms/mame4all
     full_path: no
-    command: /home/pi/pimame/emulators/mame4all/mame 
+    command: /home/pi/pimame/emulators/mame4all-pi/mame 
 
   - label: Neo Geo
     visible: Yes
     icon_file: neogeo.jpg
     roms: /home/pi/pimame/roms/neogeo
     full_path: no
-    command: /home/pi/pimame/emulators/gngeo-0.8/src/gngeo 
+    command: gngeo 
 
   - label: AdvMAME
     visible: Yes
     icon_file: advmame.jpg
     roms: /home/pi/pimame/roms/advmame
     full_path: no
-    command: /home/pi/pimame/emulators/advancemame-1.2/advmame 
+    command: advmame 
 
   - label: Final Burn
     visible: Yes
     icon_file: fba.jpg
     roms: /home/pi/pimame/roms/pifba
     full_path: no
-    command: /home/pi/pimame/emulators/pifba/fba2x 
+    command: /home/pi/pimame/emulators/fba/fba2x 
 
   - label: Genesis
     visible: Yes
@@ -70,7 +70,7 @@ menu_items:
     icon_file: nes.jpg
     roms: /home/pi/pimame/roms/nes/
     full_path: no
-    command: /home/pi/pimame/emulators/advancemess-0.102.0.1/advmess 
+    command: advmess -i nes -cart  
 
   - label: Atari 2600
     visible: Yes
@@ -100,7 +100,7 @@ menu_items:
   - label: Gameboy
     visible: Yes
     icon_file: gameboy.jpg
-    roms: /home/pi/pimame/roms/gameboy/
+    roms: /home/pi/pimame/roms/gb/
     full_path: yes
     command: /home/pi/pimame/emulators/Gearboy/platforms/raspberrypi/Gearboy/gearboy.bin
 
@@ -108,4 +108,4 @@ menu_items:
     visible: Yes
     icon_file: gba.jpg
     full_path: no
-    command: /home/pi/pimame/emulators/gpsp/raspberrypi/gpsp 
+    command: /home/pi/pimame/emulators/gpsp/gpsp 
