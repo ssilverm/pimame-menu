@@ -77,12 +77,17 @@ menu_items:
     icon_file: 2600.jpg
     full_path: no
     command: stella
+    roms: /home/pi/pimame/roms/2600/
+    override_menu: yes
 
   - label: Playstation 1
     visible: Yes
     icon_file: psx.jpg
     full_path: no
     command: /home/pi/pimame/emulators/pcsx_rearmed/pcsx
+    override_menu: yes
+    roms: /home/pi/pimame/roms/playstation/
+
 
   - label: Commodore 64
     visible: No
@@ -96,6 +101,9 @@ menu_items:
     icon_file: scummvm.jpg
     full_path: no
     command: scummvm
+    override_menu: yes
+    roms: /home/pi/pimame/roms/scummvm/
+
 
   - label: Gameboy
     visible: Yes
@@ -108,4 +116,7 @@ menu_items:
     visible: Yes
     icon_file: gba.jpg
     full_path: no
-    command: /home/pi/pimame/emulators/gpsp/gpsp 
+    command: /home/pi/pimame/emulators/gpsp/gpsp
+    override_menu: yes
+    roms: /home/pi/pimame/roms/gba/
+
