@@ -24,12 +24,21 @@ class PMMenuItem(pygame.sprite.Sprite):
 			self.roms = item_opts['roms']
 		except KeyError:
 			self.roms = False
+		
+		try:
+			self.override_menu = item_opts['override_menu']
+		except KeyError:
+			self.override_menu = False
 
 		if type == False:
-			if self.roms:
-				self.type = self.ROM_LIST
-			else:
+			#if self.roms:
+			#	self.type = self.ROM_LIST
+			#else:
+			#	self.type = self.COMMAND
+			if self.override_menu == 'yes':
 				self.type = self.COMMAND
+			else:
+				self.type = self.ROM_LIST
 		else:
 			self.type = type
 
