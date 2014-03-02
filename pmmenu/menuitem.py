@@ -35,7 +35,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 			#	self.type = self.ROM_LIST
 			#else:
 			#	self.type = self.COMMAND
-			if self.override_menu == 'yes':
+			if self.override_menu:
 				self.type = self.COMMAND
 			else:
 				self.type = self.ROM_LIST
