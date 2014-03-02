@@ -86,7 +86,7 @@ menu_items:
     full_path: no
     command: /home/pi/pimame/emulators/pcsx_rearmed/pcsx
     override_menu: yes
-    roms: /home/pi/pimame/roms/playstation/
+    roms: /home/pi/pimame/roms/psx/
 
 
   - label: Commodore 64
