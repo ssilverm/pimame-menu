@@ -66,11 +66,12 @@ menu_items:
     command: /home/pi/pimame/emulators/dgen-sdl-1.32/dgen
 
   - label: NES
-    visible: No
+    visible: Yes
     icon_file: nes.jpg
-    roms: /home/pi/pimame/roms/nes/
+    roms: /home/pi/pimame/roms/nes/nes/
     full_path: no
-    command: advmess -i nes -cart  
+    extension: yes
+    command: advmess nes -cart  
 
   - label: Atari 2600
     visible: Yes
@@ -90,11 +91,12 @@ menu_items:
 
 
   - label: Commodore 64
-    visible: No
+    visible: Yes
     icon_file: c64.jpg
     roms: /home/pi/roms/c64/
     full_path: no
-    command: /home/pi/emulators/vice/vice
+    override_menu: yes
+    command: x64
 
   - label: ScummVM
     visible: Yes

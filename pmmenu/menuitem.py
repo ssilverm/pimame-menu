@@ -19,6 +19,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 		self.label = item_opts['label']
 		self.command = item_opts['command']
 		self.full_path = item_opts['full_path']
+		#self.extension = item_opts['extension']
 
 		try:
 			self.roms = item_opts['roms']
@@ -29,6 +30,12 @@ class PMMenuItem(pygame.sprite.Sprite):
 			self.override_menu = item_opts['override_menu']
 		except KeyError:
 			self.override_menu = False
+
+                try:
+                        self.extension = item_opts['extension']
+                except KeyError:
+                        self.extension = False
+
 
 		if type == False:
 			#if self.roms:
@@ -128,7 +135,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 
 	def get_rom_list(self):
 		#@TODO - am I using the type field?
-		if self.full_path == False:
+		if self.full_path == False and self.extension == False:
 			return [
 				{
 					'title': f,
@@ -137,6 +144,16 @@ class PMMenuItem(pygame.sprite.Sprite):
 				}
 				for f in listdir(self.roms) if isfile(join(self.roms, f))
 			]
+		elif self.full_path == False and self.extension == True:
+                        return [
+                                {
+                                        'title': f,
+                                        'type': 'command',
+                                        'command': self.command + " " +  os.path.splitext(os.path.basename(f))[0] + os.path.splitext(os.path.basename(f))[1]
+                                }
+                                for f in listdir(self.roms) if isfile(join(self.roms, f))
+                        ]
+
 
 
 		return [
