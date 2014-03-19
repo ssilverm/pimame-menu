@@ -122,3 +122,20 @@ menu_items:
     override_menu: yes
     roms: /home/pi/pimame/roms/gba/
 
+  - label: Restart
+    visible: Yes
+    icon_file: restart.jpg
+    command: sudo reboot
+    override_menu: yes
+
+  - label: Shutdown
+    visible: Yes
+    icon_file: shutdown.jpg
+    command: sudo poweroff
+    override_menu: yes
+
+  - label: Update PiMAME
+    visible: Yes
+    icon_file: update.jpg
+    command: wget -O - http://pimame.org/update.sh | bash
+    override_menu: yes

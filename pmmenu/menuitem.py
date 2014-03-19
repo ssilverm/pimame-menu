@@ -27,14 +27,20 @@ class PMMenuItem(pygame.sprite.Sprite):
 			self.roms = False
 		
 		try:
-			self.override_menu = item_opts['override_menu']
+			if item_opts['override_menu'] and item_opts['override_menu'] == True:
+				self.override_menu = True
+			else:
+				self.override_menu = False
 		except KeyError:
 			self.override_menu = False
 
-                try:
-                        self.extension = item_opts['extension']
-                except KeyError:
-                        self.extension = False
+		try:
+			if item_opts['extension'] and item_opts['extension'] == True:
+				self.extension = True
+			else:
+				self.extension = False
+		except KeyError:
+			self.extension = False
 
 
 		if type == False:
@@ -145,14 +151,14 @@ class PMMenuItem(pygame.sprite.Sprite):
 				for f in listdir(self.roms) if isfile(join(self.roms, f))
 			]
 		elif self.full_path == False and self.extension == True:
-                        return [
-                                {
-                                        'title': f,
-                                        'type': 'command',
-                                        'command': self.command + " " +  os.path.splitext(os.path.basename(f))[0] + os.path.splitext(os.path.basename(f))[1]
-                                }
-                                for f in listdir(self.roms) if isfile(join(self.roms, f))
-                        ]
+						return [
+								{
+										'title': f,
+										'type': 'command',
+										'command': self.command + " " +  os.path.splitext(os.path.basename(f))[0] + os.path.splitext(os.path.basename(f))[1]
+								}
+								for f in listdir(self.roms) if isfile(join(self.roms, f))
+						]
 
 
 
