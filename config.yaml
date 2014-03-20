@@ -124,18 +124,21 @@ menu_items:
 
   - label: Restart
     visible: Yes
+    full_path: no
     icon_file: restart.jpg
     command: sudo reboot
     override_menu: yes
 
   - label: Shutdown
     visible: Yes
+    full_path: no
     icon_file: shutdown.jpg
     command: sudo poweroff
     override_menu: yes
 
   - label: Update PiMAME
     visible: Yes
+    full_path: no
     icon_file: update.jpg
     command: wget -O - http://pimame.org/update.sh | bash
     override_menu: yes
