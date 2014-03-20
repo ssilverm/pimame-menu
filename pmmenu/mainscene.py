@@ -150,15 +150,15 @@ class MainScene(object):
 					sprite = clicked_sprites[0]
 					self.do_menu_item_action(sprite)
 			elif event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_LEFT:
+				if event.key == pygame.K_LEFT or event.key == pygame.K_KP4:
 					self.set_selected_index(self.selected_index - 1)
-				elif event.key == pygame.K_RIGHT:
+				elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
 					self.set_selected_index(self.selected_index + 1)
-				elif event.key == pygame.K_UP:
+				elif event.key == pygame.K_UP or event.key == pygame.K_KP8:
 					self.set_selected_index(self.selected_index - self.cfg.options.num_items_per_row)
-				elif event.key == pygame.K_DOWN:
+				elif event.key == pygame.K_DOWN or event.key == pygame.K_KP2:
 					self.set_selected_index(self.selected_index + self.cfg.options.num_items_per_row)
-				elif event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:
+				elif event.key == pygame.K_RETURN or event.key == pygame.K_SPACE or event.key == pygame.K_KP_ENTER:
 					self.do_menu_item_action(self.get_selected_item())
 				elif event.key == pygame.K_ESCAPE:
 					pygame.quit()

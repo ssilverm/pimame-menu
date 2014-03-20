@@ -135,7 +135,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 		if not isdir(self.roms):
 			return 0
 
-		files = [ f for f in listdir(self.roms) if isfile(join(self.roms,f)) ]
+		files = [ f for f in listdir(self.roms) if isfile(join(self.roms,f)) and f != '.gitkeep'  ]
 
 		self.num_roms = len(files)
 
@@ -148,7 +148,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 					'type': 'command',
 					'command': self.command + " " +  os.path.splitext(os.path.basename(f))[0] 
 				}
-				for f in listdir(self.roms) if isfile(join(self.roms, f))
+				for f in listdir(self.roms) if isfile(join(self.roms, f)) and f != '.gitkeep'
 			]
 		elif self.full_path == False and self.extension == True:
 						return [
@@ -157,7 +157,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 										'type': 'command',
 										'command': self.command + " " +  os.path.splitext(os.path.basename(f))[0] + os.path.splitext(os.path.basename(f))[1]
 								}
-								for f in listdir(self.roms) if isfile(join(self.roms, f))
+								for f in listdir(self.roms) if isfile(join(self.roms, f)) and f != '.gitkeep' 
 						]
 
 
@@ -168,7 +168,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 				'type': 'command',
 				'command': self.command + ' \'' + self.roms + f +'\'' 
 			}
-			for f in listdir(self.roms) if isfile(join(self.roms, f))
+			for f in listdir(self.roms) if isfile(join(self.roms, f)) and f != '.gitkeep' 
 		]
 
 	def run_command(self):

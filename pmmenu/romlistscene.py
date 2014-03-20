@@ -53,11 +53,11 @@ class RomListScene(object):
 					sprite = clicked_sprites[0]
 					self.run_sprite_command(sprite)
 			elif event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_UP:
+				if event.key == pygame.K_UP or event.key == pygame.K_KP8:
 					self.set_selected_index(self.DIRECTION_UP)
-				elif event.key == pygame.K_DOWN:
+				elif event.key == pygame.K_DOWN or event.key == pygame.K_KP2:
 					self.set_selected_index(self.DIRECTION_DOWN)
-				elif event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:
+				elif event.key == pygame.K_RETURN or event.key == pygame.K_SPACE or event.key == pygame.K_KP_ENTER:
 					self.run_sprite_command(self.selected_item)
 				elif event.key == pygame.K_ESCAPE:
 					self.manager.back()
