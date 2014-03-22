@@ -52,12 +52,43 @@ class MainScene(object):
 		header = pygame.sprite.RenderPlain((self.header))
 		header.draw(self.screen)
 
+	def draw_is_update(self):
+		if self.cfg.options.show_update:
+			print "got here"
+			try:
+				import requests
+				version_web = float( requests.get('http://pimame.org/version').text)
+				version_current = float(open("../version", 'r').read())
+				if version_current < version_web:
+					self.update = PMLabel('blah', self.cfg.options.font, self.cfg.options.text_color, self.cfg.options.item_color)
+			except:
+				self.update = PMLabel("blah", self.cfg.options.font, self.cfg.options.text_color, self.cfg.options.item_color)
+				
+			self.update = PMLabel("blah", self.cfg.options.font, self.cfg.options.text_color, self.cfg.options.item_color)
+			label = pygame.sprite.RenderPlain((self.update))
+			textpos = self.ip_addr.rect
+			textpos.x = pygame.display.Info().current_w - textpos.width
+			label.draw(self.screen)
+
 	def draw_ip_addr(self):
+		displayString = ''
+		if self.cfg.options.show_update:
+			try:
+				import requests
+				version_web = float( requests.get('http://pimame.org/version').text)
+				version_current = float(open("../version", 'r').read())
+				if version_current < version_web:
+					displayString += "New Version Available"
+			except:
+				displayString += "Could not check for updates"
+
 		if self.cfg.options.show_ip:
 			try:
-			    self.ip_addr = PMLabel(PMUtil.get_ip_addr(), self.cfg.options.font, self.cfg.options.text_color, self.cfg.options.item_color)
+				displayString += " " + PMUtil.get_ip_addr()
 			except:
-			    self.ip_addr = PMLabel("No Network Connection", self.cfg.options.font, self.cfg.options.text_color, self.cfg.options.item_color)
+				displayString += " No Network Connection"
+
+			self.ip_addr = PMLabel(displayString, self.cfg.options.font, self.cfg.options.text_color, self.cfg.options.item_color)
 			label = pygame.sprite.RenderPlain((self.ip_addr))
 			textpos = self.ip_addr.rect
 			textpos.x = pygame.display.Info().current_w - textpos.width
@@ -123,6 +154,7 @@ class MainScene(object):
 		self.draw_bg()
 		self.draw_header()
 		self.draw_ip_addr()
+		#self.draw_is_update()
 		self.draw_items()
 		#self.draw_selection()
 		self.set_selected_index(0)

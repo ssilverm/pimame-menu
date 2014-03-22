@@ -1,6 +1,7 @@
 options:
   max_fps: 20
   show_ip: Yes
+  show_update: Yes
   num_items_per_row: 5
   fullscreen: Yes
   resolution: "0,0"
