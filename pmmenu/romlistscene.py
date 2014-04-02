@@ -88,6 +88,7 @@ class RomListScene(object):
 				selected_index = self.sprites.index(self.selected_item)
 				self.selected_item = self.sprites[selected_index + 1]
 
+
 		self.draw()
 
 	def draw_list(self):
@@ -121,6 +122,15 @@ class RomListScene(object):
 
 		pygame.draw.rect(self.screen, self.cfg.options.rom_dot_color, rect)
 
+		print "C:\Users\silver\Documents\GitHub\pimame-8\pimame-menu\screenshots\%s" % text[:-4]
+		try:
+			self.game_ss = pygame.image.load("C:\Users\silver\Documents\GitHub\pimame-8\pimame-menu\screenshots\%s.gif" % text[:-4] ).convert()
+		except:
+			self.game_ss = pygame.image.load("C:\Users\silver\Documents\GitHub\pimame-8\pimame-menu\screenshots\junglek.gif").convert()
+			print "something happened"
+
+		self.screen.blit(self.game_ss,(0,0))
+     
 		selected_label = PMLabel(text, self.cfg.options.font, self.cfg.options.text_highlight_color, self.cfg.options.rom_dot_color)
 		self.screen.blit(selected_label.image, rect)
 
