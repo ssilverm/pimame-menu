@@ -29,35 +29,40 @@ menu_items:
     icon_file: snes.jpg
     roms: /home/pi/pimame/roms/snes/
     full_path: yes
-    command: /home/pi/pimame/emulators/pisnes/snes9x
+    override_menu: no
+    command: /home/pi/pimame/emulators/pisnes/snes9x.gui
 
   - label: MAME4All
     visible: Yes
     icon_file: mame4all.jpg
-    roms: /home/pi/pimame/roms/mame4all
+    roms: /home/pi/pimame/roms/mame4all/
     full_path: no
+    override_menu: yes
     command: /home/pi/pimame/emulators/mame4all-pi/mame 
 
   - label: Neo Geo
     visible: Yes
     icon_file: neogeo.jpg
-    roms: /home/pi/pimame/roms/neogeo
-    full_path: no
-    command: gngeo 
+    roms: /home/pi/pimame/roms/neogeo/
+    full_path: yes
+    extension: yes
+    command: /home/pi/pimame/emulators/fba/fba2x
 
   - label: AdvMAME
     visible: Yes
     icon_file: advmame.jpg
-    roms: /home/pi/pimame/roms/advmame
+    roms: /home/pi/pimame/roms/advmame/
     full_path: no
     command: advmame 
 
   - label: Final Burn
     visible: Yes
     icon_file: fba.jpg
-    roms: /home/pi/pimame/roms/pifba
-    full_path: no
-    command: /home/pi/pimame/emulators/fba/fba2x 
+    roms: /home/pi/pimame/roms/pifba/
+    full_path: yes
+    extension: yes
+    override_menu: no
+    command: /home/pi/pimame/emulators/fba/fba2x
 
   - label: Genesis
     visible: Yes
@@ -143,3 +148,4 @@ menu_items:
     icon_file: update.jpg
     command: wget -O - http://pimame.org/update.sh | bash
     override_menu: yes
+
