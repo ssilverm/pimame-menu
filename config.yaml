@@ -30,14 +30,14 @@ menu_items:
     roms: /home/pi/pimame/roms/snes/
     full_path: yes
     override_menu: no
-    command: /home/pi/pimame/emulators/pisnes/snes9x.gui
+    command: /home/pi/pimame/emulators/pisnes/snes9x
 
   - label: MAME4All
     visible: Yes
     icon_file: mame4all.jpg
     roms: /home/pi/pimame/roms/mame4all/
     full_path: no
-    override_menu: yes
+    override_menu: no
     command: /home/pi/pimame/emulators/mame4all-pi/mame 
 
   - label: Neo Geo

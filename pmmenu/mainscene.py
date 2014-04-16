@@ -74,9 +74,9 @@ class MainScene(object):
 		if self.cfg.options.show_update:
 			try:
 				import requests
-				version_web = float( requests.get('http://pimame.org/version').text)
+				version_web = float( requests.get('http://www.pimame.org/version').text)
 				version_current = float(open("../version", 'r').read())
-				if version_current <= version_web:
+				if version_current < version_web:
 					displayString = "New Version Available"
 			except:
 				displayString = "Could not check for updates"
