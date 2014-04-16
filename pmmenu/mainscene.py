@@ -72,9 +72,10 @@ class MainScene(object):
 		displayString = ''
 
 		if self.cfg.options.show_update:
+			user_agent = {"User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0"}
 			try:
 				import requests
-				version_web = float( requests.get('http://www.pimame.org/version').text)
+				version_web = float( requests.get('http://www.pimame.org/version', headers = user_agent).text)
 				version_current = float(open("../version", 'r').read())
 				if version_current < version_web:
 					displayString = "New Version Available"
