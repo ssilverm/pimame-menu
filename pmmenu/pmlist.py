@@ -12,12 +12,16 @@ class PMList(pygame.sprite.OrderedUpdates):
 		self.first_index = self.last_index = 0
 		self.labels = []
 
-		self.rom_list = rom_list
+		if global_opts.sort_files_alphanum:
+			self.rom_list = sorted(rom_list, key=lambda rom: rom['title'])
+		else:
+			self.rom_list = rom_list
+
 
 		back_item = {'type': 'back', 'title': '<- Back', 'command': None}
-		rom_list.insert(0, back_item)
+		self.rom_list.insert(0, back_item)
 
-		for list_item in rom_list:
+		for list_item in self.rom_list:
 			label = PMLabel(list_item['title'], global_opts.font, global_opts.text_color, global_opts.background_color)
 			label.type = list_item['type']
 			label.command = list_item['command']

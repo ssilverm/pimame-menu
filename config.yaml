@@ -23,6 +23,7 @@ options:
   sort_items_alphanum: No
   sort_items_with_roms_first: Yes
   hide_items_without_roms: No
+  sort_files_alphanum: Yes
 menu_items:
   - label: SNES
     visible: Yes
