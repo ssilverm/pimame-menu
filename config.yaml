@@ -1,0 +1,120 @@
+options:
+  max_fps: 20
+  show_ip: yes
+  show_update: Yes
+  fullscreen: Yes
+  resolution: "0,0"
+  sort_items_alphanum: No
+  sort_items_with_roms_first: Yes
+  hide_items_without_roms: No
+  theme_pack: "tron" #name of the folder in /home/pi/pimame/pimame-menu/themes/
+menu_items:
+  - label: SNES
+    visible: Yes
+    roms: /home/pi/pimame/roms/snes/
+    full_path: yes
+    override_menu: no
+    command: /home/pi/pimame/emulators/pisnes/snes9x
+
+  - label: MAME4All
+    visible: Yes
+    roms: /home/pi/pimame/roms/mame4all/1/
+    full_path: no
+    override_menu: no
+    command: /home/pi/pimame/emulators/mame4all-pi/mame 
+
+  - label: Neo Geo
+    visible: Yes
+    roms: /home/pi/pimame/roms/neogeo/
+    full_path: yes
+    extension: yes
+    command: /home/pi/pimame/emulators/fba/fba2x
+
+  - label: AdvMAME
+    visible: Yes
+    roms: /home/pi/pimame/roms/advmame/1/
+    full_path: no
+    command: advmame 
+
+  - label: Final Burn
+    visible: Yes
+    roms: /home/pi/pimame/roms/pifba/
+    full_path: yes
+    extension: yes
+    override_menu: no
+    command: /home/pi/pimame/emulators/fba/fba2x
+
+  - label: Genesis
+    visible: Yes
+    roms: /home/pi/pimame/roms/genesis/
+    full_path: yes
+    command: /home/pi/pimame/emulators/dgen-sdl-1.32/dgen
+
+  - label: NES
+    visible: Yes
+    roms: /home/pi/pimame/roms/nes/
+    full_path: no
+    extension: yes
+    command: advmess nes -cart
+
+  - label: Atari 2600
+    visible: Yes
+    full_path: no
+    command: stella
+    roms: /home/pi/pimame/roms/2600/
+    override_menu: yes
+
+  - label: Playstation 1
+    visible: Yes
+    full_path: no
+    command: /home/pi/pimame/emulators/pcsx_rearmed/pcsx
+    override_menu: yes
+    roms: /home/pi/pimame/roms/psx/
+
+
+  - label: Commodore 64
+    visible: Yes
+    roms: /home/pi/roms/c64/
+    full_path: no
+    override_menu: yes
+    command: x64
+
+  - label: ScummVM
+    visible: Yes
+    full_path: no
+    command: scummvm
+    override_menu: yes
+    roms: /home/pi/pimame/roms/scummvm/
+
+
+  - label: Gameboy
+    visible: Yes
+    roms: /home/pi/pimame/roms/gb/
+    full_path: yes
+    command: /home/pi/pimame/emulators/Gearboy/platforms/raspberrypi/Gearboy/gearboy.bin
+
+  - label: Gameboy Advance
+    visible: Yes
+    full_path: no
+    command: /home/pi/pimame/emulators/gpsp/gpsp
+    override_menu: yes
+    roms: /home/pi/pimame/roms/gba/
+
+  - label: Restart
+    visible: Yes
+    full_path: no
+    command: sudo reboot
+    override_menu: yes
+
+  - label: Shutdown
+    visible: Yes
+    full_path: no
+    command: sudo poweroff
+    override_menu: yes
+
+  - label: Update PiMAME
+    visible: Yes
+    full_path: no
+    command: wget -O - http://pimame.org/update.sh | bash
+    override_menu: yes
+
