@@ -1,32 +1,16 @@
 options:
   max_fps: 20
-  show_ip: Yes
+  show_ip: yes
   show_update: Yes
-  num_items_per_row: 5
   fullscreen: Yes
   resolution: "0,0"
-  item_height: 220
-  padding: 10
-  selection_size: 11
-  header_height: 140
-  disabled_alpha: 128
-  background_color: "200,200,200"
-  selection_color: "74,239,76"
-  text_color: "0,0,0"
-  text_highlight_color: "255,255,255"
-  item_color: "255,255,255"
-  header_color: "255,255,255"
-  rom_dot_color: "228,56,65"
-  icon_pack_path: "icons/default/"
-  font_size: 19
-  font_file: "assets/fonts/Lato-Bold.ttf"
   sort_items_alphanum: No
   sort_items_with_roms_first: Yes
   hide_items_without_roms: No
+  theme_pack: "tron" #name of the folder in /home/pi/pimame/pimame-menu/themes/
 menu_items:
   - label: SNES
     visible: Yes
-    icon_file: snes.jpg
     roms: /home/pi/pimame/roms/snes/
     full_path: yes
     override_menu: no
@@ -34,15 +18,13 @@ menu_items:
 
   - label: MAME4All
     visible: Yes
-    icon_file: mame4all.jpg
-    roms: /home/pi/pimame/roms/mame4all/
+    roms: /home/pi/pimame/roms/mame4all/1/
     full_path: no
     override_menu: no
     command: /home/pi/pimame/emulators/mame4all-pi/mame 
 
   - label: Neo Geo
     visible: Yes
-    icon_file: neogeo.jpg
     roms: /home/pi/pimame/roms/neogeo/
     full_path: yes
     extension: yes
@@ -50,14 +32,12 @@ menu_items:
 
   - label: AdvMAME
     visible: Yes
-    icon_file: advmame.jpg
-    roms: /home/pi/pimame/roms/advmame/
+    roms: /home/pi/pimame/roms/advmame/1/
     full_path: no
     command: advmame 
 
   - label: Final Burn
     visible: Yes
-    icon_file: fba.jpg
     roms: /home/pi/pimame/roms/pifba/
     full_path: yes
     extension: yes
@@ -66,22 +46,19 @@ menu_items:
 
   - label: Genesis
     visible: Yes
-    icon_file: genesis.jpg
     roms: /home/pi/pimame/roms/genesis/
     full_path: yes
     command: /home/pi/pimame/emulators/dgen-sdl-1.32/dgen
 
   - label: NES
     visible: Yes
-    icon_file: nes.jpg
-    roms: /home/pi/pimame/roms/nes/nes/
+    roms: /home/pi/pimame/roms/nes/
     full_path: no
     extension: yes
-    command: advmess nes -cart  
+    command: advmess nes -cart
 
   - label: Atari 2600
     visible: Yes
-    icon_file: 2600.jpg
     full_path: no
     command: stella
     roms: /home/pi/pimame/roms/2600/
@@ -89,7 +66,6 @@ menu_items:
 
   - label: Playstation 1
     visible: Yes
-    icon_file: psx.jpg
     full_path: no
     command: /home/pi/pimame/emulators/pcsx_rearmed/pcsx
     override_menu: yes
@@ -98,7 +74,6 @@ menu_items:
 
   - label: Commodore 64
     visible: Yes
-    icon_file: c64.jpg
     roms: /home/pi/roms/c64/
     full_path: no
     override_menu: yes
@@ -106,7 +81,6 @@ menu_items:
 
   - label: ScummVM
     visible: Yes
-    icon_file: scummvm.jpg
     full_path: no
     command: scummvm
     override_menu: yes
@@ -115,14 +89,12 @@ menu_items:
 
   - label: Gameboy
     visible: Yes
-    icon_file: gameboy.jpg
     roms: /home/pi/pimame/roms/gb/
     full_path: yes
     command: /home/pi/pimame/emulators/Gearboy/platforms/raspberrypi/Gearboy/gearboy.bin
 
   - label: Gameboy Advance
     visible: Yes
-    icon_file: gba.jpg
     full_path: no
     command: /home/pi/pimame/emulators/gpsp/gpsp
     override_menu: yes
@@ -131,21 +103,18 @@ menu_items:
   - label: Restart
     visible: Yes
     full_path: no
-    icon_file: restart.jpg
     command: sudo reboot
     override_menu: yes
 
   - label: Shutdown
     visible: Yes
     full_path: no
-    icon_file: shutdown.jpg
     command: sudo poweroff
     override_menu: yes
 
   - label: Update PiMAME
     visible: Yes
     full_path: no
-    icon_file: update.jpg
     command: wget -O - http://pimame.org/update.sh | bash
     override_menu: yes
 

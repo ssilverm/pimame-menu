@@ -40,12 +40,27 @@ class MainScene(object):
 
 		self.selected_index = new_selected_index
 		#self.selection.clear(self.screen)
-		self.selection.update(self.get_selected_item())
+		self.selection.update(self.get_selected_item(), self.cfg.options)
 		#self.draw_items()
 		self.draw_selection()
+		
 
 	def draw_bg(self):
+		background_image = self.cfg.options.pre_loaded_background
+		background_rect = background_image.get_rect()
+		screen_width = pygame.display.Info().current_w
+		screen_height = pygame.display.Info().current_h
+		scale = min(float(background_rect.w) / float(screen_width), float(background_rect.h) / float(screen_height))
+		background_rect = (int(background_rect.w / scale), int(background_rect.h / scale))
+		
+		self.cfg.options.pre_loaded_background =  pygame.transform.smoothscale(self.cfg.options.pre_loaded_background, background_rect)
+		background_image = self.cfg.options.pre_loaded_background
+		
 		self.screen.fill(self.cfg.options.background_color)
+		
+		self.screen.blit(background_image, (0,0))
+
+		
 
 	def draw_header(self):
 		# @TODO - how to prepare ahead of time:
@@ -61,7 +76,7 @@ class MainScene(object):
 			except:
 				displayString = "No Network Connection"
 
-			self.ip_addr = PMLabel(displayString, self.cfg.options.font, self.cfg.options.text_color, self.cfg.options.item_color)
+			self.ip_addr = PMLabel(displayString, self.cfg.options.font, self.cfg.options.default_font_color, self.cfg.options.default_font_background_color)
 			label = pygame.sprite.RenderPlain((self.ip_addr))
 			textpos = self.ip_addr.rect
 			textpos.x = pygame.display.Info().current_w - textpos.width - self.cfg.options.padding
@@ -82,7 +97,7 @@ class MainScene(object):
 			except:
 				displayString = "Could not check for updates"
 
-			self.update_label = PMLabel(displayString, self.cfg.options.font, self.cfg.options.text_color, self.cfg.options.item_color)
+			self.update_label = PMLabel(displayString, self.cfg.options.font, self.cfg.options.default_font_color, self.cfg.options.default_font_background_color)
 			label = pygame.sprite.RenderPlain((self.update_label))
 			textpos = self.update_label.rect
 			textpos.x = self.cfg.options.padding
@@ -93,10 +108,22 @@ class MainScene(object):
 		selected_item = self.get_selected_item()
 
 		if selected_item:
-			self.screen.fill(self.cfg.options.background_color, selected_item.rect)
+			
+			padding = self.cfg.options.padding
+			screen_width = pygame.display.Info().current_w
+			item_width = ((screen_width - padding) / self.cfg.options.num_items_per_row) - padding
+			
+			self.screen.blit(self.cfg.options.pre_loaded_background, selected_item.rect, pygame.Rect(selected_item.rect[0], selected_item.rect[1], item_width, self.cfg.options.item_height))
+			
 			pygame.sprite.RenderPlain(selected_item).draw(self.screen)
 
 	def draw_selection(self):
+		padding = self.cfg.options.padding
+		screen_width = pygame.display.Info().current_w
+		item_width = ((screen_width - padding) / self.cfg.options.num_items_per_row) - padding
+		
+		self.screen.blit(self.cfg.options.pre_loaded_background, self.selection.rect, pygame.Rect(self.selection.rect[0], self.selection.rect[1], item_width, self.cfg.options.item_height))
+			
 		selection = pygame.sprite.RenderPlain((self.selection))
 		selection.draw(self.screen)
 
@@ -132,8 +159,10 @@ class MainScene(object):
 
 		# @TODO: make this background ahead of time!
 		# @TODO: use this get_width() method everywhere instead of get_info()!
-		background = pygame.Surface((self.screen.get_width(), self.screen.get_height()))
-		background.fill(self.cfg.options.background_color)     # fill white
+		background = pygame.Surface([self.screen.get_width(), self.screen.get_height()], pygame.SRCALPHA, 32).convert_alpha()
+		background_image = self.cfg.options.pre_loaded_background
+		background.blit(background_image, (0,0))
+		#background.fill(self.cfg.options.background_color)     # fill white
 		self.grid.clear(self.screen, background)
 		self.grid.draw(self.screen)
 
@@ -142,7 +171,7 @@ class MainScene(object):
 		if not self.pre_rendered:
 			self.header = PMHeader(self.cfg.options)
 			self.selection = PMSelection(self.cfg.options)
-			self.grid = PMGrid(self.cfg.config['menu_items'], self.cfg.options)
+			self.grid = PMGrid(self.cfg.options.options_menu_items, self.cfg.options)
 			self.grid.set_num_items_per_page(self.calc_num_items_per_page())
 			self.pre_rendered = True
 

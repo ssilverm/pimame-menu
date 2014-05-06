@@ -4,8 +4,11 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 	#menu_items = []
 	# menu_items_by_sprite = None
 	options = None
-	next_icon = '../../assets/images/nav-next.png'
-	back_icon = '../../assets/images/nav-back.png'
+	next_icon = 'nav-next.png'
+	back_icon = 'nav-back.png'
+	next_selected = 'nav-next-selected.png'
+	back_selected = 'nav-back-selected.png'
+	
 
 	def __init__(self, menu_item_cfgs, opts):
 		pygame.sprite.OrderedUpdates.__init__(self)
@@ -28,14 +31,15 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 			self.menu_items.sort(key=lambda x: x.num_roms, reverse=True)
 
 		if self.options.hide_items_without_roms:
-			self.menu_items = [x for x in self.menu_items if x.num_roms > 0]
+			self.menu_items = [x for x in self.menu_items if x.num_roms > -1]
 
 
-	def create_nav_menu_item(self, label, icon_file = False):
+	def create_nav_menu_item(self, label, icon_file = False, icon_selected = False):
 		item = {}
 		item['label'] = label
 		item['visible'] = True
 		item['icon_file'] = icon_file
+		item['icon_selected'] = icon_selected
 		item['command'] = ''
 		item['roms'] = ''
 		item['full_path'] = True
@@ -55,22 +59,22 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 			self.pages.append(self.menu_items[:])
 		else:
 			page = self.menu_items[:self.num_items_per_page - 1]
-			next = self.create_nav_menu_item('Next', self.next_icon)
+			next = self.create_nav_menu_item('Next', self.next_icon, self.next_selected)
 			next.command = PMMenuItem.NEXT_PAGE
 			page.append(next)
 			self.pages.append(page)
 			r = range(self.num_items_per_page - 1, num_menu_items - self.num_items_per_page + 1, self.num_items_per_page - 2)
 			for i in r:
 				page = self.menu_items[i:i + self.num_items_per_page - 2]
-				back = self.create_nav_menu_item('Back', self.back_icon)
+				back = self.create_nav_menu_item('Back', self.back_icon, self.back_selected)
 				back.command = PMMenuItem.PREV_PAGE
-				next = self.create_nav_menu_item('Next', self.next_icon)
+				next = self.create_nav_menu_item('Next', self.next_icon, self.next_selected)
 				next.command = PMMenuItem.NEXT_PAGE
 				page.insert(0, back)
 				page.append(next)
 				self.pages.append(page)
 			last_page = self.menu_items[self.num_items_per_page - 1 + len(r) * (self.num_items_per_page - 2):]
-			back = self.create_nav_menu_item('Back', self.back_icon)
+			back = self.create_nav_menu_item('Back', self.back_icon, self.back_selected)
 			back.command = PMMenuItem.PREV_PAGE
 			last_page.insert(0, back)
 			self.pages.append(last_page)

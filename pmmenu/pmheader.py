@@ -9,12 +9,17 @@ class PMHeader(pygame.sprite.Sprite):
 		# @TODO - dont have to pass size around, can just get it like this:
 		header_width = pygame.display.Info().current_w
 		header_height = opts.header_height
-
-		self.image = pygame.Surface([header_width, header_height])
+		
+		
+		
+		self.image = pygame.Surface([header_width, header_height], pygame.SRCALPHA, 32).convert_alpha()
+		background_image = opts.pre_loaded_background
+		self.image.blit(background_image, (0,0))
 		self.image.fill(opts.header_color)
 
-		icon_file_path = 'assets/images/logo.png'
-		icon = pygame.image.load(icon_file_path).convert_alpha()
+		icon_file_path = opts.theme_pack + opts.logo_image
+		icon = opts.load_image(icon_file_path)
+
 
 		icon_rect = icon.get_rect()
 		icon_pos = ((header_width - icon_rect.w) / 2, (header_height - icon_rect.h) / 2)
