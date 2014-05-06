@@ -53,7 +53,6 @@ class MainScene(object):
 		scale = min(float(background_rect.w) / float(screen_width), float(background_rect.h) / float(screen_height))
 		background_rect = (int(background_rect.w / scale), int(background_rect.h / scale))
 		
-		print background_rect
 		self.cfg.options.pre_loaded_background =  pygame.transform.smoothscale(self.cfg.options.pre_loaded_background, background_rect)
 		background_image = self.cfg.options.pre_loaded_background
 		
