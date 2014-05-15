@@ -152,6 +152,12 @@ class RomListScene(object):
 
 		self.list.draw(self.screen)
 
+	def draw_boxart(self, rom_list_rect):
+		boxart = self.cfg.options.load_image(self.selected_item.boxart)
+		boxart_rect = boxart.get_rect()
+		boxart_location = (rom_list_rect.width + (boxart_rect.w/2), 100)
+		self.screen.blit(boxart, boxart_location)
+	
 	def draw(self):
 		self.draw_bg()
 		self.draw_list()
@@ -159,16 +165,16 @@ class RomListScene(object):
 		text = self.selected_item.text
 		rect = self.selected_item.rect
 
-		rect.width = pygame.display.Info().current_w
-
-		#pygame.draw.rect(self.screen, self.cfg.options.rom_dot_color, rect)
+		#rect.width = pygame.display.Info().current_w
 		
 		#build and draw selected item on the fly
 		selected_romlist_image = self.cfg.options.pre_loaded_romlist_selected.convert_alpha()
-		#rom_template = PMLabel('', self.cfg.options.rom_list_font, self.cfg.options.rom_list_font_selected_color, self.cfg.options.rom_list_background_selected_color, self.cfg.options.rom_list_offset, selected_romlist_image)
+
 		selected_label = PMLabel(text, self.cfg.options.rom_list_font, self.cfg.options.rom_list_font_selected_color, self.cfg.options.rom_list_background_selected_color, self.cfg.options.rom_list_offset, False, self.list.selected_rom_template)
 
 		self.screen.blit(selected_label.image, rect)
+		
+		self.draw_boxart(rect)
 
 	def run_sprite_command(self, sprite):
 		if(sprite.type == 'back'):

@@ -1,4 +1,5 @@
 import yaml
+from os.path import expanduser
 import pygame
 from menuitem import *
 from pmgrid import *
@@ -31,7 +32,7 @@ class PMCfg:
 		if fullscreen:
 			flag = pygame.FULLSCREEN
 
-		return pygame.display.set_mode(size, flag)
+		return pygame.display.set_mode(size, flag, 32)
 
 
 class PMOptions:
@@ -112,7 +113,8 @@ class PMOptions:
 		self.pre_loaded_background = self.load_image(self.theme_pack + self.background_image)
 		self.pre_loaded_romlist = self.load_image(self.theme_pack + theme['rom_list_image'])
 		self.pre_loaded_romlist_selected = self.load_image(self.theme_pack + theme['rom_list_selected_image'])
-		self.romlist_item_height = max(self.pre_loaded_romlist.get_rect().h,self.rom_list_font.size('Ip')[1])
+		self.romlist_item_height = max(self.pre_loaded_romlist.get_rect().h, self.rom_list_font.size('Ip')[1])
+		self.blank_image = pygame.image.load('/home/pi/pimame/pimame-menu/assets/images/blank.png')
 
 
 	def get_color(self, color_str):
@@ -130,9 +132,9 @@ class PMOptions:
 					return pygame.image.load(alternate_image)
 				except:
 					print 'cant load: ', alternate_image
-					return pygame.image.load('/home/pi/pimame/pimame-menu/assets/images/blank.png')
+					return self.blank_image
 			print 'cant load: ', file_path
-			return pygame.image.load('/home/pi/pimame/pimame-menu/assets/images/blank.png')
+			return self.blank_image
 		
 
 
