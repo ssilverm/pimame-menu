@@ -286,9 +286,9 @@ class Gamesdb_API(object):
 		with open('/home/pi/pimame/pimame-menu/.cache/' + rom_list[0]['platform'].lower() + '.cache' , 'w') as outfile:
 			print '-----------------------------'
 			cache_list = []
-			list_size = len(rom_list) - 1
+			list_size = len(rom_list)
 			for index, rom in enumerate(rom_list):
-				status = 'Writing cache file:' + r"[%3.2f%%]" % (index * 100. / list_size)
+				status = 'Writing cache file:' + r"[%3.2f%%]" % ((index+1) * 100. / list_size)
 				status = status + chr(8)*(len(status)+1)
 				print status,
 				data = {'rom_path': rom['rom_path'], 'file': rom['file'], 'image_path': rom['image_path'], 'image_file': rom['image_file'], 'real_name': rom['real_name']}
