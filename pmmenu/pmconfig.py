@@ -106,6 +106,7 @@ class PMOptions:
 
 		#items to be pre-loaded for efficiency
 		pygame.font.init()
+		self.blank_image = pygame.image.load('/home/pi/pimame/pimame-menu/assets/images/blank.png')
 		self.font = pygame.font.Font(self.theme_pack + self.font_file, self.default_font_size)
 		self.label_font = pygame.font.Font(self.theme_pack + self.font_file, self.label_font_size)
 		self.rom_count_font = pygame.font.Font(self.theme_pack + self.font_file, self.rom_count_font_size)
@@ -114,7 +115,7 @@ class PMOptions:
 		self.pre_loaded_romlist = self.load_image(self.theme_pack + theme['rom_list_image'])
 		self.pre_loaded_romlist_selected = self.load_image(self.theme_pack + theme['rom_list_selected_image'])
 		self.romlist_item_height = max(self.pre_loaded_romlist.get_rect().h, self.rom_list_font.size('Ip')[1])
-		self.blank_image = pygame.image.load('/home/pi/pimame/pimame-menu/assets/images/blank.png')
+		
 
 
 	def get_color(self, color_str):
