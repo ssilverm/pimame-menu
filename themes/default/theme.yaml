@@ -13,7 +13,7 @@ options:
   item_height: 220 #main menu icon height
   num_items_per_row: 5 #number of items per row main menu
   menu_item_padding: 10
-  display_navigation_labels: yes
+  display_navigation_labels: no
 
   font_file: "Lato-Bold.ttf"
   default_font_size: 19

@@ -7,6 +7,7 @@ _advmame = {'id':23, 'name':'Arcade', 'shortcode':'AdvMAME' ,'alias':'arcade' }
 _2600 = {'id':22, 'name':'Atari 2600' , 'shortcode':'Atari 2600' ,'alias':'atari-2600' }
 _5200 = {'id':26, 'name':'Atari 5200', 'shortcode':'Atari 5200' ,'alias':'atari-5200' }
 _7800 = {'id':27, 'name':'Atari 7800', 'shortcode':'Atari 7800' ,'alias':'atari-7800' }
+_fba = {'id':24, 'name':'NeoGeo', 'shortcode':'Final Burn' ,'alias':'fba' }
 _jaguar = {'id':28, 'name':'Atari Jaguar', 'shortcode':'Atari Jaguar' ,'alias':'atari-jaguar' }
 _jaguar_cd = {'id':29, 'name':'Atari Jaguar CD', 'shortcode':'Atari Jaguar CD' ,'alias':'atari-jaguar-cd' }
 _lynx = {'id':4924, 'name':'Atari Lynx', 'shortcode':'Atari Lynx' ,'alias':'atari-lynx' }
@@ -59,7 +60,7 @@ _scummvm = {'id': 99999, 'name': 'Scumm VM', 'shortcode': 'scummvm', 'alias': 's
 
 
 full_list = [_3do, _amiga,_amstrad, _android, _mame4all, _advmame, _2600,
-_5200, _7800, _jaguar, _jaguar_cd, _lynx, _xe, _colecovision,
+_5200, _7800, _fba, _jaguar, _jaguar_cd, _lynx, _xe, _colecovision,
 _commodore64, _intellivision, _ios, _mac, _xbox, _360, _xb1,
 _neogeo_pocket, _neogeo_pocket_color, _neogeo, _3ds, _n64,
 _ds, _nes, _gameboy, _gba, _gbc, _gamecube, _nvb, _wii,

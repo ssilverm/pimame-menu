@@ -13,6 +13,9 @@ for i in range(js_count):
   js.init()
 
 class MainScene(object):
+
+	SCENE_NAME = 'main'
+	
 	selected_index = 0
 	pre_rendered = False
 

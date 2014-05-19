@@ -38,7 +38,7 @@ options:
   
   rom_list_font_size: 19
   rom_list_font_color: "0,255,255"
-  rom_list_background_color: "0,0,0,180"
+  rom_list_background_color: "0,0,0,0"
   rom_list_font_selected_color: "90,255,255,255"
   rom_list_background_selected_color: "255,255,255,0"
   rom_list_image: "rom_list.png"

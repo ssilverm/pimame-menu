@@ -15,7 +15,7 @@ class PMList(pygame.sprite.OrderedUpdates):
 
 		self.rom_list = sorted(rom_list, key=lambda rom: rom['title'])
 
-		back_item = {'type': 'back', 'title': '<- Back', 'image': 'none', 'command': None}
+		back_item = {'type': 'back', 'title': '<- Back', 'image': '/home/pi/pimame/pimame-menu/assets/images/blank.png', 'command': None}
 		self.rom_list.insert(0, back_item)
 		
 		#get pre-loaded (unselected) rom list image

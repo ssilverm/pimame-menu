@@ -33,7 +33,7 @@ menu_items:
 
   - label: AdvMAME
     visible: Yes
-    roms: /home/pi/pimame/roms/test/mame/
+    roms: /home/pi/pimame/roms/advmame/
     full_path: no
     command: advmame 
 
