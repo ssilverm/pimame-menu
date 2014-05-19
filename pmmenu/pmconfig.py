@@ -1,5 +1,5 @@
 import yaml
-from os.path import expanduser
+from os.path import isfile
 import pygame
 from menuitem import *
 from pmgrid import *
@@ -74,6 +74,7 @@ class PMOptions:
 		self.item_height = theme['item_height']
 		self.num_items_per_row = theme['num_items_per_row']
 		self.padding = theme['menu_item_padding']
+		self.display_navigation_labels = theme['display_navigation_labels']
 		
 		self.font_file = theme['font_file']
 		self.default_font_size = theme['default_font_size']
@@ -115,6 +116,7 @@ class PMOptions:
 		self.pre_loaded_romlist = self.load_image(self.theme_pack + theme['rom_list_image'])
 		self.pre_loaded_romlist_selected = self.load_image(self.theme_pack + theme['rom_list_selected_image'])
 		self.romlist_item_height = max(self.pre_loaded_romlist.get_rect().h, self.rom_list_font.size('Ip')[1])
+		self.missing_boxart_image = (self.theme_pack + theme['missing_boxart_image']) if isfile(self.theme_pack + theme['missing_boxart_image']) else ('/home/pi/pimame/pimame-menu/assets/images/missing_boxart.png')
 		
 
 
