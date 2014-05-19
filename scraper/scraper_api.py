@@ -155,8 +155,11 @@ class Gamesdb_API(object):
 						for element in game:
 							if element.tag == 'rom':
 								#only add unique crc's
-								if not 'merge' in element.attrib: rom_element[element.attrib['crc'].upper()] = element.attrib['crc']
-						dat_list[game.attrib['name']] = rom_element
+								if not 'merge' in element.attrib: 
+									if 'crc' in element.attrib: rom_element[element.attrib['crc'].upper()] = element.attrib['crc']
+							if element.tag == 'description':
+								game_description = element.text
+						dat_list[game_description] = rom_element
 				dat_exists = True
 				root.clear()
 			else:
@@ -184,7 +187,7 @@ class Gamesdb_API(object):
 									break
 						if game is not None: break
 				except: 
-						crc = "%08X"%(zlib.crc32(open(filename,"rb").read()) & 0xFFFFFFFF)
+						crc = "%08X"%(zlib.crc32(open(os.path.join(input_data['rom_path'],rom),"rb").read()) & 0xFFFFFFFF)
 						for key, value in dat_list.iteritems():
 							if crc in value:
 								game = key
@@ -200,7 +203,7 @@ class Gamesdb_API(object):
 					best_match_game = index
 			if best_match_game > -1:
 				print 'closest match for %s is %s' % (pcolor('green', rom_name), pcolor('cyan', game_info[best_match_game].title))
-				image_file = rom_name + os.path.splitext(game_info[best_match_game].box_art)[1]
+				image_file = os.path.splitext(rom)[0] + os.path.splitext(game_info[best_match_game].box_art)[1]
 				rom_list.append({
 					'rom_path': input_data['rom_path'], 
 					'image_path': input_data['image_path'], 
@@ -214,11 +217,10 @@ class Gamesdb_API(object):
 					})
 			else:
 				print "No match found for %s" % pcolor('red', rom_name)
-				image_file = ''
 				rom_list.append({
 					'rom_path': input_data['rom_path'], 
-					'image_path': '', 
-					'image_file': image_file, 
+					'image_path': input_data['image_path'], 
+					'image_file': '', 
 					'file': rom, 
 					'real_name': rom, 
 					'art': '', 
@@ -228,6 +230,7 @@ class Gamesdb_API(object):
 					})
 			hi_score = min_match_ratio
 			best_match_game = -1
+		dat_list.clear()
 		return rom_list
 		
 	def match_mame_to_dat_file(self, input_data, dat_file):
@@ -251,20 +254,22 @@ class Gamesdb_API(object):
 			#find rom entry in dat file
 			game = root.find("./game/[@name='" + os.path.splitext(rom)[0] + "']")
 			missing_file = False
-			for element in game:
-				if element.tag == 'rom':
-					if not element.attrib['crc'] in crc_list:
-						missing_file = True
-						print ("%12s - %s") % (rom, pcolor('red', "crc doesn't match"))
-						break
-				if element.tag == 'description':
-					title = element.text
-					
-			if not missing_file:
-					print ("%12s - %s")  % (rom, pcolor('green', 'Verified'))
-					image_file = os.path.splitext(rom)[0] + '.png' if isfile(join(input_data['image_path'], os.path.splitext(rom)[0] + '.png')) else '/home/pi/pimame/pimame-menu/assets/images/blank.png'
-					
-					rom_list.append({'rom_path': input_data['rom_path'], 'image_path': input_data['image_path'], 'image_file': image_file, 'file': rom, 'real_name': title, 'platform': input_data['platform']})
+			if game is not None:
+				for element in game:
+					if element.tag == 'rom':
+						if not 'merge' in element.attrib:
+							if not element.attrib['crc'] in crc_list:
+								missing_file = True
+								print ("%12s - %s") % (rom, pcolor('red', "crc doesn't match"))
+								break
+					if element.tag == 'description':
+						title = element.text
+						
+				if not missing_file:
+						print ("%12s - %s")  % (rom, pcolor('green', 'Verified'))
+						image_file = os.path.splitext(rom)[0] + '.png' if isfile(join(input_data['image_path'], os.path.splitext(rom)[0] + '.png')) else '/home/pi/pimame/pimame-menu/assets/images/blank.png'
+						
+						rom_list.append({'rom_path': input_data['rom_path'], 'image_path': input_data['image_path'], 'image_file': image_file, 'file': rom, 'real_name': title, 'platform': input_data['platform']})
 		return rom_list
 
 		
@@ -584,18 +589,6 @@ class Gamesdb_API(object):
 					game_platform = subelement.text
 			games_list.append(Game(game_id, game_title, game_ascii_title, release_date=game_release_date, platform=game_platform))
 		return games_list
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		
