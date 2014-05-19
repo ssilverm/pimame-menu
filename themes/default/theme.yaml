@@ -1,36 +1,33 @@
 options:
-  #TODO: IP POSITION
-  #Todo: fix romlist if no background
 
-  
+  theme_name: "default"
   header_height: 140
-  header_color: "255,255,255,255" #most colors support RGBa color
+  header_color: "255,255,255,255"
   logo_image: "logo.png"
-  background_image: "background.png" #background will be auto scaled to fit
-  background_color: "200,200,200"
-  generic_menu_item: "generic_menu_item.png" #use as stand-in icon for missing icons
+  background_image: ""
+  background_color: "75,75,75"
+  generic_menu_item: "generic_menu_item.png"
   generic_menu_item_selected: "generic_menu_item-selected.png"
   item_color: "255,255,255,128"
-  disabled_alpha: 128 #if menu item disabled, no roms
+  disabled_alpha: 128
   item_height: 220 #main menu icon height
   num_items_per_row: 5 #number of items per row main menu
   menu_item_padding: 10
+  display_navigation_labels: yes
 
   font_file: "Lato-Bold.ttf"
   default_font_size: 19
   default_font_color: "0,0,0"
   default_font_background_color: "255,255,255,0"
   
-  #menu item label configuration
   display_labels: yes
   labels_offset: [30,20]
   label_font_size: 19
-  label_font_color: "50,50,50"
-  label_background_color: "0,0,0,0"
+  label_font_color: "0,0,0"
+  label_background_color: "255,255,255,255"
   label_font_selected_color: "255,255,255"
   label_background_selected_color: "100,100,100,255"
   
-  #rom count labels
   display_rom_count: no
   rom_count_offset: [180,180]
   rom_count_font_size: 19
@@ -39,7 +36,6 @@ options:
   rom_count_font_selected_color: "255,255,255,255"
   rom_count_background_selected_color: "228,56,65,255"
   
-  #list of roms config
   rom_list_font_size: 19
   rom_list_font_color: "0,255,255"
   rom_list_background_color: "0,0,0,180"
@@ -48,6 +44,7 @@ options:
   rom_list_image: "rom_list.png"
   rom_list_selected_image: "rom_list-selected.png"
   rom_list_offset: [10, 0, 0, 0]   #[x-position, y-position, pixels to crop from right, pixels to crop from bottom]
+  missing_boxart_image: "missing_boxart.png"
   
 menu_items:
   - label: SNES

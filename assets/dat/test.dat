@@ -1,0 +1,1959 @@
+<?xml version="1.0"?>
+<!DOCTYPE datafile PUBLIC "-//Logiqx//DTD ROM Management Datafile//EN" "http://www.logiqx.com/Dats/datafile.dtd">
+
+<datafile>
+	<header>
+		<name>MAME</name>
+		<description>MAME 0.37b5</description>
+		<category>EMULATION</category>
+		<version>0.37b5</version>
+		<date>-not specified-</date>
+		<author>AntoPISA</author>
+		<email>progettosnaps@gmail.com</email>
+		<homepage>http://www.progettosnaps.net/</homepage>
+		<url>-not specified-</url>
+		<comment>-not specified-</comment>
+		<clrmamepro/>
+	</header>
+	<game name="005">
+		<description>005</description>
+		<year>1981</year>
+		<manufacturer>Sega</manufacturer>
+		<rom name="1346b.u25" size="2048" crc="8e68533e"/>
+		<rom name="5092.u1" size="2048" crc="29e10a81"/>
+		<rom name="5093.u2" size="2048" crc="e1edc3df"/>
+		<rom name="5094.u3" size="2048" crc="995773bb"/>
+		<rom name="5095.u4" size="2048" crc="f887f575"/>
+		<rom name="5096.u5" size="2048" crc="5545241e"/>
+		<rom name="5097.u6" size="2048" crc="428edb54"/>
+		<rom name="5098.u7" size="2048" crc="5bcb9d63"/>
+		<rom name="5099.u8" size="2048" crc="0ea24ba3"/>
+		<rom name="5100.u9" size="2048" crc="a79af131"/>
+		<rom name="5101.u10" size="2048" crc="8a1cdae0"/>
+		<rom name="5102.u11" size="2048" crc="70826a15"/>
+		<rom name="5103.u12" size="2048" crc="7f80c5b0"/>
+		<rom name="5104.u13" size="2048" crc="0140930e"/>
+		<rom name="5105.u14" size="2048" crc="17807a05"/>
+		<rom name="5106.u15" size="2048" crc="c7cdfa9d"/>
+		<rom name="5107.u16" size="2048" crc="95f8a2e6"/>
+		<rom name="5108.u17" size="2048" crc="d371cacd"/>
+		<rom name="5109.u18" size="2048" crc="48a20617"/>
+		<rom name="5110.u19" size="2048" crc="7d26111a"/>
+		<rom name="5111.u20" size="2048" crc="a888e175"/>
+		<rom name="epr-1286.16" size="2048" crc="fbe0d501"/>
+	</game>
+	<game name="1941">
+		<description>1941 - Counter Attack (World)</description>
+		<year>1990</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="41_09.rom" size="65536" crc="0f9d8527"/>
+		<rom name="41_18.rom" size="131072" crc="d1f15aeb"/>
+		<rom name="41_19.rom" size="131072" crc="15aec3a6"/>
+		<rom name="41_32.rom" size="524288" crc="4e9648ca"/>
+		<rom name="41_gfx1.rom" size="524288" crc="ff77985a"/>
+		<rom name="41_gfx3.rom" size="524288" crc="983be58f"/>
+		<rom name="41_gfx5.rom" size="524288" crc="01d1cb11"/>
+		<rom name="41_gfx7.rom" size="524288" crc="aeaa3509"/>
+		<rom name="41e_30.rom" size="131072" crc="9deb1e75"/>
+		<rom name="41e_31.rom" size="131072" crc="df201112"/>
+		<rom name="41e_35.rom" size="131072" crc="d63942b3"/>
+		<rom name="41e_36.rom" size="131072" crc="816a818f"/>
+	</game>
+	<game name="1941j" cloneof="1941" romof="1941">
+		<description>1941 - Counter Attack (Japan)</description>
+		<year>1990</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="4136.bin" size="131072" crc="7fbd42ab"/>
+		<rom name="4137.bin" size="131072" crc="c6464b0b"/>
+		<rom name="4142.bin" size="131072" crc="c7781f89"/>
+		<rom name="4143.bin" size="131072" crc="440fc0b5"/>
+		<rom name="41_09.rom" merge="41_09.rom" size="65536" crc="0f9d8527"/>
+		<rom name="41_18.rom" merge="41_18.rom" size="131072" crc="d1f15aeb"/>
+		<rom name="41_19.rom" merge="41_19.rom" size="131072" crc="15aec3a6"/>
+		<rom name="41_32.rom" merge="41_32.rom" size="524288" crc="4e9648ca"/>
+		<rom name="41_gfx1.rom" merge="41_gfx1.rom" size="524288" crc="ff77985a"/>
+		<rom name="41_gfx3.rom" merge="41_gfx3.rom" size="524288" crc="983be58f"/>
+		<rom name="41_gfx5.rom" merge="41_gfx5.rom" size="524288" crc="01d1cb11"/>
+		<rom name="41_gfx7.rom" merge="41_gfx7.rom" size="524288" crc="aeaa3509"/>
+	</game>
+	<game name="1942">
+		<description>1942 (set 1)</description>
+		<year>1984</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="03k_sb-8.bin" size="256" crc="f6fad943"/>
+		<rom name="06d_sb-4.bin" size="256" crc="4858968d"/>
+		<rom name="08e_sb-5.bin" size="256" crc="93ab8153"/>
+		<rom name="09e_sb-6.bin" size="256" crc="8ab44f7d"/>
+		<rom name="1-c11.bin" size="16384" crc="bd87f06b"/>
+		<rom name="1-f2.bin" size="8192" crc="6ebca191"/>
+		<rom name="1-n3a.bin" size="16384" crc="40201bab"/>
+		<rom name="1-n4.bin" size="16384" crc="a60ac644"/>
+		<rom name="1-n5.bin" size="16384" crc="835f7b24"/>
+		<rom name="1-n6.bin" size="8192" crc="821c6481"/>
+		<rom name="1-n7.bin" size="16384" crc="5df525e1"/>
+		<rom name="10e_sb-7.bin" size="256" crc="f4ade9a4"/>
+		<rom name="2-a1.bin" size="8192" crc="3884d9eb"/>
+		<rom name="2-a2.bin" size="8192" crc="999cf6e0"/>
+		<rom name="2-a3.bin" size="8192" crc="8edb273a"/>
+		<rom name="2-a4.bin" size="8192" crc="3a2726c3"/>
+		<rom name="2-a5.bin" size="8192" crc="1bd3d8bb"/>
+		<rom name="2-a6.bin" size="8192" crc="658f02c4"/>
+		<rom name="2-l1.bin" size="16384" crc="2528bec6"/>
+		<rom name="2-l2.bin" size="16384" crc="f89287aa"/>
+		<rom name="2-n1.bin" size="16384" crc="024418f8"/>
+		<rom name="2-n2.bin" size="16384" crc="e2c7e489"/>
+		<rom name="f01_sb-0.bin" size="256" crc="6047d91b"/>
+	</game>
+	<game name="1942a" cloneof="1942" romof="1942">
+		<description>1942 (set 2)</description>
+		<year>1984</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="03k_sb-8.bin" merge="03k_sb-8.bin" size="256" crc="f6fad943"/>
+		<rom name="06d_sb-4.bin" merge="06d_sb-4.bin" size="256" crc="4858968d"/>
+		<rom name="08e_sb-5.bin" merge="08e_sb-5.bin" size="256" crc="93ab8153"/>
+		<rom name="09e_sb-6.bin" merge="09e_sb-6.bin" size="256" crc="8ab44f7d"/>
+		<rom name="1-c11.bin" merge="1-c11.bin" size="16384" crc="bd87f06b"/>
+		<rom name="1-f2.bin" merge="1-f2.bin" size="8192" crc="6ebca191"/>
+		<rom name="1-n3.bin" size="16384" crc="612975f2"/>
+		<rom name="1-n4.bin" merge="1-n4.bin" size="16384" crc="a60ac644"/>
+		<rom name="1-n5.bin" merge="1-n5.bin" size="16384" crc="835f7b24"/>
+		<rom name="1-n6.bin" merge="1-n6.bin" size="8192" crc="821c6481"/>
+		<rom name="1-n7.bin" merge="1-n7.bin" size="16384" crc="5df525e1"/>
+		<rom name="10e_sb-7.bin" merge="10e_sb-7.bin" size="256" crc="f4ade9a4"/>
+		<rom name="2-a1.bin" merge="2-a1.bin" size="8192" crc="3884d9eb"/>
+		<rom name="2-a2.bin" merge="2-a2.bin" size="8192" crc="999cf6e0"/>
+		<rom name="2-a3.bin" merge="2-a3.bin" size="8192" crc="8edb273a"/>
+		<rom name="2-a4.bin" merge="2-a4.bin" size="8192" crc="3a2726c3"/>
+		<rom name="2-a5.bin" merge="2-a5.bin" size="8192" crc="1bd3d8bb"/>
+		<rom name="2-a6.bin" merge="2-a6.bin" size="8192" crc="658f02c4"/>
+		<rom name="2-l1.bin" merge="2-l1.bin" size="16384" crc="2528bec6"/>
+		<rom name="2-l2.bin" merge="2-l2.bin" size="16384" crc="f89287aa"/>
+		<rom name="2-n1.bin" merge="2-n1.bin" size="16384" crc="024418f8"/>
+		<rom name="2-n2.bin" merge="2-n2.bin" size="16384" crc="e2c7e489"/>
+		<rom name="f01_sb-0.bin" merge="f01_sb-0.bin" size="256" crc="6047d91b"/>
+	</game>
+	<game name="1942b" cloneof="1942" romof="1942">
+		<description>1942 (set 3)</description>
+		<year>1984</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="03k_sb-8.bin" merge="03k_sb-8.bin" size="256" crc="f6fad943"/>
+		<rom name="06d_sb-4.bin" merge="06d_sb-4.bin" size="256" crc="4858968d"/>
+		<rom name="08e_sb-5.bin" merge="08e_sb-5.bin" size="256" crc="93ab8153"/>
+		<rom name="09e_sb-6.bin" merge="09e_sb-6.bin" size="256" crc="8ab44f7d"/>
+		<rom name="1-c11.bin" merge="1-c11.bin" size="16384" crc="bd87f06b"/>
+		<rom name="1-f2.bin" merge="1-f2.bin" size="8192" crc="6ebca191"/>
+		<rom name="10e_sb-7.bin" merge="10e_sb-7.bin" size="256" crc="f4ade9a4"/>
+		<rom name="2-a1.bin" merge="2-a1.bin" size="8192" crc="3884d9eb"/>
+		<rom name="2-a2.bin" merge="2-a2.bin" size="8192" crc="999cf6e0"/>
+		<rom name="2-a3.bin" merge="2-a3.bin" size="8192" crc="8edb273a"/>
+		<rom name="2-a4.bin" merge="2-a4.bin" size="8192" crc="3a2726c3"/>
+		<rom name="2-a5.bin" merge="2-a5.bin" size="8192" crc="1bd3d8bb"/>
+		<rom name="2-a6.bin" merge="2-a6.bin" size="8192" crc="658f02c4"/>
+		<rom name="2-l1.bin" merge="2-l1.bin" size="16384" crc="2528bec6"/>
+		<rom name="2-l2.bin" merge="2-l2.bin" size="16384" crc="f89287aa"/>
+		<rom name="2-n1.bin" merge="2-n1.bin" size="16384" crc="024418f8"/>
+		<rom name="2-n2.bin" merge="2-n2.bin" size="16384" crc="e2c7e489"/>
+		<rom name="f01_sb-0.bin" merge="f01_sb-0.bin" size="256" crc="6047d91b"/>
+		<rom name="srb-03.n3" size="16384" crc="d9dafcc3"/>
+		<rom name="srb-04.n4" size="16384" crc="da0cf924"/>
+		<rom name="srb-05.n5" size="16384" crc="d102911c"/>
+		<rom name="srb-06.n6" size="8192" crc="466f8248"/>
+		<rom name="srb-07.n7" size="16384" crc="0d31038c"/>
+	</game>
+	<game name="1943">
+		<description>1943 - The Battle of Midway (US)</description>
+		<year>1987</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="1943.01" size="32768" crc="c686cc5c"/>
+		<rom name="1943.02" size="65536" crc="d8880a41"/>
+		<rom name="1943.03" size="65536" crc="3f0ee26c"/>
+		<rom name="1943.04" size="32768" crc="46cb9d3d"/>
+		<rom name="1943.05" size="32768" crc="ee2bd2d7"/>
+		<rom name="1943.06" size="32768" crc="97acc8af"/>
+		<rom name="1943.07" size="32768" crc="d78f7197"/>
+		<rom name="1943.08" size="32768" crc="1a626608"/>
+		<rom name="1943.09" size="32768" crc="92408400"/>
+		<rom name="1943.10" size="32768" crc="8438a44a"/>
+		<rom name="1943.11" size="32768" crc="6c69351d"/>
+		<rom name="1943.12" size="32768" crc="5e7efdb7"/>
+		<rom name="1943.13" size="32768" crc="1143829a"/>
+		<rom name="1943.14" size="32768" crc="4d3c6401"/>
+		<rom name="1943.15" size="32768" crc="6b1a0443"/>
+		<rom name="1943.16" size="32768" crc="23c908c2"/>
+		<rom name="1943.17" size="32768" crc="46bcdd07"/>
+		<rom name="1943.18" size="32768" crc="e6ae7ba0"/>
+		<rom name="1943.19" size="32768" crc="868ababc"/>
+		<rom name="1943.20" size="32768" crc="0917e5d4"/>
+		<rom name="1943.21" size="32768" crc="9bfb0d89"/>
+		<rom name="1943.22" size="32768" crc="04f3c274"/>
+		<rom name="1943.23" size="32768" crc="a52aecbd"/>
+		<rom name="1943.24" size="32768" crc="11134036"/>
+		<rom name="1943.25" size="32768" crc="092cf9c1"/>
+		<rom name="bmprom.01" size="256" crc="74421f18"/>
+		<rom name="bmprom.02" size="256" crc="ac27541f"/>
+		<rom name="bmprom.03" size="256" crc="251fb6ff"/>
+		<rom name="bmprom.04" size="256" crc="91a8a2e1"/>
+		<rom name="bmprom.05" size="256" crc="206713d0"/>
+		<rom name="bmprom.06" size="256" crc="0eaf5158"/>
+		<rom name="bmprom.07" size="256" crc="b56f30c3"/>
+		<rom name="bmprom.08" size="256" crc="c2010a9e"/>
+		<rom name="bmprom.09" size="256" crc="aeea4af7"/>
+		<rom name="bmprom.10" size="256" crc="33c2491c"/>
+		<rom name="bmprom.11" size="256" crc="405aae37"/>
+		<rom name="bmprom.12" size="256" crc="c18aa136"/>
+	</game>
+	<game name="1943j" cloneof="1943" romof="1943">
+		<description>1943 - The Battle of Midway (Japan)</description>
+		<year>1987</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="1943.04" merge="1943.04" size="32768" crc="46cb9d3d"/>
+		<rom name="1943.05" merge="1943.05" size="32768" crc="ee2bd2d7"/>
+		<rom name="1943.06" merge="1943.06" size="32768" crc="97acc8af"/>
+		<rom name="1943.07" merge="1943.07" size="32768" crc="d78f7197"/>
+		<rom name="1943.08" merge="1943.08" size="32768" crc="1a626608"/>
+		<rom name="1943.09" merge="1943.09" size="32768" crc="92408400"/>
+		<rom name="1943.10" merge="1943.10" size="32768" crc="8438a44a"/>
+		<rom name="1943.11" merge="1943.11" size="32768" crc="6c69351d"/>
+		<rom name="1943.12" merge="1943.12" size="32768" crc="5e7efdb7"/>
+		<rom name="1943.13" merge="1943.13" size="32768" crc="1143829a"/>
+		<rom name="1943.14" merge="1943.14" size="32768" crc="4d3c6401"/>
+		<rom name="1943.15" merge="1943.15" size="32768" crc="6b1a0443"/>
+		<rom name="1943.16" merge="1943.16" size="32768" crc="23c908c2"/>
+		<rom name="1943.17" merge="1943.17" size="32768" crc="46bcdd07"/>
+		<rom name="1943.18" merge="1943.18" size="32768" crc="e6ae7ba0"/>
+		<rom name="1943.19" merge="1943.19" size="32768" crc="868ababc"/>
+		<rom name="1943.20" merge="1943.20" size="32768" crc="0917e5d4"/>
+		<rom name="1943.21" merge="1943.21" size="32768" crc="9bfb0d89"/>
+		<rom name="1943.22" merge="1943.22" size="32768" crc="04f3c274"/>
+		<rom name="1943.23" merge="1943.23" size="32768" crc="a52aecbd"/>
+		<rom name="1943.24" merge="1943.24" size="32768" crc="11134036"/>
+		<rom name="1943.25" merge="1943.25" size="32768" crc="092cf9c1"/>
+		<rom name="1943jap.001" size="32768" crc="f6935937"/>
+		<rom name="1943jap.002" size="65536" crc="af971575"/>
+		<rom name="1943jap.003" size="65536" crc="300ec713"/>
+		<rom name="bmprom.01" merge="bmprom.01" size="256" crc="74421f18"/>
+		<rom name="bmprom.02" merge="bmprom.02" size="256" crc="ac27541f"/>
+		<rom name="bmprom.03" merge="bmprom.03" size="256" crc="251fb6ff"/>
+		<rom name="bmprom.04" merge="bmprom.04" size="256" crc="91a8a2e1"/>
+		<rom name="bmprom.05" merge="bmprom.05" size="256" crc="206713d0"/>
+		<rom name="bmprom.06" merge="bmprom.06" size="256" crc="0eaf5158"/>
+		<rom name="bmprom.07" merge="bmprom.07" size="256" crc="b56f30c3"/>
+		<rom name="bmprom.08" merge="bmprom.08" size="256" crc="c2010a9e"/>
+		<rom name="bmprom.09" merge="bmprom.09" size="256" crc="aeea4af7"/>
+		<rom name="bmprom.10" merge="bmprom.10" size="256" crc="33c2491c"/>
+		<rom name="bmprom.11" merge="bmprom.11" size="256" crc="405aae37"/>
+		<rom name="bmprom.12" merge="bmprom.12" size="256" crc="c18aa136"/>
+	</game>
+	<game name="1943kai">
+		<description>1943 Kai</description>
+		<year>1987</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="1943kai.01" size="32768" crc="7d2211db"/>
+		<rom name="1943kai.02" size="65536" crc="2ebbc8c5"/>
+		<rom name="1943kai.03" size="65536" crc="475a6ac5"/>
+		<rom name="1943kai.04" size="32768" crc="884a8692"/>
+		<rom name="1943kai.05" size="32768" crc="25f37957"/>
+		<rom name="1943kai.06" size="32768" crc="5f7e38b3"/>
+		<rom name="1943kai.07" size="32768" crc="ff3751fd"/>
+		<rom name="1943kai.08" size="32768" crc="159d51bd"/>
+		<rom name="1943kai.09" size="32768" crc="8683e3d2"/>
+		<rom name="1943kai.10" size="32768" crc="1e0d9571"/>
+		<rom name="1943kai.11" size="32768" crc="f1fc5ee1"/>
+		<rom name="1943kai.12" size="32768" crc="0f50c001"/>
+		<rom name="1943kai.13" size="32768" crc="fd1acf8e"/>
+		<rom name="1943kai.14" size="32768" crc="cf0f5a53"/>
+		<rom name="1943kai.15" size="32768" crc="6b1a0443"/>
+		<rom name="1943kai.16" size="32768" crc="9416fe0d"/>
+		<rom name="1943kai.17" size="32768" crc="3d5acab9"/>
+		<rom name="1943kai.18" size="32768" crc="7b62da1d"/>
+		<rom name="1943kai.19" size="32768" crc="868ababc"/>
+		<rom name="1943kai.20" size="32768" crc="b90364c1"/>
+		<rom name="1943kai.21" size="32768" crc="8c7fe74a"/>
+		<rom name="1943kai.22" size="32768" crc="d5ef8a0e"/>
+		<rom name="1943kai.23" size="32768" crc="17f77ef9"/>
+		<rom name="1943kai.24" size="32768" crc="bf186ef2"/>
+		<rom name="1943kai.25" size="32768" crc="a755faf1"/>
+		<rom name="bmk01.bin" size="256" crc="e001ea33"/>
+		<rom name="bmk02.bin" size="256" crc="af34d91a"/>
+		<rom name="bmk03.bin" size="256" crc="43e9f6ef"/>
+		<rom name="bmk05.bin" size="256" crc="41878934"/>
+		<rom name="bmk07.bin" size="256" crc="76307f8d"/>
+		<rom name="bmk08.bin" size="256" crc="dad17e2d"/>
+		<rom name="bmk09.bin" size="256" crc="59ea57c0"/>
+		<rom name="bmk10.bin" size="256" crc="de44b748"/>
+		<rom name="bmk11.bin" size="256" crc="87a8854e"/>
+		<rom name="bmk12.bin" size="256" crc="8765f8b0"/>
+		<rom name="bmprom.04" size="256" crc="91a8a2e1"/>
+		<rom name="bmprom.06" size="256" crc="0eaf5158"/>
+	</game>
+	<game name="2020bb" romof="neogeo">
+		<description>2020 Super Baseball (set 1)</description>
+		<year>1991</year>
+		<manufacturer>SNK / Pallas</manufacturer>
+		<rom name="2020_c1.rom" size="1048576" crc="4f5e19bd"/>
+		<rom name="2020_c2.rom" size="1048576" crc="d6314bf0"/>
+		<rom name="2020_c3.rom" size="524288" crc="6a87ae30"/>
+		<rom name="2020_c4.rom" size="524288" crc="bef75dd0"/>
+		<rom name="2020_m1.rom" size="131072" crc="4cf466ec"/>
+		<rom name="2020_p1.rom" size="524288" crc="d396c9cb"/>
+		<rom name="2020_s1.rom" size="131072" crc="7015b8fc"/>
+		<rom name="2020_v1.rom" size="1048576" crc="d4ca364e"/>
+		<rom name="2020_v2.rom" size="1048576" crc="54994455"/>
+		<rom name="neo-geo.rom" merge="neo-geo.rom" size="131072" crc="9036d879"/>
+		<rom name="ng-sfix.rom" merge="ng-sfix.rom" size="131072" crc="354029fc"/>
+		<rom name="ng-sm1.rom" merge="ng-sm1.rom" size="131072" crc="97cf998b"/>
+	</game>
+	<game name="2020bbh" cloneof="2020bb" romof="2020bb">
+		<description>2020 Super Baseball (set 2)</description>
+		<year>1991</year>
+		<manufacturer>SNK / Pallas</manufacturer>
+		<rom name="2020_c1.rom" merge="2020_c1.rom" size="1048576" crc="4f5e19bd"/>
+		<rom name="2020_c2.rom" merge="2020_c2.rom" size="1048576" crc="d6314bf0"/>
+		<rom name="2020_c3.rom" merge="2020_c3.rom" size="524288" crc="6a87ae30"/>
+		<rom name="2020_c4.rom" merge="2020_c4.rom" size="524288" crc="bef75dd0"/>
+		<rom name="2020_m1.rom" merge="2020_m1.rom" size="131072" crc="4cf466ec"/>
+		<rom name="2020_s1.rom" merge="2020_s1.rom" size="131072" crc="7015b8fc"/>
+		<rom name="2020_v1.rom" merge="2020_v1.rom" size="1048576" crc="d4ca364e"/>
+		<rom name="2020_v2.rom" merge="2020_v2.rom" size="1048576" crc="54994455"/>
+		<rom name="2020h_p1.rom" size="524288" crc="12d048d7"/>
+		<rom name="neo-geo.rom" merge="neo-geo.rom" size="131072" crc="9036d879"/>
+		<rom name="ng-sfix.rom" merge="ng-sfix.rom" size="131072" crc="354029fc"/>
+		<rom name="ng-sm1.rom" merge="ng-sm1.rom" size="131072" crc="97cf998b"/>
+	</game>
+	<game name="280zzzap">
+		<description>Datsun 280 Zzzap</description>
+		<year>1976</year>
+		<manufacturer>Midway</manufacturer>
+		<rom name="zzzapc" size="1024" crc="6e85aeaf"/>
+		<rom name="zzzapd" size="1024" crc="4c240ee1"/>
+		<rom name="zzzape" size="1024" crc="472493d6"/>
+		<rom name="zzzapf" size="1024" crc="adc6ede1"/>
+		<rom name="zzzapg" size="1024" crc="9639bc6b"/>
+		<rom name="zzzaph" size="1024" crc="1fa86e1c"/>
+	</game>
+	<game name="3countb" romof="neogeo">
+		<description>3 Count Bout / Fire Suplex</description>
+		<year>1993</year>
+		<manufacturer>SNK</manufacturer>
+		<rom name="3cb_c1.rom" size="2097152" crc="d290cc33"/>
+		<rom name="3cb_c2.rom" size="2097152" crc="0b28095d"/>
+		<rom name="3cb_c3.rom" size="2097152" crc="bcc0cb35"/>
+		<rom name="3cb_c4.rom" size="2097152" crc="4d1ff7b9"/>
+		<rom name="3cb_m1.rom" size="131072" crc="3377cda3"/>
+		<rom name="3cb_p1.rom" size="524288" crc="eb2714c4"/>
+		<rom name="3cb_p2.rom" size="524288" crc="5e764567"/>
+		<rom name="3cb_s1.rom" size="131072" crc="c362d484"/>
+		<rom name="3cb_v1.rom" size="2097152" crc="63688ce8"/>
+		<rom name="3cb_v2.rom" size="2097152" crc="c69a827b"/>
+		<rom name="neo-geo.rom" merge="neo-geo.rom" size="131072" crc="9036d879"/>
+		<rom name="ng-sfix.rom" merge="ng-sfix.rom" size="131072" crc="354029fc"/>
+		<rom name="ng-sm1.rom" merge="ng-sm1.rom" size="131072" crc="97cf998b"/>
+	</game>
+	<game name="3stooges">
+		<description>Three Stooges</description>
+		<year>1984</year>
+		<manufacturer>Mylstar</manufacturer>
+		<rom name="drom1" size="8192" crc="87a9fa10"/>
+		<rom name="gv113fg0" size="8192" crc="95762c53"/>
+		<rom name="gv113fg1" size="8192" crc="fb223854"/>
+		<rom name="gv113fg2" size="8192" crc="9fa3dfde"/>
+		<rom name="gv113fg3" size="8192" crc="28071212"/>
+		<rom name="gv113ram.4" size="4096" crc="533bff2a"/>
+		<rom name="gv113rom.0" size="8192" crc="ab124329"/>
+		<rom name="gv113rom.1" size="8192" crc="34ab051e"/>
+		<rom name="gv113rom.2" size="8192" crc="b45b2a79"/>
+		<rom name="gv113rom.3" size="8192" crc="b816d8c4"/>
+		<rom name="gv113rom.4" size="8192" crc="8b6e52b8"/>
+		<rom name="yrom1" size="8192" crc="55f8ab30"/>
+		<rom name="yrom2" size="8192" crc="90f9c940"/>
+	</game>
+	<game name="3wonders">
+		<description>Three Wonders (US)</description>
+		<year>1991</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="3wonders.01" size="524288" crc="902489d0"/>
+		<rom name="3wonders.02" size="524288" crc="e9a034f4"/>
+		<rom name="3wonders.03" size="524288" crc="e35ce720"/>
+		<rom name="3wonders.04" size="524288" crc="df0eea8b"/>
+		<rom name="3wonders.05" size="524288" crc="86aef804"/>
+		<rom name="3wonders.06" size="524288" crc="13cb0e7c"/>
+		<rom name="3wonders.07" size="524288" crc="4f057110"/>
+		<rom name="3wonders.08" size="524288" crc="1f055014"/>
+		<rom name="3wonders.09" size="65536" crc="abfca165"/>
+		<rom name="3wonders.18" size="131072" crc="26b211ab"/>
+		<rom name="3wonders.19" size="131072" crc="dbe64ad0"/>
+		<rom name="3wonders.28" size="131072" crc="054137c8"/>
+		<rom name="3wonders.29" size="131072" crc="37ba3e20"/>
+		<rom name="3wonders.30" size="131072" crc="0b156fd8"/>
+		<rom name="3wonders.31" size="131072" crc="0e723fcc"/>
+		<rom name="3wonders.33" size="131072" crc="7264cb1b"/>
+		<rom name="3wonders.34" size="131072" crc="f99f46c0"/>
+		<rom name="3wonders.35" size="131072" crc="57350bf4"/>
+		<rom name="3wonders.36" size="131072" crc="523a45dc"/>
+	</game>
+	<game name="4dwarrio">
+		<description>4-D Warriors</description>
+		<year>1985</year>
+		<manufacturer>Coreland / Sega</manufacturer>
+		<rom name="4d.04" size="16384" crc="8b7cecef"/>
+		<rom name="4d.05" size="16384" crc="f31a1e6a"/>
+		<rom name="4d.109" size="16384" crc="f1074ec3"/>
+		<rom name="4d.110" size="16384" crc="6ec5990a"/>
+		<rom name="4d.116" size="16384" crc="546d1bc7"/>
+		<rom name="4d.117" size="16384" crc="436e4141"/>
+		<rom name="4d.120" size="8192" crc="5241c009"/>
+		<rom name="4d.61" size="8192" crc="5430e925"/>
+		<rom name="4d.62" size="8192" crc="f31b2e09"/>
+		<rom name="4d.63" size="8192" crc="633232bd"/>
+		<rom name="4d.64" size="8192" crc="9f442351"/>
+		<rom name="4d.65" size="8192" crc="e9ba4658"/>
+		<rom name="4d.66" size="8192" crc="52bfa2ed"/>
+		<rom name="4d.96" size="16384" crc="387c1e8f"/>
+	</game>
+	<game name="600" cloneof="turtles" romof="turtles">
+		<description>600</description>
+		<year>1981</year>
+		<manufacturer>Konami</manufacturer>
+		<rom name="600_snd.5c" size="4096" crc="1773c68e"/>
+		<rom name="600_snd.5d" size="4096" crc="a311b998"/>
+		<rom name="600_vid.2c" size="4096" crc="8ee090ae"/>
+		<rom name="600_vid.2e" size="4096" crc="45bfaff2"/>
+		<rom name="600_vid.2f" size="4096" crc="9f4c8ed7"/>
+		<rom name="600_vid.2h" size="4096" crc="a92ef056"/>
+		<rom name="600_vid.2j" size="4096" crc="6dadd72d"/>
+		<rom name="600_vid.5f" size="2048" crc="7dbc0426"/>
+		<rom name="600_vid.5h" size="2048" crc="006c3d56"/>
+		<rom name="turtles.clr" merge="turtles.clr" size="32" crc="f3ef02dd"/>
+	</game>
+	<game name="64streej" cloneof="64street" romof="64street">
+		<description>64th. Street - A Detective Story (Japan)</description>
+		<year>1991</year>
+		<manufacturer>Jaleco</manufacturer>
+		<rom name="64th_01.rom" merge="64th_01.rom" size="524288" crc="06222f90"/>
+		<rom name="64th_04.rom" merge="64th_04.rom" size="524288" crc="98f83ef6"/>
+		<rom name="64th_05.rom" merge="64th_05.rom" size="524288" crc="a89a7020"/>
+		<rom name="64th_06.rom" merge="64th_06.rom" size="524288" crc="2bfcdc75"/>
+		<rom name="64th_07.rom" merge="64th_07.rom" size="65536" crc="13595d01"/>
+		<rom name="64th_08.rom" merge="64th_08.rom" size="65536" crc="632be0c1"/>
+		<rom name="64th_09.rom" merge="64th_09.rom" size="131072" crc="a4a97db4"/>
+		<rom name="64th_10.rom" merge="64th_10.rom" size="262144" crc="a3390561"/>
+		<rom name="64th_11.rom" merge="64th_11.rom" size="131072" crc="b0b8a65c"/>
+		<rom name="91105-2.bin" size="262144" crc="27c1f436"/>
+		<rom name="91105-3.bin" size="262144" crc="a211a83b"/>
+		<rom name="prom" size="512" status="nodump"/>
+	</game>
+	<game name="64street">
+		<description>64th. Street - A Detective Story (World)</description>
+		<year>1991</year>
+		<manufacturer>Jaleco</manufacturer>
+		<rom name="64th_01.rom" size="524288" crc="06222f90"/>
+		<rom name="64th_02.rom" size="262144" crc="0621ed1d"/>
+		<rom name="64th_03.rom" size="262144" crc="ed6c6942"/>
+		<rom name="64th_04.rom" size="524288" crc="98f83ef6"/>
+		<rom name="64th_05.rom" size="524288" crc="a89a7020"/>
+		<rom name="64th_06.rom" size="524288" crc="2bfcdc75"/>
+		<rom name="64th_07.rom" size="65536" crc="13595d01"/>
+		<rom name="64th_08.rom" size="65536" crc="632be0c1"/>
+		<rom name="64th_09.rom" size="131072" crc="a4a97db4"/>
+		<rom name="64th_10.rom" size="262144" crc="a3390561"/>
+		<rom name="64th_11.rom" size="131072" crc="b0b8a65c"/>
+		<rom name="prom" size="512" status="nodump"/>
+	</game>
+	<game name="720">
+		<description>720 Degrees (set 1)</description>
+		<year>1986</year>
+		<manufacturer>Atari Games</manufacturer>
+		<rom name="1101.rom" size="65536" crc="2ac77b80"/>
+		<rom name="1102.rom" size="65536" crc="f19c3b06"/>
+		<rom name="1103.rom" size="65536" crc="78f9ab90"/>
+		<rom name="1104.rom" size="65536" crc="77ce4a7f"/>
+		<rom name="1105.rom" size="65536" crc="bef5a025"/>
+		<rom name="1106.rom" size="65536" crc="92a159c8"/>
+		<rom name="1107.rom" size="65536" crc="0a94a3ef"/>
+		<rom name="1108.rom" size="65536" crc="9815eda6"/>
+		<rom name="1109.rom" size="65536" crc="0a46b693"/>
+		<rom name="1110.rom" size="65536" crc="457d7e38"/>
+		<rom name="1111.rom" size="65536" crc="ffad0a5b"/>
+		<rom name="1112.rom" size="65536" crc="06664580"/>
+		<rom name="1113.rom" size="65536" crc="7445dc0f"/>
+		<rom name="1114.rom" size="65536" crc="23eaceb0"/>
+		<rom name="1115.rom" size="65536" crc="0cc8de53"/>
+		<rom name="1116.rom" size="65536" crc="2d8f1369"/>
+		<rom name="1117.rom" size="32768" crc="5a55f149"/>
+		<rom name="1118.rom" size="32768" crc="9bb2429e"/>
+		<rom name="1119.rom" size="32768" crc="8f7b20e5"/>
+		<rom name="1120.rom" size="32768" crc="46af6d35"/>
+		<rom name="1121.rom" size="32768" crc="7adb5f9a"/>
+		<rom name="1122.rom" size="32768" crc="41b60141"/>
+		<rom name="1123.rom" size="32768" crc="501881d5"/>
+		<rom name="1124.rom" size="32768" crc="096f2574"/>
+		<rom name="1125.rom" size="16384" crc="6b7e2328"/>
+		<rom name="1129.rom" size="65536" crc="eabf0b01"/>
+		<rom name="1130.rom" size="65536" crc="93fba845"/>
+		<rom name="1132.rom" size="65536" crc="a24f333e"/>
+		<rom name="1133.rom" size="65536" crc="53c177be"/>
+		<rom name="1134.rom" size="16384" crc="09a418c2"/>
+		<rom name="1135.rom" size="16384" crc="b1f157d0"/>
+		<rom name="1136.rom" size="16384" crc="dad40e6d"/>
+		<rom name="3126.rom" size="16384" crc="43abd367"/>
+		<rom name="3127.rom" size="16384" crc="772e1e5b"/>
+		<rom name="3128.rom" size="65536" crc="bf6f425b"/>
+		<rom name="4131.rom" size="65536" crc="2ea8a20f"/>
+	</game>
+	<game name="720b" cloneof="720" romof="720">
+		<description>720 Degrees (set 2)</description>
+		<year>1986</year>
+		<manufacturer>Atari Games</manufacturer>
+		<rom name="1101.rom" merge="1101.rom" size="65536" crc="2ac77b80"/>
+		<rom name="1102.rom" merge="1102.rom" size="65536" crc="f19c3b06"/>
+		<rom name="1103.rom" merge="1103.rom" size="65536" crc="78f9ab90"/>
+		<rom name="1104.rom" merge="1104.rom" size="65536" crc="77ce4a7f"/>
+		<rom name="1105.rom" merge="1105.rom" size="65536" crc="bef5a025"/>
+		<rom name="1106.rom" merge="1106.rom" size="65536" crc="92a159c8"/>
+		<rom name="1107.rom" merge="1107.rom" size="65536" crc="0a94a3ef"/>
+		<rom name="1108.rom" merge="1108.rom" size="65536" crc="9815eda6"/>
+		<rom name="1109.rom" merge="1109.rom" size="65536" crc="0a46b693"/>
+		<rom name="1110.rom" merge="1110.rom" size="65536" crc="457d7e38"/>
+		<rom name="1111.rom" merge="1111.rom" size="65536" crc="ffad0a5b"/>
+		<rom name="1112.rom" merge="1112.rom" size="65536" crc="06664580"/>
+		<rom name="1113.rom" merge="1113.rom" size="65536" crc="7445dc0f"/>
+		<rom name="1114.rom" merge="1114.rom" size="65536" crc="23eaceb0"/>
+		<rom name="1115.rom" merge="1115.rom" size="65536" crc="0cc8de53"/>
+		<rom name="1116.rom" merge="1116.rom" size="65536" crc="2d8f1369"/>
+		<rom name="1117.rom" merge="1117.rom" size="32768" crc="5a55f149"/>
+		<rom name="1118.rom" merge="1118.rom" size="32768" crc="9bb2429e"/>
+		<rom name="1119.rom" merge="1119.rom" size="32768" crc="8f7b20e5"/>
+		<rom name="1120.rom" merge="1120.rom" size="32768" crc="46af6d35"/>
+		<rom name="1121.rom" merge="1121.rom" size="32768" crc="7adb5f9a"/>
+		<rom name="1122.rom" merge="1122.rom" size="32768" crc="41b60141"/>
+		<rom name="1123.rom" merge="1123.rom" size="32768" crc="501881d5"/>
+		<rom name="1124.rom" merge="1124.rom" size="32768" crc="096f2574"/>
+		<rom name="1125.rom" merge="1125.rom" size="16384" crc="6b7e2328"/>
+		<rom name="1129.rom" merge="1129.rom" size="65536" crc="eabf0b01"/>
+		<rom name="1130.rom" merge="1130.rom" size="65536" crc="93fba845"/>
+		<rom name="1132.rom" merge="1132.rom" size="65536" crc="a24f333e"/>
+		<rom name="1133.rom" merge="1133.rom" size="65536" crc="53c177be"/>
+		<rom name="1134.rom" merge="1134.rom" size="16384" crc="09a418c2"/>
+		<rom name="1135.rom" merge="1135.rom" size="16384" crc="b1f157d0"/>
+		<rom name="1136.rom" merge="1136.rom" size="16384" crc="dad40e6d"/>
+		<rom name="2126.7l" size="16384" crc="d07e731c"/>
+		<rom name="2127.7n" size="16384" crc="2d19116c"/>
+		<rom name="2128.6f" size="65536" crc="edad0bc0"/>
+		<rom name="3131.6n" size="65536" crc="704dc925"/>
+	</game>
+	<game name="800fath" cloneof="mariner" romof="mariner">
+		<description>800 Fathoms</description>
+		<year>1981</year>
+		<manufacturer>Amenip (US Billiards Inc. license)</manufacturer>
+		<rom name="t4.6e" merge="t4.6e" size="32" crc="ca42b6dd"/>
+		<rom name="t5.7p" merge="t5.7p" size="32" crc="1bd88cff"/>
+		<rom name="t6.6p" merge="t6.6p" size="256" crc="ad208ccc"/>
+		<rom name="tm2.2k" merge="tm2.2k" size="4096" crc="efe7ca28"/>
+		<rom name="tm3.2l" merge="tm3.2l" size="4096" crc="027881a6"/>
+		<rom name="tm4.2m" merge="tm4.2m" size="4096" crc="a0fde7dc"/>
+		<rom name="tm8.5f" merge="tm8.5f" size="4096" crc="70ae611f"/>
+		<rom name="tm9.5h" merge="tm9.5h" size="4096" crc="8e4e999e"/>
+		<rom name="tu1.2h" size="4096" crc="5dd3d42f"/>
+		<rom name="tu5.2p" size="4096" crc="f864a8a6"/>
+	</game>
+	<game name="88games">
+		<description>&apos;88 Games</description>
+		<year>1988</year>
+		<manufacturer>Konami</manufacturer>
+		<rom name="861.g3" size="256" crc="429785db"/>
+		<rom name="861a04.a" size="65536" crc="092a8b15"/>
+		<rom name="861a04.b" size="65536" crc="75744b56"/>
+		<rom name="861a04.c" size="65536" crc="a00021c5"/>
+		<rom name="861a04.d" size="65536" crc="d208304c"/>
+		<rom name="861a05.a" size="65536" crc="cedc19d0"/>
+		<rom name="861a05.b" size="65536" crc="db2a8808"/>
+		<rom name="861a05.c" size="65536" crc="cf03c449"/>
+		<rom name="861a05.d" size="65536" crc="97d78c77"/>
+		<rom name="861a05.e" size="65536" crc="725af3fc"/>
+		<rom name="861a05.f" size="65536" crc="32d830ca"/>
+		<rom name="861a05.g" size="65536" crc="fd51c4ea"/>
+		<rom name="861a05.h" size="65536" crc="60d0c8a5"/>
+		<rom name="861a06.a" size="65536" crc="85e2e30e"/>
+		<rom name="861a06.b" size="65536" crc="ce17eaf0"/>
+		<rom name="861a06.c" size="65536" crc="a568b34e"/>
+		<rom name="861a06.d" size="65536" crc="bc70ab39"/>
+		<rom name="861a06.e" size="65536" crc="6f96651c"/>
+		<rom name="861a06.f" size="65536" crc="88310bf3"/>
+		<rom name="861a06.g" size="65536" crc="4a55beb3"/>
+		<rom name="861a06.h" size="65536" crc="d906b79b"/>
+		<rom name="861a07.a" size="65536" crc="5d035d69"/>
+		<rom name="861a07.b" size="65536" crc="6337dd91"/>
+		<rom name="861a07.c" size="65536" crc="5067a38b"/>
+		<rom name="861a07.d" size="65536" crc="86731451"/>
+		<rom name="861a08.a" size="65536" crc="77a00dd6"/>
+		<rom name="861a08.b" size="65536" crc="28a8304f"/>
+		<rom name="861a08.c" size="65536" crc="b422edfc"/>
+		<rom name="861a08.d" size="65536" crc="e01a3802"/>
+		<rom name="861a09.a" size="65536" crc="df8917b6"/>
+		<rom name="861a09.b" size="65536" crc="4917158d"/>
+		<rom name="861a09.c" size="65536" crc="f577b88f"/>
+		<rom name="861a09.d" size="65536" crc="2bb3282c"/>
+		<rom name="861d01.d9" size="32768" crc="0ff1dec0"/>
+		<rom name="861m01.k18" size="32768" crc="4a4e2959"/>
+		<rom name="861m02.k16" size="65536" crc="e19f15f6"/>
+	</game>
+	<game name="99lstwar" cloneof="sonofphx" romof="sonofphx">
+		<description>&apos;99 The Last War</description>
+		<year>1985</year>
+		<manufacturer>Proma</manufacturer>
+		<rom name="1.f2" merge="1.f2" size="8192" crc="c485c621"/>
+		<rom name="10.8a" merge="10.8a" size="16384" crc="e717baf4"/>
+		<rom name="11.9a" merge="11.9a" size="16384" crc="04b2250b"/>
+		<rom name="12.10a" merge="12.10a" size="16384" crc="d110e140"/>
+		<rom name="13.11a" merge="13.11a" size="16384" crc="8fdc713c"/>
+		<rom name="15.9h" merge="15.9h" size="8192" crc="c9213469"/>
+		<rom name="16.10h" merge="16.10h" size="8192" crc="7de5d39e"/>
+		<rom name="17.11h" merge="17.11h" size="8192" crc="0ba5f72c"/>
+		<rom name="1999.4a" size="4096" crc="49a2383e"/>
+		<rom name="1999.4f" size="8192" crc="e3cfc09f"/>
+		<rom name="1999.4h" size="8192" crc="fd58c6e1"/>
+		<rom name="2.h2" merge="2.h2" size="8192" crc="b3c6a886"/>
+		<rom name="2c" merge="2c" size="32" crc="83a39201"/>
+		<rom name="3.j2" merge="3.j2" size="8192" crc="197e314c"/>
+		<rom name="7.j4" merge="7.j4" size="8192" crc="57a8e900"/>
+		<rom name="8.6a" merge="8.6a" size="16384" crc="0e9f757e"/>
+		<rom name="9.7a" merge="9.7a" size="16384" crc="f7d2e650"/>
+		<rom name="b.1j" merge="b.1j" size="256" crc="3ea35431"/>
+		<rom name="g.1h" merge="g.1h" size="256" crc="acd7a69e"/>
+		<rom name="r.1f" merge="r.1f" size="256" crc="b7f48b41"/>
+		<rom name="repulse.b4" size="8192" crc="86b267f3"/>
+	</game>
+	<game name="99lstwra" cloneof="sonofphx" romof="sonofphx">
+		<description>&apos;99 The Last War (alternate)</description>
+		<year>1985</year>
+		<manufacturer>Proma</manufacturer>
+		<rom name="10a.bin" size="16384" crc="f07de4fa"/>
+		<rom name="10h.bin" size="8192" crc="dfbf0280"/>
+		<rom name="11a.bin" size="16384" crc="34a04f48"/>
+		<rom name="11h.bin" size="8192" crc="e4f29fc0"/>
+		<rom name="1999.4a" size="4096" crc="49a2383e"/>
+		<rom name="2c" merge="2c" size="32" crc="83a39201"/>
+		<rom name="2f.bin" size="8192" crc="cb9d8291"/>
+		<rom name="2h.bin" size="8192" crc="24dbddc3"/>
+		<rom name="2j.bin" size="8192" crc="16879c4c"/>
+		<rom name="4f.bin" size="8192" crc="efe2908d"/>
+		<rom name="4h.bin" size="8192" crc="5b79c342"/>
+		<rom name="4j.bin" size="8192" crc="d2a62c1b"/>
+		<rom name="6a.bin" size="16384" crc="98d44410"/>
+		<rom name="7a.bin" size="16384" crc="4c54d281"/>
+		<rom name="8a.bin" size="16384" crc="81018101"/>
+		<rom name="9a.bin" size="16384" crc="347b91fd"/>
+		<rom name="9h.bin" size="8192" crc="59993c27"/>
+		<rom name="b.1j" merge="b.1j" size="256" crc="3ea35431"/>
+		<rom name="g.1h" merge="g.1h" size="256" crc="acd7a69e"/>
+		<rom name="r.1f" merge="r.1f" size="256" crc="b7f48b41"/>
+		<rom name="repulse.b4" size="8192" crc="86b267f3"/>
+	</game>
+	<game name="aafb">
+		<description>All American Football (rev E)</description>
+		<year>1989</year>
+		<manufacturer>Leland Corp.</manufacturer>
+		<rom name="15603-01.u4t" size="65536" crc="cdc9c09d"/>
+		<rom name="15604-01.u5t" size="65536" crc="3c03e92e"/>
+		<rom name="15605-01.u6t" size="65536" crc="cdf7d19c"/>
+		<rom name="15606-01.u7t" size="65536" crc="8eeb007c"/>
+		<rom name="24000-02.u3" size="8192" crc="52df0354"/>
+		<rom name="24001-02.u2t" size="65536" crc="9b20697d"/>
+		<rom name="24002-02.u3t" size="65536" crc="bbb92184"/>
+		<rom name="24002-02.u8t" size="65536" crc="3d9747c9"/>
+		<rom name="24004-02.u67" size="16384" crc="cd7a3338"/>
+		<rom name="24005-02.u68" size="16384" crc="8ea75319"/>
+		<rom name="24006-01.u69" size="16384" crc="6a576aa9"/>
+		<rom name="24007-01.u70" size="16384" crc="40e46aa4"/>
+		<rom name="24008-01.u90" size="16384" crc="4538bc58"/>
+		<rom name="24009-02.u91" size="16384" crc="b857a1ad"/>
+		<rom name="24010-01.u92" size="16384" crc="78705f42"/>
+		<rom name="24011-02.u93" size="32768" crc="71f4425b" status="nodump"/>
+		<rom name="24012-02.u94" size="32768" crc="b2499547" status="nodump"/>
+		<rom name="24013-02.u95" size="32768" crc="0a604e0d" status="nodump"/>
+		<rom name="24016-01.u13" size="65536" crc="6997025f"/>
+		<rom name="24017-01.u14" size="65536" crc="a48bd721"/>
+		<rom name="24018-01.u15" size="65536" crc="76eb6077"/>
+		<rom name="24019-01.u25" size="65536" crc="9e344768"/>
+		<rom name="24020-01.u26" size="65536" crc="0788f2a5"/>
+		<rom name="24021-01.u27" size="65536" crc="94081899"/>
+		<rom name="aafbu58t.bin" size="65536" crc="fa75a4a0"/>
+		<rom name="aafbu59t.bin" size="65536" crc="ab6a606f"/>
+	</game>
+	<game name="aafbb" cloneof="aafb" romof="aafb">
+		<description>All American Football (rev B)</description>
+		<year>1989</year>
+		<manufacturer>Leland Corp.</manufacturer>
+		<rom name="15603-01.u4t" merge="15603-01.u4t" size="65536" crc="cdc9c09d"/>
+		<rom name="15604-01.u5t" merge="15604-01.u5t" size="65536" crc="3c03e92e"/>
+		<rom name="15605-01.u6t" merge="15605-01.u6t" size="65536" crc="cdf7d19c"/>
+		<rom name="15606-01.u7t" merge="15606-01.u7t" size="65536" crc="8eeb007c"/>
+		<rom name="24000-02.u3" merge="24000-02.u3" size="8192" crc="52df0354"/>
+		<rom name="24001-02.u2t" merge="24001-02.u2t" size="65536" crc="9b20697d"/>
+		<rom name="24002-02.u3t" merge="24002-02.u3t" size="65536" crc="bbb92184"/>
+		<rom name="24002-02.u8t" merge="24002-02.u8t" size="65536" crc="3d9747c9"/>
+		<rom name="24004-02.u67" merge="24004-02.u67" size="16384" crc="cd7a3338"/>
+		<rom name="24005-02.u68" merge="24005-02.u68" size="16384" crc="8ea75319"/>
+		<rom name="24006-01.u69" merge="24006-01.u69" size="16384" crc="6a576aa9"/>
+		<rom name="24007-01.u70" merge="24007-01.u70" size="16384" crc="40e46aa4"/>
+		<rom name="24008-01.u90" merge="24008-01.u90" size="16384" crc="4538bc58"/>
+		<rom name="24009-02.u91" merge="24009-02.u91" size="16384" crc="b857a1ad"/>
+		<rom name="24010-01.u92" merge="24010-01.u92" size="16384" crc="78705f42"/>
+		<rom name="24011-02.u93" size="32768" crc="71f4425b"/>
+		<rom name="24012-02.u94" size="32768" crc="b2499547"/>
+		<rom name="24013-02.u95" size="32768" crc="0a604e0d"/>
+		<rom name="24014-02.u58" size="65536" crc="5db4a3d0"/>
+		<rom name="24015-02.u59" size="65536" status="nodump"/>
+		<rom name="24016-01.u13" merge="24016-01.u13" size="65536" crc="6997025f"/>
+		<rom name="24017-01.u14" merge="24017-01.u14" size="65536" crc="a48bd721"/>
+		<rom name="24018-01.u15" merge="24018-01.u15" size="65536" crc="76eb6077"/>
+		<rom name="24019-01.u25" merge="24019-01.u25" size="65536" crc="9e344768"/>
+		<rom name="24020-01.u26" merge="24020-01.u26" size="65536" crc="0788f2a5"/>
+		<rom name="24021-01.u27" merge="24021-01.u27" size="65536" crc="94081899"/>
+	</game>
+	<game name="aafbd2p" cloneof="aafb" romof="aafb">
+		<description>All American Football (rev D, 2 Players)</description>
+		<year>1989</year>
+		<manufacturer>Leland Corp.</manufacturer>
+		<rom name="15603-01.u4t" merge="15603-01.u4t" size="65536" crc="cdc9c09d"/>
+		<rom name="15604-01.u5t" merge="15604-01.u5t" size="65536" crc="3c03e92e"/>
+		<rom name="15605-01.u6t" merge="15605-01.u6t" size="65536" crc="cdf7d19c"/>
+		<rom name="15606-01.u7t" merge="15606-01.u7t" size="65536" crc="8eeb007c"/>
+		<rom name="24002-02.u3t" merge="24002-02.u3t" size="65536" crc="bbb92184"/>
+		<rom name="24002-02.u8t" merge="24002-02.u8t" size="65536" crc="3d9747c9"/>
+		<rom name="24004-02.u67" merge="24004-02.u67" size="16384" crc="cd7a3338"/>
+		<rom name="24005-02.u68" merge="24005-02.u68" size="16384" crc="8ea75319"/>
+		<rom name="24006-01.u69" merge="24006-01.u69" size="16384" crc="6a576aa9"/>
+		<rom name="24007-01.u70" merge="24007-01.u70" size="16384" crc="40e46aa4"/>
+		<rom name="24008-01.u90" merge="24008-01.u90" size="16384" crc="4538bc58"/>
+		<rom name="24009-02.u91" merge="24009-02.u91" size="16384" crc="b857a1ad"/>
+		<rom name="24010-01.u92" merge="24010-01.u92" size="16384" crc="78705f42"/>
+		<rom name="24011-02.u93" size="32768" crc="71f4425b"/>
+		<rom name="24012-02.u94" size="32768" crc="b2499547"/>
+		<rom name="24013-02.u95" size="32768" crc="0a604e0d"/>
+		<rom name="24016-01.u13" merge="24016-01.u13" size="65536" crc="6997025f"/>
+		<rom name="24017-01.u14" merge="24017-01.u14" size="65536" crc="a48bd721"/>
+		<rom name="24018-01.u15" merge="24018-01.u15" size="65536" crc="76eb6077"/>
+		<rom name="24019-01.u25" merge="24019-01.u25" size="65536" crc="9e344768"/>
+		<rom name="24020-01.u26" merge="24020-01.u26" size="65536" crc="0788f2a5"/>
+		<rom name="24021-01.u27" merge="24021-01.u27" size="65536" crc="94081899"/>
+		<rom name="26000-01.u3" size="8192" crc="98c06c63"/>
+		<rom name="26001-01.2t" size="65536" crc="f118b9b4"/>
+		<rom name="26014-01.58t" size="65536" crc="79fd14cd"/>
+		<rom name="26015-01.59t" size="65536" crc="3b0382f0"/>
+	</game>
+	<game name="abaseb">
+		<description>Atari Baseball (set 1)</description>
+		<year>1979</year>
+		<manufacturer>Atari</manufacturer>
+		<rom name="034708.n7" size="512" crc="8a0f971b"/>
+		<rom name="034709.c5" size="512" crc="021d1067"/>
+		<rom name="034710.d5" size="1024" crc="31275d86"/>
+		<rom name="34735-01.p1" size="2048" crc="54854d7c"/>
+		<rom name="34736-01.n1" size="2048" crc="af444eb0"/>
+		<rom name="34737-03.m1" size="2048" crc="7250863f"/>
+		<rom name="34738-01.n0" size="2048" crc="edcfffe8"/>
+	</game>
+	<game name="abaseb2" cloneof="abaseb" romof="abaseb">
+		<description>Atari Baseball (set 2)</description>
+		<year>1979</year>
+		<manufacturer>Atari</manufacturer>
+		<rom name="034708.n7" merge="034708.n7" size="512" crc="8a0f971b"/>
+		<rom name="034709.c5" merge="034709.c5" size="512" crc="021d1067"/>
+		<rom name="034710.d5" merge="034710.d5" size="1024" crc="31275d86"/>
+		<rom name="034711.k1" size="1024" crc="fab61782"/>
+		<rom name="034712.k0" size="1024" crc="0e368e1a"/>
+		<rom name="034713.f1" size="1024" crc="0c67c48d"/>
+		<rom name="034714.f0" size="1024" crc="920979ea"/>
+		<rom name="034715.j1" size="1024" crc="accb96f5"/>
+		<rom name="034716.j0" size="1024" crc="d5622749"/>
+		<rom name="034717.e1" size="1024" crc="c941f64b"/>
+		<rom name="034718.e0" size="1024" crc="3fe7dc1c"/>
+		<rom name="034719.h1" size="1024" crc="85046ee5"/>
+		<rom name="034720.h0" size="1024" crc="37c5f149"/>
+		<rom name="034721.d1" size="1024" crc="1a0541f2"/>
+		<rom name="034722.d0" size="1024" crc="f9c1174e"/>
+		<rom name="034723.m0" size="1024" crc="5eb1597f"/>
+		<rom name="034724.l0" size="1024" crc="ecd18ed2"/>
+		<rom name="034725.c0" size="1024" crc="95912c58"/>
+		<rom name="034726.b0" size="1024" crc="1f8d506c"/>
+	</game>
+	<game name="actfanc1" cloneof="actfancr" romof="actfancr">
+		<description>Act-Fancer Cybernetick Hyper Weapon (World revision 1)</description>
+		<year>1989</year>
+		<manufacturer>Data East Corporation</manufacturer>
+		<rom name="00" merge="00" size="65536" crc="d50a9550"/>
+		<rom name="01" merge="01" size="32768" crc="34935e93"/>
+		<rom name="02" merge="02" size="65536" crc="b1db0efc"/>
+		<rom name="03" merge="03" size="32768" crc="f313e04f"/>
+		<rom name="04" merge="04" size="65536" crc="bcf41795"/>
+		<rom name="05" merge="05" size="32768" crc="d38b94aa"/>
+		<rom name="06" merge="06" size="65536" crc="8cb6dd87"/>
+		<rom name="07" merge="07" size="32768" crc="dd345def"/>
+		<rom name="08-1" size="65536" crc="3bf214a4"/>
+		<rom name="09-1" size="65536" crc="13ae78d5"/>
+		<rom name="10" merge="10" size="65536" crc="cabad137"/>
+		<rom name="11" merge="11" size="65536" crc="1f006d9f"/>
+		<rom name="12" merge="12" size="65536" crc="08787b7a"/>
+		<rom name="13" merge="13" size="65536" crc="c30c37dc"/>
+		<rom name="14" merge="14" size="65536" crc="d6457420"/>
+		<rom name="15" merge="15" size="65536" crc="a1baf21e"/>
+		<rom name="16" merge="16" size="65536" crc="22e64730"/>
+		<rom name="17-1" merge="17-1" size="32768" crc="289ad106"/>
+		<rom name="18" merge="18" size="65536" crc="5c55b242"/>
+	</game>
+	<game name="actfancj" cloneof="actfancr" romof="actfancr">
+		<description>Act-Fancer Cybernetick Hyper Weapon (Japan revision 1)</description>
+		<year>1989</year>
+		<manufacturer>Data East Corporation</manufacturer>
+		<rom name="00" merge="00" size="65536" crc="d50a9550"/>
+		<rom name="01" merge="01" size="32768" crc="34935e93"/>
+		<rom name="02" merge="02" size="65536" crc="b1db0efc"/>
+		<rom name="03" merge="03" size="32768" crc="f313e04f"/>
+		<rom name="04" merge="04" size="65536" crc="bcf41795"/>
+		<rom name="05" merge="05" size="32768" crc="d38b94aa"/>
+		<rom name="06" merge="06" size="65536" crc="8cb6dd87"/>
+		<rom name="07" merge="07" size="32768" crc="dd345def"/>
+		<rom name="10" merge="10" size="65536" crc="cabad137"/>
+		<rom name="11" merge="11" size="65536" crc="1f006d9f"/>
+		<rom name="12" merge="12" size="65536" crc="08787b7a"/>
+		<rom name="13" merge="13" size="65536" crc="c30c37dc"/>
+		<rom name="14" merge="14" size="65536" crc="d6457420"/>
+		<rom name="15" merge="15" size="65536" crc="a1baf21e"/>
+		<rom name="16" merge="16" size="65536" crc="22e64730"/>
+		<rom name="17-1" merge="17-1" size="32768" crc="289ad106"/>
+		<rom name="18" merge="18" size="65536" crc="5c55b242"/>
+		<rom name="fd08-1.bin" size="65536" crc="69004b60"/>
+		<rom name="fd09-1.bin" size="65536" crc="a455ae3e"/>
+	</game>
+	<game name="actfancr">
+		<description>Act-Fancer Cybernetick Hyper Weapon (World revision 2)</description>
+		<year>1989</year>
+		<manufacturer>Data East Corporation</manufacturer>
+		<rom name="00" size="65536" crc="d50a9550"/>
+		<rom name="01" size="32768" crc="34935e93"/>
+		<rom name="02" size="65536" crc="b1db0efc"/>
+		<rom name="03" size="32768" crc="f313e04f"/>
+		<rom name="04" size="65536" crc="bcf41795"/>
+		<rom name="05" size="32768" crc="d38b94aa"/>
+		<rom name="06" size="65536" crc="8cb6dd87"/>
+		<rom name="07" size="32768" crc="dd345def"/>
+		<rom name="10" size="65536" crc="cabad137"/>
+		<rom name="11" size="65536" crc="1f006d9f"/>
+		<rom name="12" size="65536" crc="08787b7a"/>
+		<rom name="13" size="65536" crc="c30c37dc"/>
+		<rom name="14" size="65536" crc="d6457420"/>
+		<rom name="15" size="65536" crc="a1baf21e"/>
+		<rom name="16" size="65536" crc="22e64730"/>
+		<rom name="17-1" size="32768" crc="289ad106"/>
+		<rom name="18" size="65536" crc="5c55b242"/>
+		<rom name="fe08-2.bin" size="65536" crc="0d36fbfa"/>
+		<rom name="fe09-2.bin" size="65536" crc="27ce2bb1"/>
+	</game>
+	<game name="aeroboto" cloneof="formatz" romof="formatz">
+		<description>Aeroboto</description>
+		<year>1984</year>
+		<manufacturer>[Jaleco] (Williams license)</manufacturer>
+		<rom name="10a" size="256" status="nodump"/>
+		<rom name="10b" size="256" status="nodump"/>
+		<rom name="10c" size="256" status="nodump"/>
+		<rom name="aeroboto.1" size="4096" crc="7820eeaf"/>
+		<rom name="aeroboto.2" size="4096" crc="c7f81a3c"/>
+		<rom name="aeroboto.3" size="4096" crc="5203ad04"/>
+		<rom name="aeroboto.5" size="8192" crc="32fc00f9"/>
+		<rom name="aeroboto.6" size="16384" crc="1a295ffb"/>
+		<rom name="aeroboto.7" size="16384" crc="522f51c1"/>
+		<rom name="aeroboto.8" size="16384" crc="4d3fc049"/>
+		<rom name="format_z.4" merge="format_z.4" size="8192" crc="910375a0"/>
+		<rom name="format_z.9" merge="format_z.9" size="4096" crc="6b9215ad"/>
+	</game>
+	<game name="aerofgt">
+		<description>Aero Fighters</description>
+		<year>1992</year>
+		<manufacturer>Video System Co.</manufacturer>
+		<rom name="1.u4" size="524288" crc="6fdff0a2"/>
+		<rom name="1538a54.124" size="524288" crc="286d109e"/>
+		<rom name="2.153" size="131072" crc="a1ef64ec"/>
+		<rom name="534g8f.u18" size="524288" crc="76ce0926"/>
+		<rom name="538a53.u9" size="1048576" crc="630d8e0b"/>
+		<rom name="538a54.124" size="524288" crc="4d2c4df2"/>
+		<rom name="it-19-01" size="262144" crc="6d42723d"/>
+		<rom name="it-19-06" size="1048576" crc="cdbbdb1d"/>
+	</game>
+	<game name="aerofgtb" cloneof="aerofgt" romof="aerofgt">
+		<description>Aero Fighters (Turbo Force hardware set 1)</description>
+		<year>1992</year>
+		<manufacturer>Video System Co.</manufacturer>
+		<rom name="g26" size="262144" crc="8072c1d2"/>
+		<rom name="g27" size="262144" crc="4d89cbc8"/>
+		<rom name="it-19-01" merge="it-19-01" size="262144" crc="6d42723d"/>
+		<rom name="it-19-02" size="524288" crc="4f57f8ba"/>
+		<rom name="it-19-03" size="524288" crc="85eba1a4"/>
+		<rom name="it-19-04" size="524288" crc="3b329c1f"/>
+		<rom name="it-19-05" size="524288" crc="02b525af"/>
+		<rom name="it-19-06" merge="it-19-06" size="1048576" crc="cdbbdb1d"/>
+		<rom name="v1" size="262144" crc="89c1dcf4"/>
+		<rom name="v2" size="262144" crc="5c9de9f0"/>
+		<rom name="v3" size="131072" crc="cbb18cf4"/>
+	</game>
+	<game name="aerofgtc" cloneof="aerofgt" romof="aerofgt">
+		<description>Aero Fighters (Turbo Force hardware set 2)</description>
+		<year>1992</year>
+		<manufacturer>Video System Co.</manufacturer>
+		<rom name="2.153" merge="2.153" size="131072" crc="a1ef64ec"/>
+		<rom name="g26" size="262144" crc="8072c1d2"/>
+		<rom name="g27" size="262144" crc="4d89cbc8"/>
+		<rom name="it-19-01" merge="it-19-01" size="262144" crc="6d42723d"/>
+		<rom name="it-19-02" size="524288" crc="4f57f8ba"/>
+		<rom name="it-19-03" size="524288" crc="85eba1a4"/>
+		<rom name="it-19-04" size="524288" crc="3b329c1f"/>
+		<rom name="it-19-05" size="524288" crc="02b525af"/>
+		<rom name="it-19-06" merge="it-19-06" size="1048576" crc="cdbbdb1d"/>
+		<rom name="v1.111" size="262144" crc="9e684b19"/>
+		<rom name="v2.149" size="262144" crc="f187aec6"/>
+	</game>
+	<game name="airbustr">
+		<description>Air Buster (Japan)</description>
+		<year>1990</year>
+		<manufacturer>Kaneko (Namco license)</manufacturer>
+		<rom name="pr-000.bin" size="524288" crc="8ca68f0d"/>
+		<rom name="pr-001.bin" size="524288" crc="7e6cb377"/>
+		<rom name="pr-02.bin" size="65536" crc="6bbd5e46"/>
+		<rom name="pr-11j.bin" size="131072" crc="85464124"/>
+		<rom name="pr-14j.bin" size="131072" crc="6b9805bd"/>
+		<rom name="pr-200.bin" size="262144" crc="a4dd3390"/>
+		<rom name="pr-21.bin" size="131072" crc="6e0a5df0"/>
+	</game>
+	<game name="airduel">
+		<description>Air Duel (Japan)</description>
+		<year>1990</year>
+		<manufacturer>Irem</manufacturer>
+		<rom name="ad-00.bin" size="131072" crc="2f0d599b"/>
+		<rom name="ad-10.bin" size="131072" crc="9865856b"/>
+		<rom name="ad-20.bin" size="131072" crc="d392aef2"/>
+		<rom name="ad-30.bin" size="131072" crc="923240c3"/>
+		<rom name="ad-a0.bin" size="131072" crc="ce134b47"/>
+		<rom name="ad-a1.bin" size="131072" crc="097fd853"/>
+		<rom name="ad-a2.bin" size="131072" crc="6a94c1b9"/>
+		<rom name="ad-a3.bin" size="131072" crc="6637c349"/>
+		<rom name="ad-b0.bin" size="131072" crc="ce134b47"/>
+		<rom name="ad-b1.bin" size="131072" crc="097fd853"/>
+		<rom name="ad-b2.bin" size="131072" crc="6a94c1b9"/>
+		<rom name="ad-b3.bin" size="131072" crc="6637c349"/>
+		<rom name="ad-c-h0.bin" size="131072" crc="12140276"/>
+		<rom name="ad-c-h3.bin" size="131072" crc="9f7cfca3"/>
+		<rom name="ad-c-l0.bin" size="131072" crc="4ac0b91d"/>
+		<rom name="ad-c-l3.bin" size="131072" crc="9dd343f7"/>
+		<rom name="ad-v0.bin" size="131072" crc="339f474d"/>
+	</game>
+	<game name="airwolf">
+		<description>Air Wolf</description>
+		<year>1987</year>
+		<manufacturer>Kyugo</manufacturer>
+		<rom name="01f.bin" size="256" crc="ade97052"/>
+		<rom name="01h.bin" size="256" crc="ec0923d3"/>
+		<rom name="01j.bin" size="256" crc="6a94b2a3"/>
+		<rom name="02c_m1.bin" size="32" crc="83a39201"/>
+		<rom name="09h_14.bin" size="8192" crc="25e57e1f"/>
+		<rom name="10h_13.bin" size="8192" crc="cf0de5e9"/>
+		<rom name="11h_12.bin" size="8192" crc="4050c048"/>
+		<rom name="a.7s" size="32768" crc="a3c7af5c"/>
+		<rom name="b.2s" size="32768" crc="8c993cce"/>
+		<rom name="c.10a" size="32768" crc="de91dfb1"/>
+		<rom name="d.8a" size="32768" crc="c5d4156b"/>
+		<rom name="e.6a" size="32768" crc="e8fbc7d2"/>
+		<rom name="f.4a" size="4096" crc="4df44ce9"/>
+	</game>
+	<game name="ajax">
+		<description>Ajax</description>
+		<year>1987</year>
+		<manufacturer>Konami</manufacturer>
+		<rom name="63s241.j11" size="512" crc="9bdd719f"/>
+		<rom name="770c06" size="262144" crc="d0c592ee"/>
+		<rom name="770c07" size="262144" crc="0b399fb1"/>
+		<rom name="770c08" size="524288" crc="a8e80586"/>
+		<rom name="770c09" size="524288" crc="1ab4a7ff"/>
+		<rom name="770c10" size="262144" crc="7fac825f"/>
+		<rom name="770c11" size="524288" crc="299a615a"/>
+		<rom name="770c12" size="262144" crc="50d14b72"/>
+		<rom name="770c13" size="262144" crc="b859ca4e"/>
+		<rom name="f04.g16" size="65536" crc="e0e4ec9c"/>
+		<rom name="h03.f16" size="32768" crc="2ffd2afc"/>
+		<rom name="l02.n12" size="65536" crc="ad7d592b"/>
+		<rom name="l05.i16" size="32768" crc="ed64fbb2"/>
+		<rom name="m01.n11" size="65536" crc="4a64e53a"/>
+	</game>
+	<game name="ajaxj" cloneof="ajax" romof="ajax">
+		<description>Ajax (Japan)</description>
+		<year>1987</year>
+		<manufacturer>Konami</manufacturer>
+		<rom name="63s241.j11" merge="63s241.j11" size="512" crc="9bdd719f"/>
+		<rom name="770c06" merge="770c06" size="262144" crc="d0c592ee"/>
+		<rom name="770c07" merge="770c07" size="262144" crc="0b399fb1"/>
+		<rom name="770c08" merge="770c08" size="524288" crc="a8e80586"/>
+		<rom name="770c09" merge="770c09" size="524288" crc="1ab4a7ff"/>
+		<rom name="770c10" merge="770c10" size="262144" crc="7fac825f"/>
+		<rom name="770c11" merge="770c11" size="524288" crc="299a615a"/>
+		<rom name="770c12" merge="770c12" size="262144" crc="50d14b72"/>
+		<rom name="770c13" merge="770c13" size="262144" crc="b859ca4e"/>
+		<rom name="770f03.bin" size="32768" crc="3fe914fd"/>
+		<rom name="770l01.bin" size="65536" crc="7cea5274"/>
+		<rom name="f04.g16" merge="f04.g16" size="65536" crc="e0e4ec9c"/>
+		<rom name="l02.n12" merge="l02.n12" size="65536" crc="ad7d592b"/>
+		<rom name="l05.i16" merge="l05.i16" size="32768" crc="ed64fbb2"/>
+	</game>
+	<game name="alcon" cloneof="slapfigh" romof="slapfigh">
+		<description>Alcon</description>
+		<year>1986</year>
+		<manufacturer>&lt;unknown&gt;</manufacturer>
+		<rom name="00" size="32768" crc="2ba82d60"/>
+		<rom name="01" size="32768" crc="18bb2f12"/>
+		<rom name="03" size="8192" crc="404152c0"/>
+		<rom name="04" size="8192" crc="31003483"/>
+		<rom name="68705.bin" size="2048" status="nodump"/>
+		<rom name="sf_col19.bin" merge="sf_col19.bin" size="256" crc="5cbf9fbf"/>
+		<rom name="sf_col20.bin" merge="sf_col20.bin" size="256" crc="a56d57e5"/>
+		<rom name="sf_col21.bin" merge="sf_col21.bin" size="256" crc="a0efaf99"/>
+		<rom name="sf_r01.bin" merge="sf_r01.bin" size="32768" crc="b1b7b925"/>
+		<rom name="sf_r02.bin" merge="sf_r02.bin" size="32768" crc="587113ae"/>
+		<rom name="sf_r03.bin" merge="sf_r03.bin" size="32768" crc="8545d397"/>
+		<rom name="sf_r04.bin" merge="sf_r04.bin" size="32768" crc="422d946b"/>
+		<rom name="sf_r05.bin" merge="sf_r05.bin" size="8192" crc="87f4705a"/>
+		<rom name="sf_r06.bin" merge="sf_r06.bin" size="32768" crc="b6358305"/>
+		<rom name="sf_r07.bin" merge="sf_r07.bin" size="32768" crc="974e2ea9"/>
+		<rom name="sf_r08.bin" merge="sf_r08.bin" size="32768" crc="5faeeea3"/>
+		<rom name="sf_r09.bin" merge="sf_r09.bin" size="32768" crc="e92d9d60"/>
+	</game>
+	<game name="alexkida" cloneof="alexkidd" romof="alexkidd">
+		<description>Alex Kidd (set 2)</description>
+		<year>1986</year>
+		<manufacturer>Sega</manufacturer>
+		<rom name="10431.95" merge="10431.95" size="32768" crc="a7962c39"/>
+		<rom name="10432.94" merge="10432.94" size="32768" crc="db8cd24e"/>
+		<rom name="10433.93" merge="10433.93" size="32768" crc="e163c8c2"/>
+		<rom name="10434.12" merge="10434.12" size="32768" crc="77141cce"/>
+		<rom name="10435.1" merge="10435.1" size="32768" crc="ad89f6e3"/>
+		<rom name="10436.2" merge="10436.2" size="32768" crc="96c76613"/>
+		<rom name="10437.10" merge="10437.10" size="32768" crc="522f7618"/>
+		<rom name="10438.17" merge="10438.17" size="32768" crc="738a6362"/>
+		<rom name="10439.23" merge="10439.23" size="32768" crc="b391aca7"/>
+		<rom name="10440.29" merge="10440.29" size="32768" crc="23939508"/>
+		<rom name="10441.11" merge="10441.11" size="32768" crc="74e3a35c"/>
+		<rom name="10442.18" merge="10442.18" size="32768" crc="86cb9c14"/>
+		<rom name="10443.24" merge="10443.24" size="32768" crc="95d32635"/>
+		<rom name="10444.30" merge="10444.30" size="32768" crc="82115823"/>
+		<rom name="10445.26" size="65536" crc="25ce5b6f"/>
+		<rom name="10446.25" size="65536" crc="cd61d23c"/>
+		<rom name="10447.43" size="65536" crc="29e87f71"/>
+		<rom name="10448.42" size="65536" crc="05baedb5"/>
+		<rom name="7751.bin" merge="7751.bin" size="1024" crc="6a9534fc"/>
+	</game>
+	<game name="alexkidd">
+		<description>Alex Kidd (set 1)</description>
+		<year>1986</year>
+		<manufacturer>Sega</manufacturer>
+		<rom name="10431.95" size="32768" crc="a7962c39"/>
+		<rom name="10432.94" size="32768" crc="db8cd24e"/>
+		<rom name="10433.93" size="32768" crc="e163c8c2"/>
+		<rom name="10434.12" size="32768" crc="77141cce"/>
+		<rom name="10435.1" size="32768" crc="ad89f6e3"/>
+		<rom name="10436.2" size="32768" crc="96c76613"/>
+		<rom name="10437.10" size="32768" crc="522f7618"/>
+		<rom name="10438.17" size="32768" crc="738a6362"/>
+		<rom name="10439.23" size="32768" crc="b391aca7"/>
+		<rom name="10440.29" size="32768" crc="23939508"/>
+		<rom name="10441.11" size="32768" crc="74e3a35c"/>
+		<rom name="10442.18" size="32768" crc="86cb9c14"/>
+		<rom name="10443.24" size="32768" crc="95d32635"/>
+		<rom name="10444.30" size="32768" crc="82115823"/>
+		<rom name="7751.bin" size="1024" crc="6a9534fc"/>
+		<rom name="epr10427.26" size="65536" crc="f6e3dd29"/>
+		<rom name="epr10428.25" size="65536" crc="dbed3210"/>
+		<rom name="epr10429.42" size="65536" crc="bdf49eca"/>
+		<rom name="epr10430.43" size="65536" crc="89e3439f"/>
+	</game>
+	<game name="alibaba">
+		<description>Ali Baba and 40 Thieves</description>
+		<year>1982</year>
+		<manufacturer>Sega</manufacturer>
+		<rom name="5e" size="2048" crc="85bcb8f8"/>
+		<rom name="5f" size="2048" crc="b5715c86"/>
+		<rom name="5h" size="2048" crc="38e50862"/>
+		<rom name="5k" size="2048" crc="713086b3"/>
+		<rom name="6e" size="4096" crc="38d701aa"/>
+		<rom name="6f" size="4096" crc="3d0e35f3"/>
+		<rom name="6h" size="4096" crc="823bee89"/>
+		<rom name="6k" size="4096" crc="474d032f"/>
+		<rom name="6l" size="4096" crc="5ab315c1"/>
+		<rom name="6m" size="2048" crc="438d0357"/>
+		<rom name="82s126.1m" size="256" crc="a9cc86bf"/>
+		<rom name="82s126.3m" size="256" crc="77245b66"/>
+		<rom name="alibaba.4a" size="256" status="nodump"/>
+		<rom name="alibaba.7f" size="32" status="nodump"/>
+	</game>
+	<game name="alieninv" cloneof="invaders" romof="invaders" sampleof="invaders">
+		<description>Alien Invasion Part II</description>
+		<manufacturer>bootleg</manufacturer>
+		<rom name="1e.bin" size="2048" crc="0449cb52"/>
+		<rom name="1f.bin" size="2048" crc="adca18a5"/>
+		<rom name="1g.bin" size="2048" crc="4b1112d6"/>
+		<rom name="1h.bin" size="2048" crc="c46df7f4"/>
+		<sample name="1.wav"/>
+		<sample name="2.wav"/>
+		<sample name="3.wav"/>
+		<sample name="4.wav"/>
+		<sample name="5.wav"/>
+		<sample name="6.wav"/>
+		<sample name="7.wav"/>
+		<sample name="8.wav"/>
+		<sample name="9.wav"/>
+	</game>
+	<game name="aliens">
+		<description>Aliens (World set 1)</description>
+		<year>1990</year>
+		<manufacturer>Konami</manufacturer>
+		<rom name="821a08.h14" size="256" crc="7da55800"/>
+		<rom name="875b04.bin" size="262144" crc="4e209ac8"/>
+		<rom name="c24_j01.bin" size="131072" crc="6a529cd6"/>
+		<rom name="e24_j02.bin" size="65536" crc="56c20971"/>
+		<rom name="g04_b03.bin" size="32768" crc="1ac4d283"/>
+		<rom name="j02_b05.bin" size="262144" crc="19a261f2"/>
+		<rom name="j08_b06.bin" size="262144" crc="081a0566"/>
+		<rom name="j13_b07.bin" size="262144" crc="e9c56d66"/>
+		<rom name="j19_b08.bin" size="262144" crc="f9387966"/>
+		<rom name="k02_b09.bin" size="524288" crc="e76b3c19"/>
+		<rom name="k08_b10.bin" size="524288" crc="0b1035b1"/>
+		<rom name="k13_b11.bin" size="524288" crc="89c5c885"/>
+		<rom name="k19_b12.bin" size="524288" crc="ea6bdc17"/>
+	</game>
+	<game name="aliens2" cloneof="aliens" romof="aliens">
+		<description>Aliens (World set 2)</description>
+		<year>1990</year>
+		<manufacturer>Konami</manufacturer>
+		<rom name="821a08.h14" merge="821a08.h14" size="256" crc="7da55800"/>
+		<rom name="875b04.bin" merge="875b04.bin" size="262144" crc="4e209ac8"/>
+		<rom name="c24_n01.bin" size="131072" crc="106cf59c"/>
+		<rom name="e24_p02.bin" size="65536" crc="4edd707d"/>
+		<rom name="g04_b03.bin" merge="g04_b03.bin" size="32768" crc="1ac4d283"/>
+		<rom name="j02_b05.bin" merge="j02_b05.bin" size="262144" crc="19a261f2"/>
+		<rom name="j08_b06.bin" merge="j08_b06.bin" size="262144" crc="081a0566"/>
+		<rom name="j13_b07.bin" merge="j13_b07.bin" size="262144" crc="e9c56d66"/>
+		<rom name="j19_b08.bin" merge="j19_b08.bin" size="262144" crc="f9387966"/>
+		<rom name="k02_b09.bin" merge="k02_b09.bin" size="524288" crc="e76b3c19"/>
+		<rom name="k08_b10.bin" merge="k08_b10.bin" size="524288" crc="0b1035b1"/>
+		<rom name="k13_b11.bin" merge="k13_b11.bin" size="524288" crc="89c5c885"/>
+		<rom name="k19_b12.bin" merge="k19_b12.bin" size="524288" crc="ea6bdc17"/>
+	</game>
+	<game name="aliensj" cloneof="aliens" romof="aliens">
+		<description>Aliens (Japan)</description>
+		<year>1990</year>
+		<manufacturer>Konami</manufacturer>
+		<rom name="821a08.h14" merge="821a08.h14" size="256" crc="7da55800"/>
+		<rom name="875b04.bin" merge="875b04.bin" size="262144" crc="4e209ac8"/>
+		<rom name="875k03.g4" size="32768" crc="bd86264d"/>
+		<rom name="875m01.c24" size="131072" crc="1663d3dc"/>
+		<rom name="875m02.e24" size="65536" crc="54a774e5"/>
+		<rom name="j02_b05.bin" merge="j02_b05.bin" size="262144" crc="19a261f2"/>
+		<rom name="j08_b06.bin" merge="j08_b06.bin" size="262144" crc="081a0566"/>
+		<rom name="j13_b07.bin" merge="j13_b07.bin" size="262144" crc="e9c56d66"/>
+		<rom name="j19_b08.bin" merge="j19_b08.bin" size="262144" crc="f9387966"/>
+		<rom name="k02_b09.bin" merge="k02_b09.bin" size="524288" crc="e76b3c19"/>
+		<rom name="k08_b10.bin" merge="k08_b10.bin" size="524288" crc="0b1035b1"/>
+		<rom name="k13_b11.bin" merge="k13_b11.bin" size="524288" crc="89c5c885"/>
+		<rom name="k19_b12.bin" merge="k19_b12.bin" size="524288" crc="ea6bdc17"/>
+	</game>
+	<game name="aliensu" cloneof="aliens" romof="aliens">
+		<description>Aliens (US)</description>
+		<year>1990</year>
+		<manufacturer>Konami</manufacturer>
+		<rom name="821a08.h14" merge="821a08.h14" size="256" crc="7da55800"/>
+		<rom name="875b04.bin" merge="875b04.bin" size="262144" crc="4e209ac8"/>
+		<rom name="c24_n01.bin" size="131072" crc="106cf59c"/>
+		<rom name="e24_n02.bin" size="65536" crc="24dd612e"/>
+		<rom name="g04_b03.bin" merge="g04_b03.bin" size="32768" crc="1ac4d283"/>
+		<rom name="j02_b05.bin" merge="j02_b05.bin" size="262144" crc="19a261f2"/>
+		<rom name="j08_b06.bin" merge="j08_b06.bin" size="262144" crc="081a0566"/>
+		<rom name="j13_b07.bin" merge="j13_b07.bin" size="262144" crc="e9c56d66"/>
+		<rom name="j19_b08.bin" merge="j19_b08.bin" size="262144" crc="f9387966"/>
+		<rom name="k02_b09.bin" merge="k02_b09.bin" size="524288" crc="e76b3c19"/>
+		<rom name="k08_b10.bin" merge="k08_b10.bin" size="524288" crc="0b1035b1"/>
+		<rom name="k13_b11.bin" merge="k13_b11.bin" size="524288" crc="89c5c885"/>
+		<rom name="k19_b12.bin" merge="k19_b12.bin" size="524288" crc="ea6bdc17"/>
+	</game>
+	<game name="aliensya" cloneof="aliensyn" romof="aliensyn">
+		<description>Alien Syndrome (set 2)</description>
+		<year>1987</year>
+		<manufacturer>Sega</manufacturer>
+		<rom name="10698" size="32768" crc="c1e4fdc0"/>
+		<rom name="10701" size="32768" crc="92171751"/>
+		<rom name="10705" size="32768" crc="777b749e"/>
+		<rom name="10706" size="32768" crc="aa114acc"/>
+		<rom name="10707" size="32768" crc="800c1d82"/>
+		<rom name="10708" size="32768" crc="5921ef52"/>
+		<rom name="10709.b1" merge="10709.b1" size="65536" crc="addf0a90"/>
+		<rom name="10710.b2" merge="10710.b2" size="65536" crc="992369eb"/>
+		<rom name="10711.b3" merge="10711.b3" size="65536" crc="29166ef6"/>
+		<rom name="10712.b4" merge="10712.b4" size="65536" crc="876ad019"/>
+		<rom name="10713.b5" merge="10713.b5" size="65536" crc="ececde3a"/>
+		<rom name="10714.b6" merge="10714.b6" size="65536" crc="91bf42fb"/>
+		<rom name="10715.b7" merge="10715.b7" size="65536" crc="a7c57384"/>
+		<rom name="10716.b8" merge="10716.b8" size="65536" crc="40ba1d48"/>
+		<rom name="10739" size="65536" crc="a29ec207"/>
+		<rom name="10740" size="65536" crc="47f93015"/>
+		<rom name="10741" size="65536" crc="4970739c"/>
+		<rom name="10806" size="32768" crc="9f7f8fdd"/>
+		<rom name="10807" size="32768" crc="3d2c3530"/>
+		<rom name="10808" size="32768" crc="e669929f"/>
+		<rom name="10809" size="32768" crc="9a424919"/>
+	</game>
+	<game name="aliensyb" cloneof="aliensyn" romof="aliensyn">
+		<description>Alien Syndrome (set 3)</description>
+		<year>1987</year>
+		<manufacturer>Sega</manufacturer>
+		<rom name="10702.b9" merge="10702.b9" size="65536" crc="393bc813"/>
+		<rom name="10703.b10" merge="10703.b10" size="65536" crc="6b6dd9f5"/>
+		<rom name="10704.b11" merge="10704.b11" size="65536" crc="911e7ebc"/>
+		<rom name="10709.b1" merge="10709.b1" size="65536" crc="addf0a90"/>
+		<rom name="10710.b2" merge="10710.b2" size="65536" crc="992369eb"/>
+		<rom name="10711.b3" merge="10711.b3" size="65536" crc="29166ef6"/>
+		<rom name="10712.b4" merge="10712.b4" size="65536" crc="876ad019"/>
+		<rom name="10713.b5" merge="10713.b5" size="65536" crc="ececde3a"/>
+		<rom name="10714.b6" merge="10714.b6" size="65536" crc="91bf42fb"/>
+		<rom name="10715.b7" merge="10715.b7" size="65536" crc="a7c57384"/>
+		<rom name="10716.b8" merge="10716.b8" size="65536" crc="40ba1d48"/>
+		<rom name="10723.a7" merge="10723.a7" size="32768" crc="99953526"/>
+		<rom name="10724.a8" merge="10724.a8" size="32768" crc="f971a817"/>
+		<rom name="10725.a9" merge="10725.a9" size="32768" crc="6a50e08f"/>
+		<rom name="10726.a10" merge="10726.a10" size="32768" crc="d50b7736"/>
+		<rom name="as_typeb.a1" size="32768" crc="4cd134df"/>
+		<rom name="as_typeb.a2" size="32768" crc="bdcf4a30"/>
+		<rom name="as_typeb.a3" size="32768" crc="1e7586b7"/>
+		<rom name="as_typeb.a4" size="32768" crc="17bf5304"/>
+		<rom name="as_typeb.a5" size="32768" crc="c8b791b0"/>
+		<rom name="as_typeb.a6" size="32768" crc="1d0790aa"/>
+	</game>
+	<game name="aliensyj" cloneof="aliensyn" romof="aliensyn">
+		<description>Alien Syndrome (Japan)</description>
+		<year>1987</year>
+		<manufacturer>Sega</manufacturer>
+		<rom name="10698" size="32768" crc="c1e4fdc0"/>
+		<rom name="10701" size="32768" crc="92171751"/>
+		<rom name="10705" size="32768" crc="777b749e"/>
+		<rom name="10706" size="32768" crc="aa114acc"/>
+		<rom name="10707" size="32768" crc="800c1d82"/>
+		<rom name="10708" size="32768" crc="5921ef52"/>
+		<rom name="10709.b1" merge="10709.b1" size="65536" crc="addf0a90"/>
+		<rom name="10710.b2" merge="10710.b2" size="65536" crc="992369eb"/>
+		<rom name="10711.b3" merge="10711.b3" size="65536" crc="29166ef6"/>
+		<rom name="10712.b4" merge="10712.b4" size="65536" crc="876ad019"/>
+		<rom name="10713.b5" merge="10713.b5" size="65536" crc="ececde3a"/>
+		<rom name="10714.b6" merge="10714.b6" size="65536" crc="91bf42fb"/>
+		<rom name="10715.b7" merge="10715.b7" size="65536" crc="a7c57384"/>
+		<rom name="10716.b8" merge="10716.b8" size="65536" crc="40ba1d48"/>
+		<rom name="10739" size="65536" crc="a29ec207"/>
+		<rom name="10740" size="65536" crc="47f93015"/>
+		<rom name="10741" size="65536" crc="4970739c"/>
+		<rom name="epr10696.26" size="32768" crc="d734f19f"/>
+		<rom name="epr10697.25" size="32768" crc="f2bc123d"/>
+		<rom name="epr10699.43" size="32768" crc="3fd38d17"/>
+		<rom name="epr10700.42" size="32768" crc="3b04b252"/>
+	</game>
+	<game name="aliensyn">
+		<description>Alien Syndrome (set 1)</description>
+		<year>1987</year>
+		<manufacturer>Sega</manufacturer>
+		<rom name="10702.b9" size="65536" crc="393bc813"/>
+		<rom name="10703.b10" size="65536" crc="6b6dd9f5"/>
+		<rom name="10704.b11" size="65536" crc="911e7ebc"/>
+		<rom name="10709.b1" size="65536" crc="addf0a90"/>
+		<rom name="10710.b2" size="65536" crc="992369eb"/>
+		<rom name="10711.b3" size="65536" crc="29166ef6"/>
+		<rom name="10712.b4" size="65536" crc="876ad019"/>
+		<rom name="10713.b5" size="65536" crc="ececde3a"/>
+		<rom name="10714.b6" size="65536" crc="91bf42fb"/>
+		<rom name="10715.b7" size="65536" crc="a7c57384"/>
+		<rom name="10716.b8" size="65536" crc="40ba1d48"/>
+		<rom name="10723.a7" size="32768" crc="99953526"/>
+		<rom name="10724.a8" size="32768" crc="f971a817"/>
+		<rom name="10725.a9" size="32768" crc="6a50e08f"/>
+		<rom name="10726.a10" size="32768" crc="d50b7736"/>
+		<rom name="11080.a1" size="32768" crc="fe7378d9"/>
+		<rom name="11081.a2" size="32768" crc="1308ee63"/>
+		<rom name="11082.a3" size="32768" crc="9cdc2a14"/>
+		<rom name="11083.a4" size="32768" crc="cb2ad9b3"/>
+		<rom name="11084.a5" size="32768" crc="2e1ec7b1"/>
+		<rom name="11085.a6" size="32768" crc="cff78f39"/>
+	</game>
+	<game name="alleymas">
+		<description>Alley Master</description>
+		<year>1986</year>
+		<manufacturer>Cinematronics</manufacturer>
+		<rom name="003" size="8192" crc="3fee63ae"/>
+		<rom name="004" size="16384" crc="d302b5d1"/>
+		<rom name="005" size="16384" crc="79bdb24d"/>
+		<rom name="006" size="16384" crc="f0b15d68"/>
+		<rom name="007" size="16384" crc="6974036c"/>
+		<rom name="008" size="16384" crc="a4357b5a"/>
+		<rom name="009" size="16384" crc="6d74274e"/>
+		<rom name="068" size="8192" crc="0c583385"/>
+		<rom name="069" size="8192" crc="79abb979"/>
+		<rom name="090" size="8192" crc="0e1769e3"/>
+		<rom name="092" size="8192" crc="a020eab5"/>
+		<rom name="093" size="8192" crc="54456e6f"/>
+		<rom name="094" size="8192" crc="edc240da"/>
+		<rom name="095" size="8192" crc="19793ed0"/>
+		<rom name="101" size="8192" crc="4273e260"/>
+		<rom name="102" size="16384" crc="eb6575aa"/>
+		<rom name="103" size="16384" crc="cc9d778c"/>
+		<rom name="104" size="16384" crc="8edb129b"/>
+		<rom name="105" size="16384" crc="a342dc8e"/>
+		<rom name="106" size="16384" crc="b396c254"/>
+		<rom name="107" size="16384" crc="3ca13e8c"/>
+	</game>
+	<game name="alpham2" romof="neogeo">
+		<description>Alpha Mission II / ASO II - Last Guardian</description>
+		<year>1991</year>
+		<manufacturer>SNK</manufacturer>
+		<rom name="lstg_c1.rom" size="1048576" crc="8fba8ff3"/>
+		<rom name="lstg_c2.rom" size="1048576" crc="4dad2945"/>
+		<rom name="lstg_c3.rom" size="524288" crc="68c2994e"/>
+		<rom name="lstg_c4.rom" size="524288" crc="7d588349"/>
+		<rom name="lstg_m1.rom" size="131072" crc="f23d3076"/>
+		<rom name="lstg_p1.rom" size="1048576" crc="7b0ebe08"/>
+		<rom name="lstg_s1.rom" size="131072" crc="85ec9acf"/>
+		<rom name="lstg_v11.rom" size="1048576" crc="cd5db931"/>
+		<rom name="lstg_v12.rom" size="1048576" crc="63e9b574"/>
+		<rom name="lstg_v21.rom" size="1048576" crc="ff7ebf79"/>
+		<rom name="lstg_v22.rom" size="1048576" crc="f2028490"/>
+		<rom name="lstg_v23.rom" size="1048576" crc="2e4f1e48"/>
+		<rom name="lstg_v24.rom" size="1048576" crc="658ee845"/>
+		<rom name="neo-geo.rom" merge="neo-geo.rom" size="131072" crc="9036d879"/>
+		<rom name="ng-sfix.rom" merge="ng-sfix.rom" size="131072" crc="354029fc"/>
+		<rom name="ng-sm1.rom" merge="ng-sm1.rom" size="131072" crc="97cf998b"/>
+	</game>
+	<game name="alpine">
+		<description>Alpine Ski (set 1)</description>
+		<year>1982</year>
+		<manufacturer>Taito Corporation</manufacturer>
+		<rom name="eb16.22" size="256" crc="b833b5ea"/>
+		<rom name="rh13.070" size="4096" crc="dcad1794"/>
+		<rom name="rh16.069" size="4096" crc="6b2a69b7"/>
+		<rom name="rh17.068" size="4096" crc="e344b0b7"/>
+		<rom name="rh18.067" size="4096" crc="753bdd87"/>
+		<rom name="rh19.066" size="4096" crc="3efb3fcd"/>
+		<rom name="rh20.065" size="4096" crc="c2cd4e79"/>
+		<rom name="rh21.064" size="4096" crc="74109145"/>
+		<rom name="rh22.055" size="4096" crc="efa82a57"/>
+		<rom name="rh23.054" size="4096" crc="77c25acf"/>
+		<rom name="rh24.001" size="4096" crc="4b1d9455"/>
+		<rom name="rh25.002" size="4096" crc="bf71e278"/>
+		<rom name="rh26.003" size="4096" crc="13da2a9b"/>
+		<rom name="rh27.004" size="4096" crc="425b52b0"/>
+	</game>
+	<game name="alpinea" cloneof="alpine" romof="alpine">
+		<description>Alpine Ski (set 2)</description>
+		<year>1982</year>
+		<manufacturer>Taito Corporation</manufacturer>
+		<rom name="eb16.22" merge="eb16.22" size="256" crc="b833b5ea"/>
+		<rom name="rh01-1.69" size="4096" crc="7fbcb635"/>
+		<rom name="rh02.68" size="4096" crc="c83f95af"/>
+		<rom name="rh03.67" size="4096" crc="211102bc"/>
+		<rom name="rh04-1.66" size="4096" crc="494a91b0"/>
+		<rom name="rh05.65" size="4096" crc="d85588be"/>
+		<rom name="rh06.64" size="4096" crc="521fddb9"/>
+		<rom name="rh07.55" size="4096" crc="51f369a4"/>
+		<rom name="rh08.54" size="4096" crc="e0af9cb2"/>
+		<rom name="rh12.4" size="4096" crc="0ff0d1fe"/>
+		<rom name="rh13.070" merge="rh13.070" size="4096" crc="dcad1794"/>
+		<rom name="rh24.001" merge="rh24.001" size="4096" crc="4b1d9455"/>
+		<rom name="rh25.002" merge="rh25.002" size="4096" crc="bf71e278"/>
+		<rom name="rh26.003" merge="rh26.003" size="4096" crc="13da2a9b"/>
+	</game>
+	<game name="altbeas2" cloneof="altbeast" romof="altbeast">
+		<description>Altered Beast (Version 2)</description>
+		<year>1988</year>
+		<manufacturer>Sega</manufacturer>
+		<rom name="11674" merge="11674" size="131072" crc="a57a66d5"/>
+		<rom name="11675" merge="11675" size="131072" crc="2ef2f144"/>
+		<rom name="11676" merge="11676" size="131072" crc="0c04acac"/>
+		<rom name="epr11677.b1" merge="epr11677.b1" size="131072" crc="a01425cd"/>
+		<rom name="epr11678.b2" merge="epr11678.b2" size="131072" crc="17a9fc53"/>
+		<rom name="epr11679.b3" merge="epr11679.b3" size="131072" crc="14dcc245"/>
+		<rom name="epr11680.b4" merge="epr11680.b4" size="131072" crc="f43dcdec"/>
+		<rom name="epr11681.b5" merge="epr11681.b5" size="131072" crc="d9e03363"/>
+		<rom name="epr11682.b6" merge="epr11682.b6" size="131072" crc="e3f77c5e"/>
+		<rom name="epr11683.b7" merge="epr11683.b7" size="131072" crc="f9a60f06"/>
+		<rom name="epr11684.b8" merge="epr11684.b8" size="131072" crc="b20c0edb"/>
+		<rom name="epr11739" size="131072" crc="e466eb65"/>
+		<rom name="epr11740" size="131072" crc="ce227542"/>
+		<rom name="opr11672" merge="opr11672" size="131072" crc="bbd7f460"/>
+		<rom name="opr11673" merge="opr11673" size="131072" crc="400c4a36"/>
+		<rom name="opr11686" size="32768" crc="828a45b3"/>
+	</game>
+	<game name="altbeast">
+		<description>Altered Beast (Version 1)</description>
+		<year>1988</year>
+		<manufacturer>Sega</manufacturer>
+		<rom name="11671" size="32768" crc="2b71343b"/>
+		<rom name="11674" size="131072" crc="a57a66d5"/>
+		<rom name="11675" size="131072" crc="2ef2f144"/>
+		<rom name="11676" size="131072" crc="0c04acac"/>
+		<rom name="11704" size="131072" crc="33bbcf07"/>
+		<rom name="11705" size="131072" crc="57dc5c7a"/>
+		<rom name="epr11677.b1" size="131072" crc="a01425cd"/>
+		<rom name="epr11678.b2" size="131072" crc="17a9fc53"/>
+		<rom name="epr11679.b3" size="131072" crc="14dcc245"/>
+		<rom name="epr11680.b4" size="131072" crc="f43dcdec"/>
+		<rom name="epr11681.b5" size="131072" crc="d9e03363"/>
+		<rom name="epr11682.b6" size="131072" crc="e3f77c5e"/>
+		<rom name="epr11683.b7" size="131072" crc="f9a60f06"/>
+		<rom name="epr11684.b8" size="131072" crc="b20c0edb"/>
+		<rom name="opr11672" size="131072" crc="bbd7f460"/>
+		<rom name="opr11673" size="131072" crc="400c4a36"/>
+	</game>
+	<game name="ambush">
+		<description>Ambush</description>
+		<year>1983</year>
+		<manufacturer>Nippon Amuse Co-Ltd</manufacturer>
+		<rom name="13.bpr" size="256" crc="547e970f"/>
+		<rom name="14.bpr" size="256" crc="622a8ce7"/>
+		<rom name="a.bpr" size="256" crc="5f27f511"/>
+		<rom name="ambush.e7" size="8192" crc="6cc2d3ee"/>
+		<rom name="ambush.f7" size="8192" crc="d023ca29"/>
+		<rom name="ambush.g7" size="8192" crc="90291409"/>
+		<rom name="ambush.h7" size="8192" crc="ce306563"/>
+		<rom name="ambush.m4" size="8192" crc="e86ca98a"/>
+		<rom name="ambush.n4" size="8192" crc="ecc0dc85"/>
+		<rom name="b.bpr" size="256" crc="1b03fd3b"/>
+	</game>
+	<game name="amidar">
+		<description>Amidar</description>
+		<year>1981</year>
+		<manufacturer>Konami</manufacturer>
+		<rom name="amidar.2c" size="4096" crc="c294bf27"/>
+		<rom name="amidar.2e" size="4096" crc="e6e96826"/>
+		<rom name="amidar.2f" size="4096" crc="3656be6f"/>
+		<rom name="amidar.2h" size="4096" crc="1be170bd"/>
+		<rom name="amidar.5c" size="4096" crc="c4b66ae4"/>
+		<rom name="amidar.5d" size="4096" crc="806785af"/>
+		<rom name="amidar.5f" size="2048" crc="5e51e84d"/>
+		<rom name="amidar.5h" size="2048" crc="2f7f1c30"/>
+		<rom name="amidar.clr" size="32" crc="f940dcc3"/>
+	</game>
+	<game name="amidaro" cloneof="amidar" romof="amidar">
+		<description>Amidar (Olympia)</description>
+		<year>1982</year>
+		<manufacturer>Konami (Olympia license)</manufacturer>
+		<rom name="107.2cd" size="4096" crc="c52536be"/>
+		<rom name="108.2fg" size="4096" crc="38538b98"/>
+		<rom name="109.2fg" size="4096" crc="69907f0f"/>
+		<rom name="110.2h" size="4096" crc="ba149a93"/>
+		<rom name="111.2j" size="4096" crc="20d01c2e"/>
+		<rom name="113.5h" size="2048" crc="bcdce168"/>
+		<rom name="amidar.clr" merge="amidar.clr" size="32" crc="f940dcc3"/>
+		<rom name="amidarus.5c" size="4096" crc="8ca7b750"/>
+		<rom name="amidarus.5d" size="4096" crc="9b5bdc0a"/>
+		<rom name="amidarus.5f" size="2048" crc="2cfe5ede"/>
+	</game>
+	<game name="amidars" cloneof="amidar" romof="amidar">
+		<description>Amidar (Scramble hardware)</description>
+		<year>1982</year>
+		<manufacturer>Konami</manufacturer>
+		<rom name="2716.a5" size="2048" crc="3029f94f"/>
+		<rom name="2716.a6" size="2048" crc="2082ad0a"/>
+		<rom name="am2d" size="2048" crc="24b79547"/>
+		<rom name="am2e" size="2048" crc="4c64161e"/>
+		<rom name="am2f" size="2048" crc="b3987a72"/>
+		<rom name="am2h" size="2048" crc="29873461"/>
+		<rom name="am2j" size="2048" crc="0fdd54d8"/>
+		<rom name="am2l" size="2048" crc="5382f7ed"/>
+		<rom name="am2m" size="2048" crc="1d7109e9"/>
+		<rom name="am2p" size="2048" crc="c9163ac6"/>
+		<rom name="amidar.clr" merge="amidar.clr" size="32" crc="f940dcc3"/>
+		<rom name="amidarus.5c" size="4096" crc="8ca7b750"/>
+		<rom name="amidarus.5d" size="4096" crc="9b5bdc0a"/>
+	</game>
+	<game name="amidaru" cloneof="amidar" romof="amidar">
+		<description>Amidar (Stern)</description>
+		<year>1982</year>
+		<manufacturer>Konami (Stern license)</manufacturer>
+		<rom name="amidar.clr" merge="amidar.clr" size="32" crc="f940dcc3"/>
+		<rom name="amidarus.2c" size="4096" crc="951e0792"/>
+		<rom name="amidarus.2e" size="4096" crc="a1a3a136"/>
+		<rom name="amidarus.2f" size="4096" crc="a5121bf5"/>
+		<rom name="amidarus.2h" size="4096" crc="051d1c7f"/>
+		<rom name="amidarus.2j" size="4096" crc="351f00d5"/>
+		<rom name="amidarus.5c" size="4096" crc="8ca7b750"/>
+		<rom name="amidarus.5d" size="4096" crc="9b5bdc0a"/>
+		<rom name="amidarus.5f" size="2048" crc="2cfe5ede"/>
+		<rom name="amidarus.5h" size="2048" crc="57c4fd0d"/>
+	</game>
+	<game name="amigo" cloneof="amidar" romof="amidar">
+		<description>Amigo</description>
+		<year>1982</year>
+		<manufacturer>bootleg</manufacturer>
+		<rom name="2716.a5" size="2048" crc="3029f94f"/>
+		<rom name="2716.a6" size="2048" crc="2082ad0a"/>
+		<rom name="2732.a1" size="4096" crc="930dc856"/>
+		<rom name="2732.a2" size="4096" crc="66282ff5"/>
+		<rom name="2732.a3" size="4096" crc="e9d3dc76"/>
+		<rom name="2732.a4" size="4096" crc="4a4086c9"/>
+		<rom name="amidar.clr" merge="amidar.clr" size="32" crc="f940dcc3"/>
+		<rom name="amidarus.5c" size="4096" crc="8ca7b750"/>
+		<rom name="amidarus.5d" size="4096" crc="9b5bdc0a"/>
+	</game>
+	<game name="androdun" romof="neogeo">
+		<description>Andro Dunos</description>
+		<year>1992</year>
+		<manufacturer>Visco</manufacturer>
+		<rom name="adun_c1.rom" size="1048576" crc="7ace6db3"/>
+		<rom name="adun_c2.rom" size="1048576" crc="b17024f7"/>
+		<rom name="adun_c3.rom" size="1048576" crc="2e0f3f9a"/>
+		<rom name="adun_c4.rom" size="1048576" crc="4a19fb92"/>
+		<rom name="adun_m1.rom" size="131072" crc="1a009f8c"/>
+		<rom name="adun_p1.rom" size="524288" crc="3b857da2"/>
+		<rom name="adun_p2.rom" size="524288" crc="2f062209"/>
+		<rom name="adun_s1.rom" size="131072" crc="6349de5d"/>
+		<rom name="adun_v1.rom" size="524288" crc="577c85b3"/>
+		<rom name="adun_v2.rom" size="524288" crc="e14551c4"/>
+		<rom name="neo-geo.rom" merge="neo-geo.rom" size="131072" crc="9036d879"/>
+		<rom name="ng-sfix.rom" merge="ng-sfix.rom" size="131072" crc="354029fc"/>
+		<rom name="ng-sm1.rom" merge="ng-sm1.rom" size="131072" crc="97cf998b"/>
+	</game>
+	<game name="anteater">
+		<description>Anteater</description>
+		<year>1982</year>
+		<manufacturer>[Stern] (Tago license)</manufacturer>
+		<rom name="colr6f.cpu" size="32" crc="fce333c7"/>
+		<rom name="ra1-2c" size="4096" crc="58bc9393"/>
+		<rom name="ra1-2e" size="4096" crc="574fc6f6"/>
+		<rom name="ra1-2f" size="4096" crc="2f7c1fe5"/>
+		<rom name="ra1-2h" size="4096" crc="ae8a5da3"/>
+		<rom name="ra4-5c" size="2048" crc="87300b4f"/>
+		<rom name="ra4-5d" size="2048" crc="af4e5ffe"/>
+		<rom name="ra6-5f" size="2048" crc="4c3f8a08"/>
+		<rom name="ra6-5h" size="2048" crc="b30c7c9f"/>
+	</game>
+	<game name="aodk" romof="neogeo">
+		<description>Aggressors of Dark Kombat / Tsuukai GANGAN Koushinkyoku</description>
+		<year>1994</year>
+		<manufacturer>ADK / SNK</manufacturer>
+		<rom name="aodk_c1.rom" size="2097152" crc="a0b39344"/>
+		<rom name="aodk_c2.rom" size="2097152" crc="203f6074"/>
+		<rom name="aodk_c3.rom" size="2097152" crc="7fff4d41"/>
+		<rom name="aodk_c4.rom" size="2097152" crc="48db3e0a"/>
+		<rom name="aodk_c5.rom" size="2097152" crc="c74c5e51"/>
+		<rom name="aodk_c6.rom" size="2097152" crc="73e8e7e0"/>
+		<rom name="aodk_c7.rom" size="2097152" crc="ac7daa01"/>
+		<rom name="aodk_c8.rom" size="2097152" crc="14e7ad71"/>
+		<rom name="aodk_m1.rom" size="131072" crc="5a52a9d1"/>
+		<rom name="aodk_p1.rom" size="2097152" crc="62369553"/>
+		<rom name="aodk_s1.rom" size="131072" crc="96148d2b"/>
+		<rom name="aodk_v1.rom" size="2097152" crc="7675b8fa"/>
+		<rom name="aodk_v2.rom" size="2097152" crc="a9da86e9"/>
+		<rom name="neo-geo.rom" merge="neo-geo.rom" size="131072" crc="9036d879"/>
+		<rom name="ng-sfix.rom" merge="ng-sfix.rom" size="131072" crc="354029fc"/>
+		<rom name="ng-sm1.rom" merge="ng-sm1.rom" size="131072" crc="97cf998b"/>
+	</game>
+	<game name="aof" romof="neogeo">
+		<description>Art of Fighting / Ryuuko no Ken</description>
+		<year>1992</year>
+		<manufacturer>SNK</manufacturer>
+		<rom name="aof_c1.rom" size="2097152" crc="ddab98a7"/>
+		<rom name="aof_c2.rom" size="2097152" crc="d8ccd575"/>
+		<rom name="aof_c3.rom" size="2097152" crc="403e898a"/>
+		<rom name="aof_c4.rom" size="2097152" crc="6235fbaa"/>
+		<rom name="aof_m1.rom" size="131072" crc="981345f8"/>
+		<rom name="aof_p1.rom" size="524288" crc="ca9f7a6d"/>
+		<rom name="aof_s1.rom" size="131072" crc="89903f39"/>
+		<rom name="aof_v2.rom" size="2097152" crc="3ec632ea"/>
+		<rom name="aof_v4.rom" size="2097152" crc="4b0f8e23"/>
+		<rom name="neo-geo.rom" merge="neo-geo.rom" size="131072" crc="9036d879"/>
+		<rom name="ng-sfix.rom" merge="ng-sfix.rom" size="131072" crc="354029fc"/>
+		<rom name="ng-sm1.rom" merge="ng-sm1.rom" size="131072" crc="97cf998b"/>
+	</game>
+	<game name="aof2" romof="neogeo">
+		<description>Art of Fighting 2 / Ryuuko no Ken 2</description>
+		<year>1994</year>
+		<manufacturer>SNK</manufacturer>
+		<rom name="aof2_c1.rom" size="2097152" crc="17b9cbd2"/>
+		<rom name="aof2_c2.rom" size="2097152" crc="5fd76b67"/>
+		<rom name="aof2_c3.rom" size="2097152" crc="d2c88768"/>
+		<rom name="aof2_c4.rom" size="2097152" crc="db39b883"/>
+		<rom name="aof2_c5.rom" size="2097152" crc="c3074137"/>
+		<rom name="aof2_c6.rom" size="2097152" crc="31de68d3"/>
+		<rom name="aof2_c7.rom" size="2097152" crc="3f36df57"/>
+		<rom name="aof2_c8.rom" size="2097152" crc="e546d7a8"/>
+		<rom name="aof2_m1.rom" size="131072" crc="f27e9d52"/>
+		<rom name="aof2_p1.rom" size="1048576" crc="a3b1d021"/>
+		<rom name="aof2_s1.rom" size="131072" crc="8b02638e"/>
+		<rom name="aof2_v1.rom" size="2097152" crc="4628fde0"/>
+		<rom name="aof2_v2.rom" size="2097152" crc="b710e2f2"/>
+		<rom name="aof2_v3.rom" size="1048576" crc="d168c301"/>
+		<rom name="neo-geo.rom" merge="neo-geo.rom" size="131072" crc="9036d879"/>
+		<rom name="ng-sfix.rom" merge="ng-sfix.rom" size="131072" crc="354029fc"/>
+		<rom name="ng-sm1.rom" merge="ng-sm1.rom" size="131072" crc="97cf998b"/>
+	</game>
+	<game name="aof3" romof="neogeo">
+		<description>Art of Fighting 3 - The Path of the Warrior / Art of Fighting - Ryuuko no Ken Gaiden</description>
+		<year>1996</year>
+		<manufacturer>SNK</manufacturer>
+		<rom name="aof3_c1.rom" size="4194304" crc="f6c74731"/>
+		<rom name="aof3_c2.rom" size="4194304" crc="f587f149"/>
+		<rom name="aof3_c3.rom" size="4194304" crc="7749f5e6"/>
+		<rom name="aof3_c4.rom" size="4194304" crc="cbd58369"/>
+		<rom name="aof3_c5.rom" size="4194304" crc="1718bdcd"/>
+		<rom name="aof3_c6.rom" size="4194304" crc="4fca967f"/>
+		<rom name="aof3_c7.rom" size="2097152" crc="51bd8ab2"/>
+		<rom name="aof3_c8.rom" size="2097152" crc="9a34f99c"/>
+		<rom name="aof3_m1.rom" size="131072" crc="cb07b659"/>
+		<rom name="aof3_p1.rom" size="1048576" crc="9edb420d"/>
+		<rom name="aof3_p2.rom" size="2097152" crc="4d5a2602"/>
+		<rom name="aof3_s1.rom" size="131072" crc="cc7fd344"/>
+		<rom name="aof3_v1.rom" size="2097152" crc="e2c32074"/>
+		<rom name="aof3_v2.rom" size="2097152" crc="a290eee7"/>
+		<rom name="aof3_v3.rom" size="2097152" crc="199d12ea"/>
+		<rom name="neo-geo.rom" merge="neo-geo.rom" size="131072" crc="9036d879"/>
+		<rom name="ng-sfix.rom" merge="ng-sfix.rom" size="131072" crc="354029fc"/>
+		<rom name="ng-sm1.rom" merge="ng-sm1.rom" size="131072" crc="97cf998b"/>
+	</game>
+	<game name="apb">
+		<description>APB - All Points Bulletin (set 1)</description>
+		<year>1987</year>
+		<manufacturer>Atari Games</manufacturer>
+		<rom name="1101" size="65536" crc="0ef13513"/>
+		<rom name="1102" size="65536" crc="401e06fd"/>
+		<rom name="1103" size="65536" crc="50d820e8"/>
+		<rom name="1104" size="65536" crc="912d878f"/>
+		<rom name="1105" size="65536" crc="9b78a88e"/>
+		<rom name="1106" size="65536" crc="4787ff58"/>
+		<rom name="1107" size="65536" crc="0e85f2ac"/>
+		<rom name="1108" size="65536" crc="70ff9308"/>
+		<rom name="1109" size="65536" crc="6716a408"/>
+		<rom name="1110" size="65536" crc="7e184981"/>
+		<rom name="1111" size="65536" crc="353a14fd"/>
+		<rom name="1112" size="65536" crc="3af7c50f"/>
+		<rom name="1113" size="65536" crc="4a445356"/>
+		<rom name="1114" size="65536" crc="b9b27f3c"/>
+		<rom name="1115" size="65536" crc="a7671dd8"/>
+		<rom name="1116" size="65536" crc="879fc7de"/>
+		<rom name="1117" size="32768" crc="cfc3f8a3"/>
+		<rom name="1118" size="32768" crc="93752c49"/>
+		<rom name="1119" size="65536" crc="68850612"/>
+		<rom name="1120" size="65536" crc="043086f8"/>
+		<rom name="1121" size="65536" crc="c7977062"/>
+		<rom name="1122" size="65536" crc="5ee79481"/>
+		<rom name="1123" size="65536" crc="3c96c848"/>
+		<rom name="1124" size="65536" crc="27760395"/>
+		<rom name="1125" size="16384" crc="05a0341c"/>
+		<rom name="1130" size="65536" crc="f64c752e"/>
+		<rom name="1131" size="65536" crc="0a506e04"/>
+		<rom name="1132" size="65536" crc="6d0e7a4e"/>
+		<rom name="1133" size="65536" crc="af88d429"/>
+		<rom name="2126" size="16384" crc="8edf4726"/>
+		<rom name="2127" size="16384" crc="e2b2aff2"/>
+		<rom name="4134" size="16384" crc="45e03b0e"/>
+		<rom name="4135" size="16384" crc="b4ca24b2"/>
+		<rom name="4136" size="16384" crc="11efaabf"/>
+		<rom name="5128" size="65536" crc="4b4ff365"/>
+		<rom name="5129" size="65536" crc="059ab792"/>
+	</game>
+	<game name="apb2" cloneof="apb" romof="apb">
+		<description>APB - All Points Bulletin (set 2)</description>
+		<year>1987</year>
+		<manufacturer>Atari Games</manufacturer>
+		<rom name="1101" merge="1101" size="65536" crc="0ef13513"/>
+		<rom name="1102" merge="1102" size="65536" crc="401e06fd"/>
+		<rom name="1103" merge="1103" size="65536" crc="50d820e8"/>
+		<rom name="1104" merge="1104" size="65536" crc="912d878f"/>
+		<rom name="1105" merge="1105" size="65536" crc="9b78a88e"/>
+		<rom name="1106" merge="1106" size="65536" crc="4787ff58"/>
+		<rom name="1107" merge="1107" size="65536" crc="0e85f2ac"/>
+		<rom name="1108" merge="1108" size="65536" crc="70ff9308"/>
+		<rom name="1109" merge="1109" size="65536" crc="6716a408"/>
+		<rom name="1110" merge="1110" size="65536" crc="7e184981"/>
+		<rom name="1111" merge="1111" size="65536" crc="353a14fd"/>
+		<rom name="1112" merge="1112" size="65536" crc="3af7c50f"/>
+		<rom name="1113" merge="1113" size="65536" crc="4a445356"/>
+		<rom name="1114" merge="1114" size="65536" crc="b9b27f3c"/>
+		<rom name="1115" merge="1115" size="65536" crc="a7671dd8"/>
+		<rom name="1116" merge="1116" size="65536" crc="879fc7de"/>
+		<rom name="1117" merge="1117" size="32768" crc="cfc3f8a3"/>
+		<rom name="1118" merge="1118" size="32768" crc="93752c49"/>
+		<rom name="1119" merge="1119" size="65536" crc="68850612"/>
+		<rom name="1120" merge="1120" size="65536" crc="043086f8"/>
+		<rom name="1121" merge="1121" size="65536" crc="c7977062"/>
+		<rom name="1122" merge="1122" size="65536" crc="5ee79481"/>
+		<rom name="1123" merge="1123" size="65536" crc="3c96c848"/>
+		<rom name="1124" merge="1124" size="65536" crc="27760395"/>
+		<rom name="1125" merge="1125" size="16384" crc="05a0341c"/>
+		<rom name="1130" merge="1130" size="65536" crc="f64c752e"/>
+		<rom name="1131" merge="1131" size="65536" crc="0a506e04"/>
+		<rom name="1132" merge="1132" size="65536" crc="6d0e7a4e"/>
+		<rom name="1133" merge="1133" size="65536" crc="af88d429"/>
+		<rom name="2126" merge="2126" size="16384" crc="8edf4726"/>
+		<rom name="2127" merge="2127" size="16384" crc="e2b2aff2"/>
+		<rom name="4128" size="65536" crc="46009f6b"/>
+		<rom name="4129" size="65536" crc="e8ca47e2"/>
+		<rom name="5134" size="16384" crc="1c8bdeed"/>
+		<rom name="5135" size="16384" crc="ed6adb91"/>
+		<rom name="5136" size="16384" crc="341f8486"/>
+	</game>
+	<game name="appoooh">
+		<description>Appoooh</description>
+		<year>1984</year>
+		<manufacturer>Sega</manufacturer>
+		<rom name="epr-5895.bin" size="16384" crc="4b0d4294"/>
+		<rom name="epr-5896.bin" size="16384" crc="7bc84d75"/>
+		<rom name="epr-5897.bin" size="16384" crc="745f3ffa"/>
+		<rom name="epr-5898.bin" size="16384" crc="cf01644d"/>
+		<rom name="epr-5899.bin" size="16384" crc="885ad636"/>
+		<rom name="epr-5900.bin" size="16384" crc="a8ed13f3"/>
+		<rom name="epr-5901.bin" size="8192" crc="170a10a4"/>
+		<rom name="epr-5902.bin" size="8192" crc="f6981640"/>
+		<rom name="epr-5903.bin" size="8192" crc="0439df50"/>
+		<rom name="epr-5904.bin" size="8192" crc="9988f2ae"/>
+		<rom name="epr-5905.bin" size="8192" crc="fb5cd70e"/>
+		<rom name="epr-5906.bin" size="8192" crc="fffae7fe"/>
+		<rom name="epr-5907.bin" size="8192" crc="57696cd6"/>
+		<rom name="epr-5908.bin" size="8192" crc="4537cddc"/>
+		<rom name="epr-5909.bin" size="8192" crc="cf82718d"/>
+		<rom name="epr-5910.bin" size="8192" crc="312636da"/>
+		<rom name="epr-5911.bin" size="8192" crc="0bc2acaa"/>
+		<rom name="epr-5912.bin" size="8192" crc="3c3915ab"/>
+		<rom name="epr-5913.bin" size="8192" crc="f5a0e6a7"/>
+		<rom name="epr-5914.bin" size="8192" crc="58792d4a"/>
+		<rom name="pr5921.prm" size="32" crc="f2437229"/>
+		<rom name="pr5922.prm" size="256" crc="85c542bf"/>
+		<rom name="pr5923.prm" size="256" crc="16acbd53"/>
+	</game>
+	<game name="arabian">
+		<description>Arabian</description>
+		<year>1983</year>
+		<manufacturer>Sun Electronics</manufacturer>
+		<rom name="ic1rev2.87" size="8192" crc="5e1c98b8"/>
+		<rom name="ic2rev2.88" size="8192" crc="092f587e"/>
+		<rom name="ic3rev2.89" size="8192" crc="15145f23"/>
+		<rom name="ic4rev2.90" size="8192" crc="32b77b44"/>
+		<rom name="ic84.91" size="8192" crc="c4637822"/>
+		<rom name="ic85.92" size="8192" crc="f7c6866d"/>
+		<rom name="ic86.93" size="8192" crc="71acd48d"/>
+		<rom name="ic87.94" size="8192" crc="82160b9a"/>
+	</game>
+	<game name="arabiana" cloneof="arabian" romof="arabian">
+		<description>Arabian (Atari)</description>
+		<year>1983</year>
+		<manufacturer>[Sun Electronics] (Atari license)</manufacturer>
+		<rom name="ic1.87" size="8192" crc="51e9a6b1"/>
+		<rom name="ic2.88" size="8192" crc="1cdcc1ab"/>
+		<rom name="ic3.89" size="8192" crc="b7b7faa0"/>
+		<rom name="ic4.90" size="8192" crc="dbded961"/>
+		<rom name="ic84.91" merge="ic84.91" size="8192" crc="c4637822"/>
+		<rom name="ic85.92" merge="ic85.92" size="8192" crc="f7c6866d"/>
+		<rom name="ic86.93" merge="ic86.93" size="8192" crc="71acd48d"/>
+		<rom name="ic87.94" merge="ic87.94" size="8192" crc="82160b9a"/>
+	</game>
+	<game name="arbalest">
+		<description>Arbalester</description>
+		<year>1989</year>
+		<manufacturer>Seta</manufacturer>
+		<rom name="uk001.03" size="262144" crc="ee878a2c"/>
+		<rom name="uk001.04" size="262144" crc="902bb4e3"/>
+		<rom name="uk001.05" size="8192" crc="0339fc53"/>
+		<rom name="uk001.06" size="262144" crc="11c75746"/>
+		<rom name="uk001.07" size="262144" crc="01b166c7"/>
+		<rom name="uk001.08" size="262144" crc="78d60ba3"/>
+		<rom name="uk001.09" size="262144" crc="b4748ae0"/>
+		<rom name="uk001.10" size="524288" crc="c1e2f823"/>
+		<rom name="uk001.11" size="524288" crc="09dfe56a"/>
+		<rom name="uk001.12" size="524288" crc="818a4085"/>
+		<rom name="uk001.13" size="524288" crc="771fa164"/>
+		<rom name="uk001.14" size="524288" crc="016b844a"/>
+		<rom name="uk001.15" size="524288" crc="ce9df5dd"/>
+	</game>
+	<game name="arcadecl">
+		<description>Arcade Classics (prototype)</description>
+		<year>1992</year>
+		<manufacturer>Atari Games</manufacturer>
+		<rom name="adpcm" size="524288" crc="03ca7f03"/>
+		<rom name="atcl_mob" size="524288" crc="0e9b3930"/>
+		<rom name="pgm0" size="524288" crc="b5b93623"/>
+		<rom name="prog1" size="524288" crc="e7efef85"/>
+	</game>
+	<game name="archriv2" cloneof="archrivl" romof="archrivl">
+		<description>Arch Rivals (rev 2.0)</description>
+		<year>1989</year>
+		<manufacturer>Bally Midway</manufacturer>
+		<rom name="10j-rev1" merge="10j-rev1" size="131072" crc="eb3d0344"/>
+		<rom name="11d-rev1" merge="11d-rev1" size="65536" crc="7eb3d7c6"/>
+		<rom name="12d-rev1" merge="12d-rev1" size="65536" crc="31e68050"/>
+		<rom name="7j-rev1" merge="7j-rev1" size="131072" crc="148ce28c"/>
+		<rom name="8j-rev1" merge="8j-rev1" size="131072" crc="58187ac2"/>
+		<rom name="9j-rev1" merge="9j-rev1" size="131072" crc="0dd1204e"/>
+		<rom name="archrivl.1" size="65536" crc="92f3a43d"/>
+		<rom name="archrivl.2" size="65536" crc="bc4df2b9"/>
+		<rom name="archrivl.3" size="65536" crc="d6d08ff7"/>
+		<rom name="archrivl.4" size="65536" crc="3c545740"/>
+		<rom name="u19.snd" merge="u19.snd" size="32768" crc="c4b3dc23"/>
+		<rom name="u20.snd" merge="u20.snd" size="32768" crc="f7907a02"/>
+		<rom name="u4.snd" merge="u4.snd" size="32768" crc="96b3c652"/>
+	</game>
+	<game name="archrivl">
+		<description>Arch Rivals (rev 4.0)</description>
+		<year>1989</year>
+		<manufacturer>Bally Midway</manufacturer>
+		<rom name="10j-rev1" size="131072" crc="eb3d0344"/>
+		<rom name="11d-rev1" size="65536" crc="7eb3d7c6"/>
+		<rom name="12d-rev1" size="65536" crc="31e68050"/>
+		<rom name="2b-rev2" size="65536" crc="fa977050"/>
+		<rom name="2c-rev2" size="65536" crc="cc2893f7"/>
+		<rom name="3b-rev2" size="65536" crc="e0c07a8d"/>
+		<rom name="3c-rev2" size="65536" crc="60d4b760"/>
+		<rom name="7j-rev1" size="131072" crc="148ce28c"/>
+		<rom name="8j-rev1" size="131072" crc="58187ac2"/>
+		<rom name="9j-rev1" size="131072" crc="0dd1204e"/>
+		<rom name="u19.snd" size="32768" crc="c4b3dc23"/>
+		<rom name="u20.snd" size="32768" crc="f7907a02"/>
+		<rom name="u4.snd" size="32768" crc="96b3c652"/>
+	</game>
+	<game name="area88" cloneof="unsquad" romof="unsquad">
+		<description>Area 88 (Japan)</description>
+		<year>1989</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="ar36.bin" size="131072" crc="65030392"/>
+		<rom name="ar42.bin" size="131072" crc="c48170de"/>
+		<rom name="unsquad.01" merge="unsquad.01" size="524288" crc="5965ca8d"/>
+		<rom name="unsquad.03" merge="unsquad.03" size="524288" crc="ac6db17d"/>
+		<rom name="unsquad.05" merge="unsquad.05" size="524288" crc="bf4575d8"/>
+		<rom name="unsquad.07" merge="unsquad.07" size="524288" crc="a02945f4"/>
+		<rom name="unsquad.09" merge="unsquad.09" size="65536" crc="f3dd1367"/>
+		<rom name="unsquad.18" merge="unsquad.18" size="131072" crc="584b43a9"/>
+		<rom name="unsquad.31" merge="unsquad.31" size="131072" crc="33e9694b"/>
+		<rom name="unsquad.32" merge="unsquad.32" size="524288" crc="ae1d7fb0"/>
+		<rom name="unsquad.36" merge="unsquad.36" size="131072" crc="7cc8fb9e"/>
+	</game>
+	<game name="ark2jp" cloneof="arkanoi2" romof="arkanoi2">
+		<description>Arkanoid - Revenge of DOH (Japan)</description>
+		<year>1987</year>
+		<manufacturer>Taito Corporation</manufacturer>
+		<rom name="a2-05.rom" merge="a2-05.rom" size="65536" crc="136edf9d"/>
+		<rom name="a2-m01.bin" merge="a2-m01.bin" size="131072" crc="2ccc86b4"/>
+		<rom name="a2-m02.bin" merge="a2-m02.bin" size="131072" crc="056a985f"/>
+		<rom name="a2-m03.bin" merge="a2-m03.bin" size="131072" crc="274a795f"/>
+		<rom name="a2-m04.bin" merge="a2-m04.bin" size="131072" crc="9754f703"/>
+		<rom name="b08-06" size="65536" crc="adfcd40c"/>
+		<rom name="b08-07.bin" merge="b08-07.bin" size="512" crc="ea34d9f7"/>
+		<rom name="b08-08.bin" merge="b08-08.bin" size="512" crc="a4f7ebd9"/>
+	</game>
+	<game name="ark2us" cloneof="arkanoi2" romof="arkanoi2">
+		<description>Arkanoid - Revenge of DOH (US)</description>
+		<year>1987</year>
+		<manufacturer>Taito America Corporation (Romstar license)</manufacturer>
+		<rom name="a2-m01.bin" merge="a2-m01.bin" size="131072" crc="2ccc86b4"/>
+		<rom name="a2-m02.bin" merge="a2-m02.bin" size="131072" crc="056a985f"/>
+		<rom name="a2-m03.bin" merge="a2-m03.bin" size="131072" crc="274a795f"/>
+		<rom name="a2-m04.bin" merge="a2-m04.bin" size="131072" crc="9754f703"/>
+		<rom name="b08-07.bin" merge="b08-07.bin" size="512" crc="ea34d9f7"/>
+		<rom name="b08-08.bin" merge="b08-08.bin" size="512" crc="a4f7ebd9"/>
+		<rom name="b08-11.bin" size="65536" crc="99555231"/>
+		<rom name="b08-12.bin" size="65536" crc="dc84e27d"/>
+	</game>
+	<game name="arkangc" cloneof="arkanoid" romof="arkanoid">
+		<description>Arkanoid (Game Corporation bootleg)</description>
+		<year>1986</year>
+		<manufacturer>bootleg</manufacturer>
+		<rom name="07.bpr" merge="07.bpr" size="512" crc="0af8b289"/>
+		<rom name="08.bpr" merge="08.bpr" size="512" crc="abb002fb"/>
+		<rom name="09.bpr" merge="09.bpr" size="512" crc="a7c6c277"/>
+		<rom name="a75_03.rom" merge="a75_03.rom" size="32768" crc="038b74ba"/>
+		<rom name="a75_04.rom" merge="a75_04.rom" size="32768" crc="71fae199"/>
+		<rom name="a75_05.rom" merge="a75_05.rom" size="32768" crc="c76374e2"/>
+		<rom name="arkgc.1" size="32768" crc="c54232e6"/>
+		<rom name="arkgc.2" size="32768" crc="9f0d4754"/>
+	</game>
+	<game name="arkanoi2">
+		<description>Arkanoid - Revenge of DOH (World)</description>
+		<year>1987</year>
+		<manufacturer>Taito Corporation Japan</manufacturer>
+		<rom name="a2-05.rom" size="65536" crc="136edf9d"/>
+		<rom name="a2-13.rom" size="65536" crc="e8035ef1"/>
+		<rom name="a2-m01.bin" size="131072" crc="2ccc86b4"/>
+		<rom name="a2-m02.bin" size="131072" crc="056a985f"/>
+		<rom name="a2-m03.bin" size="131072" crc="274a795f"/>
+		<rom name="a2-m04.bin" size="131072" crc="9754f703"/>
+		<rom name="b08-07.bin" size="512" crc="ea34d9f7"/>
+		<rom name="b08-08.bin" size="512" crc="a4f7ebd9"/>
+	</game>
+	<game name="arkanoid">
+		<description>Arkanoid (World)</description>
+		<year>1986</year>
+		<manufacturer>Taito Corporation Japan</manufacturer>
+		<rom name="07.bpr" size="512" crc="0af8b289"/>
+		<rom name="08.bpr" size="512" crc="abb002fb"/>
+		<rom name="09.bpr" size="512" crc="a7c6c277"/>
+		<rom name="a75_01-1.rom" size="32768" crc="5bcda3b0"/>
+		<rom name="a75_03.rom" size="32768" crc="038b74ba"/>
+		<rom name="a75_04.rom" size="32768" crc="71fae199"/>
+		<rom name="a75_05.rom" size="32768" crc="c76374e2"/>
+		<rom name="a75_11.rom" size="32768" crc="eafd7191"/>
+		<rom name="arkanoid.uc" size="2048" crc="515d77b6"/>
+	</game>
+	<game name="arkarea">
+		<description>Ark Area</description>
+		<manufacturer>UPL</manufacturer>
+		<rom name="arkarea.001" size="65536" crc="09d11ab7"/>
+		<rom name="arkarea.002" size="65536" crc="051d3482"/>
+		<rom name="arkarea.003" size="65536" crc="6f45a308"/>
+		<rom name="arkarea.004" size="32768" crc="69e36af2"/>
+		<rom name="arkarea.005" size="65536" crc="9886004d"/>
+		<rom name="arkarea.006" size="65536" crc="2c0567d6"/>
+		<rom name="arkarea.007" size="65536" crc="d5684a27"/>
+		<rom name="arkarea.008" size="32768" crc="1ce1b5b9"/>
+		<rom name="arkarea.009" size="32768" crc="db1c81d1"/>
+		<rom name="arkarea.010" size="32768" crc="5a460dae"/>
+		<rom name="arkarea.011" size="32768" crc="63f022c9"/>
+		<rom name="arkarea.012" size="32768" crc="3c4c65d5"/>
+		<rom name="arkarea.013" size="32768" crc="2d409d58"/>
+	</game>
+	<game name="arkatayt" cloneof="arkanoid" romof="arkanoid">
+		<description>Arkanoid (Tayto bootleg, Japanese)</description>
+		<year>1986</year>
+		<manufacturer>bootleg</manufacturer>
+		<rom name="07.bpr" merge="07.bpr" size="512" crc="0af8b289"/>
+		<rom name="08.bpr" merge="08.bpr" size="512" crc="abb002fb"/>
+		<rom name="09.bpr" merge="09.bpr" size="512" crc="a7c6c277"/>
+		<rom name="a75_03.rom" merge="a75_03.rom" size="32768" crc="038b74ba"/>
+		<rom name="a75_04.rom" merge="a75_04.rom" size="32768" crc="71fae199"/>
+		<rom name="a75_05.rom" merge="a75_05.rom" size="32768" crc="c76374e2"/>
+		<rom name="arkanoid.1" size="32768" crc="6e0a2b6f"/>
+		<rom name="arkanoid.2" size="32768" crc="5a97dd56"/>
+	</game>
+	<game name="arkatour" cloneof="arkanoid" romof="arkanoid">
+		<description>Tournament Arkanoid (US)</description>
+		<year>1987</year>
+		<manufacturer>Taito America Corporation (Romstar license)</manufacturer>
+		<rom name="07.bpr" merge="07.bpr" size="512" crc="0af8b289"/>
+		<rom name="08.bpr" merge="08.bpr" size="512" crc="abb002fb"/>
+		<rom name="09.bpr" merge="09.bpr" size="512" crc="a7c6c277"/>
+		<rom name="arkatour.uc" size="2048" crc="2cdb6aa6"/>
+		<rom name="t_ark1.bin" size="32768" crc="e3b8faf5"/>
+		<rom name="t_ark2.bin" size="32768" crc="326aca4d"/>
+		<rom name="t_ark3.bin" size="32768" crc="5ddea3cf"/>
+		<rom name="t_ark4.bin" size="32768" crc="5fcf2e85"/>
+		<rom name="t_ark5.bin" size="32768" crc="7b76b192"/>
+	</game>
+	<game name="arkbl2" cloneof="arkanoid" romof="arkanoid">
+		<description>Arkanoid (Japanese bootleg Set 2)</description>
+		<year>1986</year>
+		<manufacturer>bootleg</manufacturer>
+		<rom name="07.bpr" merge="07.bpr" size="512" crc="0af8b289"/>
+		<rom name="08.bpr" merge="08.bpr" size="512" crc="abb002fb"/>
+		<rom name="09.bpr" merge="09.bpr" size="512" crc="a7c6c277"/>
+		<rom name="68705p3.6i" size="2048" crc="389a8cfb"/>
+		<rom name="a75_03.rom" merge="a75_03.rom" size="32768" crc="038b74ba"/>
+		<rom name="a75_04.rom" merge="a75_04.rom" size="32768" crc="71fae199"/>
+		<rom name="a75_05.rom" merge="a75_05.rom" size="32768" crc="c76374e2"/>
+		<rom name="e1.6d" size="32768" crc="dd4f2b72"/>
+		<rom name="e2.6f" size="32768" crc="bbc33ceb"/>
+	</game>
+</datafile>

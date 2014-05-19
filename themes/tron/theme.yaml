@@ -1,7 +1,6 @@
 options:
-  #TODO: IP POSITION
-  #Todo: fix romlist if no background
-  
+
+  theme_name: "Tron - by MholgateM"
   header_height: 140
   header_color: "255,255,255,0"
   logo_image: "logo.png"
@@ -14,6 +13,7 @@ options:
   item_height: 55 #main menu icon height
   num_items_per_row: 1 #number of items per row main menu
   menu_item_padding: 0
+  display_navigation_labels: no
 
   font_file: "default.ttf"
   default_font_size: 19
@@ -44,6 +44,7 @@ options:
   rom_list_image: "rom_list.png"
   rom_list_selected_image: "rom_list-selected.png"
   rom_list_offset: [20, 0, 30, 0]   #[x-position, y-position, pixels to crop from right, pixels to crop from bottom]
+  missing_boxart_image: "missing_boxart.png"
   
 menu_items:
   - label: SNES

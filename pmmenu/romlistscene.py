@@ -153,10 +153,16 @@ class RomListScene(object):
 		self.list.draw(self.screen)
 
 	def draw_boxart(self, rom_list_rect):
-		boxart = self.cfg.options.load_image(self.selected_item.boxart)
+		boxart = self.cfg.options.load_image(self.selected_item.boxart, self.cfg.options.missing_boxart_image)
 		boxart_rect = boxart.get_rect()
-		boxart_location = (rom_list_rect.width + (boxart_rect.w/2), 100)
+		avail_width = self.screen.get_width() - rom_list_rect.width
+		scale = float((avail_width * .6) / boxart_rect.w)
+		scale_size = (int(boxart_rect.w * scale), int(boxart_rect.h * scale))
+		
+		boxart = pygame.transform.smoothscale(boxart, scale_size) 
+		boxart_location = (rom_list_rect.width + ((avail_width - scale_size[0])/2), (self.screen.get_height() - scale_size[1])/2)
 		self.screen.blit(boxart, boxart_location)
+
 	
 	def draw(self):
 		self.draw_bg()
