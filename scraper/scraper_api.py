@@ -135,6 +135,7 @@ class Gamesdb_API(object):
 		#Levenshtein check to get the alias for the platform to call API
 		real_platform = self.match_platform(input_data['platform'])
 		print
+		dat_list = {}
 		if real_platform['name'].lower() == 'arcade':
 			arcade = self.match_mame_to_dat_file(input_data, real_platform['shortcode'].lower() + '.dat')
 			return arcade
