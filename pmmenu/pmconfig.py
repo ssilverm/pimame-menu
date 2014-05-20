@@ -23,6 +23,7 @@ class PMCfg:
 		theme = None
 		
 		self.screen = self.init_screen(self.options.resolution, self.options.fullscreen)
+		pygame.mouse.set_visible(self.options.show_cursor)
 		
 	def init_screen(self, size, fullscreen):
 		pygame.init()
@@ -59,6 +60,7 @@ class PMOptions:
 		self.sort_items_alphanum = opts['sort_items_alphanum']
 		self.sort_items_with_roms_first = opts['sort_items_with_roms_first']
 		self.hide_items_without_roms = opts['hide_items_without_roms']
+		self.show_cursor = opts['show_cursor']
 		self.theme_pack = "themes/" + opts['theme_pack'] + "/"
 		
 		#theme.yaml
