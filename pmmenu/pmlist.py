@@ -15,7 +15,7 @@ class PMList(pygame.sprite.OrderedUpdates):
 
 		self.rom_list = sorted(rom_list, key=lambda rom: rom['title'])
 
-		back_item = {'type': 'back', 'title': '<- Back', 'command': None}
+		back_item = {'type': 'back', 'title': '<- Back', 'image': '/home/pi/pimame/pimame-menu/assets/images/blank.png', 'command': None}
 		self.rom_list.insert(0, back_item)
 		
 		#get pre-loaded (unselected) rom list image
@@ -36,11 +36,8 @@ class PMList(pygame.sprite.OrderedUpdates):
 			label = PMLabel(list_item['title'], self.global_opts.rom_list_font, self.global_opts.rom_list_font_color, self.global_opts.rom_list_background_color, self.global_opts.rom_list_offset, False, self.rom_template)
 			label.type = list_item['type']
 			label.command = list_item['command']
+			label.boxart = list_item['image']
 			self.labels.append(label)
-		
-
-		#with open('/home/pi/pimame/result.yml', 'w') as outfile:
-			#outfile.write( yaml.dump(self.test, default_flow_style=False) )
 
 	def set_visible_items(self, first_index, last_index):
 		self.first_index = first_index

@@ -2,6 +2,7 @@ from os import listdir, system
 from os.path import isfile, isdir, join, splitext, basename
 import pygame
 from pmlabel import *
+import json
 
 
 class PMMenuItem(pygame.sprite.Sprite):
@@ -19,6 +20,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 		self.label = item_opts['label']
 		self.command = item_opts['command']
 		self.full_path = item_opts['full_path']
+		self.cache = "/home/pi/pimame/pimame-menu/.cache/" + item_opts['label'].lower() + ".cache"
 		if item_opts['icon_selected']: 
 			self.icon_selected = global_opts.theme_pack + item_opts['icon_selected']
 			self.pre_loaded_selected_icon = global_opts.load_image(self.icon_selected, global_opts.generic_menu_item_selected)
@@ -148,35 +150,33 @@ class PMMenuItem(pygame.sprite.Sprite):
 
 	def get_rom_list(self):
 		#@TODO - am I using the type field?
-		if self.full_path == False and self.extension == False:
+		
+		rom_data = None
+		if isfile(self.cache):
+					json_data=open(self.cache)
+					rom_data = json.load(json_data)
+					json_data.close()
+		if rom_data:
+			return [
+				
+					{
+						'title': f['real_name'] if ('real_name' in f) else f['file'],
+						'type': 'command',
+						'image': join( f['image_path'], f['image_file']),
+						'command': (self.command + ' \"' + (join(f['rom_path'],f['file']) if (self.full_path and self.extension) else f['file'] if (self.extension and not self.full_path) else os.path.splitext(f['file'])[0] if (not self.extension and not self.full_path) else join(f['rom_path'], os.path.splitext(f['file'])[0])) + '\"')
+					}
+					for f in rom_data
+			]
+		else:
 			return [
 				{
-					'title': f,
+					'title': os.path.splitext(os.path.basename(f))[0],
 					'type': 'command',
-					'command': self.command + ' \"' +  os.path.splitext(os.path.basename(f))[0] + '\"' 
+					'image': self.roms + 'images/' +  os.path.splitext(os.path.basename(f))[0],
+					'command': (self.command + ' \"' + (join(self.roms,f) if (self.full_path and self.extension) else f if (self.extension and not self.full_path) else os.path.splitext(f)[0] if (not self.extension and not self.full_path) else join(self.roms, os.path.splitext(f)[0])) + '\"')
 				}
 				for f in listdir(self.roms) if isfile(join(self.roms, f)) and f != '.gitkeep'
 			]
-		elif self.full_path == False and self.extension == True:
-						return [
-								{
-										'title': f,
-										'type': 'command',
-										'command': self.command + ' \"' +  os.path.splitext(os.path.basename(f))[0] + os.path.splitext(os.path.basename(f))[1] + '\"'
-								}
-								for f in listdir(self.roms) if isfile(join(self.roms, f)) and f != '.gitkeep' 
-						]
-
-
-
-		return [
-			{
-				'title': f,
-				'type': 'command',
-				'command': self.command + ' \"' + self.roms + f +'\"' 
-			}
-			for f in listdir(self.roms) if isfile(join(self.roms, f)) and f != '.gitkeep' 
-		]
 
 	def run_command(self):
 		print self.command

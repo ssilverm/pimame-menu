@@ -7,18 +7,19 @@ options:
   sort_items_alphanum: No
   sort_items_with_roms_first: Yes
   hide_items_without_roms: No
-  theme_pack: "tron" #name of the folder in /home/pi/pimame/pimame-menu/themes/
+  theme_pack: "default" #name of the folder in /home/pi/pimame/pimame-menu/themes/
 menu_items:
   - label: SNES
     visible: Yes
     roms: /home/pi/pimame/roms/snes/
     full_path: yes
+    extension: yes
     override_menu: no
     command: /home/pi/pimame/emulators/pisnes/snes9x
 
   - label: MAME4All
     visible: Yes
-    roms: /home/pi/pimame/roms/mame4all/1/
+    roms: /home/pi/pimame/roms/mame4all/
     full_path: no
     override_menu: no
     command: /home/pi/pimame/emulators/mame4all-pi/mame 
@@ -32,7 +33,7 @@ menu_items:
 
   - label: AdvMAME
     visible: Yes
-    roms: /home/pi/pimame/roms/advmame/1/
+    roms: /home/pi/pimame/roms/advmame/
     full_path: no
     command: advmame 
 
@@ -48,6 +49,7 @@ menu_items:
     visible: Yes
     roms: /home/pi/pimame/roms/genesis/
     full_path: yes
+    extension: yes
     command: /home/pi/pimame/emulators/dgen-sdl-1.32/dgen
 
   - label: NES
@@ -91,6 +93,7 @@ menu_items:
     visible: Yes
     roms: /home/pi/pimame/roms/gb/
     full_path: yes
+    extension: yes
     command: /home/pi/pimame/emulators/Gearboy/platforms/raspberrypi/Gearboy/gearboy.bin
 
   - label: Gameboy Advance

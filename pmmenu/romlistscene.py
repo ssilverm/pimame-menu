@@ -1,9 +1,12 @@
+import thread, time
 import pygame
 from pmlist import *
 from pmutil import *
 
 class RomListScene(object):
 
+	SCENE_NAME = 'romlist'
+	
 	DIRECTION_UP = 'up'
 	DIRECTION_DOWN = 'down'
 	DIRECTION_LEFT = 'left'
@@ -11,11 +14,11 @@ class RomListScene(object):
 
 	selected_item = None
 	sprites = []
+	
+	boxart_thread = None
 
 	def __init__(self, rom_list):
 		super(RomListScene, self).__init__()
-		#self.font = pygame.font.SysFont('Arial', 52)
-		#self.sfont = pygame.font.SysFont('Arial', 32)
 		self.rom_list = rom_list
 
 	def draw_bg(self):
@@ -152,6 +155,29 @@ class RomListScene(object):
 
 		self.list.draw(self.screen)
 
+	def draw_boxart(self, rom_list_rect, delay):
+		for i in range(0, delay):
+			time.sleep(.01)
+			if thread.get_ident() != self.boxart_thread: thread.exit()
+			
+		
+		boxart = self.cfg.options.load_image(self.selected_item.boxart, self.cfg.options.missing_boxart_image)
+		boxart_rect = boxart.get_rect()
+		avail_width = self.screen.get_width() - rom_list_rect.width
+		scale = float((avail_width * .6) / boxart_rect.w)
+		scale_size = (int(boxart_rect.w * scale), int(boxart_rect.h * scale))
+		
+		if thread.get_ident() != self.boxart_thread: thread.exit()
+		
+		try:
+			boxart = pygame.transform.smoothscale(boxart, scale_size) 
+		except:
+			boxart = pygame.transform.scale(boxart, scale_size)
+			
+		boxart_location = (rom_list_rect.width + ((avail_width - scale_size[0])/2), (self.screen.get_height() - scale_size[1])/2)
+		
+		if self.manager.scene.SCENE_NAME == 'romlist': self.screen.blit(boxart, boxart_location)
+	
 	def draw(self):
 		self.draw_bg()
 		self.draw_list()
@@ -159,16 +185,16 @@ class RomListScene(object):
 		text = self.selected_item.text
 		rect = self.selected_item.rect
 
-		rect.width = pygame.display.Info().current_w
-
-		#pygame.draw.rect(self.screen, self.cfg.options.rom_dot_color, rect)
+		#rect.width = pygame.display.Info().current_w
 		
 		#build and draw selected item on the fly
 		selected_romlist_image = self.cfg.options.pre_loaded_romlist_selected.convert_alpha()
-		#rom_template = PMLabel('', self.cfg.options.rom_list_font, self.cfg.options.rom_list_font_selected_color, self.cfg.options.rom_list_background_selected_color, self.cfg.options.rom_list_offset, selected_romlist_image)
+
 		selected_label = PMLabel(text, self.cfg.options.rom_list_font, self.cfg.options.rom_list_font_selected_color, self.cfg.options.rom_list_background_selected_color, self.cfg.options.rom_list_offset, False, self.list.selected_rom_template)
 
 		self.screen.blit(selected_label.image, rect)
+		
+		self.boxart_thread = thread.start_new_thread(self.draw_boxart, (rect, 20,))
 
 	def run_sprite_command(self, sprite):
 		if(sprite.type == 'back'):

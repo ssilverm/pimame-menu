@@ -13,6 +13,9 @@ for i in range(js_count):
   js.init()
 
 class MainScene(object):
+
+	SCENE_NAME = 'main'
+	
 	selected_index = 0
 	pre_rendered = False
 
@@ -113,6 +116,7 @@ class MainScene(object):
 			screen_width = pygame.display.Info().current_w
 			item_width = ((screen_width - padding) / self.cfg.options.num_items_per_row) - padding
 			
+			self.screen.fill(self.cfg.options.background_color, selected_item.rect)
 			self.screen.blit(self.cfg.options.pre_loaded_background, selected_item.rect, pygame.Rect(selected_item.rect[0], selected_item.rect[1], item_width, self.cfg.options.item_height))
 			
 			pygame.sprite.RenderPlain(selected_item).draw(self.screen)
@@ -122,6 +126,7 @@ class MainScene(object):
 		screen_width = pygame.display.Info().current_w
 		item_width = ((screen_width - padding) / self.cfg.options.num_items_per_row) - padding
 		
+		self.screen.fill(self.cfg.options.background_color, self.selection.rect)
 		self.screen.blit(self.cfg.options.pre_loaded_background, self.selection.rect, pygame.Rect(self.selection.rect[0], self.selection.rect[1], item_width, self.cfg.options.item_height))
 			
 		selection = pygame.sprite.RenderPlain((self.selection))
@@ -161,8 +166,9 @@ class MainScene(object):
 		# @TODO: use this get_width() method everywhere instead of get_info()!
 		background = pygame.Surface([self.screen.get_width(), self.screen.get_height()], pygame.SRCALPHA, 32).convert_alpha()
 		background_image = self.cfg.options.pre_loaded_background
+		background.fill(self.cfg.options.background_color)
 		background.blit(background_image, (0,0))
-		#background.fill(self.cfg.options.background_color)     # fill white
+		
 		self.grid.clear(self.screen, background)
 		self.grid.draw(self.screen)
 

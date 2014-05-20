@@ -1,4 +1,5 @@
 import yaml
+from os.path import isfile
 import pygame
 from menuitem import *
 from pmgrid import *
@@ -31,7 +32,7 @@ class PMCfg:
 		if fullscreen:
 			flag = pygame.FULLSCREEN
 
-		return pygame.display.set_mode(size, flag)
+		return pygame.display.set_mode(size, flag, 32)
 
 
 class PMOptions:
@@ -73,6 +74,7 @@ class PMOptions:
 		self.item_height = theme['item_height']
 		self.num_items_per_row = theme['num_items_per_row']
 		self.padding = theme['menu_item_padding']
+		self.display_navigation_labels = theme['display_navigation_labels']
 		
 		self.font_file = theme['font_file']
 		self.default_font_size = theme['default_font_size']
@@ -105,6 +107,7 @@ class PMOptions:
 
 		#items to be pre-loaded for efficiency
 		pygame.font.init()
+		self.blank_image = pygame.image.load('/home/pi/pimame/pimame-menu/assets/images/blank.png')
 		self.font = pygame.font.Font(self.theme_pack + self.font_file, self.default_font_size)
 		self.label_font = pygame.font.Font(self.theme_pack + self.font_file, self.label_font_size)
 		self.rom_count_font = pygame.font.Font(self.theme_pack + self.font_file, self.rom_count_font_size)
@@ -112,7 +115,9 @@ class PMOptions:
 		self.pre_loaded_background = self.load_image(self.theme_pack + self.background_image)
 		self.pre_loaded_romlist = self.load_image(self.theme_pack + theme['rom_list_image'])
 		self.pre_loaded_romlist_selected = self.load_image(self.theme_pack + theme['rom_list_selected_image'])
-		self.romlist_item_height = max(self.pre_loaded_romlist.get_rect().h,self.rom_list_font.size('Ip')[1])
+		self.romlist_item_height = max(self.pre_loaded_romlist.get_rect().h, self.rom_list_font.size('Ip')[1])
+		self.missing_boxart_image = (self.theme_pack + theme['missing_boxart_image']) if isfile(self.theme_pack + theme['missing_boxart_image']) else ('/home/pi/pimame/pimame-menu/assets/images/missing_boxart.png')
+		
 
 
 	def get_color(self, color_str):
@@ -130,9 +135,9 @@ class PMOptions:
 					return pygame.image.load(alternate_image)
 				except:
 					print 'cant load: ', alternate_image
-					return pygame.image.load('/home/pi/pimame/pimame-menu/assets/images/blank.png')
+					return self.blank_image
 			print 'cant load: ', file_path
-			return pygame.image.load('/home/pi/pimame/pimame-menu/assets/images/blank.png')
+			return self.blank_image
 		
 
 

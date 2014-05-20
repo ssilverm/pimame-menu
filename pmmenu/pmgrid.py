@@ -36,7 +36,7 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 
 	def create_nav_menu_item(self, label, icon_file = False, icon_selected = False):
 		item = {}
-		item['label'] = label
+		item['label'] = '' if not self.options.display_navigation_labels else label
 		item['visible'] = True
 		item['icon_file'] = icon_file
 		item['icon_selected'] = icon_selected
