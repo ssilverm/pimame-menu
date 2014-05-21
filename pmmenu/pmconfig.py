@@ -3,6 +3,7 @@ from os.path import isfile
 import pygame
 from menuitem import *
 from pmgrid import *
+import sys
 
 class PMCfg:
 	def __init__(self):
@@ -26,13 +27,20 @@ class PMCfg:
 		
 	def init_screen(self, size, fullscreen):
 		pygame.init()
+		pygame.display.init()
+		dinfo = pygame.display.Info()
+
 		#return pygame.display.set_mode(size,0,32)
 
 		flag = 0
 		if fullscreen:
 			flag = pygame.FULLSCREEN
-
-		return pygame.display.set_mode(size, flag, 32)
+		
+		if (pygame.display.mode_ok((dinfo.current_w,dinfo.current_h),pygame.FULLSCREEN)):
+			return pygame.display.set_mode((dinfo.current_w, dinfo.current_h), flag)
+		else:
+			pygame.quit()
+			sys.exit()
 
 
 class PMOptions:
