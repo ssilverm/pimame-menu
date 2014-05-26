@@ -3,7 +3,7 @@
 #						[python get-pip.py]
 
 
-import urllib, urllib2, yaml, zipfile, zlib, os, json, re, sys
+import urllib, urllib2, yaml, zipfile, zlib, os, json, re, sys, shutil
 import platform
 from Levenshtein import ratio
 from os import listdir
@@ -11,6 +11,7 @@ from os.path import isfile, join
 
 import xml.etree.ElementTree as Tree
 
+RESPONSE = {'y': True, 'ye': True, 'yes': True, 'n': False, 'no': False}
 
 class Platform(object):
 
@@ -133,6 +134,7 @@ class Gamesdb_API(object):
 
 	def match_rom_to_db(self, input_data, compare_dat=True, min_match_ratio=.6):
 		#Levenshtein check to get the alias for the platform to call API
+		dat_list = {}
 		real_platform = self.match_platform(input_data['platform'])
 		print
 		if real_platform['name'].lower() == 'arcade':
@@ -195,7 +197,7 @@ class Gamesdb_API(object):
 					
 			hi_score = min_match_ratio
 			best_match_game = -1
-			rom_name = re.sub(r'\([^)]*\)|\[[^)]*\]', '', game if game is not None else os.path.splitext(rom)[0]).strip()
+			rom_name = re.sub(r'( *)\([^)]*\)|( *)\[[^]]*\]', '', game if game is not None else os.path.splitext(rom)[0]).strip()
 			for index, game_entry in enumerate(game_info):
 				Lratio = ratio(rom_name, game_entry.ascii_title)
 				if Lratio > hi_score:
@@ -209,7 +211,7 @@ class Gamesdb_API(object):
 					'image_path': input_data['image_path'], 
 					'image_file': image_file, 
 					'file': rom, 
-					'real_name': game_info[best_match_game].title, 
+					'real_name': rom_name if game is not None else game_info[best_match_game].title, 
 					'art': game_info[best_match_game].box_art, 
 					'logo': game_info[best_match_game].clear_logo, 
 					'thumb': game_info[best_match_game].box_thumb, 
@@ -233,46 +235,74 @@ class Gamesdb_API(object):
 		dat_list.clear()
 		return rom_list
 		
-	def match_mame_to_dat_file(self, input_data, dat_file):
-		print "Loading %s..." % dat_file
-		input_data['image_path'] = '/home/pi/pimame/pimame-menu/assets/images/MAME/'
-		root = Tree.parse('/home/pi/pimame/pimame-menu/assets/dat/' + dat_file).getroot()
+	def match_mame_to_dat_file(self, input_data, dat_file, show_clones = False, CRC_check = False):
+		answer = ''
+		while not answer in RESPONSE:
+			answer = raw_input('Include clones in romlist?: ').lower()
+			
+		show_clones = RESPONSE[answer]
 		
+		print "Loading %s..." % dat_file
+		if dat_file == 'final burn.dat':
+			input_data['image_path'] = '/home/pi/pimame/pimame-menu/assets/images/FBA/'
+		else:
+			input_data['image_path'] = '/home/pi/pimame/pimame-menu/assets/images/MAME/'
+		
+		root = Tree.parse('/home/pi/pimame/pimame-menu/assets/dat/' + dat_file).getroot()
+				
 		#load rom filenames, initialize rom_list to return matches
 		roms = self.get_stored_roms(input_data['rom_path'])
 		rom_list = []
 		for rom in roms:
-			rom_file = {}
-			try:
-				file = zipfile.ZipFile(os.path.join(input_data['rom_path'],rom), "r")
-			except: continue
-			crc_list = {}
-			for info in file.infolist():
-				crc = "%08x" % info.CRC
-				crc_list[crc] = crc
+			if CRC_check:
+				try:
+					file = zipfile.ZipFile(os.path.join(input_data['rom_path'],rom), "r")
+				except: continue
+				crc_list = {}
+				for info in file.infolist():
+					crc = "%08x" % info.CRC
+					crc_list[crc] = crc
 			
 			#find rom entry in dat file
 			game = root.find("./game/[@name='" + os.path.splitext(rom)[0] + "']")
 			missing_file = False
 			if game is not None:
-				for element in game:
-					if element.tag == 'rom':
-						if not 'merge' in element.attrib:
-							if not element.attrib['crc'] in crc_list:
-								missing_file = True
-								print ("%12s - %s") % (rom, pcolor('red', "crc doesn't match"))
-								break
-					if element.tag == 'description':
-						title = element.text
+				if not show_clones and 'cloneof' in game.attrib:
+					missing_file = True
+				else:
+					if show_clones or not 'cloneof' in game.attrib:
+						for element in game:
+							if element.tag == 'description':
+								title = element.text
+							if element.tag == 'rom' and CRC_check:
+								if not 'merge' in element.attrib:
+									if not element.attrib['crc'] in crc_list:
+										missing_file = True
+										print ("%12s - %s") % (rom, pcolor('red', rom + " -crc for file: " + element.attrib['name'] + " doesn't match"))
+					
 						
 				if not missing_file:
 						print ("%12s - %s")  % (rom, pcolor('green', 'Verified'))
-						image_file = os.path.splitext(rom)[0] + '.png' if isfile(join(input_data['image_path'], os.path.splitext(rom)[0] + '.png')) else '/home/pi/pimame/pimame-menu/assets/images/blank.png'
+						image_file = os.path.splitext(rom)[0] + '.png' if isfile(join(input_data['image_path'], os.path.splitext(rom)[0] + '.png')) else ''
 						
 						rom_list.append({'rom_path': input_data['rom_path'], 'image_path': input_data['image_path'], 'image_file': image_file, 'file': rom, 'real_name': title, 'platform': input_data['platform']})
 		return rom_list
-
+	
+	#function not used, match images from image_path with same name as games in dat file then copy them to output folder
+	def match_images_to_dat(self, image_path, dat_file, output_path = 'match to dat/', file_ext = '.png'):
+		if not os.path.exists(join(image_path, output_path)): os.makedirs(join(image_path, output_path))
 		
+		print "Loading %s..." % dat_file
+		root = Tree.parse('/home/pi/pimame/pimame-menu/assets/dat/' + dat_file).getroot()
+		
+		for game in root:
+			if game.tag == 'game':
+				game_name = (game.attrib['cloneof'] if 'cloneof' in game.attrib else game.attrib['name']) + file_ext
+				src = join(image_path, game_name)
+				dst = join(image_path, output_path)
+				if isfile(src):
+					shutil.copy(src, dst)
+					print src
 	
 	def build_cache_file(self, rom_list):
 		if not rom_list: 
