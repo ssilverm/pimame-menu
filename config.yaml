@@ -7,8 +7,8 @@ options:
   sort_items_alphanum: No
   sort_items_with_roms_first: Yes
   hide_items_without_roms: No
-  show_cursor: Yes
-  theme_pack: "default" #name of the folder in /home/pi/pimame/pimame-menu/themes/
+  show_cursor: No
+  theme_pack: "tron" #name of the folder in /home/pi/pimame/pimame-menu/themes/
 menu_items:
   - label: SNES
     visible: Yes
@@ -56,9 +56,9 @@ menu_items:
   - label: NES
     visible: Yes
     roms: /home/pi/pimame/roms/nes/
-    full_path: no
+    full_path: yes
     extension: yes
-    command: advmess nes -cart
+    command: /home/pi/pimame/emulators/fceux/fceux
 
   - label: Atari 2600
     visible: Yes
