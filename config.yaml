@@ -127,3 +127,9 @@ menu_items:
     command: wget -O - http://pimame.org/update.sh | bash
     override_menu: yes
 
+  - label: Rom Scraper
+    visible: Yes
+    full_path: no
+    command: python /home/pi/pimame/pimame-menu/scraper/scrape_script.py
+    override_menu: yes
+

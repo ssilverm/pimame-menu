@@ -2,13 +2,13 @@
 import scraper_api
 from scraper_api import pcolor
 import urllib
-import os
+import os, sys
 from os.path import isfile, join
+
+os.system('clear')
 
 #load gamesdb api
 scraper = scraper_api.Gamesdb_API()
-
-
 
 scrape_list = []
 response = {'y': True, 'ye': True, 'yes': True, 'n': False, 'no': False}
@@ -46,7 +46,6 @@ for category in scrape_list:
 		if response[image_answer]:
 			scraper.download_image(rom_data, image_type = 'thumb')
 		scraper.build_cache_file(rom_data)
-	
 
 	
 	

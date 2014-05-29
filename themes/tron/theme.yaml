@@ -110,3 +110,7 @@ menu_items:
   - label: Update PiMAME
     icon_file: update.png
     icon_selected: update-selected.png
+
+  - label: Rom Scraper
+    icon_file: scraper.png
+    icon_selected: scraper-selected.png
