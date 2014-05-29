@@ -8,10 +8,7 @@ import platform
 from Levenshtein import ratio
 from os import listdir
 from os.path import isfile, join
-
 import xml.etree.ElementTree as Tree
-
-RESPONSE = {'y': True, 'ye': True, 'yes': True, 'n': False, 'no': False}
 
 class Platform(object):
 
@@ -81,6 +78,9 @@ class APIException(Exception):
 		return self.msg
 		
 class Gamesdb_API(object):
+	def __init__(self):
+		self.OPT_SHOW_CLONES = True
+		self.OPT_OVERWRITE_IMAGES = False
 
 	def load_yaml(self, file):
 		stream = open(file, 'r')
@@ -99,6 +99,11 @@ class Gamesdb_API(object):
 	def build_rom_list(self, search_platform='all'):
 		rom_locations = []
 		config_query = self.load_yaml('/home/pi/pimame/pimame-menu/config.yaml')
+		
+		if 'scraper_options' in config_query:
+			if 'show_clones' in config_query['scraper_options']: self.OPT_SHOW_CLONES = config_query['scraper_options']['show_clones']
+			if 'overwrite_images' in config_query['scraper_options']: self.OPT_OVERWRITE_IMAGES = config_query['scraper_options']['overwrite_images']
+
 		for data_block in config_query['menu_items']:
 			if 'roms' in data_block:
 				if 'images' in data_block: image_path = data_block['images']
@@ -235,18 +240,13 @@ class Gamesdb_API(object):
 		dat_list.clear()
 		return rom_list
 		
-	def match_mame_to_dat_file(self, input_data, dat_file, show_clones = False, CRC_check = False):
-		answer = ''
-		while not answer in RESPONSE:
-			answer = raw_input('Include clones in romlist?: ').lower()
-			
-		show_clones = RESPONSE[answer]
-		
+	def match_mame_to_dat_file(self, input_data, dat_file, CRC_check = False):
+		print "show clones: %s" % self.OPT_SHOW_CLONES
 		print "Loading %s..." % dat_file
 		if dat_file == 'final burn.dat':
-			input_data['image_path'] = '/home/pi/pimame/pimame-menu/assets/images/FBA/'
+			dl_image_path = 'https://raw.githubusercontent.com/mholgatem/pi-scraper/master/images/FBA/'
 		else:
-			input_data['image_path'] = '/home/pi/pimame/pimame-menu/assets/images/MAME/'
+			dl_image_path = 'https://raw.githubusercontent.com/mholgatem/pi-scraper/master/images/MAME/'
 		
 		root = Tree.parse('/home/pi/pimame/pimame-menu/assets/dat/' + dat_file).getroot()
 				
@@ -267,10 +267,10 @@ class Gamesdb_API(object):
 			game = root.find("./game/[@name='" + os.path.splitext(rom)[0] + "']")
 			missing_file = False
 			if game is not None:
-				if not show_clones and 'cloneof' in game.attrib:
+				if not self.OPT_SHOW_CLONES and 'cloneof' in game.attrib:
 					missing_file = True
 				else:
-					if show_clones or not 'cloneof' in game.attrib:
+					if self.OPT_SHOW_CLONES or not 'cloneof' in game.attrib:
 						for element in game:
 							if element.tag == 'description':
 								title = element.text
@@ -285,7 +285,17 @@ class Gamesdb_API(object):
 						print ("%12s - %s")  % (rom, pcolor('green', 'Verified'))
 						image_file = os.path.splitext(rom)[0] + '.png' if isfile(join(input_data['image_path'], os.path.splitext(rom)[0] + '.png')) else ''
 						
-						rom_list.append({'rom_path': input_data['rom_path'], 'image_path': input_data['image_path'], 'image_file': image_file, 'file': rom, 'real_name': title, 'platform': input_data['platform']})
+						rom_list.append({
+							'rom_path': input_data['rom_path'], 
+							'image_path': input_data['image_path'], 
+							'image_file': os.path.splitext(rom)[0] + '.png', 
+							'file': rom, 
+							'real_name': title,
+							'art': dl_image_path + os.path.splitext(rom)[0] + '.png',
+							'logo': dl_image_path + os.path.splitext(rom)[0] + '.png',
+							'thumb': dl_image_path + os.path.splitext(rom)[0] + '.png',
+							'platform': input_data['platform']
+						})
 		return rom_list
 	
 	#function not used, match images from image_path with same name as games in dat file then copy them to output folder
@@ -327,48 +337,59 @@ class Gamesdb_API(object):
 	
 		
 	#Download images - image type can be art, logo, or thumb
-	def download_image(self, rom_data, image_type = 'art', overwrite_existing = False):
+	def download_image(self, rom_data, image_type = 'art'):
+		
 		if not rom_data: 
 			return
+			
 		size = len(rom_data)
+		print "Checking images for %s roms." % str(size)
+		
 		if not os.path.exists(rom_data[0]['image_path']): os.makedirs(rom_data[0]['image_path'])
+		
 		for index, rom in enumerate(rom_data):
+
 			if rom['image_file'] != '':
+			
 				if image_type == 'logo': rom['image_file'] = os.path.splitext(rom['image_file'])[0] + '.png'
-				if not isfile(join(rom['image_path'],rom['image_file'])) or overwrite_existing:
+				
+				if not isfile(join(rom['image_path'],rom['image_file'])) or self.OPT_OVERWRITE_IMAGES:
 					api_url = urllib2.Request(rom[image_type], headers={'User-Agent' : "Pi-Scraper"})
-					response = urllib2.urlopen(api_url)
-					meta = response.info()
-					
-					#if not boxart - get meta response
-					if not 'image' in meta.getheaders("Content-Type")[0] and image_type != 'art':
-						api_url = urllib2.Request(rom['art'], headers={'User-Agent' : "Pi-Scraper"})
+					try:
 						response = urllib2.urlopen(api_url)
 						meta = response.info()
-					
-					#open local file to write image to
-					if 'image' in meta.getheaders("Content-Type")[0]:
-						f = open(rom['image_path'] + rom['image_file'], 'wb')
-						file_size = int(meta.getheaders("Content-Length")[0])
-						print "Downloading: %s Bytes: %s" % (pcolor('green',rom['image_file']), file_size)
+						
+						#if not boxart - get meta response
+						if not 'image' in meta.getheaders("Content-Type")[0] and image_type != 'art':
+							api_url = urllib2.Request(rom['art'], headers={'User-Agent' : "Pi-Scraper"})
+							response = urllib2.urlopen(api_url)
+							meta = response.info()
+						
+						#open local file to write image to
+						if 'image' in meta.getheaders("Content-Type")[0]:
+							f = open(rom['image_path'] + rom['image_file'], 'wb')
+							file_size = int(meta.getheaders("Content-Length")[0])
+							print "Downloading: %s [%dkb]" % (pcolor('green',rom['image_file']), file_size/1000)
 
-						file_size_dl = 0
-						block_sz = 1024
-						while True:
-							buffer = response.read(block_sz)
-							if not buffer:
-								break
+							file_size_dl = 0
+							block_sz = 1024
+							while True:
+								buffer = response.read(block_sz)
+								if not buffer:
+									break
 
-							file_size_dl += len(buffer)
-							f.write(buffer)
-							status = r"[%3.2f%%]" % (file_size_dl * 100. / file_size)
-							status = status + chr(8)*(len(status)+1)
-							sys.stdout.write('%s      \r' % (status))
-							sys.stdout.flush()
+								file_size_dl += len(buffer)
+								f.write(buffer)
+								status = r"%10dkb/%dkb  [%3.2f%%]" % (file_size_dl/1000, file_size/1000, file_size_dl * 100. / file_size)
+								status = status + chr(8)*(len(status)+1)
+								sys.stdout.write('%s      \r' % (status))
+								sys.stdout.flush()
 
-						f.close()
-					else:
-						print "No image for: %s" % pcolor('red',rom['real_name'])
+							f.close()
+						else:
+							print "No image file found for: %s" % pcolor('red',rom['real_name'])
+					except urllib2.HTTPError, e:
+						print "No image file found for: %s" % pcolor('red',rom['real_name'])
 				else:
 					print "File already exists: %s" % pcolor('cyan',rom['image_file'])
 		
