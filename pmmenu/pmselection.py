@@ -48,7 +48,7 @@ class PMSelection(pygame.sprite.Sprite):
 			
 			#ReDraw label ontop of menu_item 
 			if global_opts.display_labels:
-				label = PMLabel(menu_item.label, global_opts.label_font, global_opts.label_font_selected_color, global_opts.label_background_selected_color)
+				label = PMLabel(menu_item.label, global_opts.label_font, global_opts.label_font_selected_color, global_opts.label_background_selected_color, global_opts.label_font_selected_bold)
 				textpos = label.rect
 				textpos.x = global_opts.labels_offset[0]
 				textpos.y = global_opts.labels_offset[1]
@@ -66,7 +66,7 @@ class PMSelection(pygame.sprite.Sprite):
 						#pygame.draw.rect(self.image, global_opts.rom_dot_color, rom_rect)
 
 						#text = font.render(str(num_roms), 1, (255, 255, 255))
-						label = PMLabel(str(menu_item.num_roms), global_opts.rom_count_font, global_opts.rom_count_font_selected_color, global_opts.rom_count_background_selected_color)
+						label = PMLabel(str(menu_item.num_roms), global_opts.rom_count_font, global_opts.rom_count_font_selected_color, global_opts.rom_count_background_selected_color, global_opts.rom_count_font_selected_bold)
 						textpos = label.rect
 
 						textpos.centerx = rom_rect[0] + rom_rect[2] / 2

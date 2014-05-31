@@ -67,8 +67,6 @@ class PMMenuItem(pygame.sprite.Sprite):
 		item_width = ((screen_width - global_opts.padding) / global_opts.num_items_per_row) - global_opts.padding
 
 		self.image = pygame.Surface([item_width, global_opts.item_height], pygame.SRCALPHA, 32).convert_alpha()
-		#self.image = image.convert_alpha()
-		#self.image.fill(global_opts.item_color)
 
 		if item_opts['icon_file']:
 			icon_file_path = global_opts.theme_pack + item_opts['icon_file']
@@ -99,10 +97,8 @@ class PMMenuItem(pygame.sprite.Sprite):
 			icon = pygame.transform.smoothscale(icon, icon_size)
 			self.image.blit(icon, ((avail_icon_width - icon_size[0]) / 2 + global_opts.padding, (avail_icon_height - icon_size[1]) / 2 + global_opts.padding))
 
-		#font = pygame.font.Font(global_opts.font_file, global_opts.font_size)
-		#text = font.render(self.label, 1, (0, 0, 0))
 		if global_opts.display_labels:
-			label = PMLabel(self.label, global_opts.label_font, global_opts.label_font_color, global_opts.label_background_color)
+			label = PMLabel(self.label, global_opts.label_font, global_opts.label_font_color, global_opts.label_background_color, global_opts.label_font_bold)
 			textpos = label.rect
 			textpos.x = global_opts.labels_offset[0]
 			textpos.y = global_opts.labels_offset[1]
@@ -121,7 +117,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 					rom_rect = (global_opts.rom_count_offset[0], global_opts.rom_count_offset[1],30,30)
 
 					#text = font.render(str(num_roms), 1, (255, 255, 255))
-					label = PMLabel(str(self.num_roms), global_opts.rom_count_font, global_opts.rom_count_font_color, global_opts.rom_count_background_color)
+					label = PMLabel(str(self.num_roms), global_opts.rom_count_font, global_opts.rom_count_font_color, global_opts.rom_count_background_color, global_opts.rom_count_font_bold)
 					textpos = label.rect
 
 					textpos.centerx = rom_rect[0] + rom_rect[2] / 2
@@ -129,22 +125,18 @@ class PMMenuItem(pygame.sprite.Sprite):
 					self.image.blit(label.image, textpos)
 
 		self.rect = self.image.get_rect()
-		#print self.command
-
-		#self.sprite = pygame.image.load(opts['icon_file']).convert_alpha()
-
-	#def draw(self, screen, item_color, pos):
-	#	self.sprite = pygame.draw.rect(screen, item_color, pos)
-	#	return self.sprite
-
-	#def get_pos(self):
-	#	return self.sprite.x + ',' + self.sprite.y
 
 	def update_num_roms(self):
-		if not isdir(self.roms):
-			return 0
+	
+		if isfile(self.cache):
+					json_data=open(self.cache)
+					files = json.load(json_data)
+					json_data.close()
+		else:
+			if not isdir(self.roms):
+				return 0
 
-		files = [ f for f in listdir(self.roms) if isfile(join(self.roms,f)) and f != '.gitkeep'  ]
+			files = [ f for f in listdir(self.roms) if isfile(join(self.roms,f)) and f != '.gitkeep'  ]
 
 		self.num_roms = len(files)
 

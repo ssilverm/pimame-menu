@@ -24,27 +24,44 @@ options:
   labels_offset: [30,20]
   label_font_size: 19
   label_font_color: "0,0,0"
-  label_background_color: "255,255,255,255"
+  label_font_bold: no
+  label_background_color: "255,255,255,150"
   label_font_selected_color: "255,255,255"
+  label_font_selected_bold: no
   label_background_selected_color: "100,100,100,255"
   
-  display_rom_count: no
+  display_rom_count: yes
   rom_count_offset: [180,180]
   rom_count_font_size: 19
   rom_count_font_color: "255,255,255,128"
+  rom_count_font_bold: no
   rom_count_background_color: "228,56,65,128"
   rom_count_font_selected_color: "255,255,255,255"
+  rom_count_font_selected_bold: no
   rom_count_background_selected_color: "228,56,65,255"
   
   rom_list_font_size: 19
+  rom_list_font_align: left #left, right, center
   rom_list_font_color: "0,255,255"
+  rom_list_font_bold: no
   rom_list_background_color: "0,0,0,180"
   rom_list_font_selected_color: "255,255,255,255"
+  rom_list_font_selected_bold: no
   rom_list_background_selected_color: "228,56,65,255"
   rom_list_image: "rom_list.png"
   rom_list_selected_image: "rom_list-selected.png"
-  rom_list_offset: [10, 0, 0, 0]   #[x-position, y-position, pixels to crop from right, pixels to crop from bottom]
+  rom_list_offset: [0, 0, 0, 0]   #[x-position, y-position, pixels to crop from right, pixels to crop from bottom]
+  rom_list_orientation: vertical
+  rom_list_align: left
+  rom_list_alignment_padding: 0
+  rom_list_min_height: auto
+  rom_list_min_width: 600
+
   missing_boxart_image: "missing_boxart.png"
+  boxart_offset: [0,0] #[x,y]
+  boxart_underlay: no #if yes, redraws rom list after boxart loads
+  boxart_max_width: 60%
+  boxart_max_height: 70%
   
 menu_items:
   - label: SNES
