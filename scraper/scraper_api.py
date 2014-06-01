@@ -117,7 +117,7 @@ class Gamesdb_API(object):
 	#Return only files in directory, need to add whitelist of potential rom extensions (.nes, .bin, .zip)	
 	def get_stored_roms(self, path):
 		try:
-			fname = [ f for f in listdir(path) if isfile(join(path,f)) ]
+			fname = [ f for f in listdir(path) if isfile(join(path,f)) and f != '.gitkeep' ]
 			return sorted(fname)
 		except:
 			return []
