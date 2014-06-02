@@ -5,13 +5,13 @@ options:
   header_color: "255,255,255,255"
   logo_image: "logo.png"
   background_image: ""
-  background_color: "75,75,75"
+  background_color: "75,75,75" 
   generic_menu_item: "generic_menu_item.png"
   generic_menu_item_selected: "generic_menu_item-selected.png"
   item_color: "255,255,255,128"
   disabled_alpha: 128
   item_height: 220 #main menu icon height
-  num_items_per_row: 5 #number of items per row main menu
+  num_items_per_row: 5
   menu_item_padding: 10
   display_navigation_labels: no
 
@@ -41,25 +41,26 @@ options:
   rom_count_background_selected_color: "228,56,65,255"
   
   rom_list_font_size: 19
-  rom_list_font_align: left #left, right, center
+  rom_list_font_align: left
   rom_list_font_color: "0,255,255"
   rom_list_font_bold: no
   rom_list_background_color: "0,0,0,180"
   rom_list_font_selected_color: "255,255,255,255"
   rom_list_font_selected_bold: no
   rom_list_background_selected_color: "228,56,65,255"
-  rom_list_image: "rom_list.png"
-  rom_list_selected_image: "rom_list-selected.png"
-  rom_list_offset: [0, 0, 0, 0]   #[x-position, y-position, pixels to crop from right, pixels to crop from bottom]
+  rom_list_item_image: ""
+  rom_list_item_selected_image: ""
+  rom_list_background_image: ""
+  rom_list_offset: [0, 0, 0, 0] #[x-position, y-position, pixels to crop from right, pixels to crop from bottom]
   rom_list_orientation: vertical
   rom_list_align: left
   rom_list_alignment_padding: 0
   rom_list_min_height: auto
   rom_list_min_width: 600
-
+  
   missing_boxart_image: "missing_boxart.png"
-  boxart_offset: [0,0] #[x,y]
-  boxart_underlay: no #if yes, redraws rom list after boxart loads
+  boxart_offset: [0,0]
+  boxart_underlay: no
   boxart_max_width: 60%
   boxart_max_height: 70%
   

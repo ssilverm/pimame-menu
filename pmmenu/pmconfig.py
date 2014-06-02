@@ -111,6 +111,7 @@ class PMOptions:
 		self.rom_list_font_selected_color = self.get_color(theme['rom_list_font_selected_color'])
 		self.rom_list_font_selected_bold = theme['rom_list_font_selected_bold']
 		self.rom_list_background_selected_color = self.get_color(theme['rom_list_background_selected_color'])
+		self.rom_list_background_image = theme['rom_list_background_image']
 		self.rom_list_offset = {"left": theme['rom_list_offset'][0], "top": theme['rom_list_offset'][1], "right": theme['rom_list_offset'][2], "bottom": theme['rom_list_offset'][3]}
 		self.rom_list_align = theme['rom_list_align'].lower()
 		self.rom_list_alignment_padding = int(theme['rom_list_alignment_padding'])
@@ -130,8 +131,9 @@ class PMOptions:
 		self.rom_count_font = pygame.font.Font(self.theme_pack + self.font_file, self.rom_count_font_size)
 		self.rom_list_font = pygame.font.Font(self.theme_pack + self.font_file, self.rom_list_font_size)
 		self.pre_loaded_background = self.load_image(self.theme_pack + self.background_image)
-		self.pre_loaded_romlist = self.load_image(self.theme_pack + theme['rom_list_image'])
-		self.pre_loaded_romlist_selected = self.load_image(self.theme_pack + theme['rom_list_selected_image'])
+		self.pre_loaded_romlist = self.load_image(self.theme_pack + theme['rom_list_item_image'])
+		self.pre_loaded_romlist_selected = self.load_image(self.theme_pack + theme['rom_list_item_selected_image'])
+		self.pre_loaded_rom_list_background = self.load_image(self.theme_pack + self.rom_list_background_image)
 		
 		#determine romlist item height
 		self.romlist_item_height = max(self.pre_loaded_romlist.get_rect().h, self.rom_list_font.size('Ip')[1])

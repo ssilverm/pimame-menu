@@ -12,7 +12,7 @@ options:
  
 scraper_options:
   show_clones: no
-  overwrite_images: yes
+  overwrite_images: no
   
 menu_items:
   - label: SNES

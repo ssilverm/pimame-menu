@@ -24,13 +24,26 @@ class RomListScene(object):
 		super(RomListScene, self).__init__()
 		self.rom_list = rom_list
 
+	def resize_bg(self):
+
+		background_rect = self.cfg.options.pre_loaded_rom_list_background.get_rect()
+		screen_width = pygame.display.Info().current_w
+		screen_height = pygame.display.Info().current_h
+		scale = min(float(background_rect.w) / float(screen_width), float(background_rect.h) / float(screen_height))
+		background_rect = (int(background_rect.w / scale), int(background_rect.h / scale))
+		
+		self.cfg.options.pre_loaded_rom_list_background =  pygame.transform.smoothscale(self.cfg.options.pre_loaded_rom_list_background, background_rect)
+
+		self.screen.fill(self.cfg.options.background_color)
+		self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, (0,0))
+	
 	def draw_bg(self):
 		self.screen.fill(self.cfg.options.background_color)
-		background_image = self.cfg.options.pre_loaded_background
-		self.screen.blit(background_image, (0,0))
+		self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, (0,0))
 
 	def pre_render(self, screen):
 		
+		self.resize_bg()
 		self.list = PMList(self.rom_list, self.cfg.options)
 
 		self.items_per_screen = int(self.measure_items_per_screen())
@@ -235,7 +248,7 @@ class RomListScene(object):
 		selected_romlist_image = self.cfg.options.pre_loaded_romlist_selected.convert_alpha()
 		
 		self.screen.fill(self.cfg.options.background_color, rect)
-		self.screen.blit(self.cfg.options.pre_loaded_background, rect, rect)
+		self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, rect, rect)
 
 		selected_label = PMLabel(text, self.cfg.options.rom_list_font, self.cfg.options.rom_list_font_selected_color, self.cfg.options.rom_list_background_selected_color, self.cfg.options.rom_list_font_selected_bold, self.cfg.options.rom_list_offset, False, self.list.selected_rom_template, [], self.cfg.options.rom_list_font_align)
 
