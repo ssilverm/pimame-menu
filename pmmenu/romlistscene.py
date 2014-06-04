@@ -250,7 +250,7 @@ class RomListScene(object):
 		self.screen.fill(self.cfg.options.background_color, rect)
 		self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, rect, rect)
 
-		selected_label = PMLabel(text, self.cfg.options.rom_list_font, self.cfg.options.rom_list_font_selected_color, self.cfg.options.rom_list_background_selected_color, self.cfg.options.rom_list_font_selected_bold, self.cfg.options.rom_list_offset, False, self.list.selected_rom_template, [], self.cfg.options.rom_list_font_align)
+		selected_label = PMRomItem(text, self.cfg.options.rom_list_font, self.cfg.options.rom_list_font_selected_color, self.cfg.options.rom_list_background_selected_color, self.cfg.options.rom_list_font_selected_bold, self.cfg.options.rom_list_offset, False, self.list.selected_rom_template, [], self.cfg.options.rom_list_font_align)
 
 		self.screen.blit(selected_label.image, rect)
 		

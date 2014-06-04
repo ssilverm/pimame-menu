@@ -21,6 +21,7 @@ options:
   default_font_background_color: "255,255,255,0"
   
   display_labels: yes #show main menu labels
+  label_text_align: center #left, right, center
   labels_offset: [30,20] #[x,y]
   label_font_size: 19
   label_font_color: "0,0,0" #un-selected font color
@@ -31,7 +32,8 @@ options:
   label_background_selected_color: "100,100,100,255" #selected bg color
   
   display_rom_count: yes #show how many roms in emulator?
-  rom_count_offset: [180,180]
+  rom_count_text_align: center #left, right, center
+  rom_count_offset: [180,180] #[x,y]
   rom_count_font_size: 19
   rom_count_font_color: "255,255,255,128"
   rom_count_font_bold: no

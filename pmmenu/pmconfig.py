@@ -84,6 +84,7 @@ class PMOptions:
 		self.default_font_background_color = self.get_color(theme['default_font_background_color'])
 		
 		self.display_labels = theme['display_labels']
+		self.label_text_align = theme['label_text_align'].lower()
 		self.labels_offset = theme['labels_offset']
 		self.label_font_size = theme['label_font_size']
 		self.label_font_color = self.get_color(theme['label_font_color'])
@@ -94,6 +95,7 @@ class PMOptions:
 		self.label_background_selected_color = self.get_color(theme['label_background_selected_color'])
 		
 		self.display_rom_count = theme['display_rom_count']
+		self.rom_count_text_align = theme['rom_count_text_align'].lower()
 		self.rom_count_offset = theme['rom_count_offset']
 		self.rom_count_font_size = theme['rom_count_font_size']
 		self.rom_count_font_color = self.get_color(theme['rom_count_font_color'])

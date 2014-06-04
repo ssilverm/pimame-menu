@@ -21,6 +21,7 @@ options:
   default_font_background_color: "255,255,255,0"
   
   display_labels: yes
+  label_text_align: left
   labels_offset: [30,20]
   label_font_size: 19
   label_font_color: "0,0,0"
@@ -31,7 +32,8 @@ options:
   label_background_selected_color: "100,100,100,255"
   
   display_rom_count: yes
-  rom_count_offset: [180,180]
+  rom_count_text_align: right
+  rom_count_offset: [-27,182]
   rom_count_font_size: 19
   rom_count_font_color: "255,255,255,128"
   rom_count_font_bold: no
