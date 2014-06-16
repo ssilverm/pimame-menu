@@ -57,7 +57,7 @@ menu_items:
     roms: /home/pi/pimame/roms/nes/
     full_path: no
     extension: yes
-    command: /home/pi/pimame/emulators/mednafen/src/mednafen
+    command: /home/pi/pimame/emulators/fceux
 
   - label: Atari 2600
     visible: Yes
@@ -103,11 +103,28 @@ menu_items:
     override_menu: yes
     roms: /home/pi/pimame/roms/gba/
 
+  - label: TurboGrafx 16
+    visible: Yes
+    roms: /home/pi/pimame/roms/tg16
+    full_path: yes
+    extension: yes
+    command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && /home/pi/pimame/emulators/mednafen/src/mednafen -force_module pce_fast
+
   - label: Controller Setup
     visible: Yes
     full_path: no
     command: python /home/pi/pimame/controller-setup/configure.py
     override_menu: yes
+
+
+  - label: Cave Story
+    visible: Yes
+    full_path: no
+    command: /home/pi/pimame/emulators/cavestory_rpi-master/nxengine
+    override_menu: yes
+
+
+  
 
   - label: Restart
     visible: Yes
