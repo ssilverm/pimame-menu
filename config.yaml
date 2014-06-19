@@ -10,7 +10,7 @@ options:
   show_cursor: No
   allow_quit_to_console: Yes
   use_scene_transitions: Yes
-  theme_pack: "tron" #name of the folder in /home/pi/pimame/pimame-menu/themes/
+  theme_pack: "default" #name of the folder in /home/pi/pimame/pimame-menu/themes/
  
 scraper_options:
   show_clones: no
