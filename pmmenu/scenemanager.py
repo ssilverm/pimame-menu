@@ -17,3 +17,4 @@ class SceneManager(object):
 	def back(self):
 		self.history.pop()
 		self.go_to(self.history.pop())
+	

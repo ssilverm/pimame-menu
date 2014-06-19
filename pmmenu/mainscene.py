@@ -1,16 +1,11 @@
 import pygame
+from pmcontrols import *
 from pmconfig import *
 from pmheader import *
 from pmselection import *
 from pmlabel import *
 from pmutil import *
 from romlistscene import *
-
-pygame.joystick.init()
-js_count = pygame.joystick.get_count()
-for i in range(js_count):
-  js = pygame.joystick.Joystick(i)
-  js.init()
 
 class MainScene(object):
 
@@ -21,9 +16,7 @@ class MainScene(object):
 
 	def __init__(self):
 		super(MainScene, self).__init__()
-
-
-
+		self.CONTROLS = PMControls()
 
 	def get_selected_item(self):
 		try:
@@ -31,7 +24,8 @@ class MainScene(object):
 		except:
 			return False
 
-	def set_selected_index(self, new_selected_index):
+	def set_selected_index(self, new_selected_index, play_sound = True):
+		if play_sound: self.cfg.options.menu_move_sound.play()
 		self.erase_selection()
 
 		num_menu_items = len(self.grid.sprites())
@@ -63,8 +57,8 @@ class MainScene(object):
 		
 		self.screen.blit(background_image, (0,0))
 
-		
 
+		
 	def draw_header(self):
 		# @TODO - how to prepare ahead of time:
 		header = pygame.sprite.RenderPlain((self.header))
@@ -162,7 +156,7 @@ class MainScene(object):
 
 			i += 1
 
-		# @TODO: make this background ahead of time!
+
 		# @TODO: use this get_width() method everywhere instead of get_info()!
 		background = pygame.Surface([self.screen.get_width(), self.screen.get_height()], pygame.SRCALPHA, 32).convert_alpha()
 		background_image = self.cfg.options.pre_loaded_background
@@ -180,14 +174,22 @@ class MainScene(object):
 			self.grid = PMGrid(self.cfg.options.options_menu_items, self.cfg.options)
 			self.grid.set_num_items_per_page(self.calc_num_items_per_page())
 			self.pre_rendered = True
-
+		
 		self.draw_bg()
 		self.draw_header()
 		self.draw_ip_addr()
 		self.draw_update()
 		self.draw_items()
 		#self.draw_selection()
-		self.set_selected_index(0)
+		self.set_selected_index(0, play_sound = False)
+		
+		if self.cfg.options.fade_image:
+			if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_into(self, self.cfg.options.fade_image)
+		else:
+			if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_in(self)
+			self.cfg.options.fade_image = pygame.Surface([self.screen.get_width(), self.screen.get_height()], pygame.SRCALPHA, 32).convert()
+		self.cfg.options.fade_image.blit(self.screen,(0,0))
+
 
 
 	def render(self, screen):
@@ -200,6 +202,8 @@ class MainScene(object):
 		for event in events:
 
 			if event.type == pygame.QUIT:
+				self.cfg.options.menu_back_sound.play()
+				if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_out(self)
 				pygame.quit()
 				sys.exit()
 			elif event.type == pygame.MOUSEBUTTONUP:
@@ -211,48 +215,48 @@ class MainScene(object):
 				if len(clicked_sprites) > 0:
 					sprite = clicked_sprites[0]
 					self.do_menu_item_action(sprite)
-			elif event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_LEFT or event.key == pygame.K_KP4:
-					self.set_selected_index(self.selected_index - 1)
-				elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
-					self.set_selected_index(self.selected_index + 1)
-				elif event.key == pygame.K_UP or event.key == pygame.K_KP8:
-					self.set_selected_index(self.selected_index - self.cfg.options.num_items_per_row)
-				elif event.key == pygame.K_DOWN or event.key == pygame.K_KP2:
-					self.set_selected_index(self.selected_index + self.cfg.options.num_items_per_row)
-				elif event.key == pygame.K_RETURN or event.key == pygame.K_SPACE or event.key == pygame.K_KP_ENTER:
-					self.do_menu_item_action(self.get_selected_item())
-				elif event.key == pygame.K_ESCAPE:
-					pygame.quit()
-					sys.exit()
-			elif event.type == pygame.JOYAXISMOTION:
-				if event.dict['axis'] == 0 and event.dict['value'] < 0:
-					self.set_selected_index(self.selected_index - 1)
-				elif event.dict['axis'] == 0 and event.dict['value'] > 0:
-					self.set_selected_index(self.selected_index + 1)
-				elif event.dict['axis'] == 1 and event.dict['value'] < 0:
-					self.set_selected_index(self.selected_index - self.cfg.options.num_items_per_row)
-				elif event.dict['axis'] == 1 and event.dict['value'] > 0:
-					self.set_selected_index(self.selected_index + self.cfg.options.num_items_per_row)
-			elif event.type == pygame.JOYBUTTONDOWN:
-				if event.button == 0:
-					self.do_menu_item_action(self.get_selected_item())
-				if event.button == 1:
-					pygame.quit()
-					sys.exit()
+					
+			action = None		
+			if event.type == pygame.KEYDOWN: action = self.CONTROLS.get_action('keyboard', event.key)
+			if event.type == pygame.JOYAXISMOTION: action = self.CONTROLS.get_action('joystick', event.dict)
+			if event.type == pygame.JOYBUTTONDOWN: action = self.CONTROLS.get_action('joystick', event.button)
+			
+			if action == 'LEFT':
+				self.set_selected_index(self.selected_index - 1)
+			elif action == 'RIGHT':
+				self.set_selected_index(self.selected_index + 1)
+			elif action == 'UP':
+				self.set_selected_index(self.selected_index - self.cfg.options.num_items_per_row)
+			elif action == 'DOWN':
+				self.set_selected_index(self.selected_index + self.cfg.options.num_items_per_row)
+			elif action == 'SELECT':
+				self.do_menu_item_action(self.get_selected_item())
+			elif action == 'BACK' and self.cfg.options.allow_quit_to_console:
+				self.cfg.options.menu_back_sound.play()
+				if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_out(self)
+				pygame.quit()
+				sys.exit()
+					
 
 	#@TODO - change name:
 	def do_menu_item_action(self, sprite):
 		if sprite.type == PMMenuItem.ROM_LIST:
+			self.cfg.options.fade_image.blit(self.screen,(0,0))
+			self.cfg.options.menu_select_sound.play()
 			self.manager.go_to(RomListScene(sprite.get_rom_list()))
 		elif sprite.type == PMMenuItem.COMMAND:
+			self.cfg.options.menu_select_sound.play()
 			PMUtil.run_command_and_continue(sprite.command)
 		elif sprite.type == PMMenuItem.NAVIGATION:
+			self.cfg.options.menu_navigation_sound.play()
+			self.cfg.options.fade_image.blit(self.screen,(0,0))
 			if sprite.command == PMMenuItem.PREV_PAGE:
 				self.grid.prev_page()
 				self.draw_items()
-				self.set_selected_index(len(self.grid.sprites()) - 1)
+				self.set_selected_index(len(self.grid.sprites()) - 1, play_sound = False)
+				if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_into(self, self.cfg.options.fade_image)
 			else:
 				self.grid.next_page()
 				self.draw_items()
-				self.set_selected_index(0)
+				self.set_selected_index(0, play_sound = False)
+				if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_into(self, self.cfg.options.fade_image)

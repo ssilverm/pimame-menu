@@ -15,6 +15,11 @@ options:
   menu_item_padding: 10
   display_navigation_labels: no
 
+  menu_move_sound: "sfx_move.wav"
+  menu_select_sound: "sfx_select.wav"
+  menu_back_sound: "sfx_back.wav"
+  menu_navigation_sound: "sfx_select.wav"
+
   font_file: "Lato-Bold.ttf"
   default_font_size: 19
   default_font_color: "0,0,0"
@@ -22,8 +27,8 @@ options:
   
   display_labels: yes
   label_text_align: left
-  labels_offset: [30,20]
-  label_font_size: 19
+  labels_offset: [13,13]
+  label_font_size: 48
   label_font_color: "0,0,0"
   label_font_bold: no
   label_background_color: "255,255,255,150"
@@ -33,8 +38,8 @@ options:
   
   display_rom_count: yes
   rom_count_text_align: right
-  rom_count_offset: [-27,182]
-  rom_count_font_size: 19
+  rom_count_offset: [-13,430]
+  rom_count_font_size: 48
   rom_count_font_color: "255,255,255,128"
   rom_count_font_bold: no
   rom_count_background_color: "228,56,65,128"
@@ -62,7 +67,6 @@ options:
   
   missing_boxart_image: "missing_boxart.png"
   boxart_offset: [0,0]
-  boxart_underlay: no
   boxart_max_width: 60%
   boxart_max_height: 70%
   

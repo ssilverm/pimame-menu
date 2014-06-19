@@ -1,12 +1,18 @@
 import yaml
 from os.path import isfile
+from os import system
 import pygame
 from menuitem import *
 from pmgrid import *
 
 class PMCfg:
 	def __init__(self):
-	
+		
+		#clear command line for incoming error messages
+		system('clear')
+		#initialize sound mixer
+		pygame.mixer.pre_init(22050, -16, 1, 1024)
+		
 		#load config file, use open() rather than file(), file() is deprecated in python 3.
 		stream = open('/home/pi/pimame/pimame-menu/config.yaml', 'r')
 		config = yaml.safe_load(stream)
@@ -25,14 +31,19 @@ class PMCfg:
 		self.screen = self.init_screen(self.options.resolution, self.options.fullscreen)
 		pygame.mouse.set_visible(self.options.show_cursor)
 		
+		self.options.menu_move_sound = self.options.load_audio(self.options.menu_move_sound)
+		self.options.menu_select_sound = self.options.load_audio(self.options.menu_select_sound)
+		self.options.menu_back_sound = self.options.load_audio(self.options.menu_back_sound)
+		self.options.menu_navigation_sound = self.options.load_audio(self.options.menu_navigation_sound)
+		
 	def init_screen(self, size, fullscreen):
+		
 		pygame.init()
 		#return pygame.display.set_mode(size,0,32)
 
 		flag = 0
 		if fullscreen:
 			flag = pygame.FULLSCREEN
-
 		return pygame.display.set_mode(size, flag, 32)
 
 
@@ -61,6 +72,8 @@ class PMOptions:
 		self.sort_items_with_roms_first = opts['sort_items_with_roms_first']
 		self.hide_items_without_roms = opts['hide_items_without_roms']
 		self.show_cursor = opts['show_cursor']
+		self.allow_quit_to_console = opts['allow_quit_to_console']
+		self.use_scene_transitions = opts['use_scene_transitions']
 		self.theme_pack = "themes/" + opts['theme_pack'] + "/"
 		
 		#theme.yaml
@@ -77,6 +90,11 @@ class PMOptions:
 		self.num_items_per_row = theme['num_items_per_row']
 		self.padding = theme['menu_item_padding']
 		self.display_navigation_labels = theme['display_navigation_labels']
+		
+		self.menu_move_sound = self.theme_pack + theme['menu_move_sound']
+		self.menu_select_sound = self.theme_pack + theme['menu_select_sound']
+		self.menu_back_sound = self.theme_pack + theme['menu_back_sound']
+		self.menu_navigation_sound = self.theme_pack + theme['menu_navigation_sound']
 		
 		self.font_file = theme['font_file']
 		self.default_font_size = theme['default_font_size']
@@ -120,13 +138,13 @@ class PMOptions:
 		self.rom_list_orientation = theme['rom_list_orientation'].lower() if theme['rom_list_orientation'].lower() == 'horizontal' else 'vertical'
 		
 		self.boxart_offset = theme['boxart_offset']
-		self.boxart_underlay = theme['boxart_underlay']
 		self.boxart_max_width = float(theme['boxart_max_width'].strip('%'))/100
 		self.boxart_max_height = float(theme['boxart_max_height'].strip('%'))/100
 		
 
 		#items to be pre-loaded for efficiency
 		pygame.font.init()
+		self.fade_image = None
 		self.blank_image = pygame.image.load('/home/pi/pimame/pimame-menu/assets/images/blank.png')
 		self.font = pygame.font.Font(self.theme_pack + self.font_file, self.default_font_size)
 		self.label_font = pygame.font.Font(self.theme_pack + self.font_file, self.label_font_size)
@@ -162,10 +180,18 @@ class PMOptions:
 				try:
 					return pygame.image.load(alternate_image)
 				except:
-					print 'cant load: ', alternate_image
+					print 'cant load image: ', alternate_image
 					return self.blank_image
-			print 'cant load: ', file_path
+			print 'cant load image: ', file_path
 			return self.blank_image
+			
+	def load_audio(self, file_path):
+		if isfile(file_path):
+			sound_file = pygame.mixer.Sound(file_path)
+			return sound_file
+		else:
+			print 'cant load audio: ', file_path
+			return pygame.mixer.Sound('/home/pi/pimame/pimame-menu/assets/audio/blank.wav')
 		
 
 
