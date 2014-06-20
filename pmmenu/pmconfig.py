@@ -48,16 +48,12 @@ class PMCfg:
 		flag = 0
 		if fullscreen:
 			flag = pygame.FULLSCREEN
-<<<<<<< HEAD
 		
 		if (pygame.display.mode_ok((dinfo.current_w,dinfo.current_h),pygame.FULLSCREEN)):
 			return pygame.display.set_mode((dinfo.current_w, dinfo.current_h), flag)
 		else:
 			pygame.quit()
 			sys.exit()
-=======
-		return pygame.display.set_mode(size, flag, 32)
->>>>>>> 9d1454241ef0274a1fa7a33b8152aa3130628b4a
 
 
 class PMOptions:

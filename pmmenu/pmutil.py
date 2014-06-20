@@ -26,11 +26,7 @@ class PMUtil:
 	def run_command_and_continue(command):
 		pygame.quit()
 		time.sleep(1)
-<<<<<<< HEAD
 		system(command + " && export LD_LIBRARY_PATH= &&  python " + sys.argv[0])
-		sys.exit()
-=======
-		system(command + " && python " + sys.argv[0])
 		sys.exit()
 	
 	@staticmethod
@@ -67,4 +63,3 @@ class PMUtil:
 		self.screen.blit(backup, (0,0))
 		pygame.display.update()
 		return
->>>>>>> 9d1454241ef0274a1fa7a33b8152aa3130628b4a
