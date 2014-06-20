@@ -1,5 +1,6 @@
 import yaml
 from os.path import isfile
+from os import system
 import pygame
 from menuitem import *
 from pmgrid import *
@@ -7,7 +8,12 @@ import sys
 
 class PMCfg:
 	def __init__(self):
-	
+		
+		#clear command line for incoming error messages
+		system('clear')
+		#initialize sound mixer
+		pygame.mixer.pre_init(22050, -16, 1, 1024)
+		
 		#load config file, use open() rather than file(), file() is deprecated in python 3.
 		stream = open('/home/pi/pimame/pimame-menu/config.yaml', 'r')
 		config = yaml.safe_load(stream)
@@ -24,8 +30,15 @@ class PMCfg:
 		theme = None
 		
 		self.screen = self.init_screen(self.options.resolution, self.options.fullscreen)
+		pygame.mouse.set_visible(self.options.show_cursor)
+		
+		self.options.menu_move_sound = self.options.load_audio(self.options.menu_move_sound)
+		self.options.menu_select_sound = self.options.load_audio(self.options.menu_select_sound)
+		self.options.menu_back_sound = self.options.load_audio(self.options.menu_back_sound)
+		self.options.menu_navigation_sound = self.options.load_audio(self.options.menu_navigation_sound)
 		
 	def init_screen(self, size, fullscreen):
+		
 		pygame.init()
 		pygame.display.init()
 		dinfo = pygame.display.Info()
@@ -50,8 +63,8 @@ class PMOptions:
 		for index, oItem in enumerate(opt_menu_item):
 			match = next((tItem for tItem in theme_menu_item if tItem['label'].lower() == oItem['label'].lower()), None)
 			if match is not None:
-				opt_menu_item[index]['icon_file'] = match['icon_file']
-				opt_menu_item[index]['icon_selected'] = match['icon_selected']
+				opt_menu_item[index]['icon_file'] = match['icon_file'] if ('icon_file' in match and match['icon_file']) else theme['generic_menu_item']
+				opt_menu_item[index]['icon_selected'] = match['icon_selected'] if ('icon_selected' in match and match['icon_selected']) else theme['generic_menu_item_selected']
 			else:
 				opt_menu_item[index]['icon_file'] = theme['generic_menu_item']
 				opt_menu_item[index]['icon_selected'] = theme['generic_menu_item_selected']
@@ -67,6 +80,9 @@ class PMOptions:
 		self.sort_items_alphanum = opts['sort_items_alphanum']
 		self.sort_items_with_roms_first = opts['sort_items_with_roms_first']
 		self.hide_items_without_roms = opts['hide_items_without_roms']
+		self.show_cursor = opts['show_cursor']
+		self.allow_quit_to_console = opts['allow_quit_to_console']
+		self.use_scene_transitions = opts['use_scene_transitions']
 		self.theme_pack = "themes/" + opts['theme_pack'] + "/"
 		
 		#theme.yaml
@@ -84,49 +100,80 @@ class PMOptions:
 		self.padding = theme['menu_item_padding']
 		self.display_navigation_labels = theme['display_navigation_labels']
 		
+		self.menu_move_sound = self.theme_pack + theme['menu_move_sound']
+		self.menu_select_sound = self.theme_pack + theme['menu_select_sound']
+		self.menu_back_sound = self.theme_pack + theme['menu_back_sound']
+		self.menu_navigation_sound = self.theme_pack + theme['menu_navigation_sound']
+		
 		self.font_file = theme['font_file']
 		self.default_font_size = theme['default_font_size']
 		self.default_font_color = self.get_color(theme['default_font_color'])
 		self.default_font_background_color = self.get_color(theme['default_font_background_color'])
 		
 		self.display_labels = theme['display_labels']
+		self.label_text_align = theme['label_text_align'].lower()
 		self.labels_offset = theme['labels_offset']
 		self.label_font_size = theme['label_font_size']
 		self.label_font_color = self.get_color(theme['label_font_color'])
+		self.label_font_bold = theme['label_font_bold']
 		self.label_background_color = self.get_color(theme['label_background_color'])
 		self.label_font_selected_color = self.get_color(theme['label_font_selected_color'])
+		self.label_font_selected_bold = theme['label_font_selected_bold']
 		self.label_background_selected_color = self.get_color(theme['label_background_selected_color'])
 		
 		self.display_rom_count = theme['display_rom_count']
+		self.rom_count_text_align = theme['rom_count_text_align'].lower()
 		self.rom_count_offset = theme['rom_count_offset']
 		self.rom_count_font_size = theme['rom_count_font_size']
 		self.rom_count_font_color = self.get_color(theme['rom_count_font_color'])
+		self.rom_count_font_bold = theme['rom_count_font_bold']
 		self.rom_count_background_color = self.get_color(theme['rom_count_background_color'])
 		self.rom_count_font_selected_color = self.get_color(theme['rom_count_font_selected_color'])
+		self.rom_count_font_selected_bold = theme['rom_count_font_selected_bold']
 		self.rom_count_background_selected_color = self.get_color(theme['rom_count_background_selected_color'])
 		
 		self.rom_list_font_size = theme['rom_list_font_size']
+		self.rom_list_font_align = theme['rom_list_font_align'].lower()
 		self.rom_list_font_color = self.get_color(theme['rom_list_font_color'])
 		self.rom_list_background_color = self.get_color(theme['rom_list_background_color'])
+		self.rom_list_font_bold = theme['rom_list_font_bold']
 		self.rom_list_font_selected_color = self.get_color(theme['rom_list_font_selected_color'])
+		self.rom_list_font_selected_bold = theme['rom_list_font_selected_bold']
 		self.rom_list_background_selected_color = self.get_color(theme['rom_list_background_selected_color'])
+		self.rom_list_background_image = theme['rom_list_background_image']
 		self.rom_list_offset = {"left": theme['rom_list_offset'][0], "top": theme['rom_list_offset'][1], "right": theme['rom_list_offset'][2], "bottom": theme['rom_list_offset'][3]}
+		self.rom_list_align = theme['rom_list_align'].lower()
+		self.rom_list_alignment_padding = int(theme['rom_list_alignment_padding'])
+		self.rom_list_orientation = theme['rom_list_orientation'].lower() if theme['rom_list_orientation'].lower() == 'horizontal' else 'vertical'
+		
+		self.boxart_offset = theme['boxart_offset']
+		self.boxart_max_width = float(theme['boxart_max_width'].strip('%'))/100
+		self.boxart_max_height = float(theme['boxart_max_height'].strip('%'))/100
 		
 
 		#items to be pre-loaded for efficiency
 		pygame.font.init()
+		self.fade_image = None
 		self.blank_image = pygame.image.load('/home/pi/pimame/pimame-menu/assets/images/blank.png')
 		self.font = pygame.font.Font(self.theme_pack + self.font_file, self.default_font_size)
 		self.label_font = pygame.font.Font(self.theme_pack + self.font_file, self.label_font_size)
 		self.rom_count_font = pygame.font.Font(self.theme_pack + self.font_file, self.rom_count_font_size)
 		self.rom_list_font = pygame.font.Font(self.theme_pack + self.font_file, self.rom_list_font_size)
 		self.pre_loaded_background = self.load_image(self.theme_pack + self.background_image)
-		self.pre_loaded_romlist = self.load_image(self.theme_pack + theme['rom_list_image'])
-		self.pre_loaded_romlist_selected = self.load_image(self.theme_pack + theme['rom_list_selected_image'])
+		self.pre_loaded_romlist = self.load_image(self.theme_pack + theme['rom_list_item_image'])
+		self.pre_loaded_romlist_selected = self.load_image(self.theme_pack + theme['rom_list_item_selected_image'])
+		self.pre_loaded_rom_list_background = self.load_image(self.theme_pack + self.rom_list_background_image)
+		
+		#determine romlist item height
 		self.romlist_item_height = max(self.pre_loaded_romlist.get_rect().h, self.rom_list_font.size('Ip')[1])
+		if isinstance(theme['rom_list_min_height'], int): self.romlist_item_height = max(self.romlist_item_height, theme['rom_list_min_height'])
+		
+		#determine romlist item width
+		if str(theme['rom_list_min_width']).lower() == 'auto' : self.romlist_item_width = max(self.pre_loaded_romlist.get_rect().w, 300)
+		else: self.romlist_item_width = max(self.pre_loaded_romlist.get_rect().w, int(theme['rom_list_min_width']))
+		
 		self.missing_boxart_image = (self.theme_pack + theme['missing_boxart_image']) if isfile(self.theme_pack + theme['missing_boxart_image']) else ('/home/pi/pimame/pimame-menu/assets/images/missing_boxart.png')
 		
-
 
 	def get_color(self, color_str):
 		return tuple([int(x) for x in color_str.split(",")])
@@ -142,10 +189,18 @@ class PMOptions:
 				try:
 					return pygame.image.load(alternate_image)
 				except:
-					print 'cant load: ', alternate_image
+					print 'cant load image: ', alternate_image
 					return self.blank_image
-			print 'cant load: ', file_path
+			print 'cant load image: ', file_path
 			return self.blank_image
+			
+	def load_audio(self, file_path):
+		if isfile(file_path):
+			sound_file = pygame.mixer.Sound(file_path)
+			return sound_file
+		else:
+			print 'cant load audio: ', file_path
+			return pygame.mixer.Sound('/home/pi/pimame/pimame-menu/assets/audio/blank.wav')
 		
 
 

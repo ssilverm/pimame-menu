@@ -1,2 +1,8 @@
 .DS_Store
 *.pyc
+.cache/*
+vice_*armhf.deb
+controller/
+.pcsx/
+bios/
+screenshots/

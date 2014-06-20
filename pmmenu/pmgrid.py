@@ -4,10 +4,10 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 	#menu_items = []
 	# menu_items_by_sprite = None
 	options = None
-	next_icon = 'nav-next.png'
-	back_icon = 'nav-back.png'
-	next_selected = 'nav-next-selected.png'
-	back_selected = 'nav-back-selected.png'
+	next_icon = 'nav_next.png'
+	back_icon = 'nav_back.png'
+	next_selected = 'nav_next-selected.png'
+	back_selected = 'nav_back-selected.png'
 	
 
 	def __init__(self, menu_item_cfgs, opts):
@@ -31,7 +31,7 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 			self.menu_items.sort(key=lambda x: x.num_roms, reverse=True)
 
 		if self.options.hide_items_without_roms:
-			self.menu_items = [x for x in self.menu_items if x.num_roms > -1]
+			self.menu_items = [x for x in self.menu_items if x.num_roms > 0]
 
 
 	def create_nav_menu_item(self, label, icon_file = False, icon_selected = False):
@@ -63,7 +63,7 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 			next.command = PMMenuItem.NEXT_PAGE
 			page.append(next)
 			self.pages.append(page)
-			r = range(self.num_items_per_page - 1, num_menu_items - self.num_items_per_page + 1, self.num_items_per_page - 2)
+			r = range(self.num_items_per_page - 1, num_menu_items - self.num_items_per_page + 1)
 			for i in r:
 				page = self.menu_items[i:i + self.num_items_per_page - 2]
 				back = self.create_nav_menu_item('Back', self.back_icon, self.back_selected)
