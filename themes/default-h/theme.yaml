@@ -1,0 +1,136 @@
+options:
+
+  theme_name: "default - horizontal"
+  header_height: 140
+  header_color: "255,255,255,255"
+  logo_image: "logo.png"
+  background_image: ""
+  background_color: "75,75,75"
+  generic_menu_item: "generic_menu_item.png"
+  generic_menu_item_selected: "generic_menu_item-selected.png"
+  item_color: "255,255,255,128"
+  disabled_alpha: 128
+  item_height: 220 #main menu icon height
+  num_items_per_row: 5 #number of items per row main menu
+  menu_item_padding: 10
+  display_navigation_labels: no
+
+  font_file: "Lato-Bold.ttf"
+  default_font_size: 19
+  default_font_color: "0,0,0"
+  default_font_background_color: "255,255,255,0"
+  
+  display_labels: yes
+  label_text_align: left
+  labels_offset: [30,20]
+  label_font_size: 19
+  label_font_color: "0,0,0"
+  label_font_bold: no
+  label_background_color: "255,255,255,150"
+  label_font_selected_color: "255,255,255"
+  label_font_selected_bold: no
+  label_background_selected_color: "100,100,100,255"
+  
+  display_rom_count: yes
+  rom_count_text_align: right
+  rom_count_offset: [-27,182]
+  rom_count_font_size: 19
+  rom_count_font_color: "255,255,255,128"
+  rom_count_font_bold: no
+  rom_count_background_color: "228,56,65,128"
+  rom_count_font_selected_color: "255,255,255,255"
+  rom_count_font_selected_bold: no
+  rom_count_background_selected_color: "228,56,65,255"
+  
+  rom_list_font_size: 19
+  rom_list_font_align: center #left, right, center
+  rom_list_font_color: "0,255,255"
+  rom_list_font_bold: no
+  rom_list_background_color: "0,0,0,180"
+  rom_list_font_selected_color: "255,255,255,255"
+  rom_list_font_selected_bold: no
+  rom_list_background_selected_color: "228,56,65,255"
+  rom_list_item_image: ""
+  rom_list_item_selected_image: ""
+  rom_list_background_image: ""
+  rom_list_offset: [0, 0, 0, 0]   #[x-position, y-position, pixels to crop from right, pixels to crop from bottom]
+  rom_list_orientation: horizontal
+  rom_list_align: bottom
+  rom_list_alignment_padding: 150
+  rom_list_min_height: auto
+  rom_list_min_width: 400
+
+  missing_boxart_image: "missing_boxart.png"
+  boxart_offset: [0, 50] #[x,y]
+  boxart_underlay: yes #if yes, redraws rom list after boxart loads
+  boxart_max_width: 60%
+  boxart_max_height: 100%
+  
+menu_items:
+  - label: SNES
+    icon_file: snes.png
+    icon_selected: snes-selected.png
+
+  - label: MAME4All
+    icon_file: mame4all.png
+    icon_selected: mame4all-selected.png
+
+  - label: Neo Geo
+    icon_file: neogeo.png
+    icon_selected: neogeo-selected.png
+
+  - label: AdvMAME
+    icon_file: advmame.png
+    icon_selected: advmame-selected.png
+
+  - label: Final Burn
+    icon_file: fba.png
+    icon_selected: fba-selected.png
+
+  - label: Genesis
+    icon_file: genesis.png
+    icon_selected: genesis-selected.png
+
+  - label: NES
+    icon_file: nes.png
+    icon_selected: nes-selected.png
+
+  - label: Atari 2600
+    icon_file: 2600.png
+    icon_selected: 2600-selected.png
+
+  - label: Playstation 1
+    icon_file: psx.png
+    icon_selected: psx-selected.png
+
+  - label: Commodore 64
+    icon_file: c64.png
+    icon_selected: c64-selected.png
+
+  - label: ScummVM
+    icon_file: scummvm.png
+    icon_selected: scummvm-selected.png
+
+  - label: Gameboy
+    icon_file: gameboy.png
+    icon_selected: gameboy-selected.png
+
+  - label: Gameboy Advance
+    icon_file: gba.png
+    icon_selected: gba-selected.png
+
+  - label: Restart
+    icon_file: restart.png
+    icon_selected: restart-selected.png
+
+  - label: Shutdown
+    icon_file: shutdown.png
+    icon_selected: shutdown-selected.png
+
+  - label: Update PiMAME
+    icon_file: update.png
+    icon_selected: update-selected.png
+
+  - label: Rom Scraper
+    icon_file: scraper.png
+    icon_selected: scraper-selected.png

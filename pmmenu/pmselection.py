@@ -48,9 +48,11 @@ class PMSelection(pygame.sprite.Sprite):
 			
 			#ReDraw label ontop of menu_item 
 			if global_opts.display_labels:
-				label = PMLabel(menu_item.label, global_opts.label_font, global_opts.label_font_selected_color, global_opts.label_background_selected_color)
+				label = PMLabel(menu_item.label, global_opts.label_font, global_opts.label_font_selected_color, global_opts.label_background_selected_color, global_opts.label_font_selected_bold)
 				textpos = label.rect
-				textpos.x = global_opts.labels_offset[0]
+				if global_opts.label_text_align == 'right': textpos.x = item_width - label.rect.w + global_opts.labels_offset[0]
+				elif  global_opts.label_text_align == 'center': textpos.x = ((item_width - label.rect.w)/2) + global_opts.labels_offset[0]
+				else: textpos.x = global_opts.labels_offset[0]
 				textpos.y = global_opts.labels_offset[1]
 
 				self.image.blit(label.image, textpos)
@@ -66,11 +68,14 @@ class PMSelection(pygame.sprite.Sprite):
 						#pygame.draw.rect(self.image, global_opts.rom_dot_color, rom_rect)
 
 						#text = font.render(str(num_roms), 1, (255, 255, 255))
-						label = PMLabel(str(menu_item.num_roms), global_opts.rom_count_font, global_opts.rom_count_font_selected_color, global_opts.rom_count_background_selected_color)
+						label = PMLabel(str(menu_item.num_roms), global_opts.rom_count_font, global_opts.rom_count_font_selected_color, global_opts.rom_count_background_selected_color, global_opts.rom_count_font_selected_bold)
 						textpos = label.rect
+						
+						if global_opts.rom_count_text_align == 'right': textpos.x = item_width - label.rect.w + global_opts.rom_count_offset[0]
+						elif  global_opts.rom_count_text_align == 'center': textpos.x = ((item_width - label.rect.w)/2) + global_opts.rom_count_offset[0]
+						else: textpos.x = global_opts.rom_count_offset[0]
+						textpos.y = global_opts.rom_count_offset[1]
 
-						textpos.centerx = rom_rect[0] + rom_rect[2] / 2
-						textpos.centery = rom_rect[1] + rom_rect[3] / 2
 						self.image.blit(label.image, textpos)
 			
 		self.rect.x = item_rect.x;

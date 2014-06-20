@@ -7,7 +7,13 @@ options:
   sort_items_alphanum: No
   sort_items_with_roms_first: Yes
   hide_items_without_roms: No
+  show_cursor: No
   theme_pack: "default" #name of the folder in /home/pi/pimame/pimame-menu/themes/
+ 
+scraper_options:
+  show_clones: no
+  overwrite_images: no
+  
 menu_items:
   - label: SNES
     visible: Yes
@@ -55,7 +61,7 @@ menu_items:
   - label: NES
     visible: Yes
     roms: /home/pi/pimame/roms/nes/
-    full_path: no
+    full_path: yes
     extension: yes
     command: /home/pi/pimame/emulators/fceux
 
@@ -142,5 +148,11 @@ menu_items:
     visible: Yes
     full_path: no
     command: wget -O - http://pimame.org/update.sh | bash
+    override_menu: yes
+
+  - label: Rom Scraper
+    visible: Yes
+    full_path: no
+    command: python /home/pi/pimame/pimame-menu/scraper/scrape_script.py
     override_menu: yes
 

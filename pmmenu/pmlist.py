@@ -1,6 +1,6 @@
 import os
 import pygame
-from pmlabel import *
+from romitem import *
 
 
 class PMList(pygame.sprite.OrderedUpdates):
@@ -22,10 +22,14 @@ class PMList(pygame.sprite.OrderedUpdates):
 		create_romlist_image = global_opts.pre_loaded_romlist
 		create_romlist_selected = global_opts.pre_loaded_romlist_selected
 		
-		#Create rom list surface/image with no text
-		self.rom_template = PMLabel('', global_opts.rom_list_font, global_opts.rom_list_font_color, global_opts.rom_list_background_color, global_opts.rom_list_offset, create_romlist_image)
+		#make sure each romlist item reaches minimum sizes
+		min_scale_size = [max(global_opts.pre_loaded_romlist.get_rect().w, global_opts.romlist_item_width),
+						max(global_opts.pre_loaded_romlist.get_rect().h, global_opts.romlist_item_height)]
 		
-		self.selected_rom_template = PMLabel('', global_opts.rom_list_font, global_opts.rom_list_font_selected_color, global_opts.rom_list_background_selected_color, global_opts.rom_list_offset, create_romlist_selected)
+		#Create rom list surface/image with no text
+		self.rom_template = PMRomItem('', global_opts.rom_list_font, global_opts.rom_list_font_color, global_opts.rom_list_background_color, global_opts.rom_list_font_bold, global_opts.rom_list_offset, create_romlist_image, False, min_scale_size)
+		
+		self.selected_rom_template = PMRomItem('', global_opts.rom_list_font, global_opts.rom_list_font_selected_color, global_opts.rom_list_background_selected_color, global_opts.rom_list_font_selected_bold, global_opts.rom_list_offset, create_romlist_selected, False, min_scale_size)
 		
 		if get_labels: self.build_labels(self.rom_list)
 		
@@ -33,7 +37,7 @@ class PMList(pygame.sprite.OrderedUpdates):
 		#Get rom title and blit to already created rom_template
 		self.labels = []
 		for list_item in rom_list:
-			label = PMLabel(list_item['title'], self.global_opts.rom_list_font, self.global_opts.rom_list_font_color, self.global_opts.rom_list_background_color, self.global_opts.rom_list_offset, False, self.rom_template)
+			label = PMRomItem(list_item['title'], self.global_opts.rom_list_font, self.global_opts.rom_list_font_color, self.global_opts.rom_list_background_color, self.global_opts.rom_list_font_bold, self.global_opts.rom_list_offset, False, self.rom_template, [], self.global_opts.rom_list_font_align)
 			label.type = list_item['type']
 			label.command = list_item['command']
 			label.boxart = list_item['image']

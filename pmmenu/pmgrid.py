@@ -4,10 +4,10 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 	#menu_items = []
 	# menu_items_by_sprite = None
 	options = None
-	next_icon = 'nav-next.png'
-	back_icon = 'nav-back.png'
-	next_selected = 'nav-next-selected.png'
-	back_selected = 'nav-back-selected.png'
+	next_icon = 'nav_next.png'
+	back_icon = 'nav_back.png'
+	next_selected = 'nav_next-selected.png'
+	back_selected = 'nav_back-selected.png'
 	
 
 	def __init__(self, menu_item_cfgs, opts):
