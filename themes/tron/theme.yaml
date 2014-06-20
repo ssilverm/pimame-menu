@@ -15,6 +15,11 @@ options:
   menu_item_padding: 0
   display_navigation_labels: no
 
+  menu_move_sound: "sfx_move.wav"
+  menu_select_sound: "sfx_select.wav"
+  menu_back_sound: "sfx_back.wav"
+  menu_navigation_sound: "sfx_navigation.wav"
+
   font_file: "default.ttf"
   default_font_size: 19
   default_font_color: "255,255,255"
@@ -22,7 +27,7 @@ options:
   
   display_labels: yes
   label_text_align: left
-  labels_offset: [100,15]
+  labels_offset: [80,15]
   label_font_size: 36
   label_font_color: "0,255,255"
   label_font_bold: no
@@ -32,9 +37,9 @@ options:
   label_background_selected_color: "0,0,0,0"
   
   display_rom_count: yes
-  rom_count_text_align: left
-  rom_count_offset: [640,15]
-  rom_count_font_size: 26
+  rom_count_text_align: right
+  rom_count_offset: [-556,20]
+  rom_count_font_size: 24
   rom_count_font_color: "150,255,255"
   rom_count_font_bold: no
   rom_count_background_color: "0,0,0,0"
@@ -62,7 +67,6 @@ options:
 
   missing_boxart_image: "missing_boxart.png"
   boxart_offset: [0,0] #[x,y]
-  boxart_underlay: no #if yes, redraws rom list after boxart loads
   boxart_max_width: 60%
   boxart_max_height: 70%
   

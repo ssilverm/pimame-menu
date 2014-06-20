@@ -1,5 +1,6 @@
 import thread, time
 import pygame
+from pmcontrols import *
 from pmlist import *
 from pmutil import *
 
@@ -7,13 +8,9 @@ class RomListScene(object):
 
 	SCENE_NAME = 'romlist'
 	
-	DIRECTION_UP = 'up'
-	DIRECTION_DOWN = 'down'
-	DIRECTION_LEFT = 'left'
-	DIRECTION_RIGHT = 'right'
 
-	ORIENTATION = {'vertical':[DIRECTION_UP,DIRECTION_DOWN,DIRECTION_LEFT,DIRECTION_RIGHT],
-						'horizontal': [DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP, DIRECTION_DOWN]}
+	ORIENTATION = {'vertical':{"UP":"UP","DOWN":"DOWN","LEFT":"LEFT","RIGHT":"RIGHT"},
+						'horizontal': {"UP":"LEFT", "DOWN":"RIGHT", "LEFT": "UP", "RIGHT":"DOWN"}}
 						
 	selected_item = None
 	sprites = []
@@ -22,6 +19,7 @@ class RomListScene(object):
 
 	def __init__(self, rom_list):
 		super(RomListScene, self).__init__()
+		self.CONTROLS = PMControls()
 		self.rom_list = rom_list
 
 	def resize_bg(self):
@@ -37,9 +35,22 @@ class RomListScene(object):
 		self.screen.fill(self.cfg.options.background_color)
 		self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, (0,0))
 	
-	def draw_bg(self):
-		self.screen.fill(self.cfg.options.background_color)
-		self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, (0,0))
+	def draw_bg(self, rect=None):
+		if not rect:
+			self.screen.fill(self.cfg.options.background_color)
+			self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, (0,0))
+		else:
+			self.screen.fill(self.cfg.options.background_color, rect)
+			self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, rect, rect)
+	
+	def get_dimensions(self):
+		self.avail_width = self.screen.get_width()
+		self.avail_height = self.screen.get_height()
+		
+		if not self.cfg.options.rom_list_orientation == 'horizontal':
+			self.avail_width = pygame.display.Info().current_w - self.cfg.options.romlist_item_width - self.cfg.options.rom_list_alignment_padding
+		else:
+			self.avail_height = pygame.display.Info().current_h - self.cfg.options.romlist_item_height - self.cfg.options.rom_list_alignment_padding
 
 	def pre_render(self, screen):
 		
@@ -48,10 +59,14 @@ class RomListScene(object):
 
 		self.items_per_screen = int(self.measure_items_per_screen())
 		self.list.set_visible_items(0, self.items_per_screen)
+		self.draw_list(self.cfg.options.rom_list_orientation)
 
 		self.selected_item = self.list.labels[0]
-
+		self.get_dimensions()
 		self.draw()
+		if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_into(self, self.cfg.options.fade_image)
+		self.cfg.options.fade_image.blit(self.screen,(0,0))
+		
 
 	def measure_items_per_screen(self):
 	
@@ -85,35 +100,29 @@ class RomListScene(object):
 				if len(clicked_sprites) > 0:
 					sprite = clicked_sprites[0]
 					self.run_sprite_command(sprite)
-			elif event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_UP or event.key == pygame.K_KP8:
-					self.set_selected_index(self.ORIENTATION[self.cfg.options.rom_list_orientation][0])
-				elif event.key == pygame.K_DOWN or event.key == pygame.K_KP2:
-					self.set_selected_index(self.ORIENTATION[self.cfg.options.rom_list_orientation][1])
-				elif event.key == pygame.K_LEFT or event.key == pygame.K_KP4:
-					self.set_selected_index(self.ORIENTATION[self.cfg.options.rom_list_orientation][2])
-				elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
-					self.set_selected_index(self.ORIENTATION[self.cfg.options.rom_list_orientation][3])
-				elif event.key == pygame.K_RETURN or event.key == pygame.K_SPACE or event.key == pygame.K_KP_ENTER:
-					self.run_sprite_command(self.selected_item)
-				elif event.key == pygame.K_ESCAPE:
-					self.manager.back()
-			elif event.type == pygame.JOYAXISMOTION:
-				if event.dict['axis'] == 1 and event.dict['value'] < 0:
-					self.set_selected_index(self.ORIENTATION[self.cfg.options.rom_list_orientation][0])
-				elif event.dict['axis'] == 1 and event.dict['value'] > 0:
-					self.set_selected_index(self.ORIENTATION[self.cfg.options.rom_list_orientation][1])
-				elif event.dict['axis'] == 0 and event.dict['value'] < 0:
-					self.set_selected_index(self.ORIENTATION[self.cfg.options.rom_list_orientation][2])
-				elif event.dict['axis'] == 0 and event.dict['value'] > 0:
-					self.set_selected_index(self.ORIENTATION[self.cfg.options.rom_list_orientation][3])
-			elif event.type == pygame.JOYBUTTONDOWN:
-				if event.button == 0:
-					self.run_sprite_command(self.selected_item)
+					
+					
+			action = None		
+			if event.type == pygame.KEYDOWN: action = self.CONTROLS.get_action('keyboard', event.key)
+			if event.type == pygame.JOYAXISMOTION: action = self.CONTROLS.get_action('joystick', event.dict)
+			if event.type == pygame.JOYBUTTONDOWN: action = self.CONTROLS.get_action('joystick', event.button)
+			
+			if action == 'SELECT':
+				self.run_sprite_command(self.selected_item)
+			elif action == 'BACK' or event.key == pygame.K_ESCAPE:
+				self.cfg.options.menu_back_sound.play()
+				self.manager.back()
+			elif action == 'MENU':
+				pass
+			elif action in self.ORIENTATION[self.cfg.options.rom_list_orientation]:
+				self.set_selected_index(self.ORIENTATION[self.cfg.options.rom_list_orientation][action])
+				
 
-	def set_selected_index(self, direction):
+	def set_selected_index(self, direction, play_sound = True):
+		self.clear_rom_item()
 		#move selection up by 1
-		if direction == self.DIRECTION_UP:
+		if play_sound: self.cfg.options.menu_move_sound.play()
+		if direction == "UP":
 			selected_index = self.sprites.index(self.selected_item)
 			#check if selected item is highest item on screen
 			if selected_index == 0:
@@ -122,24 +131,26 @@ class RomListScene(object):
 					#get the smaller number to determine how far to advance the list
 					difference = min(self.list.first_index, len(self.list.labels))
 					self.list.set_visible_items(self.list.first_index - difference, self.list.last_index - difference)
+					self.draw_list(self.cfg.options.rom_list_orientation)
 					self.selected_item = self.list.labels[len(self.list.labels)-1]
 			else:
 				#if not highest item on screen, just advance selection
 				self.selected_item = self.sprites[selected_index - 1]
 	
 		#move selection down by 1
-		elif direction == self.DIRECTION_DOWN:
+		elif direction == "DOWN":
 			selected_index = self.sprites.index(self.selected_item)
 			if selected_index == (len(self.list.labels)-1):
 				if self.list.last_index < len(self.rom_list):
 					difference = min(len(self.rom_list) - self.list.last_index + 1, len(self.list.labels))
 					self.list.set_visible_items(self.list.first_index + difference, self.list.last_index + difference)
+					self.draw_list(self.cfg.options.rom_list_orientation)
 					self.selected_item = self.list.labels[0]
 			else:
 				self.selected_item = self.sprites[selected_index + 1]
 				
 		#move selection down by number of items on screen	
-		elif direction == self.DIRECTION_RIGHT:
+		elif direction == "RIGHT":
 			selected_index = self.sprites.index(self.selected_item)
 			if selected_index < int(self.items_per_screen/2):
 				selected_index = min((self.items_per_screen/2),(len(self.list.labels)-1))
@@ -147,11 +158,12 @@ class RomListScene(object):
 			else:
 				difference = min(len(self.rom_list) - self.list.last_index + 1, len(self.list.labels))
 				self.list.set_visible_items(self.list.first_index + difference, self.list.last_index + difference)
+				self.draw_list(self.cfg.options.rom_list_orientation)
 				selected_index = min((self.items_per_screen/2),(len(self.list.labels)-1))
 				self.selected_item = self.list.labels[selected_index]
 				
 		#move selection up by number of items on screen
-		if direction == self.DIRECTION_LEFT:
+		if direction == "LEFT":
 			selected_index = self.sprites.index(self.selected_item)
 			if selected_index > int(self.items_per_screen/2):
 				selected_index = min((self.items_per_screen/2),(self.list.last_index - len(self.list.labels)))
@@ -159,12 +171,13 @@ class RomListScene(object):
 			else:
 				difference = min(self.list.first_index, len(self.list.labels))
 				self.list.set_visible_items(self.list.first_index - difference, self.list.last_index - difference)
+				self.draw_list(self.cfg.options.rom_list_orientation)
 				selected_index = min((self.items_per_screen/2),(self.list.last_index - len(self.list.labels)))
 				self.selected_item = self.list.labels[selected_index]
-
+		
 		self.draw()
 
-	def draw_list(self, orientation):
+	def draw_list(self, orientation, clear_list = True):
 		if not orientation == 'horizontal':
 			
 			y = 0
@@ -177,7 +190,12 @@ class RomListScene(object):
 				sprite.rect.y = y
 
 				y += sprite.rect.height
-
+				
+			if clear_list:
+				rect = (self.rom_list_align, 0, self.cfg.options.romlist_item_width, y)
+				self.screen.fill(self.cfg.options.background_color, rect)
+				self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, rect, rect)
+			
 			self.list.draw(self.screen)
 		else:
 			available_width = pygame.display.Info().current_w - (self.items_per_screen * self.cfg.options.romlist_item_width)
@@ -192,6 +210,11 @@ class RomListScene(object):
 				sprite.rect.x = x
 
 				x += sprite.rect.width + padding
+			
+			if clear_list:
+				rect = (0, self.rom_list_align, x, self.cfg.options.romlist_item_height)
+				self.screen.fill(self.cfg.options.background_color, rect)
+				self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, rect, rect)
 
 			self.list.draw(self.screen)
 
@@ -203,46 +226,50 @@ class RomListScene(object):
 		
 		boxart = self.cfg.options.load_image(self.selected_item.boxart, self.cfg.options.missing_boxart_image)
 		boxart_rect = boxart.get_rect()
-		avail_width = self.screen.get_width()
-		avail_height = self.screen.get_height()
 		
-		if not self.cfg.options.rom_list_orientation == 'horizontal':
-			avail_width = pygame.display.Info().current_w - self.cfg.options.romlist_item_width - self.cfg.options.rom_list_alignment_padding
-		else:
-			avail_height = pygame.display.Info().current_h - self.cfg.options.romlist_item_height - self.cfg.options.rom_list_alignment_padding
-		
-		scale = min(float((avail_width * self.cfg.options.boxart_max_width) / boxart_rect.w), float((avail_height * self.cfg.options.boxart_max_height) / boxart_rect.h))
-		scale_size = (int(boxart_rect.w * scale), int(boxart_rect.h * scale))
+		scale = min(float((self.avail_width * self.cfg.options.boxart_max_width) / boxart_rect.w), float((self.avail_height * self.cfg.options.boxart_max_height) / boxart_rect.h))
+		self.boxart_scale_size = (int(boxart_rect.w * scale), int(boxart_rect.h * scale))
 		
 		if thread.get_ident() != self.boxart_thread: thread.exit()
 		
 		#depending on type of file, either scale or smoothscale needs to be used
 		try:
-			boxart = pygame.transform.smoothscale(boxart, scale_size) 
+			boxart = pygame.transform.smoothscale(boxart, self.boxart_scale_size) 
 		except:
-			boxart = pygame.transform.scale(boxart, scale_size)
+			boxart = pygame.transform.scale(boxart, self.boxart_scale_size)
 			
-		boxart_location_x = 	((avail_width - scale_size[0])/2) + self.cfg.options.boxart_offset[0]
-		boxart_location_y = ((avail_height - scale_size[1])/2) +  self.cfg.options.boxart_offset[1]
-		if self.cfg.options.rom_list_align == 'left': boxart_location_x += self.cfg.options.romlist_item_width + self.cfg.options.rom_list_alignment_padding
-		if self.cfg.options.rom_list_align == 'top': boxart_location_y += self.cfg.options.romlist_item_height + self.cfg.options.rom_list_alignment_padding
-		boxart_location = (boxart_location_x, boxart_location_y)
+		self.boxart_location_x = 	((self.avail_width - self.boxart_scale_size[0])/2) + self.cfg.options.boxart_offset[0]
+		self.boxart_location_y = ((self.avail_height - self.boxart_scale_size[1])/2) +  self.cfg.options.boxart_offset[1]
+		if self.cfg.options.rom_list_align == 'left': self.boxart_location_x += self.cfg.options.romlist_item_width + self.cfg.options.rom_list_alignment_padding
+		if self.cfg.options.rom_list_align == 'top': self.boxart_location_y += self.cfg.options.romlist_item_height + self.cfg.options.rom_list_alignment_padding
+		boxart_location = (self.boxart_location_x, self.boxart_location_y)
 		
-		if self.manager.scene.SCENE_NAME == 'romlist': 
-			self.screen.blit(boxart, boxart_location)
-			if self.cfg.options.boxart_underlay: self.draw(False)
+		if self.manager.scene.SCENE_NAME == 'romlist': self.screen.blit(boxart, boxart_location)
 		else: thread.exit()
+		
+	def clear_rom_item(self, single_item = True):
+		
+		if single_item:
+			rect = self.selected_item.rect
+			
+			self.screen.fill(self.cfg.options.background_color, rect)
+			self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, rect, rect)
+
+			self.screen.blit(self.selected_item.image, rect)
+		else:
+			self.screen.fill(self.cfg.options.background_color)
+			self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, (0,0))
 	
 	def draw(self, draw_boxart = True):
 		if draw_boxart:
+			try:
+				if self.boxart_thread: self.draw_bg((self.boxart_location_x, self.boxart_location_y, self.boxart_scale_size[0], self.boxart_scale_size[1]))
+			except: pass
 			self.boxart_thread = thread.start_new_thread(self.draw_boxart, (20,))
-			self.draw_bg()
-		self.draw_list(self.cfg.options.rom_list_orientation)
+		
 
 		text = self.selected_item.text
 		rect = self.selected_item.rect
-
-		#rect.width = pygame.display.Info().current_w
 		
 		#build and draw selected item on the fly
 		selected_romlist_image = self.cfg.options.pre_loaded_romlist_selected.convert_alpha()
@@ -258,6 +285,7 @@ class RomListScene(object):
 
 	def run_sprite_command(self, sprite):
 		if(sprite.type == 'back'):
+			self.cfg.options.menu_back_sound.play()
 			self.manager.back()
 		else:
 			PMUtil.run_command_and_continue(sprite.command)

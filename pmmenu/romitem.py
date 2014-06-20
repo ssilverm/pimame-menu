@@ -13,6 +13,8 @@ class PMRomItem(pygame.sprite.Sprite):
 		
 		#font_opts = font_file, font_size, color_fg, color_bg
 		
+		#create_romlist_image = template
+		#new_rom = new rom item to be added to pmlist
 		if create_romlist_image or new_rom:
 			if new_rom:
 				self.image = new_rom.image.copy()

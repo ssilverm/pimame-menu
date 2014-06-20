@@ -8,6 +8,8 @@ options:
   sort_items_with_roms_first: Yes
   hide_items_without_roms: No
   show_cursor: No
+  allow_quit_to_console: Yes
+  use_scene_transitions: Yes
   theme_pack: "default" #name of the folder in /home/pi/pimame/pimame-menu/themes/
  
 scraper_options:
