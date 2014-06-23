@@ -109,7 +109,7 @@ class RomListScene(object):
 			
 			if action == 'SELECT':
 				self.run_sprite_command(self.selected_item)
-			elif action == 'BACK' or event.key == pygame.K_ESCAPE:
+			elif action == 'BACK':
 				self.cfg.options.menu_back_sound.play()
 				self.manager.back()
 			elif action == 'MENU':
