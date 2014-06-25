@@ -301,14 +301,14 @@ class MainScene(object):
 					self.screen.blit(self.cfg.options.fade_image,(0,0))
 					if self.popup.theme_list[self.popup.theme_count] != self.cfg.options.theme_name:
 						PMUtil.replace('/home/pi/pimame/pimame-menu/config.yaml', 'theme_pack: "' + self.cfg.options.theme_name, 'theme_pack: "' + self.popup.theme_list[self.popup.theme_count])
-						PMUtil.run_command_and_continue(echo 'Changing theme and restarting PiPlay')
+						PMUtil.run_command_and_continue('echo Changing theme and restarting PiPlay')
 				elif action == 'BACK' and self.cfg.options.allow_quit_to_console:
 					self.cfg.options.menu_back_sound.play()
 					self.popup_menu_open = False
 					self.screen.blit(self.cfg.options.fade_image,(0,0))
 					if self.popup.theme_list[self.popup.theme_count] != self.cfg.options.theme_name:
 						PMUtil.replace('/home/pi/pimame/pimame-menu/config.yaml', 'theme_pack: "' + self.cfg.options.theme_name, 'theme_pack: "' + self.popup.theme_list[self.popup.theme_count])
-						PMUtil.run_command_and_continue(echo 'Changing theme and restarting PiPlay')
+						PMUtil.run_command_and_continue('echo Changing theme and restarting PiPlay')
 					
 
 	#@TODO - change name:
