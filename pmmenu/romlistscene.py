@@ -102,7 +102,7 @@ class RomListScene(object):
 					self.run_sprite_command(sprite)
 					
 					
-			action = None		
+			action = None
 			if event.type == pygame.KEYDOWN: action = self.CONTROLS.get_action('keyboard', event.key)
 			if event.type == pygame.JOYAXISMOTION: action = self.CONTROLS.get_action('joystick', event.dict)
 			if event.type == pygame.JOYBUTTONDOWN: action = self.CONTROLS.get_action('joystick', event.button)

@@ -3,7 +3,9 @@ import subprocess
 import re
 import sys
 import time
-from os import system
+from os import system, remove, close
+from tempfile import mkstemp
+from shutil import move
 
 class PMUtil:
 	@staticmethod
@@ -28,6 +30,24 @@ class PMUtil:
 		time.sleep(1)
 		system(command + " && python " + sys.argv[0])
 		sys.exit()
+	
+	@staticmethod
+	def replace(file_path, pattern, subst):
+		#Create temp file
+		file_number, abs_path = mkstemp()
+		new_file = open(abs_path,'w')
+		old_file = open(file_path)
+		for line in old_file:
+			line = line.replace(':"', ': "')
+			new_file.write(line.replace(pattern, subst))
+		#close temp file
+		new_file.close()
+		close(file_number)
+		old_file.close()
+		#Remove original file
+		remove(file_path)
+		#Move new file
+		move(abs_path, file_path)
 	
 	@staticmethod
 	def fade_out(self):
@@ -63,3 +83,14 @@ class PMUtil:
 		self.screen.blit(backup, (0,0))
 		pygame.display.update()
 		return
+	
+	@staticmethod
+	def blurSurf(surface, amt):
+		if amt < 1.0:
+			raise ValueError("Arg 'amt' must be greater than 1.0, passed in value is %s"%amt)
+		scale = 1.0/float(amt)
+		surf_size = surface.get_size()
+		scale_size = (int(surf_size[0]*scale), int(surf_size[1]*scale))
+		surf = pygame.transform.smoothscale(surface, scale_size)
+		surf = pygame.transform.smoothscale(surf, surf_size)
+		return surf

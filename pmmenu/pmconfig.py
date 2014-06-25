@@ -74,6 +74,7 @@ class PMOptions:
 		self.show_cursor = opts['show_cursor']
 		self.allow_quit_to_console = opts['allow_quit_to_console']
 		self.use_scene_transitions = opts['use_scene_transitions']
+		self.theme_name = opts['theme_pack']
 		self.theme_pack = "themes/" + opts['theme_pack'] + "/"
 		
 		#theme.yaml
@@ -100,6 +101,10 @@ class PMOptions:
 		self.default_font_size = theme['default_font_size']
 		self.default_font_color = self.get_color(theme['default_font_color'])
 		self.default_font_background_color = self.get_color(theme['default_font_background_color'])
+		self.popup_menu_font_size = theme['popup_menu_font_size']
+		self.popup_menu_font_color = self.get_color(theme['popup_menu_font_color'])
+		self.popup_menu_font_selected_color = self.get_color(theme['popup_menu_font_selected_color'])
+		self.popup_menu_background_color = self.get_color(theme['popup_menu_background_color'])
 		
 		self.display_labels = theme['display_labels']
 		self.label_text_align = theme['label_text_align'].lower()
@@ -147,6 +152,7 @@ class PMOptions:
 		self.fade_image = None
 		self.blank_image = pygame.image.load('/home/pi/pimame/pimame-menu/assets/images/blank.png')
 		self.font = pygame.font.Font(self.theme_pack + self.font_file, self.default_font_size)
+		self.popup_font = pygame.font.Font(self.theme_pack + self.font_file, self.popup_menu_font_size)
 		self.label_font = pygame.font.Font(self.theme_pack + self.font_file, self.label_font_size)
 		self.rom_count_font = pygame.font.Font(self.theme_pack + self.font_file, self.rom_count_font_size)
 		self.rom_list_font = pygame.font.Font(self.theme_pack + self.font_file, self.rom_list_font_size)
