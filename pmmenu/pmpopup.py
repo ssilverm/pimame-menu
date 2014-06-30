@@ -25,6 +25,8 @@ class PMPopup(pygame.sprite.Sprite):
 		self.menu_work = WorkFunctions(self.cfg)
 		self.list = self.build_menu(self.scene_type)
 		self.item_height = self.list[0]['value'].rect.h
+		self.item_width = max(self.list, key=lambda x: x['title'].rect.w)['title'].rect.w + max(self.list, key=lambda x: x['value'].rect.w)['value'].rect.w + 40
+		print self.item_width
 		self.update_menu()
 
 		self.rect = self.menu.get_rect()
@@ -181,20 +183,21 @@ class PMPopup(pygame.sprite.Sprite):
 	def update_menu(self):
 		if self.scene_type == 'main':
 			
-			text_rect = pygame.Rect(0,0,300, self.item_height * len(self.list))
+			text_rect = pygame.Rect(0,0, self.item_width, (self.item_height * len(self.list)) + 20)
 			self.menu = pygame.Surface([text_rect.w, text_rect.h], pygame.SRCALPHA, 32).convert_alpha()
 			self.menu.fill(self.cfg.popup_menu_background_color, text_rect)
 			
-			y = 0
+			y = 10
+			x = 10
 			for index, item in enumerate(self.list):
 				if index == self.hover:
-					self.menu.blit(item['title_selected'].image, (0,y))
+					self.menu.blit(item['title_selected'].image, (x,y))
 				else:
-					self.menu.blit(item['title'].image, (0,y))
+					self.menu.blit(item['title'].image, (x,y))
 				if self.selected and index == self.hover:
-					self.menu.blit(item['value_selected'].image, (text_rect.w - item['value'].rect.w, y))
+					self.menu.blit(item['value_selected'].image, (text_rect.w - item['value'].rect.w - x, y))
 				else:
-					self.menu.blit(item['value'].image, (text_rect.w - item['value'].rect.w, y))
+					self.menu.blit(item['value'].image, (text_rect.w - item['value'].rect.w - x, y))
 					
 				y += item['title'].rect.height
 				
