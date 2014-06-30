@@ -133,7 +133,7 @@ class PMPopup(pygame.sprite.Sprite):
 			self.quit_to_console = {
 			"title": PMPopitem("Allow PiPlay Quit:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
 			"value": PMPopitem(str(self.menu_work.quit_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMPopitem("Allow Piplay Quit:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title_selected": PMPopitem("Allow PiPlay Quit:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"value_selected": PMPopitem(str(self.menu_work.quit_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.quit_swap,
 			"next": self.menu_work.quit_swap
