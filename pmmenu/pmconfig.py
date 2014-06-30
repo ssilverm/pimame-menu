@@ -24,7 +24,7 @@ class PMCfg:
 		stream.close()
 		
 		#roll config file + theme file into options class
-		self.options = PMOptions(config['options'], theme['options'],config['menu_items'],theme['menu_items'])
+		self.options = PMOptions(config['options'], config['scraper_options'], theme['options'],config['menu_items'],theme['menu_items'])
 		config = None
 		theme = None
 		
@@ -48,7 +48,7 @@ class PMCfg:
 
 
 class PMOptions:
-	def __init__(self, opts, theme, opt_menu_item, theme_menu_item):
+	def __init__(self, opts, scraper, theme, opt_menu_item, theme_menu_item):
 	
 		#config.yaml
 		for index, oItem in enumerate(opt_menu_item):
@@ -76,6 +76,10 @@ class PMOptions:
 		self.use_scene_transitions = opts['use_scene_transitions']
 		self.theme_name = opts['theme_pack']
 		self.theme_pack = "themes/" + opts['theme_pack'] + "/"
+		
+		#scraper options
+		self.show_clones = scraper['show_clones']
+		self.overwrite_images = scraper['overwrite_images']
 		
 		#theme.yaml
 		self.header_height = theme['header_height']

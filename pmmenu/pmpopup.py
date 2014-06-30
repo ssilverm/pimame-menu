@@ -65,7 +65,100 @@ class PMPopup(pygame.sprite.Sprite):
 			"next": self.menu_work.theme_next
 			}
 			
-			popup = [self.volume, self.theme]
+			self.cursor = {
+			"title": PMPopitem("Show Cursor:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMPopitem(str(self.menu_work.cursor_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMPopitem("Show Cursor:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMPopitem(str(self.menu_work.cursor_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"prev": self.menu_work.cursor_swap,
+			"next": self.menu_work.cursor_swap
+			}
+			
+			self.transitions = {
+			"title": PMPopitem("Scene FX:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMPopitem(str(self.menu_work.scene_trans_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMPopitem("Scene FX:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMPopitem(str(self.menu_work.scene_trans_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"prev": self.menu_work.transition_swap,
+			"next": self.menu_work.transition_swap
+			}
+
+			self.show_ip = {
+			"title": PMPopitem("Show IP:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMPopitem(str(self.menu_work.ip_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMPopitem("Show IP:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMPopitem(str(self.menu_work.ip_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"prev": self.menu_work.ip_swap,
+			"next": self.menu_work.ip_swap
+			}
+			
+			self.show_update = {
+			"title": PMPopitem("Show Update:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMPopitem(str(self.menu_work.update_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMPopitem("Show Update:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMPopitem(str(self.menu_work.update_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"prev": self.menu_work.update_swap,
+			"next": self.menu_work.update_swap
+			}
+			
+			self.sort_alphanum = {
+			"title": PMPopitem("Sort ABC:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMPopitem(str(self.menu_work.sort_abc_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMPopitem("Sort ABC:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMPopitem(str(self.menu_work.sort_abc_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"prev": self.menu_work.sort_abc_swap,
+			"next": self.menu_work.sort_abc_swap
+			}
+			
+			self.roms_first = {
+			"title": PMPopitem("Show roms 1st:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMPopitem(str(self.menu_work.roms_first_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMPopitem("Show roms 1st:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMPopitem(str(self.menu_work.roms_first_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"prev": self.menu_work.roms_first_swap,
+			"next": self.menu_work.roms_first_swap
+			}
+			
+			self.hide_items_without_roms = {
+			"title": PMPopitem("Hide Empty Emu:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMPopitem(str(self.menu_work.hide_items_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMPopitem("Hide Empty Emu:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMPopitem(str(self.menu_work.hide_items_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"prev": self.menu_work.hide_items_swap,
+			"next": self.menu_work.hide_items_swap
+			}
+			
+			self.quit_to_console = {
+			"title": PMPopitem("Allow PiPlay Quit:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMPopitem(str(self.menu_work.quit_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMPopitem("Allow Piplay Quit:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMPopitem(str(self.menu_work.quit_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"prev": self.menu_work.quit_swap,
+			"next": self.menu_work.quit_swap
+			}
+			
+			self.scraper_clones = {
+			"title": PMPopitem("Scrape Clones:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMPopitem(str(self.menu_work.scraper_clones_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMPopitem("Scrape Clones:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMPopitem(str(self.menu_work.scraper_clones_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"prev": self.menu_work.scraper_clones_swap,
+			"next": self.menu_work.scraper_clones_swap
+			}
+			
+			self.scraper_overwrite_image = {
+			"title": PMPopitem("Overwrite Images:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMPopitem(str(self.menu_work.scraper_overwrite_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMPopitem("Overwrite Images:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMPopitem(str(self.menu_work.scraper_overwrite_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"prev": self.menu_work.scraper_overwrite_swap,
+			"next": self.menu_work.scraper_overwrite_swap
+			}
+			
+
+			
+			popup = [self.volume, self.theme, self.cursor, self.transitions, self.show_ip, self.show_update, self.sort_alphanum,
+						self.roms_first, self.hide_items_without_roms, self.quit_to_console, self.scraper_clones, self.scraper_overwrite_image]
 			
 			return popup
 			#self.themes = PMPopitem(get_theme(), cfg.popup_font, cfg.popup_menu_font_color)
@@ -161,16 +254,13 @@ class PMPopup(pygame.sprite.Sprite):
 				self.cfg.menu_back_sound.play()
 				self.menu_open = False
 				self.screen.blit(self.cfg.fade_image,(0,0))
-				if self.menu_work.theme_list[self.menu_work.theme_count] != self.cfg.theme_name:
-					PMUtil.replace('/home/pi/pimame/pimame-menu/config.yaml', 'theme_pack: "' + self.cfg.theme_name, 'theme_pack: "' + self.menu_work.theme_list[self.menu_work.theme_count])
-					PMUtil.run_command_and_continue('echo Changing theme and restarting PiPlay')
+				self.on_exit_actions()
+				
 		elif action == 'BACK':
 				self.cfg.menu_back_sound.play()
 				self.menu_open = False
 				self.screen.blit(self.cfg.fade_image,(0,0))
-				if self.menu_work.theme_list[self.menu_work.theme_count] != self.cfg.theme_name:
-					PMUtil.replace('/home/pi/pimame/pimame-menu/config.yaml', 'theme_pack: "' + self.cfg.theme_name, 'theme_pack: "' + self.menu_work.theme_list[self.menu_work.theme_count])
-					PMUtil.run_command_and_continue('echo Changing theme and restarting PiPlay')
+				self.on_exit_actions()
 		
 		if action == 'SELECT':
 			if self.scene_type != 'romlist':
@@ -181,7 +271,72 @@ class PMPopup(pygame.sprite.Sprite):
 				
 			
 				
-	
+	def on_exit_actions(self):
+		config_path = '/home/pi/pimame/pimame-menu/config.yaml'
+		requires_restart = False
+		
+		#THEME
+		if self.menu_work.theme_list[self.menu_work.theme_count] != self.cfg.theme_name:
+			PMUtil.replace(config_path, 'theme_pack: "' + self.cfg.theme_name, 'theme_pack: "' + self.menu_work.theme_list[self.menu_work.theme_count])
+			requires_restart = True
+		
+		#CURSOR
+		if self.cfg.show_cursor != self.menu_work.cursor_bool:
+			pygame.mouse.set_visible(self.menu_work.cursor_bool)
+			PMUtil.replace(config_path, '', str(self.menu_work.cursor_bool), 'show_cursor:')
+		
+		#SCENE TRANSITIONS
+		if self.cfg.use_scene_transitions != self.menu_work.scene_trans_bool:
+			self.cfg.use_scene_transitions = self.menu_work.scene_trans_bool
+			PMUtil.replace(config_path, '', str(self.menu_work.scene_trans_bool), 'use_scene_transitions:')
+		
+		#IP
+		if self.cfg.show_ip != self.menu_work.ip_bool:
+			self.cfg.show_ip = self.menu_work.ip_bool
+			PMUtil.replace(config_path, '', str(self.menu_work.ip_bool), 'show_ip:')
+		
+		#SHOW UPDATE
+		if self.cfg.show_update != self.menu_work.update_bool:
+			self.cfg.show_update = self.menu_work.update_bool
+			PMUtil.replace(config_path, '', str(self.menu_work.update_bool), 'show_update:')
+		
+		#SORT EMU BY ALPHANUM
+		if self.cfg.sort_items_alphanum != self.menu_work.sort_abc_bool:
+			self.cfg.sort_items_alphanum = self.menu_work.sort_abc_bool
+			PMUtil.replace(config_path, '', str(self.menu_work.sort_abc_bool), 'sort_items_alphanum:')
+			requires_restart = True
+		
+		#SORT EMU WITH ROMS FIRST
+		if self.cfg.sort_items_with_roms_first != self.menu_work.roms_first_bool:
+			self.cfg.sort_items_with_roms_first = self.menu_work.roms_first_bool
+			PMUtil.replace(config_path, '', str(self.menu_work.roms_first_bool), 'sort_items_with_roms_first:')
+			requires_restart = True
+		
+		#HIDE ITEMS WITHOUT ROMS
+		if self.cfg.hide_items_without_roms != self.menu_work.hide_items_bool:
+			self.cfg.hide_items_without_roms = self.menu_work.hide_items_bool
+			PMUtil.replace(config_path, '', str(self.menu_work.hide_items_bool), 'hide_items_without_roms:')
+			requires_restart = True
+		
+		#ALLOW QUIT TO CONSOLE
+		if self.cfg.allow_quit_to_console != self.menu_work.quit_bool:
+			self.cfg.allow_quit_to_console = self.menu_work.quit_bool
+			PMUtil.replace(config_path, '', str(self.menu_work.quit_bool), 'allow_quit_to_console:')
+		
+		#SCRAPER SHOW CLONES
+		if self.cfg.show_clones != self.menu_work.scraper_clones_bool:
+			self.cfg.show_clones = self.menu_work.scraper_clones_bool
+			PMUtil.replace(config_path, '', str(self.menu_work.scraper_clones_bool), 'show_clones:')
+		
+		#SCRAPER OVERWRITE IMAGES
+		if self.cfg.overwrite_images != self.menu_work.scraper_overwrite_bool:
+			self.cfg.overwrite_images = self.menu_work.scraper_overwrite_bool
+			PMUtil.replace(config_path, '', str(self.menu_work.scraper_overwrite_bool), 'overwrite_images:')
+			
+		if requires_restart: 
+			system('clear')
+			PMUtil.run_command_and_continue('echo Changing settings and restarting PiPlay')
+		
 	def draw_menu(self):
 		self.screen.blit(self.effect,(0,0))
 		self.screen.blit(self.menu, ((pygame.display.Info().current_w - self.rect.w)/2, (pygame.display.Info().current_h - self.rect.h)/2))
@@ -190,11 +345,26 @@ class PMPopup(pygame.sprite.Sprite):
 		
 class WorkFunctions():
 	def __init__(self, cfg):
+		
+		#mainscene
 		self.cfg = cfg
 		self.theme_count = 0
 		self.theme_list = self.get_themes()
+		self.cursor_bool = self.cfg.show_cursor
+		self.scene_trans_bool = self.cfg.use_scene_transitions
+		self.ip_bool = self.cfg.show_ip
+		self.update_bool = self.cfg.show_update
+		self.sort_abc_bool = self.cfg.sort_items_alphanum
+		self.roms_first_bool = self.cfg.sort_items_with_roms_first
+		self.hide_items_bool = self.cfg.hide_items_without_roms
+		self.quit_bool = self.cfg.allow_quit_to_console
+		self.scraper_clones_bool = self.cfg.show_clones
+		self.scraper_overwrite_bool = self.cfg.overwrite_images
+		
+		#romlist
 		self.abc_count = 0
 		self.abc_list = map(chr, range(65, 91))
+		
 	
 		#MENU ITEM FUNCTIONS
 	def get_sound_volume(self):
@@ -223,6 +393,47 @@ class WorkFunctions():
 		self.theme_count += 1
 		if self.theme_count >= len(self.theme_list): self.theme_count = 0
 		
+	def cursor_swap(self):
+		self.cursor_bool = not self.cursor_bool
+		return self.cursor_bool
+	
+	def transition_swap(self):
+		self.scene_trans_bool = not self.scene_trans_bool
+		return self.scene_trans_bool
+		
+	def ip_swap(self):
+		self.ip_bool = not self.ip_bool
+		return self.ip_bool
+		
+	def update_swap(self):
+		self.update_bool = not self.update_bool
+		return self.update_bool
+		
+	def sort_abc_swap(self):
+		self.sort_abc_bool = not self.sort_abc_bool
+		return self.sort_abc_bool
+		
+	def roms_first_swap(self):
+		self.roms_first_bool = not self.roms_first_bool
+		return self.roms_first_bool
+		
+	def hide_items_swap(self):
+		self.hide_items_bool = not self.hide_items_bool
+		return self.hide_items_bool
+		
+	def quit_swap(self):
+		self.quit_bool = not self.quit_bool
+		return self.quit_bool
+		
+	def scraper_clones_swap(self):
+		self.scraper_clones_bool = not self.scraper_clones_bool
+		return self.scraper_clones_bool
+		
+	def scraper_overwrite_swap(self):
+		self.scraper_overwrite_bool = not self.scraper_overwrite_bool
+		return self.scraper_overwrite_bool
+		
+	#ROMLIST FUNCTIONS
 	def abc_prev(self):
 		self.abc_count -= 1
 		if self.abc_count < 0: self.abc_count = len(self.abc_list) - 1
@@ -239,7 +450,6 @@ class WorkFunctions():
 
         #abc_list = map(chr, range(65,91))
 		for index, i in enumerate(list):
-			
 			if ord(i['title'][0].upper()) >= ord(self.abc_list[self.abc_count]):
 				return index
 		return 0

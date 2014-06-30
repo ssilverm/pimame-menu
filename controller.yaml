@@ -26,9 +26,9 @@ KEYBOARD:
   - pygame.K_RETURN
   - pygame.K_SPACE
   - pygame.K_KP_ENTER
-  - pygame.K_1
   BACK:
   - pygame.K_ESCAPE
   - pygame.K_2
   MENU:
   - pygame.K_TAB
+  - pygame.K_1
