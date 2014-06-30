@@ -153,6 +153,7 @@ class PMOptions:
 		self.blank_image = pygame.image.load('/home/pi/pimame/pimame-menu/assets/images/blank.png')
 		self.font = pygame.font.Font(self.theme_pack + self.font_file, self.default_font_size)
 		self.popup_font = pygame.font.Font(self.theme_pack + self.font_file, self.popup_menu_font_size)
+		self.popup_rom_letter_font = pygame.font.Font(self.theme_pack + self.font_file, 125)
 		self.label_font = pygame.font.Font(self.theme_pack + self.font_file, self.label_font_size)
 		self.rom_count_font = pygame.font.Font(self.theme_pack + self.font_file, self.rom_count_font_size)
 		self.rom_list_font = pygame.font.Font(self.theme_pack + self.font_file, self.rom_list_font_size)
@@ -194,6 +195,7 @@ class PMOptions:
 	def load_audio(self, file_path):
 		if isfile(file_path):
 			sound_file = pygame.mixer.Sound(file_path)
+			sound_file.set_volume(1.0)
 			return sound_file
 		else:
 			print 'cant load audio: ', file_path

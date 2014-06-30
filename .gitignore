@@ -6,3 +6,5 @@ controller/
 .pcsx/
 bios/
 screenshots/
+*.pyc
+*.pyc

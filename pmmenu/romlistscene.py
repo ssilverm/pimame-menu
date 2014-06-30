@@ -1,6 +1,7 @@
 import thread, time
 import pygame
 from pmcontrols import *
+from pmpopup import *
 from pmlist import *
 from pmutil import *
 
@@ -56,6 +57,7 @@ class RomListScene(object):
 		
 		self.resize_bg()
 		self.list = PMList(self.rom_list, self.cfg.options)
+		self.popup = PMPopup(self.manager.scene.SCENE_NAME, self.cfg.options)
 
 		self.items_per_screen = int(self.measure_items_per_screen())
 		self.list.set_visible_items(0, self.items_per_screen)
@@ -73,7 +75,7 @@ class RomListScene(object):
 		item_size = self.cfg.options.romlist_item_height if not self.cfg.options.rom_list_orientation == 'horizontal' else self.cfg.options.romlist_item_width
 		screen_size = pygame.display.Info().current_h  if not self.cfg.options.rom_list_orientation == 'horizontal' else pygame.display.Info().current_w
 		
-		alignment = {	'left': self.cfg.options.rom_list_alignment_padding, 
+		alignment = {'left': self.cfg.options.rom_list_alignment_padding, 
 							'right': (pygame.display.Info().current_w - self.cfg.options.romlist_item_width - self.cfg.options.rom_list_alignment_padding), 
 							'top': self.cfg.options.rom_list_alignment_padding,
 							'bottom': (pygame.display.Info().current_h - self.cfg.options.romlist_item_height - self.cfg.options.rom_list_alignment_padding)
@@ -91,6 +93,16 @@ class RomListScene(object):
 
 	def handle_events(self, events):
 		for event in events:
+		
+			#ctrl+q to force quit
+			if event.type == pygame.KEYDOWN:
+				if pygame.key.get_mods() & pygame.KMOD_LCTRL:
+					if event.key == pygame.K_q:
+						self.cfg.options.menu_back_sound.play()
+						if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_out(self)
+						pygame.quit()
+						sys.exit()
+						
 			if event.type == pygame.MOUSEBUTTONUP:
 				pos = pygame.mouse.get_pos()
 
@@ -107,15 +119,40 @@ class RomListScene(object):
 			if event.type == pygame.JOYAXISMOTION: action = self.CONTROLS.get_action('joystick', event.dict)
 			if event.type == pygame.JOYBUTTONDOWN: action = self.CONTROLS.get_action('joystick', event.button)
 			
-			if action == 'SELECT':
-				self.run_sprite_command(self.selected_item)
-			elif action == 'BACK':
-				self.cfg.options.menu_back_sound.play()
-				self.manager.back()
-			elif action == 'MENU':
-				pass
-			elif action in self.ORIENTATION[self.cfg.options.rom_list_orientation]:
-				self.set_selected_index(self.ORIENTATION[self.cfg.options.rom_list_orientation][action])
+			
+			if self.popup.menu_open:
+			
+				self.popup.handle_events(action, self.screen, self.effect)
+				
+				if action == 'SELECT':
+					self.popup.menu_open = False
+					self.screen.blit(self.cfg.options.fade_image, (0,0))
+					
+					self.clear_rom_item()
+					found_index = self.popup.menu_work.abc_find(self.list.rom_list)
+					self.list.set_visible_items(found_index, found_index + self.items_per_screen)
+					self.draw_list(self.cfg.options.rom_list_orientation)
+					self.selected_item = self.list.labels[0]
+					self.draw()
+					
+			else:
+				if action == 'SELECT':
+					self.run_sprite_command(self.selected_item)
+				elif action == 'BACK':
+					self.cfg.options.menu_back_sound.play()
+					self.manager.back()
+				elif action == 'MENU':
+					self.popup.menu_open = True
+					self.cfg.options.fade_image.blit(self.screen,(0,0))
+					
+					if self.cfg.options.use_scene_transitions:
+						self.effect = PMUtil.blurSurf(self.screen, 20)
+						self.screen.blit(self.effect,(0,0))
+					else:
+						self.effect = self.screen.copy()
+					self.screen.blit(self.popup.menu,((pygame.display.Info().current_w - self.popup.rect.w)/2, (pygame.display.Info().current_h - self.popup.rect.h)/2))
+				elif action in self.ORIENTATION[self.cfg.options.rom_list_orientation]:
+					self.set_selected_index(self.ORIENTATION[self.cfg.options.rom_list_orientation][action])
 				
 
 	def set_selected_index(self, direction, play_sound = True):

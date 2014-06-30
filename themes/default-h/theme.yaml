@@ -25,9 +25,9 @@ options:
   default_font_color: "0,0,0"
   default_font_background_color: "255,255,255,0"
   popup_menu_font_size: 19
-  popup_menu_font_color: "255,255,255"
-  popup_menu_font_selected_color: "255,0,255"
-  popup_menu_background_color: "0,255,255,90"
+  popup_menu_font_color: "0,255,255"
+  popup_menu_font_selected_color: "255,255,255"
+  popup_menu_background_color: "150,150,150,90"
   
   display_labels: yes
   label_text_align: left

@@ -9,8 +9,8 @@ options:
   hide_items_without_roms: No
   show_cursor: No
   allow_quit_to_console: Yes
-  use_scene_transitions: Yes
-  theme_pack: "default" #name of the folder in /home/pi/pimame/pimame-menu/themes/
+  use_scene_transitions: No
+  theme_pack: "tron" #name of the folder in /home/pi/pimame/pimame-menu/themes/
  
 scraper_options:
   show_clones: no
@@ -81,7 +81,6 @@ menu_items:
     override_menu: yes
     roms: /home/pi/pimame/roms/psx/
 
-
   - label: Commodore 64
     visible: Yes
     roms: /home/pi/roms/c64/
@@ -95,7 +94,6 @@ menu_items:
     command: scummvm
     override_menu: yes
     roms: /home/pi/pimame/roms/scummvm/
-
 
   - label: Gameboy
     visible: Yes
@@ -134,4 +132,3 @@ menu_items:
     full_path: no
     command: python /home/pi/pimame/pimame-menu/scraper/scrape_script.py
     override_menu: yes
-

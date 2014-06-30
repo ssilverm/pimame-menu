@@ -55,24 +55,34 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 		self.pages = []
 
 		num_menu_items = len(self.menu_items)
-		if num_menu_items <= self.num_items_per_page:
+		#total_num_of_icons = num_menu_items/num_items_per_page - 1(page) * (2 navigation buttons per page) + num_menu_items + 2 navigation buttons for first and last pages
+		total_num_of_icons = (int(num_menu_items/self.num_items_per_page) - 1) * 2 + num_menu_items + 2
+		total_num_of_pages = int(total_num_of_icons/self.num_items_per_page) + 1 #+1 b/c int always rounds down
+		
+		if total_num_of_pages == 1:
 			self.pages.append(self.menu_items[:])
 		else:
-			page = self.menu_items[:self.num_items_per_page - 1]
+			num_items_to_display = self.num_items_per_page - 1
+			page = self.menu_items[:num_items_to_display]
 			next = self.create_nav_menu_item('Next', self.next_icon, self.next_selected)
 			next.command = PMMenuItem.NEXT_PAGE
 			page.append(next)
 			self.pages.append(page)
-			r = range(self.num_items_per_page - 1, num_menu_items - self.num_items_per_page + 1)
+			r = range(1, total_num_of_pages)
+			iteration = 0
 			for i in r:
-				page = self.menu_items[i:i + self.num_items_per_page - 2]
+				iteration += num_items_to_display
+				num_items_to_display = self.num_items_per_page - 2
+					
+				page = self.menu_items[iteration: iteration + num_items_to_display]
 				back = self.create_nav_menu_item('Back', self.back_icon, self.back_selected)
 				back.command = PMMenuItem.PREV_PAGE
 				next = self.create_nav_menu_item('Next', self.next_icon, self.next_selected)
 				next.command = PMMenuItem.NEXT_PAGE
 				page.insert(0, back)
-				page.append(next)
+				if i != len(r): page.append(next)
 				self.pages.append(page)
+				
 			last_page = self.menu_items[self.num_items_per_page - 1 + len(r) * (self.num_items_per_page - 2):]
 			back = self.create_nav_menu_item('Back', self.back_icon, self.back_selected)
 			back.command = PMMenuItem.PREV_PAGE

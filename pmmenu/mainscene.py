@@ -174,6 +174,7 @@ class MainScene(object):
 			self.selection = PMSelection(self.cfg.options)
 			self.grid = PMGrid(self.cfg.options.options_menu_items, self.cfg.options)
 			self.grid.set_num_items_per_page(self.calc_num_items_per_page())
+			self.popup = PMPopup(self.manager.scene.SCENE_NAME, self.cfg.options)
 			self.pre_rendered = True
 		
 		self.draw_bg()
@@ -183,7 +184,7 @@ class MainScene(object):
 		self.draw_items()
 		#self.draw_selection()
 		self.set_selected_index(0, play_sound = False)
-		self.popup_menu_open = False
+
 		if self.cfg.options.fade_image:
 			if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_into(self, self.cfg.options.fade_image)
 		else:
@@ -201,7 +202,16 @@ class MainScene(object):
 
 	def handle_events(self, events):
 		for event in events:
-
+		
+			#ctrl+q to force quit
+			if event.type == pygame.KEYDOWN:
+				if pygame.key.get_mods() & pygame.KMOD_LCTRL:
+					if event.key == pygame.K_q:
+						self.cfg.options.menu_back_sound.play()
+						if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_out(self)
+						pygame.quit()
+						sys.exit()
+						
 			if event.type == pygame.QUIT:
 				self.cfg.options.menu_back_sound.play()
 				if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_out(self)
@@ -222,7 +232,9 @@ class MainScene(object):
 			if event.type == pygame.JOYAXISMOTION: action = self.CONTROLS.get_action('joystick', event.dict)
 			if event.type == pygame.JOYBUTTONDOWN: action = self.CONTROLS.get_action('joystick', event.button)
 			
-			if not self.popup_menu_open:
+			if self.popup.menu_open:
+				self.popup.handle_events(action, self.screen, self.effect)
+			else:
 				if action == 'LEFT':
 					self.set_selected_index(self.selected_index - 1)
 				elif action == 'RIGHT':
@@ -234,81 +246,21 @@ class MainScene(object):
 				elif action == 'SELECT':
 					self.do_menu_item_action(self.get_selected_item())
 				elif action == 'MENU':
-					self.popup_menu_open = True
+					self.popup.menu_open = True
 					self.cfg.options.fade_image.blit(self.screen,(0,0))
-					self.popup = PMPopup(self.manager.scene.SCENE_NAME, self.cfg.options)
+					
 					if self.cfg.options.use_scene_transitions:
 						self.effect = PMUtil.blurSurf(self.screen, 20)
 						self.screen.blit(self.effect,(0,0))
-					self.screen.blit(self.popup.menu,(0,0))
+					else:
+						self.effect = self.screen.copy()
+					self.screen.blit(self.popup.menu,((pygame.display.Info().current_w - self.popup.rect.w)/2, (pygame.display.Info().current_h - self.popup.rect.h)/2))
 				elif action == 'BACK' and self.cfg.options.allow_quit_to_console:
 					self.cfg.options.menu_back_sound.play()
 					if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_out(self)
 					pygame.quit()
 					sys.exit()
-					
-			else:
-				if action == 'LEFT':
-					self.cfg.options.menu_navigation_sound.play()
-					if not self.popup.selected: self.popup.hover_prev()
-					else:
-						self.popup.list[self.popup.hover]['prev']()
-						self.popup.list = self.popup.build_menu(self.manager.scene.SCENE_NAME)
-						self.popup.update_menu()
-					if self.cfg.options.use_scene_transitions:
-						self.screen.blit(self.effect,(0,0))
-					self.screen.blit(self.popup.menu,(0,0))
-				elif action == 'RIGHT':
-					self.cfg.options.menu_navigation_sound.play()
-					if not self.popup.selected: self.popup.hover_next()
-					else: 
-						self.popup.list[self.popup.hover]['next']()
-						self.popup.list = self.popup.build_menu(self.manager.scene.SCENE_NAME)
-						self.popup.update_menu()
-					if self.cfg.options.use_scene_transitions:
-						self.screen.blit(self.effect,(0,0))
-					self.screen.blit(self.popup.menu,(0,0))
-				elif action == 'UP':
-					self.cfg.options.menu_navigation_sound.play()
-					if not self.popup.selected: self.popup.hover_prev()
-					else:
-						self.popup.list[self.popup.hover]['prev']()
-						self.popup.list = self.popup.build_menu(self.manager.scene.SCENE_NAME)
-						self.popup.update_menu()
-					if self.cfg.options.use_scene_transitions:
-						self.screen.blit(self.effect,(0,0))
-					self.screen.blit(self.popup.menu,(0,0))
-				elif action == 'DOWN':
-					self.cfg.options.menu_navigation_sound.play()
-					if not self.popup.selected: self.popup.hover_next()
-					else: 
-						self.popup.list[self.popup.hover]['next']()
-						self.popup.list = self.popup.build_menu(self.manager.scene.SCENE_NAME)
-						self.popup.update_menu()
-					if self.cfg.options.use_scene_transitions:
-						self.screen.blit(self.effect,(0,0))
-					self.screen.blit(self.popup.menu,(0,0))
-				elif action == 'SELECT':
-					self.cfg.options.menu_select_sound.play()
-					self.popup.selected = not self.popup.selected
-					if self.cfg.options.use_scene_transitions:
-						self.screen.blit(self.effect,(0,0))
-					self.popup.update_menu()
-					self.screen.blit(self.popup.menu,(0,0))
-				elif action == 'MENU':
-					self.cfg.options.menu_back_sound.play()
-					self.popup_menu_open = False
-					self.screen.blit(self.cfg.options.fade_image,(0,0))
-					if self.popup.theme_list[self.popup.theme_count] != self.cfg.options.theme_name:
-						PMUtil.replace('/home/pi/pimame/pimame-menu/config.yaml', 'theme_pack: "' + self.cfg.options.theme_name, 'theme_pack: "' + self.popup.theme_list[self.popup.theme_count])
-						PMUtil.run_command_and_continue('echo Changing theme and restarting PiPlay')
-				elif action == 'BACK' and self.cfg.options.allow_quit_to_console:
-					self.cfg.options.menu_back_sound.play()
-					self.popup_menu_open = False
-					self.screen.blit(self.cfg.options.fade_image,(0,0))
-					if self.popup.theme_list[self.popup.theme_count] != self.cfg.options.theme_name:
-						PMUtil.replace('/home/pi/pimame/pimame-menu/config.yaml', 'theme_pack: "' + self.cfg.options.theme_name, 'theme_pack: "' + self.popup.theme_list[self.popup.theme_count])
-						PMUtil.run_command_and_continue('echo Changing theme and restarting PiPlay')
+				
 					
 
 	#@TODO - change name:
