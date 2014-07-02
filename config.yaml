@@ -1,16 +1,16 @@
 options:
-  max_fps: 20
-  show_ip: yes
+  max_fps: 60
+  show_ip: True
   show_update: Yes
   fullscreen: Yes
   resolution: "0,0"
-  sort_items_alphanum: No
-  sort_items_with_roms_first: Yes
-  hide_items_without_roms: No
-  show_cursor: No
-  allow_quit_to_console: Yes
-  use_scene_transitions: Yes
-  theme_pack: "default" #name of the folder in /home/pi/pimame/pimame-menu/themes/
+  sort_items_alphanum: True
+  sort_items_with_roms_first: True
+  hide_items_without_roms: False
+  show_cursor: True
+  allow_quit_to_console: True
+  use_scene_transitions: True
+  theme_pack: "tron"
  
 scraper_options:
   show_clones: no
@@ -81,7 +81,6 @@ menu_items:
     override_menu: yes
     roms: /home/pi/pimame/roms/psx/
 
-
   - label: Commodore 64
     visible: Yes
     roms: /home/pi/roms/c64/
@@ -95,7 +94,6 @@ menu_items:
     command: scummvm
     override_menu: yes
     roms: /home/pi/pimame/roms/scummvm/
-
 
   - label: Gameboy
     visible: Yes
@@ -157,4 +155,3 @@ menu_items:
     full_path: no
     command: python /home/pi/pimame/pimame-menu/scraper/scrape_script.py
     override_menu: yes
-
