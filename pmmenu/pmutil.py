@@ -3,14 +3,20 @@ import subprocess
 import re
 import sys
 import time
-from os import system
+from os import system, remove, close
+from tempfile import mkstemp
+from shutil import move
 
 class PMUtil:
 	@staticmethod
 	def get_ip_addr():
-		wlan = subprocess.check_output("/sbin/ifconfig wlan0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'", shell=True)
-		ether = subprocess.check_output("/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'", shell=True)
-
+		#wlan = subprocess.check_output("/sbin/ifconfig wlan0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'", shell=True)	#2>/dev/null
+		#ether = subprocess.check_output("/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'", shell=True)
+		
+		# i like this better : it won't complain if the interface doesn't exist
+		wlan = subprocess.check_output("ip addr show wlan0 2>/dev/null | awk '/inet/ {print $2}' | cut -d/ -f1", shell=True)
+		ether = subprocess.check_output("ip addr show eth0 2>/dev/null | awk '/inet/ {print $2}' | cut -d/ -f1", shell=True)
+		
 		myip = ''
 		if wlan != '':
 			myip += wlan
@@ -20,7 +26,7 @@ class PMUtil:
 		m = re.search(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}", myip)
 		myip = m.group(0)
 
-		return myip
+		return "IP: "+myip
 
 	@staticmethod
 	def run_command_and_continue(command):
@@ -28,6 +34,34 @@ class PMUtil:
 		time.sleep(1)
 		system(command + " && export LD_LIBRARY_PATH= &&  python " + sys.argv[0])
 		sys.exit()
+	
+	@staticmethod
+	def replace(file_path, pattern, subst, prefix = None):
+		#Create temp file
+		file_number, abs_path = mkstemp()
+		new_file = open(abs_path,'wb')
+		old_file = open(file_path)
+		
+		pattern = pattern.replace('True', 'Yes')
+		pattern = pattern.replace('False', 'No')
+		subst = subst.replace('True', 'Yes')
+		subst = subst.replace('False','No')
+		
+		for line in old_file:
+			line = line.replace(':"', ': "')
+			if not prefix == None and prefix in line:
+				line = (line.split(prefix)[0] + prefix.strip() + " " + subst + '\n')
+			elif prefix == None:
+				line = (line.replace(pattern, subst))
+			new_file.write(line)
+		#close temp file
+		new_file.close()
+		close(file_number)
+		old_file.close()
+		#Remove original file
+		remove(file_path)
+		#Move new file
+		move(abs_path, file_path)
 	
 	@staticmethod
 	def fade_out(self):
@@ -63,3 +97,14 @@ class PMUtil:
 		self.screen.blit(backup, (0,0))
 		pygame.display.update()
 		return
+	
+	@staticmethod
+	def blurSurf(surface, amt):
+		if amt < 1.0:
+			raise ValueError("Arg 'amt' must be greater than 1.0, passed in value is %s"%amt)
+		scale = 1.0/float(amt)
+		surf_size = surface.get_size()
+		scale_size = (int(surf_size[0]*scale), int(surf_size[1]*scale))
+		surf = pygame.transform.smoothscale(surface, scale_size)
+		surf = pygame.transform.smoothscale(surf, surf_size)
+		return surf

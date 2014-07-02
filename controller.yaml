@@ -1,13 +1,3 @@
-KEYBOARD:
-  LEFT: ["pygame.K_LEFT", "pygame.K_KP4"]
-  RIGHT: ["pygame.K_RIGHT", "pygame.K_KP6"]
-  UP: ["pygame.K_UP", "pygame.K_KP8"]
-  DOWN: ["pygame.K_DOWN", "pygame.K_KP2"]
-  SELECT: ["pygame.K_RETURN", "pygame.K_SPACE", "pygame.K_KP_ENTER", "pygame.K_1"]
-  BACK: ["pygame.K_ESCAPE", "pygame.K_2"]
-  MENU: ["pygame.K_TAB"]
-
-
 JOYSTICK:
   HORIZONTAL_AXIS: 0
   VERTICAL_AXIS: 1
@@ -17,4 +7,28 @@ JOYSTICK:
   DOWN: 1
   SELECT: 0
   BACK: 1
-  MENU: 3
+  MENU: 2
+  
+KEYBOARD:
+  UP:
+  - pygame.K_UP
+  - pygame.K_KP8
+  DOWN:
+  - pygame.K_DOWN
+  - pygame.K_KP2
+  LEFT:
+  - pygame.K_LEFT
+  - pygame.K_KP4
+  RIGHT:
+  - pygame.K_RIGHT
+  - pygame.K_KP6
+  SELECT:
+  - pygame.K_RETURN
+  - pygame.K_SPACE
+  - pygame.K_KP_ENTER
+  BACK:
+  - pygame.K_ESCAPE
+  - pygame.K_2
+  MENU:
+  - pygame.K_TAB
+  - pygame.K_1
