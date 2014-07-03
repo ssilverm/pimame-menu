@@ -10,12 +10,12 @@ options:
   show_cursor: True
   allow_quit_to_console: True
   use_scene_transitions: True
-  theme_pack: "tron"
- 
+  theme_pack: "default"
+
 scraper_options:
   show_clones: no
   overwrite_images: no
-  
+
 menu_items:
   - label: SNES
     visible: Yes
@@ -26,7 +26,7 @@ menu_items:
     command: /home/pi/pimame/emulators/pisnes/snes9x
 
   - label: MAME4All
-    visible: Yes
+    visible: No
     roms: /home/pi/pimame/roms/mame4all/
     full_path: no
     override_menu: no
@@ -40,7 +40,7 @@ menu_items:
     command: /home/pi/pimame/emulators/fba/fba2x
 
   - label: AdvMAME
-    visible: Yes
+    visible: No
     roms: /home/pi/pimame/roms/advmame/
     full_path: no
     command: advmame 
@@ -122,15 +122,11 @@ menu_items:
     command: python /home/pi/pimame/controller-setup/configure.py
     override_menu: yes
 
-
   - label: Cave Story
     visible: Yes
     full_path: no
     command: /home/pi/pimame/emulators/cavestory_rpi-master/nxengine
     override_menu: yes
-
-
-  
 
   - label: Restart
     visible: Yes
@@ -154,4 +150,10 @@ menu_items:
     visible: Yes
     full_path: no
     command: python /home/pi/pimame/pimame-menu/scraper/scrape_script.py
+    override_menu: yes
+
+  - label: Install MAME
+    visible: Yes
+    full_path: no
+    command: python /home/pi/pimame/mame_install.py
     override_menu: yes
