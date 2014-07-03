@@ -299,7 +299,7 @@ class Gamesdb_API(object):
 						})
 		return rom_list
 	
-	#function not used, match images from image_path with same name as games in dat file then copy them to output folder
+	#function not used, renaming tool -> match images from image_path with same name as games in dat file then copy them to output folder
 	def match_images_to_dat(self, image_path, dat_file, output_path = 'match to dat/', file_ext = '.png'):
 		if not os.path.exists(join(image_path, output_path)): os.makedirs(join(image_path, output_path))
 		
@@ -315,7 +315,7 @@ class Gamesdb_API(object):
 					shutil.copy(src, dst)
 					print src
 	
-	def build_cache_file(self, rom_list):
+	def build_cache_file(self, rom_list, file_count):
 		if not rom_list: 
 			print 'No roms found...'
 			return
@@ -324,12 +324,15 @@ class Gamesdb_API(object):
 			print '-----------------------------'
 			cache_list = []
 			list_size = len(rom_list)
+			
 			for index, rom in enumerate(rom_list):
 				status = 'Writing cache file:' + r"[%3.2f%%]" % ((index+1) * 100. / list_size)
 				status = status + chr(8)*(len(status)+1)
 				print status,
 				data = {'rom_path': rom['rom_path'], 'file': rom['file'], 'image_path': rom['image_path'], 'image_file': rom['image_file'], 'real_name': rom['real_name']}
 				cache_list.append(data)
+			
+			cache_list = {"file_count": file_count, "rom_data": cache_list}
 			json.dump(cache_list, outfile)
 			outfile.close()
 			print

@@ -35,6 +35,7 @@ class PMCfg:
 		self.options.menu_select_sound = self.options.load_audio(self.options.menu_select_sound)
 		self.options.menu_back_sound = self.options.load_audio(self.options.menu_back_sound)
 		self.options.menu_navigation_sound = self.options.load_audio(self.options.menu_navigation_sound)
+		self.options.fade_image = pygame.Surface([self.screen.get_width(), self.screen.get_height()], pygame.SRCALPHA, 32).convert_alpha()
 		
 	def init_screen(self, size, fullscreen):
 		

@@ -138,19 +138,25 @@ class PMMenuItem(pygame.sprite.Sprite):
 		
 		self.rect = self.image.get_rect()
 
-	def update_num_roms(self):
-	
+	def update_num_roms(self, warning = "!"):
+		
 		if isfile(self.cache):
 					json_data=open(self.cache)
-					files = json.load(json_data)
+					raw_data = json.load(json_data)
+					files = raw_data['rom_data']
+					file_count = raw_data['file_count']
 					json_data.close()
+					if file_count == len(listdir(self.roms)): warning = ""
+					
 		else:
 			if not isdir(self.roms):
 				return 0
 
 			files = [ f for f in listdir(self.roms) if isfile(join(self.roms,f)) and f != '.gitkeep'  ]
-
-		self.num_roms = len(files)
+			
+			
+		if len(files) > 0: self.num_roms = str(len(files)) + warning
+		else: self.num_roms = 0
 
 	def get_rom_list(self):
 		#@TODO - am I using the type field?
@@ -158,9 +164,12 @@ class PMMenuItem(pygame.sprite.Sprite):
 		rom_data = None
 		if isfile(self.cache):
 					json_data=open(self.cache)
-					rom_data = json.load(json_data)
+					raw_data = json.load(json_data)
+					file_count = raw_data['file_count']
+					rom_data = raw_data['rom_data']
 					json_data.close()
-		if rom_data:
+					
+		if not "!" in self.num_roms and rom_data:
 			return [
 				
 					{
@@ -171,6 +180,32 @@ class PMMenuItem(pygame.sprite.Sprite):
 					}
 					for f in rom_data
 			]
+			
+		elif "!" in self.num_roms and rom_data:
+			remaining_files = listdir(self.roms)
+			list = []
+			
+			for f in rom_data:
+				if isfile(join(f['rom_path'], f['file'])) and f['file'] != '.gitkeep':
+					if f['file'] in remaining_files: remaining_files.remove(f['file'])
+					list.append({
+						'title': f['real_name'] if ('real_name' in f) else f['file'],
+						'type': 'command',
+						'image': join( f['image_path'], f['image_file']),
+						'command': (self.command + ' \"' + (join(f['rom_path'],f['file']) if (self.full_path and self.extension) else f['file'] if (self.extension and not self.full_path) else os.path.splitext(f['file'])[0] if (not self.extension and not self.full_path) else join(f['rom_path'], os.path.splitext(f['file'])[0])) + '\"')
+					})
+					
+			for f in remaining_files:
+				if isfile(join(self.roms, f)) and f != '.gitkeep':
+					list.append({
+						'title': os.path.splitext(os.path.basename(f))[0],
+						'type': 'command',
+						'image': self.roms + 'images/' +  os.path.splitext(os.path.basename(f))[0],
+						'command': (self.command + ' \"' + (join(self.roms,f) if (self.full_path and self.extension) else f if (self.extension and not self.full_path) else os.path.splitext(f)[0] if (not self.extension and not self.full_path) else join(self.roms, os.path.splitext(f)[0])) + '\"')
+					})
+					
+			return list
+			
 		else:
 			return [
 				{

@@ -3,7 +3,7 @@ import pygame
 
 
 class PMLabel(pygame.sprite.Sprite):
-	def __init__(self, label_text, font, color_fg, color_bg, font_bold = False):
+	def __init__(self, label_text, font, color_fg, color_bg = (0,0,0,0), font_bold = False):
 		pygame.sprite.Sprite.__init__(self)
 
 		
