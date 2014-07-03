@@ -83,7 +83,7 @@ menu_items:
 
   - label: Commodore 64
     visible: Yes
-    roms: /home/pi/roms/c64/
+    roms: /home/pi/pimame/roms/c64/
     full_path: no
     override_menu: yes
     command: x64

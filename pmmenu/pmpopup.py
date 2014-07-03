@@ -5,6 +5,7 @@ import string
 from os import system
 from pmcontrols import *
 from pmutil import *
+from pmlabel import *
 
 class PMPopup(pygame.sprite.Sprite):
 
@@ -23,7 +24,7 @@ class PMPopup(pygame.sprite.Sprite):
 		self.effect = None
 		
 		self.menu_work = WorkFunctions(self.cfg)
-		self.list = self.build_menu(self.scene_type)
+		self.list = list if list != None else self.build_menu(self.scene_type)
 		self.item_height = self.list[0]['value'].rect.h
 		self.update_menu()
 
@@ -48,109 +49,109 @@ class PMPopup(pygame.sprite.Sprite):
 	def build_menu(self, scene_type):
 		if scene_type == "main":
 			self.volume = {
-			"title": PMPopitem("Volume:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"value": PMPopitem(self.menu_work.get_sound_volume(), self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMPopitem("Volume:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
-			"value_selected": PMPopitem(self.menu_work.get_sound_volume(), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title": PMLabel("Volume:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMLabel(self.menu_work.get_sound_volume(), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMLabel("Volume:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMLabel(self.menu_work.get_sound_volume(), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.volume_up,
 			"next": self.menu_work.volume_down
 			}
 			
 			self.theme = {
-			"title": PMPopitem("Theme:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"value": PMPopitem(self.menu_work.theme_list[self.menu_work.theme_count], self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMPopitem("Theme:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
-			"value_selected": PMPopitem(self.menu_work.theme_list[self.menu_work.theme_count], self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title": PMLabel("Theme:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMLabel(self.menu_work.theme_list[self.menu_work.theme_count], self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMLabel("Theme:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMLabel(self.menu_work.theme_list[self.menu_work.theme_count], self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.theme_prev,
 			"next": self.menu_work.theme_next
 			}
 			
 			self.cursor = {
-			"title": PMPopitem("Show Cursor:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"value": PMPopitem(str(self.menu_work.cursor_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMPopitem("Show Cursor:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
-			"value_selected": PMPopitem(str(self.menu_work.cursor_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title": PMLabel("Show Cursor:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMLabel(str(self.menu_work.cursor_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMLabel("Show Cursor:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMLabel(str(self.menu_work.cursor_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.cursor_swap,
 			"next": self.menu_work.cursor_swap
 			}
 			
 			self.transitions = {
-			"title": PMPopitem("Scene FX:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"value": PMPopitem(str(self.menu_work.scene_trans_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMPopitem("Scene FX:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
-			"value_selected": PMPopitem(str(self.menu_work.scene_trans_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title": PMLabel("Scene FX:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMLabel(str(self.menu_work.scene_trans_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMLabel("Scene FX:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMLabel(str(self.menu_work.scene_trans_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.transition_swap,
 			"next": self.menu_work.transition_swap
 			}
 
 			self.show_ip = {
-			"title": PMPopitem("Show IP:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"value": PMPopitem(str(self.menu_work.ip_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMPopitem("Show IP:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
-			"value_selected": PMPopitem(str(self.menu_work.ip_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title": PMLabel("Show IP:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMLabel(str(self.menu_work.ip_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMLabel("Show IP:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMLabel(str(self.menu_work.ip_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.ip_swap,
 			"next": self.menu_work.ip_swap
 			}
 			
 			self.show_update = {
-			"title": PMPopitem("Show Update:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"value": PMPopitem(str(self.menu_work.update_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMPopitem("Show Update:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
-			"value_selected": PMPopitem(str(self.menu_work.update_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title": PMLabel("Show Update:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMLabel(str(self.menu_work.update_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMLabel("Show Update:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMLabel(str(self.menu_work.update_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.update_swap,
 			"next": self.menu_work.update_swap
 			}
 			
 			self.sort_alphanum = {
-			"title": PMPopitem("Sort ABC:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"value": PMPopitem(str(self.menu_work.sort_abc_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMPopitem("Sort ABC:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
-			"value_selected": PMPopitem(str(self.menu_work.sort_abc_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title": PMLabel("Sort ABC:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMLabel(str(self.menu_work.sort_abc_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMLabel("Sort ABC:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMLabel(str(self.menu_work.sort_abc_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.sort_abc_swap,
 			"next": self.menu_work.sort_abc_swap
 			}
 			
 			self.roms_first = {
-			"title": PMPopitem("Show roms 1st:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"value": PMPopitem(str(self.menu_work.roms_first_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMPopitem("Show roms 1st:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
-			"value_selected": PMPopitem(str(self.menu_work.roms_first_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title": PMLabel("Show roms 1st:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMLabel(str(self.menu_work.roms_first_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMLabel("Show roms 1st:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMLabel(str(self.menu_work.roms_first_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.roms_first_swap,
 			"next": self.menu_work.roms_first_swap
 			}
 			
 			self.hide_items_without_roms = {
-			"title": PMPopitem("Hide Empty Emu:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"value": PMPopitem(str(self.menu_work.hide_items_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMPopitem("Hide Empty Emu:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
-			"value_selected": PMPopitem(str(self.menu_work.hide_items_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title": PMLabel("Hide Empty Emu:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMLabel(str(self.menu_work.hide_items_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMLabel("Hide Empty Emu:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMLabel(str(self.menu_work.hide_items_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.hide_items_swap,
 			"next": self.menu_work.hide_items_swap
 			}
 			
 			self.quit_to_console = {
-			"title": PMPopitem("Allow PiPlay Quit:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"value": PMPopitem(str(self.menu_work.quit_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMPopitem("Allow PiPlay Quit:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
-			"value_selected": PMPopitem(str(self.menu_work.quit_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title": PMLabel("Allow PiPlay Quit:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMLabel(str(self.menu_work.quit_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMLabel("Allow PiPlay Quit:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMLabel(str(self.menu_work.quit_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.quit_swap,
 			"next": self.menu_work.quit_swap
 			}
 			
 			self.scraper_clones = {
-			"title": PMPopitem("Scrape Clones:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"value": PMPopitem(str(self.menu_work.scraper_clones_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMPopitem("Scrape Clones:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
-			"value_selected": PMPopitem(str(self.menu_work.scraper_clones_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title": PMLabel("Scrape Clones:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMLabel(str(self.menu_work.scraper_clones_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMLabel("Scrape Clones:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMLabel(str(self.menu_work.scraper_clones_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.scraper_clones_swap,
 			"next": self.menu_work.scraper_clones_swap
 			}
 			
 			self.scraper_overwrite_image = {
-			"title": PMPopitem("Overwrite Images:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"value": PMPopitem(str(self.menu_work.scraper_overwrite_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMPopitem("Overwrite Images:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
-			"value_selected": PMPopitem(str(self.menu_work.scraper_overwrite_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title": PMLabel("Overwrite Images:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMLabel(str(self.menu_work.scraper_overwrite_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMLabel("Overwrite Images:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMLabel(str(self.menu_work.scraper_overwrite_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.scraper_overwrite_swap,
 			"next": self.menu_work.scraper_overwrite_swap
 			}
@@ -161,15 +162,15 @@ class PMPopup(pygame.sprite.Sprite):
 						self.roms_first, self.hide_items_without_roms, self.quit_to_console, self.scraper_clones, self.scraper_overwrite_image]
 			
 			return popup
-			#self.themes = PMPopitem(get_theme(), cfg.popup_font, cfg.popup_menu_font_color)
+			#self.themes = PMLabel(get_theme(), cfg.popup_font, cfg.popup_menu_font_color)
 			
 		elif scene_type == "romlist":
 			
 			self.selected = True
 			
 			self.letter = {
-			"value": PMPopitem(self.menu_work.abc_list[self.menu_work.abc_count], self.cfg.popup_rom_letter_font, self.cfg.popup_menu_font_color),
-			"value_selected": PMPopitem(self.menu_work.abc_list[self.menu_work.abc_count], self.cfg.popup_rom_letter_font, self.cfg.popup_menu_font_selected_color),
+			"value": PMLabel(self.menu_work.abc_list[self.menu_work.abc_count], self.cfg.popup_rom_letter_font, self.cfg.popup_menu_font_color),
+			"value_selected": PMLabel(self.menu_work.abc_list[self.menu_work.abc_count], self.cfg.popup_rom_letter_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.abc_prev,
 			"next": self.menu_work.abc_next,
 			}
@@ -455,23 +456,3 @@ class WorkFunctions():
 			if ord(i['title'][0].upper()) >= ord(self.abc_list[self.abc_count]):
 				return index
 		return 0
-
-		
-class PMPopitem(pygame.sprite.Sprite):
-	def __init__(self, label_text, font, color_fg, font_bold = False):
-		pygame.sprite.Sprite.__init__(self)
-		
-		self.text = label_text
-		self.color_fg = color_fg
-		self.font = font
-		
-		#pygame faux bold font
-		font.set_bold(font_bold)
-		text = font.render(label_text, 1, color_fg).convert_alpha()
-		text_rect = text.get_rect()
-		if label_text == '': text_rect.w = 0
-		self.image = pygame.Surface([text_rect.w, text_rect.h], pygame.SRCALPHA, 32).convert_alpha()
-		self.image.blit(text, text_rect)
-
-		
-		self.rect = self.image.get_rect()

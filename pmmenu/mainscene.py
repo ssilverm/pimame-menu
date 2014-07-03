@@ -1,6 +1,7 @@
 import pygame
 from pmcontrols import *
 from pmpopup import *
+from pmwarning import *
 from pmconfig import *
 from pmheader import *
 from pmselection import *
@@ -175,6 +176,7 @@ class MainScene(object):
 			self.grid = PMGrid(self.cfg.options.options_menu_items, self.cfg.options)
 			self.grid.set_num_items_per_page(self.calc_num_items_per_page())
 			self.popup = PMPopup(self.manager.scene.SCENE_NAME, self.cfg.options)
+			self.warning = None
 			self.pre_rendered = True
 		
 		self.draw_bg()
@@ -202,7 +204,8 @@ class MainScene(object):
 
 	def handle_events(self, events):
 		for event in events:
-		
+			
+			
 			#ctrl+q to force quit
 			if event.type == pygame.KEYDOWN:
 				if pygame.key.get_mods() & pygame.KMOD_LCTRL:
@@ -232,29 +235,49 @@ class MainScene(object):
 			if event.type == pygame.JOYAXISMOTION: action = self.CONTROLS.get_action('joystick', event.dict)
 			if event.type == pygame.JOYBUTTONDOWN: action = self.CONTROLS.get_action('joystick', event.button)
 			
-			if self.popup.menu_open:
+			# self.warning = PMWarning(self.screen, self.cfg.options, "message goes here", "yes/no")
+			#answer will return False until selection -> yes, no, ok, or cancel
+			if self.warning and self.warning.menu_open:
+				self.warning.handle_events(action)
+				if self.warning.answer:
+					self.warning.take_action({'YES': 'python /home/pi/pimame/pimame-menu/scraper/scrape_script.py --platform ' + self.get_selected_item().label})
+					if self.warning.answer == "NO":
+						self.warning = None
+						self.do_menu_item_action(self.get_selected_item())
+					
+			elif self.popup.menu_open:
 				self.popup.handle_events(action, self.screen, self.effect)
 			else:
+			
 				if action == 'LEFT':
 					self.set_selected_index(self.selected_index - 1)
+					
 				elif action == 'RIGHT':
 					self.set_selected_index(self.selected_index + 1)
+					
 				elif action == 'UP':
 					self.set_selected_index(self.selected_index - self.cfg.options.num_items_per_row)
+					
 				elif action == 'DOWN':
 					self.set_selected_index(self.selected_index + self.cfg.options.num_items_per_row)
+					
 				elif action == 'SELECT':
-					self.do_menu_item_action(self.get_selected_item())
+					sprite = self.get_selected_item()
+					if "!" in str(sprite.num_roms) and not self.warning: 
+						self.warning = PMWarning(self.screen, self.cfg.options, "Some files have changed, would you like to scrape this folder for new roms?", "yes/no")
+					elif not self.warning:
+						self.do_menu_item_action(sprite)
+						
 				elif action == 'MENU':
 					self.popup.menu_open = True
 					self.cfg.options.fade_image.blit(self.screen,(0,0))
-					
 					if self.cfg.options.use_scene_transitions:
 						self.effect = PMUtil.blurSurf(self.screen, 20)
 						self.screen.blit(self.effect,(0,0))
 					else:
 						self.effect = self.screen.copy()
 					self.screen.blit(self.popup.menu,((pygame.display.Info().current_w - self.popup.rect.w)/2, (pygame.display.Info().current_h - self.popup.rect.h)/2))
+					
 				elif action == 'BACK' and self.cfg.options.allow_quit_to_console:
 					self.cfg.options.menu_back_sound.play()
 					if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_out(self)
@@ -266,9 +289,9 @@ class MainScene(object):
 	#@TODO - change name:
 	def do_menu_item_action(self, sprite):
 		if sprite.type == PMMenuItem.ROM_LIST:
-			self.cfg.options.fade_image.blit(self.screen,(0,0))
-			self.cfg.options.menu_select_sound.play()
-			self.manager.go_to(RomListScene(sprite.get_rom_list()))
+				self.cfg.options.fade_image.blit(self.screen,(0,0))
+				self.cfg.options.menu_select_sound.play()
+				self.manager.go_to(RomListScene(sprite.get_rom_list()))
 		elif sprite.type == PMMenuItem.COMMAND:
 			self.cfg.options.menu_select_sound.play()
 			PMUtil.run_command_and_continue(sprite.command)
