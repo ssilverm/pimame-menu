@@ -7,7 +7,7 @@ options:
   sort_items_alphanum: True
   sort_items_with_roms_first: True
   hide_items_without_roms: False
-  show_cursor: True
+  show_cursor: No
   allow_quit_to_console: True
   use_scene_transitions: True
   theme_pack: "tron"
@@ -83,7 +83,7 @@ menu_items:
 
   - label: Commodore 64
     visible: Yes
-    roms: /home/pi/roms/c64/
+    roms: /home/pi/pimame/roms/c64/
     full_path: no
     override_menu: yes
     command: x64
