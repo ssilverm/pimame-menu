@@ -142,3 +142,11 @@ menu_items:
   - label: Rom Scraper
     icon_file: scraper.png
     icon_selected: scraper-selected.png
+
+  - label: Install MAME
+    icon_file: mame-install.png
+    icon_selected: mame-install-selected.png
+
+  - label: Controller Setup
+    icon_file: controller-setup.png
+    icon_selected: controller-setup-selected.png
