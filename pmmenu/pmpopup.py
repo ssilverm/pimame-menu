@@ -25,8 +25,6 @@ class PMPopup(pygame.sprite.Sprite):
 		self.menu_work = WorkFunctions(self.cfg)
 		self.list = self.build_menu(self.scene_type)
 		self.item_height = self.list[0]['value'].rect.h
-		self.item_width = max(self.list, key=lambda x: x['title'].rect.w)['title'].rect.w + max(self.list, key=lambda x: x['value'].rect.w)['value'].rect.w + 40
-		print self.item_width
 		self.update_menu()
 
 		self.rect = self.menu.get_rect()
@@ -133,7 +131,7 @@ class PMPopup(pygame.sprite.Sprite):
 			self.quit_to_console = {
 			"title": PMPopitem("Allow PiPlay Quit:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
 			"value": PMPopitem(str(self.menu_work.quit_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMPopitem("Allow Piplay Quit:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title_selected": PMPopitem("Allow PiPlay Quit:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"value_selected": PMPopitem(str(self.menu_work.quit_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.quit_swap,
 			"next": self.menu_work.quit_swap
@@ -182,7 +180,8 @@ class PMPopup(pygame.sprite.Sprite):
 	
 	def update_menu(self):
 		if self.scene_type == 'main':
-			
+		
+			self.item_width = max(self.list, key=lambda x: x['title'].rect.w)['title'].rect.w + max(self.list, key=lambda x: x['value'].rect.w)['value'].rect.w + 40
 			text_rect = pygame.Rect(0,0, self.item_width, (self.item_height * len(self.list)) + 20)
 			self.menu = pygame.Surface([text_rect.w, text_rect.h], pygame.SRCALPHA, 32).convert_alpha()
 			self.menu.fill(self.cfg.popup_menu_background_color, text_rect)
