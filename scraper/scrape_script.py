@@ -2,8 +2,9 @@
 import scraper_api
 from scraper_api import pcolor
 import urllib
-import os, sys, argparse
+import os, sys, argparse, time
 from os.path import isfile, join
+from select import select
 
 
 parser = argparse.ArgumentParser(description='PiScraper')
@@ -15,47 +16,73 @@ args = parser.parse_args()
 os.system('clear')
 
 class GeneralRun():
+	
+	def raw_input_with_timeout(self, prompt, timeout=3.0, response = {'y': True, 'ye': True, 'yes': True, 't': True, 'n': False, 'no': False, 'f': False}):
+		
+		answer = ''
+		while (not answer in response) and timeout >= 0:
+			sys.stdout.write('\r[%ds] %s' % (timeout, prompt)),
+			sys.stdout.flush()
+			rlist, _, _ = select([sys.stdin], [], [], 1)
+			if rlist:
+				answer = sys.stdin.readline().replace('\n','').lower()
+			timeout -= 1
+			time.sleep(1)
+		
+		if not answer in response: print 'Y'
+		print '\r' + ('  ' * 30) + '\r',
+		answer = True if not answer in response else response[answer]
+		return answer
+	
 	def __init__(self, platform='all'):
 	
 		#load gamesdb api
 		scraper = scraper_api.Gamesdb_API()
 
 		scrape_list = []
+		if platform == None: platform = 'all'
 		response = {'y': True, 'ye': True, 'yes': True, 'n': False, 'no': False}
-		scrape_all = '' if platform == 'all' else 'no'
-		download_all = '' if platform == 'all' else 'no'
+		scrape_all_categories = '' if platform == 'all' else 'no'
+		download_all_category_images = '' if platform == 'all' else 'no'
+		
 		#mame4all uses 0.37b5 -> faster
 		#advancemame uses 0.106 -> more roms
+		
 		scrape_list = scraper.build_rom_list(platform)
 		#scrape_list = scraper.build_rom_list('snes')
 
-		while not scrape_all in response:
-			scrape_all = raw_input('scrape %s rom categories?: ' % pcolor('cyan', 'ALL')).lower()
+		
+		scrape_all_categories = self.raw_input_with_timeout('scrape %s rom categories?: ' % pcolor('cyan', 'ALL')) if platform == 'all' else False
+		
 			
-		if response[scrape_all]:
-			while not download_all in response:
-				download_all = raw_input('download %s missing images?: ' % pcolor('cyan', 'ALL')).lower()
+		if scrape_all_categories:
+			download_all_category_images = self.raw_input_with_timeout('download %s missing images?: ' % pcolor('cyan', 'ALL'))
 		else:
-			download_all = 'no'
+			download_all_category_images = False
+
 
 		for category in scrape_list:
-			answer = ''
+			roms_answer = ''
 			image_answer = ''
-			if not response[scrape_all]:
-				while not answer in response: answer = raw_input('scrape %s roms?: ' % pcolor('cyan', category['platform'])).lower()
+			if not scrape_all_categories:
+				roms_answer = self.raw_input_with_timeout('scrape %s roms?: ' % pcolor('cyan', category['platform']))
 			else:
-				answer = 'yes'
+				roms_answer = True
 			
-			if response[answer] and not response[download_all]:
-				while not image_answer in response: image_answer = raw_input('download %s missing images?: ' %  pcolor('cyan', category['platform'])).lower()
+			if roms_answer and not download_all_category_images:
+				image_answer = self.raw_input_with_timeout('download %s missing images?: ' %  pcolor('cyan', category['platform']))
 			else:
-				image_answer = 'yes'
+				image_answer = True
 
-			if response[answer]:
+			if roms_answer:
 				rom_data = scraper.match_rom_to_db(category)
-				if response[image_answer]:
+				if image_answer:
 					scraper.download_image(rom_data, image_type = 'thumb')
 				scraper.build_cache_file(rom_data, len(os.listdir(category['rom_path'])) )
+				
+				
+				
+	
 				
 
 GeneralRun(args.platform)
