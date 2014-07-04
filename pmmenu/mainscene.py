@@ -240,7 +240,7 @@ class MainScene(object):
 			if self.warning and self.warning.menu_open:
 				self.warning.handle_events(action)
 				if self.warning.answer:
-					self.warning.take_action({'YES': 'python /home/pi/pimame/pimame-menu/scraper/scrape_script.py --platform ' + self.get_selected_item().label})
+					self.warning.take_action({'YES': 'python /home/pi/pimame/pimame-menu/scraper/scrape_script.py --platform "' + self.get_selected_item().label + '"'})
 					if self.warning.answer == "NO":
 						self.warning = None
 						self.do_menu_item_action(self.get_selected_item())
