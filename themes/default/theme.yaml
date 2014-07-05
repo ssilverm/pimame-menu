@@ -150,3 +150,23 @@ menu_items:
   - label: Controller Setup
     icon_file: controller-setup.png
     icon_selected: controller-setup-selected.png
+
+  - label: Turbografx 16
+    icon_file: tg16.png
+    icon_selected: tg16-selected.png
+
+  - label: Sega Master System
+    icon_file: sms.png
+    icon_selected: sms-selected.png
+
+  - label: Game Gear
+    icon_file: gg.png
+    icon_selected: gg-selected.png
+
+  - label: Neo Geo Pocket Color
+    icon_file: ngpc.png
+    icon_selected: ngpc-selected.png
+
+  - label: ZX Spectrum
+    icon_file: zxspectrum.png
+    icon_selected: zxspectrum-selected.png

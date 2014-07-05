@@ -65,7 +65,7 @@ menu_items:
     roms: /home/pi/pimame/roms/nes/
     full_path: yes
     extension: yes
-    command: /home/pi/pimame/emulators/fceux
+    command: /home/pi/pimame/emulators/fceux/fceux
 
   - label: Atari 2600
     visible: Yes
@@ -115,6 +115,34 @@ menu_items:
     full_path: yes
     extension: yes
     command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && /home/pi/pimame/emulators/mednafen/src/mednafen -force_module pce_fast
+
+  - label: Neo Geo Pocket Color
+    visible: Yes
+    roms: /home/pi/pimame/roms/ngpc
+    full_path: yes
+    extension: yes
+    command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && /home/pi/pimame/emulators/mednafen/src/mednafen 
+
+  - label: Sega Master System
+    visible: Yes
+    roms: /home/pi/pimame/roms/sms
+    full_path: yes
+    extension: yes
+    command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && /home/pi/pimame/emulators/mednafen/src/mednafen 
+
+  - label: Game Gear
+    visible: Yes
+    roms: /home/pi/pimame/roms/gg
+    full_path: yes
+    extension: yes
+    command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && /home/pi/pimame/emulators/mednafen/src/mednafen 
+
+  - label: ZX Spectrum
+    visible: Yes
+    full_path: no
+    roms: /home/pi/pimame/roms/zxspectrum
+    override_menu: Yes
+    command: speccy
 
   - label: Controller Setup
     visible: Yes
