@@ -169,7 +169,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 					rom_data = raw_data['rom_data']
 					json_data.close()
 					
-		if not "!" in self.num_roms and rom_data:
+		if not "!" in str(self.num_roms) and rom_data:
 			return [
 				
 					{
@@ -181,7 +181,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 					for f in rom_data
 			]
 			
-		elif "!" in self.num_roms and rom_data:
+		elif "!" in str(self.num_roms) and rom_data:
 			remaining_files = listdir(self.roms)
 			list = []
 			
