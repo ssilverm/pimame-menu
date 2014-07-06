@@ -185,3 +185,9 @@ menu_items:
     full_path: no
     command: python /home/pi/pimame/mame_install.py
     override_menu: yes
+  
+  - label: Toggle Xbox Controller
+    visible: Yes
+    full_path: no
+    command: /home/pi/pimame/toggle_xbox_controller.sh
+    override_menu: yes
