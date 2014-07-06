@@ -6,12 +6,13 @@ from pmlabel import *
 
 class PMWarning(pygame.sprite.Sprite):
 
-	def __init__(self, screen, cfg, message, buttons = "ok"):
+	def __init__(self, screen, cfg, message, buttons = "ok", title = "warning"):
 		pygame.sprite.Sprite.__init__(self)
 		
 		self.cfg = cfg
 		self.screen = screen
 		self.buttons = buttons
+		self.title = title
 		
 		self.hover = 0
 		self.selected = False
@@ -23,18 +24,17 @@ class PMWarning(pygame.sprite.Sprite):
 		
 		self.item_width = 0
 		self.item_height = 0
+		
+		self.cfg.fade_image.blit(self.screen,(0,0))
+		if self.cfg.use_scene_transitions:
+			self.effect = PMUtil.blurSurf(self.screen, 20)
+			self.screen.blit(self.effect,(0,0))
+		else:
+			self.effect = self.screen.copy()
 
 		self.list = BuildMessage(cfg, message)
 		self.update_menu()
 		self.rect = self.menu.get_rect()
-		
-		if not self.effect:
-			if self.cfg.use_scene_transitions:
-				self.cfg.fade_image.blit(self.screen,(0,0))
-				self.effect = PMUtil.blurSurf(self.screen, 20)
-				self.screen.blit(self.effect,(0,0))
-			else:
-				self.effect = self.screen.copy()
 		
 		self.draw_menu()
 	
@@ -103,8 +103,8 @@ class PMWarning(pygame.sprite.Sprite):
 				
 		
 	def draw_menu(self):
-		self.screen.blit(self.effect,(0,0))
-		self.screen.blit(self.menu, ((pygame.display.Info().current_w - self.rect.w)/2, (pygame.display.Info().current_h - self.rect.h)/2))
+			self.screen.blit(self.effect,(0,0))
+			self.screen.blit(self.menu, ((pygame.display.Info().current_w - self.rect.w)/2, (pygame.display.Info().current_h - self.rect.h)/2))
 		
 	def take_action(self, dict):
 		if self.answer in dict:
@@ -118,10 +118,10 @@ class BuildMessage():
 			self.cfg = cfg
 			self.lines = []
 			for words in message.split(' '):
-				if len(text_line) + len(words) > 45:
+				if len(text_line) + len(words) > 45 or words == '\n':
 					self.lines.append(text_line)
 					text_line = ''
-				text_line += words + ' '
+				if words != '\n': text_line += words + ' '
 			self.lines.append(text_line)
 				
 

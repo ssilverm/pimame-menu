@@ -19,8 +19,14 @@ class PMCfg:
 		stream.close()
 		
 		#load theme file - use safe_load to make sure malicious code is not executed if hiding in theme.yaml
-		stream = open('/home/pi/pimame/pimame-menu/themes/' +config['options']['theme_pack'] + "/theme.yaml", 'r')
+		stream = open('/home/pi/pimame/pimame-menu/themes/' +config['options']['theme_pack'] + '/theme.yaml', 'r')
 		theme = yaml.safe_load(stream)
+		stream.close()
+		
+		#load theme file - use safe_load to make sure malicious code is not executed if hiding in theme.yaml
+		stream = open('/home/pi/pimame/pimame-menu/ks.yaml', 'r')
+		self.ks = yaml.safe_load(stream)
+		self.ks = sorted(self.ks)
 		stream.close()
 		
 		#roll config file + theme file into options class

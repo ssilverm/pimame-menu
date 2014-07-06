@@ -230,8 +230,17 @@ class MainScene(object):
 					sprite = clicked_sprites[0]
 					self.do_menu_item_action(sprite)
 					
-			action = None		
-			if event.type == pygame.KEYDOWN: action = self.CONTROLS.get_action('keyboard', event.key)
+			action = None	
+			if event.type == pygame.KEYDOWN: 
+				action = self.CONTROLS.get_action('keyboard', event.key)
+				pressed = pygame.key.get_pressed()
+				if pressed[pygame.K_k] and pressed[pygame.K_s]:
+					if not self.warning:
+						self.ks_range = 0
+						self.ks_line = ''
+						for person in self.cfg.ks[0:19]:
+							self.ks_line += person + ' \n '
+						self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'kickstarter')
 			if event.type == pygame.JOYAXISMOTION: action = self.CONTROLS.get_action('joystick', event.dict)
 			if event.type == pygame.JOYBUTTONDOWN: action = self.CONTROLS.get_action('joystick', event.button)
 			
@@ -239,11 +248,27 @@ class MainScene(object):
 			#answer will return False until selection -> yes, no, ok, or cancel
 			if self.warning and self.warning.menu_open:
 				self.warning.handle_events(action)
+				
 				if self.warning.answer:
-					self.warning.take_action({'YES': 'python /home/pi/pimame/pimame-menu/scraper/scrape_script.py --platform "' + self.get_selected_item().label + '"'})
-					if self.warning.answer == "NO":
-						self.warning = None
-						self.do_menu_item_action(self.get_selected_item())
+					if self.warning.title == 'roms':
+						if self.warning.answer == "YES": 
+							PMUtil.run_command_and_continue('python /home/pi/pimame/pimame-menu/scraper/scrape_script.py --platform "' + self.get_selected_item().label + '"')
+						else:
+							self.warning = None
+							self.do_menu_item_action(self.get_selected_item())
+							
+					if self.warning.title == 'kickstarter':
+						if self.warning.answer == "OK":
+							self.warning = None
+							self.ks_line = ''
+							self.ks_range += 20
+							if self.ks_range < len(self.cfg.ks):
+								for person in self.cfg.ks[self.ks_range:self.ks_range+19]:
+									self.ks_line += person + ' \n '
+								self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'kickstarter')
+						else:
+							self.warning = None
+						
 					
 			elif self.popup.menu_open:
 				self.popup.handle_events(action, self.screen, self.effect)
@@ -264,7 +289,7 @@ class MainScene(object):
 				elif action == 'SELECT':
 					sprite = self.get_selected_item()
 					if "!" in str(sprite.num_roms) and not self.warning: 
-						self.warning = PMWarning(self.screen, self.cfg.options, "Some files have changed, would you like to scrape this folder for new roms?", "yes/no")
+						self.warning = PMWarning(self.screen, self.cfg.options, "Some files have changed, would you like to scrape this folder for new roms?", "yes/no", "roms")
 					elif not self.warning:
 						self.do_menu_item_action(sprite)
 						
