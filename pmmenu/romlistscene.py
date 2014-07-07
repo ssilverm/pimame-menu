@@ -128,7 +128,7 @@ class RomListScene(object):
 					self.popup.menu_open = False
 					self.screen.blit(self.cfg.options.fade_image, (0,0))
 					
-					self.clear_rom_item()
+					self.clear_rom_item(False)
 					found_index = self.popup.menu_work.abc_find(self.list.rom_list)
 					self.list.set_visible_items(found_index, found_index + self.items_per_screen)
 					self.draw_list(self.cfg.options.rom_list_orientation)
