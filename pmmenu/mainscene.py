@@ -231,6 +231,8 @@ class MainScene(object):
 					self.do_menu_item_action(sprite)
 					
 			action = None	
+			if self.warning and not self.warning.menu_open: self.warning = None
+			
 			if event.type == pygame.KEYDOWN: 
 				action = self.CONTROLS.get_action('keyboard', event.key)
 				pressed = pygame.key.get_pressed()
@@ -273,7 +275,7 @@ class MainScene(object):
 			elif self.popup.menu_open:
 				self.popup.handle_events(action, self.screen, self.effect)
 			else:
-			
+				
 				if action == 'LEFT':
 					self.set_selected_index(self.selected_index - 1)
 					
