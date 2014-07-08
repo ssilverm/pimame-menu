@@ -11,11 +11,11 @@ options:
   allow_quit_to_console: True
   use_scene_transitions: True
   theme_pack: "tron"
- 
+
 scraper_options:
   show_clones: no
   overwrite_images: no
-  
+
 menu_items:
   - label: SNES
     visible: Yes
@@ -26,7 +26,7 @@ menu_items:
     command: /home/pi/pimame/emulators/pisnes/snes9x
 
   - label: MAME4All
-    visible: Yes
+    visible: No
     roms: /home/pi/pimame/roms/mame4all/
     full_path: no
     override_menu: no
@@ -40,7 +40,7 @@ menu_items:
     command: /home/pi/pimame/emulators/fba/fba2x
 
   - label: AdvMAME
-    visible: Yes
+    visible: No
     roms: /home/pi/pimame/roms/advmame/
     full_path: no
     command: advmame 
@@ -100,7 +100,7 @@ menu_items:
     roms: /home/pi/pimame/roms/gb/
     full_path: yes
     extension: yes
-    command: /home/pi/pimame/emulators/Gearboy/platforms/raspberrypi/Gearboy/gearboy.bin
+    command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && /home/pi/pimame/emulators/mednafen/src/mednafen
 
   - label: Gameboy Advance
     visible: Yes
@@ -108,6 +108,53 @@ menu_items:
     command: /home/pi/pimame/emulators/gpsp/gpsp
     override_menu: yes
     roms: /home/pi/pimame/roms/gba/
+
+  - label: TurboGrafx 16
+    visible: Yes
+    roms: /home/pi/pimame/roms/tg16
+    full_path: yes
+    extension: yes
+    command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && /home/pi/pimame/emulators/mednafen/src/mednafen -force_module pce_fast
+
+  - label: Neo Geo Pocket Color
+    visible: Yes
+    roms: /home/pi/pimame/roms/ngpc
+    full_path: yes
+    extension: yes
+    command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && /home/pi/pimame/emulators/mednafen/src/mednafen 
+
+  - label: Sega Master System
+    visible: Yes
+    roms: /home/pi/pimame/roms/sms
+    full_path: yes
+    extension: yes
+    command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && /home/pi/pimame/emulators/mednafen/src/mednafen 
+
+  - label: Game Gear
+    visible: Yes
+    roms: /home/pi/pimame/roms/gg
+    full_path: yes
+    extension: yes
+    command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && /home/pi/pimame/emulators/mednafen/src/mednafen 
+
+  - label: ZX Spectrum
+    visible: Yes
+    full_path: no
+    roms: /home/pi/pimame/roms/zxspectrum
+    override_menu: Yes
+    command: speccy
+
+  - label: Controller Setup
+    visible: Yes
+    full_path: no
+    command: python /home/pi/pimame/controller-setup/configure.py
+    override_menu: yes
+
+  - label: Cave Story
+    visible: Yes
+    full_path: no
+    command: cd /home/pi/pimame/emulators/cavestory_rpi-master && /home/pi/pimame/emulators/cavestory_rpi-master/nx && cd /home/pi/pimame/pimame-menu
+    override_menu: yes
 
   - label: Restart
     visible: Yes
@@ -121,7 +168,7 @@ menu_items:
     command: sudo poweroff
     override_menu: yes
 
-  - label: Update PiMAME
+  - label: Update PiPlay
     visible: Yes
     full_path: no
     command: wget -O - http://pimame.org/update.sh | bash
@@ -131,4 +178,16 @@ menu_items:
     visible: Yes
     full_path: no
     command: python /home/pi/pimame/pimame-menu/scraper/scrape_script.py
+    override_menu: yes
+
+  - label: Install MAME
+    visible: Yes
+    full_path: no
+    command: python /home/pi/pimame/mame_install.py
+    override_menu: yes
+  
+  - label: Toggle Xbox Controller
+    visible: Yes
+    full_path: no
+    command: /home/pi/pimame/toggle_xbox_controller.sh
     override_menu: yes

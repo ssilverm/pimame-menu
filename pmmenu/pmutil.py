@@ -32,7 +32,7 @@ class PMUtil:
 	def run_command_and_continue(command):
 		pygame.quit()
 		time.sleep(1)
-		system(command + " && python " + sys.argv[0])
+		system(command + " && export LD_LIBRARY_PATH= &&  python " + sys.argv[0])
 		sys.exit()
 	
 	@staticmethod

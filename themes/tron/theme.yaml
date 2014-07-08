@@ -108,3 +108,19 @@ menu_items:
   - label: Update PiMAME
 
   - label: Rom Scraper
+
+  - label: Install MAME
+
+  - label: Controller Setup
+
+  - label: Cave Story
+
+  - label: Turbografx 16
+
+  - label: Sega Master System
+
+  - label: Game Gear
+
+  - label: Neo Geo Pocket Color
+
+  - label: ZX Spectrum
