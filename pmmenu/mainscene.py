@@ -259,17 +259,20 @@ class MainScene(object):
 							self.warning = None
 							self.do_menu_item_action(self.get_selected_item())
 							
-					if self.warning.title == 'kickstarter':
-						if self.warning.answer == "OK":
-							self.warning = None
-							self.ks_line = ''
-							self.ks_range += 20
-							if self.ks_range < len(self.cfg.ks):
-								for person in self.cfg.ks[self.ks_range:self.ks_range+19]:
-									self.ks_line += person + ' \n '
-								self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'kickstarter')
-						else:
-							self.warning = None
+					try:
+						if self.warning.title == 'kickstarter':
+							if self.warning.answer == "OK":
+								self.warning = None
+								self.ks_line = ''
+								self.ks_range += 20
+								if self.ks_range < len(self.cfg.ks):
+									for person in self.cfg.ks[self.ks_range:self.ks_range+19]:
+										self.ks_line += person + ' \n '
+									self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'kickstarter')
+							else:
+								self.warning = None
+					except:
+						continue
 						
 					
 			elif self.popup.menu_open:

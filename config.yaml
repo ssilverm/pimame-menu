@@ -153,7 +153,7 @@ menu_items:
   - label: Cave Story
     visible: Yes
     full_path: no
-    command: /home/pi/pimame/emulators/cavestory_rpi-master/nxengine
+    command: cd /home/pi/pimame/emulators/cavestory_rpi-master && /home/pi/pimame/emulators/cavestory_rpi-master/nx && cd /home/pi/pimame/pimame-menu
     override_menu: yes
 
   - label: Restart
@@ -168,7 +168,7 @@ menu_items:
     command: sudo poweroff
     override_menu: yes
 
-  - label: Update PiMAME
+  - label: Update PiPlay
     visible: Yes
     full_path: no
     command: wget -O - http://pimame.org/update.sh | bash
