@@ -27,7 +27,7 @@ class PMPopup(pygame.sprite.Sprite):
 		self.list = list if list != None else self.build_menu(self.scene_type)
 		
 		self.item_height = self.list[0]['value'].rect.h
-		self.item_width = max(self.list, key=lambda x: x['title'].rect.w)['title'].rect.w + max(self.list, key=lambda x: x['value'].rect.w)['value'].rect.w + 40
+		self.item_width = 0
 		
 		self.update_menu()
 
@@ -185,7 +185,9 @@ class PMPopup(pygame.sprite.Sprite):
 	def update_menu(self):
 		if self.scene_type == 'main':
 		
-			
+			if self.item_width == 0: 
+				self.item_width = max(self.list, key=lambda x: x['title'].rect.w)['title'].rect.w + max(self.list, key=lambda x: x['value'].rect.w)['value'].rect.w + 40
+
 			text_rect = pygame.Rect(0,0, self.item_width, (self.item_height * len(self.list)) + 20)
 			self.menu = pygame.Surface([text_rect.w, text_rect.h], pygame.SRCALPHA, 32).convert_alpha()
 			self.menu.fill(self.cfg.popup_menu_background_color, text_rect)
