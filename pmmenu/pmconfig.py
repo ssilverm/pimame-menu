@@ -35,6 +35,7 @@ class PMCfg:
 		theme = None
 		
 		self.screen = self.init_screen(self.options.resolution, self.options.fullscreen)
+		self.screen.set_alpha(None)
 		pygame.mouse.set_visible(self.options.show_cursor)
 		
 		self.options.menu_move_sound = self.options.load_audio(self.options.menu_move_sound)
@@ -47,11 +48,20 @@ class PMCfg:
 		
 		pygame.init()
 		#return pygame.display.set_mode(size,0,32)
+		pygame.display.init()
+		dinfo = pygame.display.Info()
+
 
 		flag = 0
 		if fullscreen:
 			flag = pygame.FULLSCREEN
-		return pygame.display.set_mode(size, flag, 32)
+		#return pygame.display.set_mode(size, flag, 32)
+
+		if (pygame.display.mode_ok((dinfo.current_w,dinfo.current_h),pygame.FULLSCREEN)):
+			return pygame.display.set_mode((dinfo.current_w, dinfo.current_h), flag)
+		else:
+			pygame.quit()
+			sys.exit()
 
 
 class PMOptions:
