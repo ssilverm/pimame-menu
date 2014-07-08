@@ -27,7 +27,7 @@ class PMWarning(pygame.sprite.Sprite):
 		
 		self.cfg.fade_image.blit(self.screen,(0,0))
 		if self.cfg.use_scene_transitions:
-			self.effect = PMUtil.blurSurf(self.screen, 20)
+			self.effect = PMUtil.blurSurf(self.cfg.fade_image, 20)
 			self.screen.blit(self.effect,(0,0))
 		else:
 			self.effect = self.screen.copy()
