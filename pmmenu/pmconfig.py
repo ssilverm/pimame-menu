@@ -47,6 +47,9 @@ class PMCfg:
 	def init_screen(self, size, fullscreen):
 		
 		pygame.init()
+		pygame.display.init()
+		dinfo = pygame.display.Info()
+
 		#return pygame.display.set_mode(size,0,32)
 		pygame.display.init()
 		dinfo = pygame.display.Info()
