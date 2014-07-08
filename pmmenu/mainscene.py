@@ -302,7 +302,7 @@ class MainScene(object):
 					self.popup.menu_open = True
 					self.cfg.options.fade_image.blit(self.screen,(0,0))
 					if self.cfg.options.use_scene_transitions:
-						self.effect = PMUtil.blurSurf(self.screen, 20)
+						self.effect = PMUtil.blurSurf(self.cfg.options.fade_image, 20)
 						self.screen.blit(self.effect,(0,0))
 					else:
 						self.effect = self.screen.copy()

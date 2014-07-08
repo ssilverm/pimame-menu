@@ -151,6 +151,10 @@ menu_items:
     icon_file: controller-setup.png
     icon_selected: controller-setup-selected.png
 
+  - label: Cave Story
+    icon_file: cave.png
+    icon_selected: cave-selected.png
+
   - label: Turbografx 16
     icon_file: tg16.png
     icon_selected: tg16-selected.png
