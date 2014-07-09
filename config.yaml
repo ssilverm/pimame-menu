@@ -58,7 +58,7 @@ menu_items:
     roms: /home/pi/pimame/roms/genesis/
     full_path: yes
     extension: yes
-    command: /home/pi/pimame/emulators/dgen-sdl-1.32/dgen
+    command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && /home/pi/pimame/emulators/dgen-sdl-1.32/dgen
 
   - label: NES
     visible: Yes
@@ -153,7 +153,7 @@ menu_items:
   - label: Cave Story
     visible: Yes
     full_path: no
-    command: cd /home/pi/pimame/emulators/cavestory_rpi-master && /home/pi/pimame/emulators/cavestory_rpi-master/nx && cd /home/pi/pimame/pimame-menu
+    command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && cd /home/pi/pimame/emulators/cavestory_rpi-master && /home/pi/pimame/emulators/cavestory_rpi-master/nx && cd /home/pi/pimame/pimame-menu
     override_menu: yes
 
   - label: Restart
