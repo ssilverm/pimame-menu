@@ -135,7 +135,7 @@ menu_items:
     icon_file: shutdown.png
     icon_selected: shutdown-selected.png
 
-  - label: Update PiMAME
+  - label: Update PiPlay
     icon_file: update.png
     icon_selected: update-selected.png
 

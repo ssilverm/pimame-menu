@@ -142,7 +142,7 @@ menu_items:
     full_path: no
     roms: /home/pi/pimame/roms/zxspectrum
     override_menu: Yes
-    command: /home/pi/pimame/emulators/usp_0.0.43/unreal_speccy_portable
+    command: cd /home/pi/pimame/emulators/usp_0.0.43/ && ./unreal_speccy_portable && cd /home/pi/pimame/pimame-menu
 
   - label: Controller Setup
     visible: Yes
