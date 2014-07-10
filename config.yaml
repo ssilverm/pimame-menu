@@ -70,7 +70,7 @@ menu_items:
   - label: Atari 2600
     visible: Yes
     full_path: no
-    command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && stella
+    command: stella
     roms: /home/pi/pimame/roms/2600/
     override_menu: yes
 
@@ -142,7 +142,7 @@ menu_items:
     full_path: no
     roms: /home/pi/pimame/roms/zxspectrum
     override_menu: Yes
-    command: speccy
+    command: /home/pi/pimame/emulators/usp_0.0.43/unreal_speccy_portable
 
   - label: Controller Setup
     visible: Yes
