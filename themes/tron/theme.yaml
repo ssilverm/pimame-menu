@@ -20,6 +20,7 @@ options:
   menu_back_sound: "sfx_back.wav"
   menu_navigation_sound: "sfx_navigation.wav"
 
+  loading_image: "loading_screen.png"
   font_file: "default.ttf"
   default_font_size: 19
   default_font_color: "255,255,255"
