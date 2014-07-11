@@ -20,6 +20,7 @@ options:
   menu_back_sound: "back.mp3" #sound to play on menu back (must be 16 bit or lower .WAV file)
   menu_navigation_sound: "select.wav" #sound to play when clicking navigation button (must be 16 bit or lower .WAV file)
 
+  loading_image: "loading_screen.jpg" #image to display while PiPlay is loading
   font_file: "Lato-Bold.ttf"
   default_font_size: 19
   default_font_color: "0,0,0"

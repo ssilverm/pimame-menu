@@ -119,8 +119,8 @@ class PMMenuItem(pygame.sprite.Sprite):
 				self.update_num_roms()
 
 			if self.type == self.ROM_LIST:
-				if self.num_roms == 0:
-					icon.set_alpha(64)
+				if self.num_roms == str(0):
+					icon.set_alpha(0)
 				else:
 					#text = font.render(str(num_roms), 1, (255, 255, 255))
 					label = PMLabel(str(self.num_roms), global_opts.rom_count_font, global_opts.rom_count_font_color, global_opts.rom_count_background_color, global_opts.rom_count_font_bold)

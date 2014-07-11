@@ -11,7 +11,7 @@ options:
   item_color: "255,255,255,128"
   disabled_alpha: 128
   item_height: 220 #main menu icon height
-  num_items_per_row: 5
+  num_items_per_row: 4
   menu_item_padding: 10
   display_navigation_labels: no
 
@@ -20,6 +20,7 @@ options:
   menu_back_sound: "sfx_back.wav"
   menu_navigation_sound: "sfx_select.wav"
 
+  loading_image: "loading_screen.png"
   font_file: "Lato-Bold.ttf"
   default_font_size: 19
   default_font_color: "0,0,0"
