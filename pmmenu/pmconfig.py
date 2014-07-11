@@ -38,6 +38,19 @@ class PMCfg:
 		self.screen.set_alpha(None)
 		pygame.mouse.set_visible(self.options.show_cursor)
 		
+		#loading screen
+		background_image = self.options.load_image(self.options.loading_image, "/home/pi/pimame/pimame-menu/assets/images/loading_screen.png")
+		background_rect = background_image.get_rect()
+		screen_width = pygame.display.Info().current_w
+		screen_height = pygame.display.Info().current_h
+		scale = min(float(background_rect.w) / float(screen_width), float(background_rect.h) / float(screen_height))
+		background_rect = (int(background_rect.w / scale), int(background_rect.h / scale))
+		
+		background_image =  pygame.transform.smoothscale(background_image, background_rect)
+		self.screen.blit(background_image, (0,0))
+		pygame.display.flip()
+
+		
 		self.options.menu_move_sound = self.options.load_audio(self.options.menu_move_sound)
 		self.options.menu_select_sound = self.options.load_audio(self.options.menu_select_sound)
 		self.options.menu_back_sound = self.options.load_audio(self.options.menu_back_sound)
@@ -121,6 +134,7 @@ class PMOptions:
 		self.menu_back_sound = self.theme_pack + theme['menu_back_sound']
 		self.menu_navigation_sound = self.theme_pack + theme['menu_navigation_sound']
 		
+		self.loading_image = self.theme_pack + theme['loading_image']
 		self.font_file = theme['font_file']
 		self.default_font_size = theme['default_font_size']
 		self.default_font_color = self.get_color(theme['default_font_color'])
