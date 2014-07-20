@@ -3,7 +3,7 @@ import subprocess
 import re
 import sys
 import time
-from os import system, remove, close
+from os import system, remove, close, execl
 from tempfile import mkstemp
 from shutil import move
 
@@ -32,7 +32,13 @@ class PMUtil:
 	def run_command_and_continue(command):
 		pygame.quit()
 		time.sleep(1)
-		system(command + " && export LD_LIBRARY_PATH= &&  python " + sys.argv[0])
+		system(command + " && export LD_LIBRARY_PATH= ")
+		
+		#restart piplay
+		python = sys.executable
+		execl(python, python, * sys.argv)
+		
+		#not used?
 		sys.exit()
 	
 	@staticmethod
