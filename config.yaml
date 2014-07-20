@@ -37,7 +37,7 @@ menu_items:
     roms: /home/pi/pimame/roms/neogeo/
     full_path: yes
     extension: yes
-    command: /home/pi/pimame/emulators/fba/fba2x
+    command: /home/pi/pimame/emulators/fba/fba2x -config=/home/pi/pimame/neogeo.cfg 
 
   - label: AdvMAME
     visible: No
@@ -51,7 +51,7 @@ menu_items:
     full_path: yes
     extension: yes
     override_menu: no
-    command: /home/pi/pimame/emulators/fba/fba2x
+    command: /home/pi/pimame/emulators/fba/fba2x --config=/home/pi/pimame/arcade.cfg  
 
   - label: Genesis
     visible: Yes
