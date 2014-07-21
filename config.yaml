@@ -1,5 +1,5 @@
 options:
-  max_fps: 60
+  max_fps: 20
   show_ip: True
   show_update: Yes
   fullscreen: Yes
