@@ -135,7 +135,113 @@ class Gamesdb_API(object):
 				hi_score = Lratio
 				best_match_platform = current_platform
 		return best_match_platform
-			
+
+	def match_rom_to_local(self, input_data, image_path, compare_dat=True, min_match_ratio=.6):
+		#Levenshtein check to get the alias for the platform to call API
+		dat_list = {}
+		real_platform = self.match_platform(input_data['platform'])
+		print
+		dat_list = {}
+		
+		if real_platform['name'].lower() == 'arcade':
+			image_path = join(image_path, 'MAME')
+		else:
+			image_path = join(image_path, real_platform['shortcode'].upper())
+
+
+		if isfile('/home/pi/pimame/pimame-menu/assets/dat/' + real_platform['shortcode'].lower() + '.dat') and compare_dat:
+			print "Found %s..." % (real_platform['shortcode'].lower() + '.dat')
+			root = Tree.parse('/home/pi/pimame/pimame-menu/assets/dat/' + real_platform['shortcode'].lower() + '.dat').getroot()
+			print 'Converting to dictionary...'
+			dat_list = {}
+			root_size = len(root)
+			for index, game in enumerate(root):
+				status = "Conversion: [%3.2f%%]" % (index * 100. / root_size)
+				#status = status + chr(8)*(len(status)+1)
+				sys.stdout.write('%s      \r' % (status))
+				sys.stdout.flush()
+				rom_element = {}
+				if game.tag == 'game':
+					for element in game:
+						if element.tag == 'rom':
+							#only add unique crc's
+							if not 'merge' in element.attrib: 
+								if 'crc' in element.attrib: rom_element[element.attrib['crc'].upper()] = element.attrib['crc']
+						if element.tag == 'description':
+							game_description = element.text
+					dat_list[game_description] = rom_element
+			dat_exists = True
+			root.clear()
+		else:
+			dat_exists = False
+				
+		#load rom filenames, initialize rom_list to return matches
+		print 'Fetching %s rom list...' % pcolor('cyan', input_data['platform'])
+		roms = self.get_stored_roms(input_data['rom_path'])
+		
+		
+		print 'Finding Local Files...'
+		game_info = listdir(image_path)
+		rom_list = []
+		for rom in roms:
+			game = None
+			if dat_exists:
+				try:
+					file = zipfile.ZipFile(os.path.join(input_data['rom_path'],rom), "r")
+					for info in file.infolist():
+						crc = "%08X" % info.CRC
+						if crc != "00000000": 
+							for key, value in dat_list.iteritems():
+								if crc in value:
+									game = key
+									break
+						if game is not None: break
+				except: 
+						crc = "%08X"%(zlib.crc32(open(os.path.join(input_data['rom_path'],rom),"rb").read()) & 0xFFFFFFFF)
+						for key, value in dat_list.iteritems():
+							if crc in value:
+								game = key
+								break
+					
+			hi_score = min_match_ratio
+			best_match_game = -1
+			rom_name = re.sub(r'( *)\([^)]*\)|( *)\[[^]]*\]', '', game if game is not None else os.path.splitext(rom)[0]).strip()
+			for index, game_entry in enumerate(game_info):
+				Lratio = ratio(rom_name, game_entry[:-4])
+				if Lratio > hi_score:
+					hi_score = Lratio
+					best_match_game = index
+			if best_match_game > -1:
+				print 'closest match for %s is %s' % (pcolor('green', rom_name), pcolor('cyan', game_info[best_match_game]))
+				image_file = game_info[best_match_game]
+				rom_list.append({
+					'rom_path': input_data['rom_path'], 
+					'image_path': image_path, 
+					'image_file': image_file, 
+					'file': rom, 
+					'real_name': rom_name, 
+					'art': image_file, 
+					'logo': image_file, 
+					'thumb': image_file, 
+					'platform': input_data['platform']
+					})
+			else:
+				print "No match found for %s" % pcolor('red', rom_name)
+				rom_list.append({
+					'rom_path': input_data['rom_path'], 
+					'image_path': image_path, 
+					'image_file': '', 
+					'file': rom, 
+					'real_name': rom, 
+					'art': '', 
+					'logo': '', 
+					'thumb': '',
+					'platform': input_data['platform']
+					})
+			hi_score = min_match_ratio
+			best_match_game = -1
+		dat_list.clear()
+		return rom_list
 
 	def match_rom_to_db(self, input_data, compare_dat=True, min_match_ratio=.6):
 		#Levenshtein check to get the alias for the platform to call API
