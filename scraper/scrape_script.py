@@ -9,6 +9,7 @@ from select import select
 
 parser = argparse.ArgumentParser(description='PiScraper')
 parser.add_argument("--platform", metavar="value", help="Which platform to scrape", type=str)
+parser.add_argument("--local_images", metavar="value", help="Use local images. Parent folder must contain child folder with system name", type=str)
 args = parser.parse_args()
 
 
@@ -34,7 +35,7 @@ class GeneralRun():
 		answer = True if not answer in response else response[answer]
 		return answer
 	
-	def __init__(self, platform='all'):
+	def __init__(self, platform = 'all', local_images = None):
 	
 		#load gamesdb api
 		scraper = scraper_api.Gamesdb_API()
@@ -55,7 +56,7 @@ class GeneralRun():
 		scrape_all_categories = self.raw_input_with_timeout('scrape %s rom categories?: ' % pcolor('cyan', 'ALL')) if platform == 'all' else False
 		
 			
-		if scrape_all_categories:
+		if scrape_all_categories and not local_images:
 			download_all_category_images = self.raw_input_with_timeout('download %s missing images?: ' % pcolor('cyan', 'ALL'))
 		else:
 			download_all_category_images = False
@@ -69,23 +70,29 @@ class GeneralRun():
 			else:
 				roms_answer = True
 			
-			if roms_answer and not download_all_category_images:
+			if roms_answer and not download_all_category_images and not local_images:
 				image_answer = self.raw_input_with_timeout('download %s missing images?: ' %  pcolor('cyan', category['platform']))
 			else:
 				image_answer = True
 
 			if roms_answer:
-				rom_data = scraper.match_rom_to_db(category)
+				if not local_images:
+					rom_data = scraper.match_rom_to_db(category)
+				else:
+					rom_data = scraper.match_rom_to_local(category, local_images)
 				if image_answer:
-					scraper.download_image(rom_data, image_type = 'thumb')
+					if not local_images:
+						scraper.download_image(rom_data, image_type = 'thumb')
 				scraper.build_cache_file(rom_data, len(os.listdir(category['rom_path'])) )
 				
 				
 				
 	
 				
-
-GeneralRun(args.platform)
+if args.local_images:
+	GeneralRun(args.platform, args.local_images)
+else:
+	GeneralRun(args.platform)
 	
 
 	
