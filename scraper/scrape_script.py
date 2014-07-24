@@ -29,7 +29,7 @@ class GeneralRun():
 			if rlist:
 				answer = sys.stdin.readline().replace('\n','').lower()
 			timeout -= 1
-			time.sleep(1)
+
 		
 		if not answer in response: print 'Y'
 		print '\r' + ('  ' * 30) + '\r',
