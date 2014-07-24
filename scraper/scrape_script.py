@@ -21,6 +21,7 @@ class GeneralRun():
 	def raw_input_with_timeout(self, prompt, timeout=3.0, response = {'y': True, 'ye': True, 'yes': True, 't': True, 'n': False, 'no': False, 'f': False}):
 		
 		answer = ''
+		sys.stdout.flush()
 		while (not answer in response) and timeout >= 0:
 			sys.stdout.write('\r[%ds] %s' % (timeout, prompt)),
 			sys.stdout.flush()
@@ -94,8 +95,3 @@ if args.local_images:
 else:
 	GeneralRun(args.platform)
 	
-
-	
-	
-
-

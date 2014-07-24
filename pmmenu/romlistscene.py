@@ -57,7 +57,7 @@ class RomListScene(object):
 		
 		self.resize_bg()
 		self.list = PMList(self.rom_list, self.cfg.options)
-		self.popup = PMPopup(self.manager.scene.SCENE_NAME, self.cfg.options)
+		self.popup = None
 
 		self.items_per_screen = int(self.measure_items_per_screen())
 		self.list.set_visible_items(0, self.items_per_screen)
@@ -120,9 +120,9 @@ class RomListScene(object):
 			if event.type == pygame.JOYBUTTONDOWN: action = self.CONTROLS.get_action('joystick', event.button)
 			
 			
-			if self.popup.menu_open:
+			if self.popup and self.popup.menu_open:
 			
-				self.popup.handle_events(action, self.screen, self.effect)
+				self.popup.handle_events(action)
 				
 				if action == 'SELECT':
 					self.popup.menu_open = False
@@ -142,15 +142,8 @@ class RomListScene(object):
 					self.cfg.options.menu_back_sound.play()
 					self.manager.back()
 				elif action == 'MENU':
-					self.popup.menu_open = True
-					self.cfg.options.fade_image.blit(self.screen,(0,0))
+					self.popup = PMPopup(self.screen, self.manager.scene.SCENE_NAME, self.cfg.options, True)
 					
-					if self.cfg.options.use_scene_transitions:
-						self.effect = PMUtil.blurSurf(self.cfg.options.fade_image, 20)
-						self.screen.blit(self.effect,(0,0))
-					else:
-						self.effect = self.screen.copy()
-					self.screen.blit(self.popup.menu,((pygame.display.Info().current_w - self.popup.rect.w)/2, (pygame.display.Info().current_h - self.popup.rect.h)/2))
 				elif action in self.ORIENTATION[self.cfg.options.rom_list_orientation]:
 					self.set_selected_index(self.ORIENTATION[self.cfg.options.rom_list_orientation][action])
 				

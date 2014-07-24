@@ -107,7 +107,7 @@ class Gamesdb_API(object):
 		for data_block in config_query['menu_items']:
 			if 'roms' in data_block:
 				if 'images' in data_block: image_path = data_block['images']
-				else: image_path = data_block['roms'] + "images/"
+				else: image_path = join(data_block['roms'] ,"images/")
 				if search_platform == 'all':
 					rom_locations.append({'rom_path': data_block['roms'], 'image_path': image_path, 'platform':data_block['label']})
 				elif search_platform.lower() == data_block['label'].lower():
@@ -750,18 +750,4 @@ class Gamesdb_API(object):
 					game_platform = subelement.text
 			games_list.append(Game(game_id, game_title, game_ascii_title, release_date=game_release_date, platform=game_platform))
 		return games_list
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		

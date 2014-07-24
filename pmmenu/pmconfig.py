@@ -55,7 +55,8 @@ class PMCfg:
 		self.options.menu_select_sound = self.options.load_audio(self.options.menu_select_sound)
 		self.options.menu_back_sound = self.options.load_audio(self.options.menu_back_sound)
 		self.options.menu_navigation_sound = self.options.load_audio(self.options.menu_navigation_sound)
-		self.options.fade_image = pygame.Surface([self.screen.get_width(), self.screen.get_height()], pygame.SRCALPHA, 32).convert_alpha()
+		self.options.blur_image = pygame.Surface([self.screen.get_width(), self.screen.get_height()]).convert_alpha()
+		self.options.fade_image = pygame.Surface([self.screen.get_width(), self.screen.get_height()]).convert()
 		
 	def init_screen(self, size, fullscreen):
 		
@@ -64,13 +65,17 @@ class PMCfg:
 		dinfo = pygame.display.Info()
 
 		#return pygame.display.set_mode(size,0,32)
+		pygame.display.init()
+		dinfo = pygame.display.Info()
+
 
 		flag = 0
 		if fullscreen:
 			flag = pygame.FULLSCREEN
+		#return pygame.display.set_mode(size, flag, 32)
 
 		if (pygame.display.mode_ok((dinfo.current_w,dinfo.current_h),pygame.FULLSCREEN)):
-			return pygame.display.set_mode((dinfo.current_w, dinfo.current_h), flag, 32)
+			return pygame.display.set_mode((dinfo.current_w, dinfo.current_h), flag)
 		else:
 			pygame.quit()
 			sys.exit()
@@ -99,7 +104,7 @@ class PMOptions:
 		self.resolution = self.get_screen_size(opts['resolution'])
 		self.sort_items_alphanum = opts['sort_items_alphanum']
 		self.sort_items_with_roms_first = opts['sort_items_with_roms_first']
-		self.hide_items_without_roms = opts['hide_items_without_roms']
+		self.hide_system_tools = opts['hide_system_tools']
 		self.show_cursor = opts['show_cursor']
 		self.allow_quit_to_console = opts['allow_quit_to_console']
 		self.use_scene_transitions = opts['use_scene_transitions']

@@ -11,7 +11,7 @@ options:
   item_color: "255,255,255,128"
   disabled_alpha: 128
   item_height: 220 #main menu icon height
-  num_items_per_row: 4
+  num_items_per_row: 6
   menu_item_padding: 10
   display_navigation_labels: no
 
@@ -32,8 +32,8 @@ options:
   
   display_labels: yes
   label_text_align: left
-  labels_offset: [13,13]
-  label_font_size: 48
+  labels_offset: [6,7]
+  label_font_size: 24
   label_font_color: "0,0,0"
   label_font_bold: no
   label_background_color: "255,255,255,150"
@@ -43,8 +43,8 @@ options:
   
   display_rom_count: yes
   rom_count_text_align: right
-  rom_count_offset: [-13,430]
-  rom_count_font_size: 48
+  rom_count_offset: [-6,215]
+  rom_count_font_size: 24
   rom_count_font_color: "255,255,255,128"
   rom_count_font_bold: no
   rom_count_background_color: "228,56,65,128"
@@ -136,7 +136,7 @@ menu_items:
     icon_file: shutdown.png
     icon_selected: shutdown-selected.png
 
-  - label: Update PiMAME
+  - label: Update PiPlay
     icon_file: update.png
     icon_selected: update-selected.png
 

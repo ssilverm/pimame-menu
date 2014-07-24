@@ -32,7 +32,9 @@ class PMMenuItem(pygame.sprite.Sprite):
 		else:
 			self.icon_selected = False
 		#self.extension = item_opts['extension']
-
+		
+		if 'type' in item_opts: type = item_opts['type']
+		
 		try:
 			self.roms = item_opts['roms']
 		except KeyError:
@@ -56,14 +58,10 @@ class PMMenuItem(pygame.sprite.Sprite):
 
 
 		if type == False:
-			#if self.roms:
-			#	self.type = self.ROM_LIST
-			#else:
-			#	self.type = self.COMMAND
-			if self.override_menu:
-				self.type = self.COMMAND
-			else:
+			if 'roms' in item_opts:
 				self.type = self.ROM_LIST
+			else:
+				self.type = self.COMMAND
 		else:
 			self.type = type
 
@@ -119,9 +117,10 @@ class PMMenuItem(pygame.sprite.Sprite):
 				self.update_num_roms()
 
 			if self.type == self.ROM_LIST:
-				if self.num_roms == str(0):
-					icon.set_alpha(0)
-				else:
+				#if self.num_roms == str(0):
+				#	icon = icon.convert_alpha()
+				#	icon.set_alpha(64)
+				#else:
 					#text = font.render(str(num_roms), 1, (255, 255, 255))
 					label = PMLabel(str(self.num_roms), global_opts.rom_count_font, global_opts.rom_count_font_color, global_opts.rom_count_background_color, global_opts.rom_count_font_bold)
 					textpos = label.rect
@@ -140,6 +139,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 
 	def update_num_roms(self, warning = "!"):
 		
+		self.num_roms = "0"
 		if isfile(self.cache):
 					json_data=open(self.cache)
 					raw_data = json.load(json_data)
@@ -150,13 +150,13 @@ class PMMenuItem(pygame.sprite.Sprite):
 					
 		else:
 			if not isdir(self.roms):
-				return 0
+				return None
 
 			files = [ f for f in listdir(self.roms) if isfile(join(self.roms,f)) and f != '.gitkeep'  ]
 			
 			
 		if len(files) > 0: self.num_roms = str(len(files)) + warning
-		else: self.num_roms = 0
+		else: self.num_roms = "0"
 
 	def get_rom_list(self):
 		#@TODO - am I using the type field?

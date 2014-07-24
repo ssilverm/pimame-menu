@@ -29,9 +29,9 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 
 		if self.options.sort_items_with_roms_first:
 			self.menu_items.sort(key=lambda x: x.num_roms, reverse=True)
-
-		if self.options.hide_items_without_roms:
-			self.menu_items = [x for x in self.menu_items if x.num_roms > 0]
+	
+		if self.options.hide_system_tools:
+			self.menu_items = [x for x in self.menu_items if x.type != "command"]
 
 
 	def create_nav_menu_item(self, label, icon_file = False, icon_selected = False):

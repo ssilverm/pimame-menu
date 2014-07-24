@@ -16,7 +16,7 @@ class PMLabel(pygame.sprite.Sprite):
 		text = font.render(label_text, 1, color_fg).convert_alpha()
 		text_rect = text.get_rect()
 		if label_text == '': text_rect.w = 0
-		self.image = pygame.Surface([text_rect.w, text_rect.h], pygame.SRCALPHA, 32).convert_alpha()
+		self.image = pygame.Surface([text_rect.w, text_rect.h]).convert_alpha()
 		self.image.fill(color_bg, text_rect)
 		self.image.blit(text, text_rect)
 

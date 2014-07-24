@@ -25,10 +25,9 @@ class PMWarning(pygame.sprite.Sprite):
 		self.item_width = 0
 		self.item_height = 0
 		
-		self.cfg.fade_image.blit(self.screen,(0,0))
+		self.cfg.blur_image.blit(self.screen,(0,0))
 		if self.cfg.use_scene_transitions:
-			self.effect = PMUtil.blurSurf(self.cfg.fade_image, 20)
-			self.screen.blit(self.effect,(0,0))
+			self.effect = PMUtil.blurSurf(self.cfg.blur_image, 20)
 		else:
 			self.effect = self.screen.copy()
 
@@ -93,12 +92,12 @@ class PMWarning(pygame.sprite.Sprite):
 		elif action == 'BACK':
 				self.cfg.menu_back_sound.play()
 				self.menu_open = False
-				self.screen.blit(self.cfg.fade_image,(0,0))
+				self.screen.blit(self.cfg.blur_image,(0,0))
 		
 		if action == 'SELECT':
 			self.cfg.menu_select_sound.play()
 			self.menu_open = False
-			self.screen.blit(self.cfg.fade_image,(0,0))
+			self.screen.blit(self.cfg.blur_image,(0,0))
 			self.answer = self.list.options[self.buttons][self.hover]['return']
 				
 		
