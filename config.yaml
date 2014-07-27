@@ -37,7 +37,7 @@ menu_items:
     roms: /home/pi/pimame/roms/neogeo/
     full_path: yes
     extension: yes
-    command: /home/pi/pimame/emulators/fba/fba2x
+    command: /home/pi/pimame/emulators/fba/fba2x -config=/home/pi/pimame/neogeo.cfg 
 
   - label: AdvMAME
     visible: No
@@ -51,7 +51,7 @@ menu_items:
     full_path: yes
     extension: yes
     override_menu: no
-    command: /home/pi/pimame/emulators/fba/fba2x
+    command: /home/pi/pimame/emulators/fba/fba2x --config=/home/pi/pimame/arcade.cfg
 
   - label: Genesis
     visible: Yes
@@ -80,6 +80,7 @@ menu_items:
     command: /home/pi/pimame/emulators/pcsx_rearmed/pcsx
     override_menu: yes
     roms: /home/pi/pimame/roms/psx/
+    type: FRONTEND
 
   - label: Commodore 64
     visible: Yes
@@ -87,6 +88,7 @@ menu_items:
     full_path: no
     override_menu: yes
     command: x64
+    type: FRONTEND
 
   - label: ScummVM
     visible: Yes
@@ -94,6 +96,7 @@ menu_items:
     command: scummvm
     override_menu: yes
     roms: /home/pi/pimame/roms/scummvm/
+    type: FRONTEND
 
   - label: Gameboy
     visible: Yes
