@@ -77,7 +77,7 @@ menu_items:
   - label: Playstation 1
     visible: Yes
     full_path: no
-    command: /home/pi/pimame/emulators/pcsx_rearmed/pcsx
+    command: cd /home/pi/pimame/emulators/pcsx_rearmed && ./pcsx
     override_menu: yes
     roms: /home/pi/pimame/roms/psx/
     type: FRONTEND
