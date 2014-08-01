@@ -6,6 +6,7 @@ from os import system
 from pmcontrols import *
 from pmutil import *
 from pmlabel import *
+from pmcontrollerconfig import *
 
 class PMPopup(pygame.sprite.Sprite):
 
@@ -148,6 +149,7 @@ class PMPopup(pygame.sprite.Sprite):
 			"next": self.menu_work.quit_swap
 			}
 			
+			
 			self.scraper_clones = {
 			"title": PMLabel("Scrape Clones:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
 			"value": PMLabel(str(self.menu_work.scraper_clones_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
@@ -166,10 +168,19 @@ class PMPopup(pygame.sprite.Sprite):
 			"next": self.menu_work.scraper_overwrite_swap
 			}
 			
+			self.controller_setup = {
+			"title": PMLabel("Controller Setup", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMLabel("", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMLabel("Controller Setup", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMLabel("", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"prev": self.run_controller_setup,
+			"next": self.run_controller_setup
+			}
+			
 
 			
 			popup = [self.volume, self.theme, self.cursor, self.transitions, self.show_ip, self.show_update, self.sort_alphanum,
-						self.roms_first, self.hide_system_tools, self.quit_to_console, self.scraper_clones, self.scraper_overwrite_image]
+						self.roms_first, self.hide_system_tools, self.quit_to_console, self.scraper_clones, self.scraper_overwrite_image, self.controller_setup]
 			
 			return popup
 			#self.themes = PMLabel(get_theme(), cfg.popup_font, cfg.popup_menu_font_color)
@@ -188,6 +199,10 @@ class PMPopup(pygame.sprite.Sprite):
 			popup = [self.letter]
 			
 			return popup
+			
+	def run_controller_setup(self):
+		self.screen.blit(self.cfg.blur_image,(0,0))
+		return "CONTROLLER"
 	
 	def update_menu(self):
 		if self.scene_type == 'main':
@@ -281,8 +296,11 @@ class PMPopup(pygame.sprite.Sprite):
 				self.selected = not self.selected
 				self.update_menu()
 				self.draw_menu()
-				
+				#check if controller setup is selected
+				if self.selected and (self.list[self.hover] == self.controller_setup):
+					return  self.run_controller_setup()
 			
+		return None
 				
 	def on_exit_actions(self):
 		config_path = '/home/pi/pimame/pimame-menu/config.yaml'

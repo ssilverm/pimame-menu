@@ -32,14 +32,15 @@ options:
   
   display_labels: yes
   label_text_align: left
-  labels_offset: [80,15]
-  label_font_size: 36
+  labels_offset: [70,15]
+  label_font_size: 34
   label_font_color: "0,255,255"
   label_font_bold: no
   label_background_color: "0,0,0,0"
   label_font_selected_color: "90,255,255"
   label_font_selected_bold: no
   label_background_selected_color: "0,0,0,0"
+  label_max_text_width: 435
   
   display_rom_count: yes
   rom_count_text_align: right
@@ -51,6 +52,7 @@ options:
   rom_count_font_selected_color: "255,255,255"
   rom_count_font_selected_bold: no
   rom_count_background_selected_color: "0,0,0,0"
+  rom_count_max_text_width: 63
   
   rom_list_font_size: 19
   rom_list_font_align: left #left, right, center
@@ -67,13 +69,17 @@ options:
   rom_list_orientation: vertical
   rom_list_align: left
   rom_list_alignment_padding: 0
-  rom_list_min_height: auto
-  rom_list_min_width: auto
+  rom_list_min_background_height: auto
+  rom_list_min_background_width: auto
+  rom_list_max_text_width: auto
 
   missing_boxart_image: "missing_boxart.png"
   boxart_offset: [0,0] #[x,y]
-  boxart_max_width: 60%
+  boxart_max_width: 50%
   boxart_max_height: 70%
+  boxart_border_thickness: 3
+  boxart_border_padding: 15
+  boxart_border_color: "0,255,255"
   
 menu_items:
   - label: SNES

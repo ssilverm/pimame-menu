@@ -155,6 +155,7 @@ class PMOptions:
 		self.label_font_selected_color = self.get_color(theme['label_font_selected_color'])
 		self.label_font_selected_bold = theme['label_font_selected_bold']
 		self.label_background_selected_color = self.get_color(theme['label_background_selected_color'])
+		self.label_max_text_width = self.check_type(theme['label_max_text_width'])
 		
 		self.display_rom_count = theme['display_rom_count']
 		self.rom_count_text_align = theme['rom_count_text_align'].lower()
@@ -166,6 +167,7 @@ class PMOptions:
 		self.rom_count_font_selected_color = self.get_color(theme['rom_count_font_selected_color'])
 		self.rom_count_font_selected_bold = theme['rom_count_font_selected_bold']
 		self.rom_count_background_selected_color = self.get_color(theme['rom_count_background_selected_color'])
+		self.rom_count_max_text_width = self.check_type(theme['rom_count_max_text_width'])
 		
 		self.rom_list_font_size = theme['rom_list_font_size']
 		self.rom_list_font_align = theme['rom_list_font_align'].lower()
@@ -180,10 +182,14 @@ class PMOptions:
 		self.rom_list_align = theme['rom_list_align'].lower()
 		self.rom_list_alignment_padding = int(theme['rom_list_alignment_padding'])
 		self.rom_list_orientation = theme['rom_list_orientation'].lower() if theme['rom_list_orientation'].lower() == 'horizontal' else 'vertical'
+		self.rom_list_max_text_width = self.check_type(theme['rom_list_max_text_width'])
 		
 		self.boxart_offset = theme['boxart_offset']
 		self.boxart_max_width = float(theme['boxart_max_width'].strip('%'))/100
 		self.boxart_max_height = float(theme['boxart_max_height'].strip('%'))/100
+		self.boxart_border_thickness = theme['boxart_border_thickness']
+		self.boxart_border_padding = theme['boxart_border_padding']
+		self.boxart_border_color = self.get_color(theme['boxart_border_color'])
 		
 
 		#items to be pre-loaded for efficiency
@@ -202,12 +208,12 @@ class PMOptions:
 		self.pre_loaded_rom_list_background = self.load_image(self.theme_pack + self.rom_list_background_image)
 		
 		#determine romlist item height
-		self.romlist_item_height = max(self.pre_loaded_romlist.get_rect().h, self.rom_list_font.size('Ip')[1])
-		if isinstance(theme['rom_list_min_height'], int): self.romlist_item_height = max(self.romlist_item_height, theme['rom_list_min_height'])
+		self.romlist_item_height = max(self.pre_loaded_romlist.get_rect().h, self.rom_list_font.size('')[1])
+		if self.check_type(theme['rom_list_min_background_height']): self.romlist_item_height = max(self.romlist_item_height, theme['rom_list_min_background_height'])
 		
 		#determine romlist item width
-		if str(theme['rom_list_min_width']).lower() == 'auto' : self.romlist_item_width = max(self.pre_loaded_romlist.get_rect().w, 300)
-		else: self.romlist_item_width = max(self.pre_loaded_romlist.get_rect().w, int(theme['rom_list_min_width']))
+		if str(theme['rom_list_min_background_width']).lower() == 'auto' : self.romlist_item_width = max(self.pre_loaded_romlist.get_rect().w, 300)
+		else: self.romlist_item_width = max(self.pre_loaded_romlist.get_rect().w, int(theme['rom_list_min_background_width']))
 		
 		self.missing_boxart_image = (self.theme_pack + theme['missing_boxart_image']) if isfile(self.theme_pack + theme['missing_boxart_image']) else ('/home/pi/pimame/pimame-menu/assets/images/missing_boxart.png')
 		
@@ -217,6 +223,14 @@ class PMOptions:
 
 	def get_screen_size(self, res_str):
 		return tuple([int(x) for x in res_str.split(",")])
+	
+	#test if number value or string (ie - string = 'auto')
+	def check_type(self, input):
+		try:
+			input += 1
+			return (input - 1)
+		except TypeError:
+			return False
 		
 	def load_image(self, file_path, alternate_image = None):
 		try:

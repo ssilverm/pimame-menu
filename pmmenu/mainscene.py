@@ -2,6 +2,7 @@ import pygame
 from pmcontrols import *
 from pmpopup import *
 from pmwarning import *
+from pmcontrollerconfig import *
 from pmconfig import *
 from pmheader import *
 from pmselection import *
@@ -278,7 +279,9 @@ class MainScene(object):
 						
 					
 			elif self.popup and self.popup.menu_open:
-				self.popup.handle_events(action)
+				status = self.popup.handle_events(action)
+				if status == "CONTROLLER": self.popup = PMControllerConfig(self.screen, self.cfg.options)
+				
 			else:
 				
 				if action == 'LEFT':
@@ -301,6 +304,7 @@ class MainScene(object):
 						self.do_menu_item_action(sprite)
 						
 				elif action == 'MENU':
+					#self.popup = PMControllerConfig(self.screen, self.cfg.options)
 					self.popup = PMPopup(self.screen, self.manager.scene.SCENE_NAME, self.cfg.options, True)
 					
 					

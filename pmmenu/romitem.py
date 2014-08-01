@@ -1,9 +1,8 @@
-import os
 import pygame
 
 
 class PMRomItem(pygame.sprite.Sprite):
-	def __init__(self, label_text, font, color_fg, color_bg, font_bold = False, rom_list_offset=[0,0,0,0], create_romlist_image = False, new_rom = False, min_scale_size = [600,12], text_align = 'left'):
+	def __init__(self, label_text, font, color_fg, color_bg, font_bold = False, rom_list_offset=[0,0,0,0], create_romlist_image = False, new_rom = False, min_scale_size = [600,12], text_align = 'left', max_text_width = False):
 		pygame.sprite.Sprite.__init__(self)
 
 		
@@ -21,6 +20,12 @@ class PMRomItem(pygame.sprite.Sprite):
 				font.set_bold(font_bold)
 				text = font.render(label_text, 1, color_fg)
 				text_rect = text.get_rect()
+				
+				if max_text_width and text_rect.w > max_text_width:
+					scale = float(max_text_width) / text_rect.w
+					text = pygame.transform.smoothscale(text, (max_text_width, int(text_rect.h * scale)))
+					text_rect = text.get_rect()
+					
 				if text_align == 'right': text_align = new_rom.icon_rect.w - text_rect.w
 				elif text_align == 'center': text_align = (new_rom.icon_rect.w - text_rect.w)/2
 				else: text_align = 0

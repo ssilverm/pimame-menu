@@ -51,7 +51,7 @@ menu_items:
     full_path: yes
     extension: yes
     override_menu: no
-    command: /home/pi/pimame/emulators/fba/fba2x --config=/home/pi/pimame/arcade.cfg
+    command: /home/pi/pimame/emulators/fba/fba2x --config=/home/pi/pimame/emulators/fba/fba2x.cfg
 
   - label: Genesis
     visible: Yes
@@ -147,12 +147,6 @@ menu_items:
     override_menu: Yes
     command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && cd /home/pi/pimame/emulators/usp_0.0.43/ && ./unreal_speccy_portable && cd /home/pi/pimame/pimame-menu
 
-  - label: Controller Setup
-    visible: Yes
-    full_path: no
-    command: python /home/pi/pimame/controller-setup/configure.py
-    override_menu: yes
-
   - label: Cave Story
     visible: Yes
     full_path: no
@@ -165,33 +159,39 @@ menu_items:
     full_path: no
     command: sudo reboot
     override_menu: yes
+    type: UTILITY
 
   - label: Shutdown
     visible: Yes
     full_path: no
     command: sudo poweroff
     override_menu: yes
+    type: UTILITY
 
   - label: Update PiPlay
     visible: Yes
     full_path: no
     command: wget -O - http://pimame.org/update.sh | bash
     override_menu: yes
+    type: UTILITY
 
   - label: Rom Scraper
     visible: Yes
     full_path: no
     command: python /home/pi/pimame/pimame-menu/scraper/scrape_script.py
     override_menu: yes
+    type: UTILITY
 
   - label: Install MAME
     visible: Yes
     full_path: no
     command: python /home/pi/pimame/mame_install.py
     override_menu: yes
+    type: UTILITY
   
   - label: Toggle Xbox Controller
     visible: Yes
     full_path: no
     command: sh /home/pi/pimame/toggle_xbox_controller.sh
     override_menu: yes
+    type: UTILITY

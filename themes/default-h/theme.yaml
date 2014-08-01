@@ -29,7 +29,7 @@ options:
   popup_menu_font_color: "0,255,255"
   popup_menu_font_selected_color: "255,255,255"
   popup_menu_background_color: "150,150,150,90"
-  
+
   display_labels: yes
   label_text_align: left
   labels_offset: [13,13]
@@ -40,6 +40,7 @@ options:
   label_font_selected_color: "255,255,255"
   label_font_selected_bold: no
   label_background_selected_color: "100,100,100,255"
+  label_max_text_width: 238
   
   display_rom_count: yes
   rom_count_text_align: right
@@ -51,6 +52,7 @@ options:
   rom_count_font_selected_color: "255,255,255,255"
   rom_count_font_selected_bold: no
   rom_count_background_selected_color: "228,56,65,255"
+  rom_count_max_text_width: auto
   
   rom_list_font_size: 19
   rom_list_font_align: center #left, right, center
@@ -69,11 +71,15 @@ options:
   rom_list_alignment_padding: 150
   rom_list_min_height: auto
   rom_list_min_width: 400
+  rom_list_max_text_width: 600
 
   missing_boxart_image: "missing_boxart.png"
   boxart_offset: [0, 0] #[x,y]
   boxart_max_width: 60%
   boxart_max_height: 80%
+  boxart_border_thickness: 1
+  boxart_border_padding: 5
+  boxart_border_color: "255,255,255"
   
 menu_items:
   - label: SNES
@@ -147,10 +153,6 @@ menu_items:
   - label: Install MAME
     icon_file: mame-install.png
     icon_selected: mame-install-selected.png
-
-  - label: Controller Setup
-    icon_file: controller-setup.png
-    icon_selected: controller-setup-selected.png
 
   - label: Cave Story
     icon_file: cave.png

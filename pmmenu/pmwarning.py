@@ -140,25 +140,25 @@ class BuildMessage():
 			
 			self.OK = {
 			"title": PMLabel("OK", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMLabel("OK", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title_selected": PMLabel("[OK]", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"return": 'OK'
 			}
 			
 			self.CANCEL = {
 			"title": PMLabel("CANCEL", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMLabel("CANCEL", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title_selected": PMLabel("[CANCEL]", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"return": 'CANCEL'
 			}
 			
 			self.YES = {
 			"title": PMLabel("YES", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMLabel("YES", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title_selected": PMLabel("[YES]", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"return": 'YES'
 			}
 			
 			self.NO = {
 			"title": PMLabel("NO", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMLabel("NO", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title_selected": PMLabel("[NO]", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"return": 'NO'
 			}
 			

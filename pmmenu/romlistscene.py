@@ -226,6 +226,7 @@ class RomListScene(object):
 				self.screen.fill(self.cfg.options.background_color, rect)
 				self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, rect, rect)
 			
+
 			self.list.draw(self.screen)
 		else:
 			available_width = pygame.display.Info().current_w - (self.items_per_screen * self.cfg.options.romlist_item_width)
@@ -267,14 +268,19 @@ class RomListScene(object):
 			boxart = pygame.transform.smoothscale(boxart, self.boxart_scale_size) 
 		except:
 			boxart = pygame.transform.scale(boxart, self.boxart_scale_size)
+		
+		rect_location = boxart.get_rect()
 			
 		self.boxart_location_x = 	((self.avail_width - self.boxart_scale_size[0])/2) + self.cfg.options.boxart_offset[0]
 		self.boxart_location_y = ((self.avail_height - self.boxart_scale_size[1])/2) +  self.cfg.options.boxart_offset[1]
 		if self.cfg.options.rom_list_align == 'left': self.boxart_location_x += self.cfg.options.romlist_item_width + self.cfg.options.rom_list_alignment_padding
 		if self.cfg.options.rom_list_align == 'top': self.boxart_location_y += self.cfg.options.romlist_item_height + self.cfg.options.rom_list_alignment_padding
 		boxart_location = (self.boxart_location_x, self.boxart_location_y)
+		rect_location = (self.boxart_location_x - self.cfg.options.boxart_border_padding, self.boxart_location_y - self.cfg.options.boxart_border_padding, rect_location.w + (self.cfg.options.boxart_border_padding * 2), rect_location.h + (self.cfg.options.boxart_border_padding * 2))
 		
-		if self.manager.scene.SCENE_NAME == 'romlist': self.screen.blit(boxart, boxart_location)
+		if self.manager.scene.SCENE_NAME == 'romlist' and boxart_rect.w > 1: 
+			pygame.draw.rect(self.screen, self.cfg.options.boxart_border_color, rect_location, self.cfg.options.boxart_border_thickness)
+			self.screen.blit(boxart, boxart_location)
 		else: thread.exit()
 		
 	def clear_rom_item(self, single_item = True):
@@ -293,7 +299,7 @@ class RomListScene(object):
 	def draw(self, draw_boxart = True):
 		if draw_boxart:
 			try:
-				if self.boxart_thread: self.draw_bg((self.boxart_location_x, self.boxart_location_y, self.boxart_scale_size[0], self.boxart_scale_size[1]))
+				if self.boxart_thread: self.draw_bg((self.boxart_location_x-self.cfg.options.boxart_border_padding, self.boxart_location_y-self.cfg.options.boxart_border_padding, self.boxart_scale_size[0] + (self.cfg.options.boxart_border_padding * 2), self.boxart_scale_size[1]+ (self.cfg.options.boxart_border_padding * 2)))
 			except: pass
 			self.boxart_thread = thread.start_new_thread(self.draw_boxart, (20,))
 		
@@ -307,7 +313,7 @@ class RomListScene(object):
 		self.screen.fill(self.cfg.options.background_color, rect)
 		self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, rect, rect)
 
-		selected_label = PMRomItem(text, self.cfg.options.rom_list_font, self.cfg.options.rom_list_font_selected_color, self.cfg.options.rom_list_background_selected_color, self.cfg.options.rom_list_font_selected_bold, self.cfg.options.rom_list_offset, False, self.list.selected_rom_template, [], self.cfg.options.rom_list_font_align)
+		selected_label = PMRomItem(text, self.cfg.options.rom_list_font, self.cfg.options.rom_list_font_selected_color, self.cfg.options.rom_list_background_selected_color, self.cfg.options.rom_list_font_selected_bold, self.cfg.options.rom_list_offset, False, self.list.selected_rom_template, [], self.cfg.options.rom_list_font_align, self.cfg.options.rom_list_max_text_width)
 
 		self.screen.blit(selected_label.image, rect)
 		
