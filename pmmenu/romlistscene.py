@@ -299,7 +299,10 @@ class RomListScene(object):
 	def draw(self, draw_boxart = True):
 		if draw_boxart:
 			try:
-				if self.boxart_thread: self.draw_bg((self.boxart_location_x-self.cfg.options.boxart_border_padding, self.boxart_location_y-self.cfg.options.boxart_border_padding, self.boxart_scale_size[0] + (self.cfg.options.boxart_border_padding * 2), self.boxart_scale_size[1]+ (self.cfg.options.boxart_border_padding * 2)))
+				if self.boxart_thread: 
+					padding = self.cfg.options.boxart_border_padding + self.cfg.options.boxart_border_thickness
+					self.draw_bg((self.boxart_location_x - padding, self.boxart_location_y - padding, 
+										self.boxart_scale_size[0] + (padding * 2), self.boxart_scale_size[1] + (padding * 2)))
 			except: pass
 			self.boxart_thread = thread.start_new_thread(self.draw_boxart, (20,))
 		
