@@ -392,7 +392,7 @@ class Gamesdb_API(object):
 							if element.tag == 'rom' and CRC_check:
 								if not 'merge' in element.attrib:
 									if not element.attrib['crc'] in crc_list:
-										#missing_file = True
+										missing_file = True
 										print ("%12s - %s") % (rom, pcolor('red', rom + " -crc for file: " + element.attrib['name'] + " doesn't match"))
 					
 						
@@ -411,6 +411,21 @@ class Gamesdb_API(object):
 							'thumb': dl_image_path + os.path.splitext(rom)[0] + '.png',
 							'platform': input_data['platform']
 						})
+			else:
+				print ("%12s - %s")  % (rom, pcolor('red', 'No Match'))
+				image_file = ''
+				
+				append({
+					'rom_path': input_data['rom_path'], 
+					'image_path': input_data['image_path'], 
+					'image_file': '', 
+					'file': rom, 
+					'real_name': rom,
+					'art': dl_image_path + os.path.splitext(rom)[0] + '.png',
+					'logo': dl_image_path + os.path.splitext(rom)[0] + '.png',
+					'thumb': dl_image_path + os.path.splitext(rom)[0] + '.png',
+					'platform': input_data['platform']
+				})
 		return rom_list
 	
 	#function not used, renaming tool -> match images from image_path with same name as games in dat file then copy them to output folder
