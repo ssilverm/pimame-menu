@@ -40,6 +40,7 @@ options:
   label_font_selected_color: "255,255,255" #selected font color
   label_font_selected_bold: no #make font bold when selected?
   label_background_selected_color: "100,100,100,255" #selected bg color
+  label_max_text_width: 435
   
   display_rom_count: yes #show how many roms in emulator?
   rom_count_text_align: center #left, right, center
@@ -51,6 +52,7 @@ options:
   rom_count_font_selected_color: "255,255,255,255"
   rom_count_font_selected_bold: no
   rom_count_background_selected_color: "228,56,65,255"
+  rom_count_max_text_width: 63
   
   rom_list_font_size: 19
   rom_list_font_align: left #left, right, center text justify
@@ -68,11 +70,15 @@ options:
   rom_list_alignment_padding: 0 #add padding between list and aligned edge
   rom_list_min_height: auto #set min height, auto = height of text
   rom_list_min_width: 600 #set min width, auto = 300
+  rom_list_max_text_width: auto
 
   missing_boxart_image: "missing_boxart.png" #image to display if scraper image not found
   boxart_offset: [0,0] #[x,y]
   boxart_max_width: 60% #scale to max avail. width (screenwidth-list)
   boxart_max_height: 70% #scale to max avail. height (screenheight-height)
+  boxart_border_thickness: 3
+  boxart_border_padding: 15
+  boxart_border_color: "0,255,255"
   
 menu_items:
   - label: SNES
