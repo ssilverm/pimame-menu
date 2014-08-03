@@ -11,7 +11,7 @@ options:
   item_color: "255,255,255,128"
   disabled_alpha: 128
   item_height: 220 #main menu icon height
-  num_items_per_row: 5 #number of items per row main menu
+  num_items_per_row: 6 #number of items per row main menu
   menu_item_padding: 10
   display_navigation_labels: no
 
@@ -26,14 +26,14 @@ options:
   default_font_color: "0,0,0"
   default_font_background_color: "255,255,255,0"
   popup_menu_font_size: 19
-  popup_menu_font_color: "0,255,255"
-  popup_menu_font_selected_color: "255,255,255"
+  popup_menu_font_color: "255,255,255"
+  popup_menu_font_selected_color: "0,255,255"
   popup_menu_background_color: "150,150,150,90"
 
   display_labels: yes
   label_text_align: left
-  labels_offset: [13,13]
-  label_font_size: 48
+  labels_offset: [6,7]
+  label_font_size: 24
   label_font_color: "0,0,0"
   label_font_bold: no
   label_background_color: "255,255,255,150"
@@ -44,8 +44,8 @@ options:
   
   display_rom_count: yes
   rom_count_text_align: right
-  rom_count_offset: [-13,430]
-  rom_count_font_size: 48
+  rom_count_offset: [-6,215]
+  rom_count_font_size: 24
   rom_count_font_color: "255,255,255,128"
   rom_count_font_bold: no
   rom_count_background_color: "228,56,65,128"
@@ -69,9 +69,9 @@ options:
   rom_list_orientation: horizontal
   rom_list_align: bottom
   rom_list_alignment_padding: 150
-  rom_list_min_height: auto
-  rom_list_min_width: 400
-  rom_list_max_text_width: 600
+  rom_list_min_background_height: auto
+  rom_list_min_background_width: 400
+  rom_list_max_text_width: 400
 
   missing_boxart_image: "missing_boxart.png"
   boxart_offset: [0, 0] #[x,y]
@@ -142,7 +142,7 @@ menu_items:
     icon_file: shutdown.png
     icon_selected: shutdown-selected.png
 
-  - label: Update PiMAME
+  - label: Update PiPlay
     icon_file: update.png
     icon_selected: update-selected.png
 

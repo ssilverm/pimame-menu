@@ -138,18 +138,14 @@ class Gamesdb_API(object):
 				best_match_platform = current_platform
 		return best_match_platform
 
-	def match_rom_to_local(self, input_data, image_path, compare_dat=True, min_match_ratio=.6):
+	def match_rom_to_local(self, input_data, min_match_ratio=.6, compare_dat=True):
 		#Levenshtein check to get the alias for the platform to call API
 		dat_list = {}
 		real_platform = self.match_platform(input_data['platform'])
 		print
 		dat_list = {}
 		
-		if real_platform['name'].lower() == 'arcade':
-			image_path = join(image_path, 'MAME')
-		else:
-			image_path = join(image_path, real_platform['shortcode'].upper())
-
+		image_path = input_data['image_path']
 
 		if isfile('/home/pi/pimame/pimame-menu/assets/dat/' + real_platform['shortcode'].lower() + '.dat') and compare_dat:
 			print "Found %s..." % (real_platform['shortcode'].lower() + '.dat')
@@ -185,6 +181,7 @@ class Gamesdb_API(object):
 		print 'Finding Local Files...'
 		game_info = listdir(image_path)
 		rom_list = []
+		missing = []
 		#assign append to keep rom_list from being evaluated each iteration
 		append = rom_list.append
 		for rom in roms:
@@ -230,24 +227,13 @@ class Gamesdb_API(object):
 					'platform': input_data['platform']
 					})
 			else:
-				print "No match found for %s" % pcolor('red', rom_name)
-				append({
-					'rom_path': input_data['rom_path'], 
-					'image_path': image_path, 
-					'image_file': '', 
-					'file': rom, 
-					'real_name': rom, 
-					'art': '', 
-					'logo': '', 
-					'thumb': '',
-					'platform': input_data['platform']
-					})
+				missing.append(rom)
 			hi_score = min_match_ratio
 			best_match_game = -1
 		dat_list.clear()
-		return rom_list
+		return [rom_list, missing]
 
-	def match_rom_to_db(self, input_data, compare_dat=True, min_match_ratio=.6):
+	def match_rom_to_db(self, input_data, min_match_ratio=.6, roms = None, compare_dat=True):
 		#Levenshtein check to get the alias for the platform to call API
 		dat_list = {}
 		real_platform = self.match_platform(input_data['platform'])
@@ -285,8 +271,8 @@ class Gamesdb_API(object):
 				
 		#load rom filenames, initialize rom_list to return matches
 		print 'Fetching %s rom list...' % pcolor('cyan', input_data['platform'])
-		roms = self.get_stored_roms(input_data['rom_path'])
 		
+		if not roms: roms = self.get_stored_roms(input_data['rom_path'])
 		
 		print 'Connecting to thegamesdb.net...'
 		game_info = self.PlatformGames(real_platform['name'])
