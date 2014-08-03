@@ -28,10 +28,17 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 				self.menu_items.append(pm_menu_item)
 
 		if self.options.sort_items_with_roms_first:
-			self.menu_items.sort(key=lambda x: x.num_roms, reverse=True)
-
-		if self.options.hide_items_without_roms:
-			self.menu_items = [x for x in self.menu_items if x.num_roms > 0]
+			self.menu_items.sort(key=lambda x: x.num_roms if x.num_roms else "0", reverse=True) #!! FIX THIS 
+		
+		#pull all utilities to end of list
+		self.menu_items.sort(key=self.utility_sort)
+	
+		if self.options.hide_system_tools:
+			self.menu_items = [x for x in self.menu_items if x.type != "UTILITY"]
+			
+	def utility_sort(self, custom):
+		if custom.type == "UTILITY": return 1
+		return 0
 
 
 	def create_nav_menu_item(self, label, icon_file = False, icon_selected = False):
@@ -99,6 +106,7 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 
 	def next_page(self):
 		self.set_page(self.page_index + 1)
+
 
 	def prev_page(self):
 		self.set_page(self.page_index - 1)

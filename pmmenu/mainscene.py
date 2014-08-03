@@ -2,6 +2,7 @@ import pygame
 from pmcontrols import *
 from pmpopup import *
 from pmwarning import *
+from pmcontrollerconfig import *
 from pmconfig import *
 from pmheader import *
 from pmselection import *
@@ -160,10 +161,11 @@ class MainScene(object):
 
 
 		# @TODO: use this get_width() method everywhere instead of get_info()!
-		background = pygame.Surface([self.screen.get_width(), self.screen.get_height()], pygame.SRCALPHA, 32).convert_alpha()
+		background = pygame.Surface([self.screen.get_width(), self.screen.get_height()]).convert()
 		background_image = self.cfg.options.pre_loaded_background
 		background.fill(self.cfg.options.background_color)
 		background.blit(background_image, (0,0))
+		background.set_alpha(None)
 		
 		self.grid.clear(self.screen, background)
 		self.grid.draw(self.screen)
@@ -175,7 +177,7 @@ class MainScene(object):
 			self.selection = PMSelection(self.cfg.options)
 			self.grid = PMGrid(self.cfg.options.options_menu_items, self.cfg.options)
 			self.grid.set_num_items_per_page(self.calc_num_items_per_page())
-			self.popup = PMPopup(self.manager.scene.SCENE_NAME, self.cfg.options)
+			self.popup = None
 			self.warning = None
 			self.pre_rendered = True
 		
@@ -191,7 +193,7 @@ class MainScene(object):
 			if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_into(self, self.cfg.options.fade_image)
 		else:
 			if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_in(self)
-			self.cfg.options.fade_image = pygame.Surface([self.screen.get_width(), self.screen.get_height()], pygame.SRCALPHA, 32).convert()
+			#self.cfg.options.fade_image = pygame.Surface([self.screen.get_width(), self.screen.get_height()]).convert()
 		self.cfg.options.fade_image.blit(self.screen,(0,0))
 
 
@@ -243,6 +245,7 @@ class MainScene(object):
 						for person in self.cfg.ks[0:19]:
 							self.ks_line += person + ' \n '
 						self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'kickstarter')
+						
 			if event.type == pygame.JOYAXISMOTION: action = self.CONTROLS.get_action('joystick', event.dict)
 			if event.type == pygame.JOYBUTTONDOWN: action = self.CONTROLS.get_action('joystick', event.button)
 			
@@ -275,8 +278,10 @@ class MainScene(object):
 						continue
 						
 					
-			elif self.popup.menu_open:
-				self.popup.handle_events(action, self.screen, self.effect)
+			elif self.popup and self.popup.menu_open:
+				status = self.popup.handle_events(action)
+				if status == "CONTROLLER": self.popup = PMControllerConfig(self.screen, self.cfg.options)
+				
 			else:
 				
 				if action == 'LEFT':
@@ -299,14 +304,9 @@ class MainScene(object):
 						self.do_menu_item_action(sprite)
 						
 				elif action == 'MENU':
-					self.popup.menu_open = True
-					self.cfg.options.fade_image.blit(self.screen,(0,0))
-					if self.cfg.options.use_scene_transitions:
-						self.effect = PMUtil.blurSurf(self.cfg.options.fade_image, 20)
-						self.screen.blit(self.effect,(0,0))
-					else:
-						self.effect = self.screen.copy()
-					self.screen.blit(self.popup.menu,((pygame.display.Info().current_w - self.popup.rect.w)/2, (pygame.display.Info().current_h - self.popup.rect.h)/2))
+					#self.popup = PMControllerConfig(self.screen, self.cfg.options)
+					self.popup = PMPopup(self.screen, self.manager.scene.SCENE_NAME, self.cfg.options, True)
+					
 					
 				elif action == 'BACK' and self.cfg.options.allow_quit_to_console:
 					self.cfg.options.menu_back_sound.play()
@@ -323,18 +323,22 @@ class MainScene(object):
 				self.cfg.options.menu_select_sound.play()
 				self.manager.go_to(RomListScene(sprite.get_rom_list()))
 		elif sprite.type == PMMenuItem.COMMAND:
-			self.cfg.options.menu_select_sound.play()
-			PMUtil.run_command_and_continue(sprite.command)
+				self.cfg.options.menu_select_sound.play()
+				PMUtil.run_command_and_continue(sprite.command)
 		elif sprite.type == PMMenuItem.NAVIGATION:
-			self.cfg.options.menu_navigation_sound.play()
-			self.cfg.options.fade_image.blit(self.screen,(0,0))
-			if sprite.command == PMMenuItem.PREV_PAGE:
-				self.grid.prev_page()
-				self.draw_items()
-				self.set_selected_index(len(self.grid.sprites()) - 1, play_sound = False)
-				if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_into(self, self.cfg.options.fade_image)
-			else:
-				self.grid.next_page()
-				self.draw_items()
-				self.set_selected_index(0, play_sound = False)
-				if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_into(self, self.cfg.options.fade_image)
+				self.cfg.options.menu_navigation_sound.play()
+				self.cfg.options.fade_image.blit(self.screen,(0,0))
+				
+				if sprite.command == PMMenuItem.PREV_PAGE:
+					self.grid.prev_page()
+					self.draw_items()
+					self.set_selected_index(len(self.grid.sprites()) - 1, play_sound = False)
+					if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_into(self, self.cfg.options.fade_image)
+				else:
+					self.grid.next_page()
+					self.draw_items()
+					self.set_selected_index(0, play_sound = False)
+					if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_into(self, self.cfg.options.fade_image)
+		else:
+				self.cfg.options.menu_select_sound.play()
+				PMUtil.run_command_and_continue(sprite.command)

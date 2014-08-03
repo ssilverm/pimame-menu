@@ -1,8 +1,6 @@
 
-
-
 #TODO: fix alpha for unused emulators
-
+import os
 from os import listdir, system
 from os.path import isfile, isdir, join, splitext, basename
 import pygame
@@ -17,7 +15,8 @@ class PMMenuItem(pygame.sprite.Sprite):
 	NEXT_PAGE = 'next'
 	PREV_PAGE = 'prev'
 
-	num_roms = 0
+	num_roms = "0"
+	has_rom_folder = False
 
 	def __init__(self, item_opts, global_opts, type = False):
 		pygame.sprite.Sprite.__init__(self)
@@ -32,9 +31,16 @@ class PMMenuItem(pygame.sprite.Sprite):
 		else:
 			self.icon_selected = False
 		#self.extension = item_opts['extension']
-
+		
 		try:
-			self.roms = item_opts['roms']
+			type = item_opts['type']
+		except KeyError:
+			pass
+			
+		try:
+			if item_opts['roms'] != '': 
+				self.roms = item_opts['roms']
+				self.has_rom_folder = True
 		except KeyError:
 			self.roms = False
 		
@@ -54,16 +60,12 @@ class PMMenuItem(pygame.sprite.Sprite):
 		except KeyError:
 			self.extension = False
 
-
-		if type == False:
-			#if self.roms:
-			#	self.type = self.ROM_LIST
-			#else:
-			#	self.type = self.COMMAND
-			if self.override_menu:
-				self.type = self.COMMAND
-			else:
+		#if type is not set in config.yaml, then apply a default type
+		if not type:
+			if self.has_rom_folder:
 				self.type = self.ROM_LIST
+			else:
+				self.type = self.COMMAND
 		else:
 			self.type = type
 
@@ -104,7 +106,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 			
 
 		if global_opts.display_labels:
-			label = PMLabel(self.label, global_opts.label_font, global_opts.label_font_color, global_opts.label_background_color, global_opts.label_font_bold)
+			label = PMLabel(self.label, global_opts.label_font, global_opts.label_font_color, global_opts.label_background_color, global_opts.label_font_bold, global_opts.label_max_text_width)
 			textpos = label.rect
 			if global_opts.label_text_align == 'right': textpos.x = text_align - label.rect.w + global_opts.labels_offset[0]
 			elif  global_opts.label_text_align == 'center': textpos.x = ((text_align - label.rect.w)/2) + global_opts.labels_offset[0]
@@ -115,15 +117,11 @@ class PMMenuItem(pygame.sprite.Sprite):
 			icon.blit(label.image, textpos)
 
 		if global_opts.display_rom_count:
-			if self.type == self.ROM_LIST:
+			if self.has_rom_folder:
 				self.update_num_roms()
-
-			if self.type == self.ROM_LIST:
-				if self.num_roms == str(0):
-					icon.set_alpha(0)
-				else:
-					#text = font.render(str(num_roms), 1, (255, 255, 255))
-					label = PMLabel(str(self.num_roms), global_opts.rom_count_font, global_opts.rom_count_font_color, global_opts.rom_count_background_color, global_opts.rom_count_font_bold)
+				
+				if self.num_roms != "0":
+					label = PMLabel(str(self.num_roms), global_opts.rom_count_font, global_opts.rom_count_font_color, global_opts.rom_count_background_color, global_opts.rom_count_font_bold, global_opts.rom_count_max_text_width)
 					textpos = label.rect
 					
 					if global_opts.rom_count_text_align == 'right': textpos.x = text_align - label.rect.w + global_opts.rom_count_offset[0]
@@ -140,6 +138,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 
 	def update_num_roms(self, warning = "!"):
 		
+		self.num_roms = "0"
 		if isfile(self.cache):
 					json_data=open(self.cache)
 					raw_data = json.load(json_data)
@@ -150,13 +149,13 @@ class PMMenuItem(pygame.sprite.Sprite):
 					
 		else:
 			if not isdir(self.roms):
-				return 0
+				return None
 
 			files = [ f for f in listdir(self.roms) if isfile(join(self.roms,f)) and f != '.gitkeep'  ]
 			
 			
 		if len(files) > 0: self.num_roms = str(len(files)) + warning
-		else: self.num_roms = 0
+		else: self.num_roms = "0"
 
 	def get_rom_list(self):
 		#@TODO - am I using the type field?

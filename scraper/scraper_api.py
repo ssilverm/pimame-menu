@@ -103,15 +103,17 @@ class Gamesdb_API(object):
 		if 'scraper_options' in config_query:
 			if 'show_clones' in config_query['scraper_options']: self.OPT_SHOW_CLONES = config_query['scraper_options']['show_clones']
 			if 'overwrite_images' in config_query['scraper_options']: self.OPT_OVERWRITE_IMAGES = config_query['scraper_options']['overwrite_images']
-
+		
+		#assign append to keep rom_locations from being evaluated each iteration
+		append = rom_locations.append
 		for data_block in config_query['menu_items']:
 			if 'roms' in data_block:
 				if 'images' in data_block: image_path = data_block['images']
-				else: image_path = data_block['roms'] + "images/"
+				else: image_path = join(data_block['roms'] ,"images/")
 				if search_platform == 'all':
-					rom_locations.append({'rom_path': data_block['roms'], 'image_path': image_path, 'platform':data_block['label']})
+					append({'rom_path': data_block['roms'], 'image_path': image_path, 'platform':data_block['label']})
 				elif search_platform.lower() == data_block['label'].lower():
-					rom_locations.append({'rom_path': data_block['roms'], 'image_path': image_path, 'platform':data_block['label']})
+					append({'rom_path': data_block['roms'], 'image_path': image_path, 'platform':data_block['label']})
 		return rom_locations
 		
 	#Return only files in directory, need to add whitelist of potential rom extensions (.nes, .bin, .zip)	
@@ -183,6 +185,8 @@ class Gamesdb_API(object):
 		print 'Finding Local Files...'
 		game_info = listdir(image_path)
 		rom_list = []
+		#assign append to keep rom_list from being evaluated each iteration
+		append = rom_list.append
 		for rom in roms:
 			game = None
 			if dat_exists:
@@ -214,7 +218,7 @@ class Gamesdb_API(object):
 			if best_match_game > -1:
 				print 'closest match for %s is %s' % (pcolor('green', rom_name), pcolor('cyan', game_info[best_match_game]))
 				image_file = game_info[best_match_game]
-				rom_list.append({
+				append({
 					'rom_path': input_data['rom_path'], 
 					'image_path': image_path, 
 					'image_file': image_file, 
@@ -227,7 +231,7 @@ class Gamesdb_API(object):
 					})
 			else:
 				print "No match found for %s" % pcolor('red', rom_name)
-				rom_list.append({
+				append({
 					'rom_path': input_data['rom_path'], 
 					'image_path': image_path, 
 					'image_file': '', 
@@ -287,6 +291,8 @@ class Gamesdb_API(object):
 		print 'Connecting to thegamesdb.net...'
 		game_info = self.PlatformGames(real_platform['name'])
 		rom_list = []
+		#assign append to keep rom_list from being evaluated each iteration
+		append = rom_list.append
 		for rom in roms:
 			game = None
 			if dat_exists:
@@ -318,7 +324,7 @@ class Gamesdb_API(object):
 			if best_match_game > -1:
 				print 'closest match for %s is %s' % (pcolor('green', rom_name), pcolor('cyan', game_info[best_match_game].title))
 				image_file = os.path.splitext(rom)[0] + os.path.splitext(game_info[best_match_game].box_art)[1]
-				rom_list.append({
+				append({
 					'rom_path': input_data['rom_path'], 
 					'image_path': input_data['image_path'], 
 					'image_file': image_file, 
@@ -331,7 +337,7 @@ class Gamesdb_API(object):
 					})
 			else:
 				print "No match found for %s" % pcolor('red', rom_name)
-				rom_list.append({
+				append({
 					'rom_path': input_data['rom_path'], 
 					'image_path': input_data['image_path'], 
 					'image_file': '', 
@@ -360,6 +366,8 @@ class Gamesdb_API(object):
 		#load rom filenames, initialize rom_list to return matches
 		roms = self.get_stored_roms(input_data['rom_path'])
 		rom_list = []
+		#assign append to keep rom_list from being evaluated each iteration
+		append = rom_list.append
 		for rom in roms:
 			if CRC_check:
 				try:
@@ -392,7 +400,7 @@ class Gamesdb_API(object):
 						print ("%12s - %s")  % (rom, pcolor('green', 'Verified'))
 						image_file = os.path.splitext(rom)[0] + '.png' if isfile(join(input_data['image_path'], os.path.splitext(rom)[0] + '.png')) else ''
 						
-						rom_list.append({
+						append({
 							'rom_path': input_data['rom_path'], 
 							'image_path': input_data['image_path'], 
 							'image_file': os.path.splitext(rom)[0] + '.png', 
@@ -403,6 +411,21 @@ class Gamesdb_API(object):
 							'thumb': dl_image_path + os.path.splitext(rom)[0] + '.png',
 							'platform': input_data['platform']
 						})
+			else:
+				print ("%12s - %s")  % (rom, pcolor('red', 'No Match'))
+				image_file = ''
+				
+				append({
+					'rom_path': input_data['rom_path'], 
+					'image_path': input_data['image_path'], 
+					'image_file': '', 
+					'file': rom, 
+					'real_name': rom,
+					'art': dl_image_path + os.path.splitext(rom)[0] + '.png',
+					'logo': dl_image_path + os.path.splitext(rom)[0] + '.png',
+					'thumb': dl_image_path + os.path.splitext(rom)[0] + '.png',
+					'platform': input_data['platform']
+				})
 		return rom_list
 	
 	#function not used, renaming tool -> match images from image_path with same name as games in dat file then copy them to output folder
@@ -429,6 +452,9 @@ class Gamesdb_API(object):
 		with open('/home/pi/pimame/pimame-menu/.cache/' + rom_list[0]['platform'].lower() + '.cache' , 'w') as outfile:
 			print '-----------------------------'
 			cache_list = []
+			
+			#assign append to keep cache_list from being evaluated each iteration
+			append = cache_list.append
 			list_size = len(rom_list)
 			
 			for index, rom in enumerate(rom_list):
@@ -436,7 +462,7 @@ class Gamesdb_API(object):
 				status = status + chr(8)*(len(status)+1)
 				print status,
 				data = {'rom_path': rom['rom_path'], 'file': rom['file'], 'image_path': rom['image_path'], 'image_file': rom['image_file'], 'real_name': rom['real_name']}
-				cache_list.append(data)
+				append(data)
 			
 			cache_list = {"file_count": file_count, "rom_data": cache_list}
 			json.dump(cache_list, outfile)
@@ -527,6 +553,7 @@ class Gamesdb_API(object):
 
 	def GetPlatformsList(self):
 		platforms_list = []
+		append = platform_list.append
 		API_URL = 'http://thegamesdb.net/api/GetPlatformsList.php'
 		xml_code = self.api_call(API_URL)
 		for element in xml_code.iter(tag="Platform"):
@@ -537,7 +564,7 @@ class Gamesdb_API(object):
 					platform_name = subelement.text
 				if subelement.tag == 'alias':
 					platform_alias = subelement.text
-			platforms_list.append(Platform(platform_id, platform_name, alias=platform_alias))
+			append(Platform(platform_id, platform_name, alias=platform_alias))
 
 		return platforms_list
 		
@@ -607,6 +634,7 @@ class Gamesdb_API(object):
 		query_args = {'platform': platform_name}
 		xml_code = self.api_call(API_URL, query_args)
 		platform_games_list = []
+		append = platform_games_list.append
 		for element in xml_code.iter(tag="Game"):
 			platform_games_list_release_date = None
 			for subelement in element:
@@ -619,8 +647,8 @@ class Gamesdb_API(object):
 					game_thumb_url = 'http://thegamesdb.net/banners/_gameviewcache/' + subelement.text
 					game_art_url = 'http://thegamesdb.net/banners/' + subelement.text
 					game_logo_url = 'http://thegamesdb.net/banners/clearlogo/' + platform_games_list_id +'.png'
-			platform_games_list.append(Game(platform_games_list_id, game_title, game_ascii_title,
-											box_thumb=game_thumb_url, box_art=game_art_url,clear_logo=game_logo_url))
+			append(Game(platform_games_list_id, game_title, game_ascii_title, box_thumb=game_thumb_url, 
+																			box_art=game_art_url,clear_logo=game_logo_url))
 		return platform_games_list
 
 	def GetPlatformGames(self, platform_id):
@@ -628,6 +656,7 @@ class Gamesdb_API(object):
 		query_args = {'platform': platform_id}
 		xml_code = self.api_call(API_URL, query_args)
 		platform_games_list = []
+		append = platform_games_list.append
 		for element in xml_code.iter(tag="Game"):
 			platform_games_list_release_date = None
 			for subelement in element:
@@ -640,7 +669,7 @@ class Gamesdb_API(object):
 					# platform_games_list_release_date = datetime.strptime(subelement.text, "%m/%d/%Y")
 					# Omitting line above since date comes back in an inconsistent format, for example only %Y
 					platform_games_list_release_date = subelement.text
-			platform_games_list.append(Game(platform_games_list_id, game_title, game_ascii_title,
+			append(Game(platform_games_list_id, game_title, game_ascii_title,
 											release_date=platform_games_list_release_date))
 		return platform_games_list
 
@@ -659,6 +688,7 @@ class Gamesdb_API(object):
 		API_URL = 'http://thegamesdb.net/api/GetGame.php?'
 		xml_code = self.api_call(API_URL, query_args)
 		games_list = []
+		append = games_list.append
 		game_base_img_url = None
 		
 		for element in xml_code.iter(tag="baseImgUrl"):
@@ -713,7 +743,7 @@ class Gamesdb_API(object):
 				if subelement.tag == 'clearlogo':
 					# TODO Capture image dimensions from API resposne
 					game_logo_url = game_base_img_url + subelement.text
-			games_list.append(Game(game_id, game_title, game_ascii_title, release_date=game_release_date, platform=game_platform,
+			append(Game(game_id, game_title, game_ascii_title, release_date=game_release_date, platform=game_platform,
 							   overview=game_overview, esrb_rating=game_esrb_rating, genres=game_genres,
 							   players=game_players, coop=game_coop, youtube_url=game_youtube_url,
 							   publisher=game_publisher, developer=game_developer, rating=game_rating,
@@ -733,6 +763,7 @@ class Gamesdb_API(object):
 		if genre is not None:
 			query_args['genre'] = genre
 		games_list = []
+		append = games_list.append
 		GET_GAMES_LIST_ENDPOINT = 'http://thegamesdb.net/api/GetGamesList.php?'
 		xml_code = self.api_call(GET_GAMES_LIST_ENDPOINT, query_args)
 		for element in xml_code.iter(tag="Game"):
@@ -748,20 +779,6 @@ class Gamesdb_API(object):
 					game_release_date = subelement.text
 				if subelement.tag == 'Platform':
 					game_platform = subelement.text
-			games_list.append(Game(game_id, game_title, game_ascii_title, release_date=game_release_date, platform=game_platform))
+			append(Game(game_id, game_title, game_ascii_title, release_date=game_release_date, platform=game_platform))
 		return games_list
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
