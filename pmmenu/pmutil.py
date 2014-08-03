@@ -71,7 +71,7 @@ class PMUtil:
 	
 	@staticmethod
 	def fade_out(self):
-		background = pygame.Surface([self.screen.get_width(), self.screen.get_height()], pygame.SRCALPHA, 32).convert_alpha()
+		background = pygame.Surface([self.screen.get_width(), self.screen.get_height()]).convert()
 		background.fill((0,0,0,51))
 		for x in xrange(1,6):
 			self.screen.blit(background, (0,0))

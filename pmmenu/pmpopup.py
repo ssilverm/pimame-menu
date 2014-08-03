@@ -6,10 +6,11 @@ from os import system
 from pmcontrols import *
 from pmutil import *
 from pmlabel import *
+from pmcontrollerconfig import *
 
 class PMPopup(pygame.sprite.Sprite):
 
-	def __init__(self, scene_type, cfg, list = None):
+	def __init__(self, screen, scene_type, cfg, popup_open = False, list = None, ):
 		pygame.sprite.Sprite.__init__(self)
 		
 		self.cfg = cfg
@@ -18,9 +19,9 @@ class PMPopup(pygame.sprite.Sprite):
 		
 		self.hover = 0
 		self.selected = False
-		self.menu_open = False
+		self.menu_open = popup_open
 		
-		self.screen = None
+		self.screen = screen
 		self.effect = None
 		
 		self.menu_work = WorkFunctions(self.cfg)
@@ -29,9 +30,16 @@ class PMPopup(pygame.sprite.Sprite):
 		self.item_height = self.list[0]['value'].rect.h
 		self.item_width = 0
 		
+		self.cfg.blur_image.blit(self.screen,(0,0))
+		if self.cfg.use_scene_transitions:
+			self.effect = PMUtil.blurSurf(self.cfg.blur_image, 20)
+		else:
+			self.effect = self.screen.copy()
+		
 		self.update_menu()
 
 		self.rect = self.menu.get_rect()
+		self.draw_menu()
 	
 	#MENU FUNCTIONS
 	def hover_next(self):
@@ -123,11 +131,11 @@ class PMPopup(pygame.sprite.Sprite):
 			"next": self.menu_work.roms_first_swap
 			}
 			
-			self.hide_items_without_roms = {
-			"title": PMLabel("Hide Empty Emu:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"value": PMLabel(str(self.menu_work.hide_items_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMLabel("Hide Empty Emu:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
-			"value_selected": PMLabel(str(self.menu_work.hide_items_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			self.hide_system_tools = {
+			"title": PMLabel("Hide System Tools:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMLabel(str(self.menu_work.hide_system_tools_bool), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMLabel("Hide System Tools:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMLabel(str(self.menu_work.hide_system_tools_bool), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.hide_items_swap,
 			"next": self.menu_work.hide_items_swap
 			}
@@ -140,6 +148,7 @@ class PMPopup(pygame.sprite.Sprite):
 			"prev": self.menu_work.quit_swap,
 			"next": self.menu_work.quit_swap
 			}
+			
 			
 			self.scraper_clones = {
 			"title": PMLabel("Scrape Clones:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
@@ -159,10 +168,19 @@ class PMPopup(pygame.sprite.Sprite):
 			"next": self.menu_work.scraper_overwrite_swap
 			}
 			
+			self.controller_setup = {
+			"title": PMLabel("Controller Setup", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMLabel("", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMLabel("Controller Setup", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMLabel("", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"prev": self.run_controller_setup,
+			"next": self.run_controller_setup
+			}
+			
 
 			
 			popup = [self.volume, self.theme, self.cursor, self.transitions, self.show_ip, self.show_update, self.sort_alphanum,
-						self.roms_first, self.hide_items_without_roms, self.quit_to_console, self.scraper_clones, self.scraper_overwrite_image]
+						self.roms_first, self.hide_system_tools, self.quit_to_console, self.scraper_clones, self.scraper_overwrite_image, self.controller_setup]
 			
 			return popup
 			#self.themes = PMLabel(get_theme(), cfg.popup_font, cfg.popup_menu_font_color)
@@ -181,6 +199,10 @@ class PMPopup(pygame.sprite.Sprite):
 			popup = [self.letter]
 			
 			return popup
+			
+	def run_controller_setup(self):
+		self.screen.blit(self.cfg.blur_image,(0,0))
+		return "CONTROLLER"
 	
 	def update_menu(self):
 		if self.scene_type == 'main':
@@ -219,9 +241,7 @@ class PMPopup(pygame.sprite.Sprite):
 					
 				y += item['value'].rect.height
 			
-	def handle_events(self, action, screen, effect):
-		self.screen = screen
-		self.effect = effect
+	def handle_events(self, action):
 		
 		if action == 'LEFT':
 			self.cfg.menu_navigation_sound.play()
@@ -261,13 +281,13 @@ class PMPopup(pygame.sprite.Sprite):
 			else:
 				self.cfg.menu_back_sound.play()
 				self.menu_open = False
-				self.screen.blit(self.cfg.fade_image,(0,0))
+				self.screen.blit(self.cfg.blur_image,(0,0))
 				self.on_exit_actions()
 				
 		elif action == 'BACK':
 				self.cfg.menu_back_sound.play()
 				self.menu_open = False
-				self.screen.blit(self.cfg.fade_image,(0,0))
+				self.screen.blit(self.cfg.blur_image,(0,0))
 				self.on_exit_actions()
 		
 		if action == 'SELECT':
@@ -276,8 +296,11 @@ class PMPopup(pygame.sprite.Sprite):
 				self.selected = not self.selected
 				self.update_menu()
 				self.draw_menu()
-				
+				#check if controller setup is selected
+				if self.selected and (self.list[self.hover] == self.controller_setup):
+					return  self.run_controller_setup()
 			
+		return None
 				
 	def on_exit_actions(self):
 		config_path = '/home/pi/pimame/pimame-menu/config.yaml'
@@ -321,9 +344,9 @@ class PMPopup(pygame.sprite.Sprite):
 			requires_restart = True
 		
 		#HIDE ITEMS WITHOUT ROMS
-		if self.cfg.hide_items_without_roms != self.menu_work.hide_items_bool:
-			self.cfg.hide_items_without_roms = self.menu_work.hide_items_bool
-			PMUtil.replace(config_path, '', str(self.menu_work.hide_items_bool), 'hide_items_without_roms:')
+		if self.cfg.hide_system_tools != self.menu_work.hide_system_tools_bool:
+			self.cfg.hide_system_tools = self.menu_work.hide_system_tools_bool
+			PMUtil.replace(config_path, '', str(self.menu_work.hide_system_tools_bool), 'hide_system_tools:')
 			requires_restart = True
 		
 		#ALLOW QUIT TO CONSOLE
@@ -364,7 +387,7 @@ class WorkFunctions():
 		self.update_bool = self.cfg.show_update
 		self.sort_abc_bool = self.cfg.sort_items_alphanum
 		self.roms_first_bool = self.cfg.sort_items_with_roms_first
-		self.hide_items_bool = self.cfg.hide_items_without_roms
+		self.hide_system_tools_bool = self.cfg.hide_system_tools
 		self.quit_bool = self.cfg.allow_quit_to_console
 		self.scraper_clones_bool = self.cfg.show_clones
 		self.scraper_overwrite_bool = self.cfg.overwrite_images
@@ -426,8 +449,8 @@ class WorkFunctions():
 		return self.roms_first_bool
 		
 	def hide_items_swap(self):
-		self.hide_items_bool = not self.hide_items_bool
-		return self.hide_items_bool
+		self.hide_system_tools_bool = not self.hide_system_tools_bool
+		return self.hide_system_tools_bool
 		
 	def quit_swap(self):
 		self.quit_bool = not self.quit_bool

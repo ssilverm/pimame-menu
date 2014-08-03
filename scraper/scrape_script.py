@@ -21,6 +21,7 @@ class GeneralRun():
 	def raw_input_with_timeout(self, prompt, timeout=3.0, response = {'y': True, 'ye': True, 'yes': True, 't': True, 'n': False, 'no': False, 'f': False}):
 		
 		answer = ''
+		sys.stdout.flush()
 		while (not answer in response) and timeout >= 0:
 			sys.stdout.write('\r[%ds] %s' % (timeout, prompt)),
 			sys.stdout.flush()
@@ -28,7 +29,7 @@ class GeneralRun():
 			if rlist:
 				answer = sys.stdin.readline().replace('\n','').lower()
 			timeout -= 1
-			time.sleep(1)
+
 		
 		if not answer in response: print 'Y'
 		print '\r' + ('  ' * 30) + '\r',

@@ -1,15 +1,15 @@
 options:
   max_fps: 20
-  show_ip: True
+  show_ip: Yes
   show_update: Yes
   fullscreen: Yes
   resolution: "0,0"
   sort_items_alphanum: True
   sort_items_with_roms_first: True
-  hide_items_without_roms: False
+  hide_system_tools: False
   show_cursor: No
   allow_quit_to_console: True
-  use_scene_transitions: True
+  use_scene_transitions: Yes
   theme_pack: "default"
 
 scraper_options:
@@ -73,13 +73,16 @@ menu_items:
     command: stella
     roms: /home/pi/pimame/roms/2600/
     override_menu: yes
+    type: FRONTEND
+
 
   - label: Playstation 1
     visible: Yes
     full_path: no
-    command: /home/pi/pimame/emulators/pcsx_rearmed/pcsx
+    command: cd /home/pi/pimame/emulators/pcsx_rearmed && ./pcsx
     override_menu: yes
     roms: /home/pi/pimame/roms/psx/
+    type: FRONTEND
 
   - label: Commodore 64
     visible: Yes
@@ -87,6 +90,7 @@ menu_items:
     full_path: no
     override_menu: yes
     command: x64
+    type: FRONTEND
 
   - label: ScummVM
     visible: Yes
@@ -94,6 +98,7 @@ menu_items:
     command: scummvm
     override_menu: yes
     roms: /home/pi/pimame/roms/scummvm/
+    type: FRONTEND
 
   - label: Gameboy
     visible: Yes
@@ -144,50 +149,53 @@ menu_items:
     override_menu: Yes
     command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && cd /home/pi/pimame/emulators/usp_0.0.43/ && ./unreal_speccy_portable && cd /home/pi/pimame/pimame-menu
 
-  - label: Controller Setup
-    visible: Yes
-    full_path: no
-    command: python /home/pi/pimame/controller-setup/configure.py
-    override_menu: yes
-
   - label: Cave Story
     visible: Yes
     full_path: no
     command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && cd /home/pi/pimame/emulators/cavestory_rpi-master && /home/pi/pimame/emulators/cavestory_rpi-master/nx && cd /home/pi/pimame/pimame-menu
     override_menu: yes
+    type: GAME
 
   - label: Restart
     visible: Yes
     full_path: no
     command: sudo reboot
     override_menu: yes
+    type: UTILITY
 
   - label: Shutdown
     visible: Yes
     full_path: no
     command: sudo poweroff
     override_menu: yes
+    type: UTILITY
 
   - label: Update PiPlay
     visible: Yes
     full_path: no
     command: wget -O - http://pimame.org/update.sh | bash
     override_menu: yes
+    type: UTILITY
 
   - label: Rom Scraper
     visible: Yes
     full_path: no
     command: python /home/pi/pimame/pimame-menu/scraper/scrape_script.py
     override_menu: yes
+    type: UTILITY
+
 
   - label: Install MAME
     visible: Yes
     full_path: no
     command: python /home/pi/pimame/mame_install.py
     override_menu: yes
-  
+    type: UTILITY
+
   - label: Toggle Xbox Controller
     visible: Yes
     full_path: no
     command: sh /home/pi/pimame/toggle_xbox_controller.sh
     override_menu: yes
+    type: UTILITY
+

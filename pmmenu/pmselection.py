@@ -46,7 +46,7 @@ class PMSelection(pygame.sprite.Sprite):
 			
 			#ReDraw label ontop of menu_item 
 			if global_opts.display_labels:
-				label = PMLabel(menu_item.label, global_opts.label_font, global_opts.label_font_selected_color, global_opts.label_background_selected_color, global_opts.label_font_selected_bold)
+				label = PMLabel(menu_item.label, global_opts.label_font, global_opts.label_font_selected_color, global_opts.label_background_selected_color, global_opts.label_font_selected_bold, global_opts.label_max_text_width)
 				textpos = label.rect
 				if global_opts.label_text_align == 'right': textpos.x = text_align - label.rect.w + global_opts.labels_offset[0]
 				elif  global_opts.label_text_align == 'center': textpos.x = ((text_align - label.rect.w)/2) + global_opts.labels_offset[0]
@@ -57,24 +57,17 @@ class PMSelection(pygame.sprite.Sprite):
 			
 			#ReDraw rom-count ontop of menu_item
 			if global_opts.display_rom_count:
-				if menu_item.type == menu_item.ROM_LIST:
-					if menu_item.num_roms == 0:
-						icon.set_alpha(64)
-					else:
-						# draw rom circle
-						rom_rect = (global_opts.rom_count_offset[0], global_opts.rom_count_offset[1],30,30)
-						#pygame.draw.rect(self.image, global_opts.rom_dot_color, rom_rect)
+				if menu_item.has_rom_folder and menu_item.num_roms != "0":
 
-						#text = font.render(str(num_roms), 1, (255, 255, 255))
-						label = PMLabel(str(menu_item.num_roms), global_opts.rom_count_font, global_opts.rom_count_font_selected_color, global_opts.rom_count_background_selected_color, global_opts.rom_count_font_selected_bold)
-						textpos = label.rect
-						
-						if global_opts.rom_count_text_align == 'right': textpos.x = text_align - label.rect.w + global_opts.rom_count_offset[0]
-						elif  global_opts.rom_count_text_align == 'center': textpos.x = ((text_align - label.rect.w)/2) + global_opts.rom_count_offset[0]
-						else: textpos.x = global_opts.rom_count_offset[0]
-						textpos.y = global_opts.rom_count_offset[1]
+					label = PMLabel(str(menu_item.num_roms), global_opts.rom_count_font, global_opts.rom_count_font_selected_color, global_opts.rom_count_background_selected_color, global_opts.rom_count_font_selected_bold, global_opts.rom_count_max_text_width)
+					textpos = label.rect
+					
+					if global_opts.rom_count_text_align == 'right': textpos.x = text_align - label.rect.w + global_opts.rom_count_offset[0]
+					elif  global_opts.rom_count_text_align == 'center': textpos.x = ((text_align - label.rect.w)/2) + global_opts.rom_count_offset[0]
+					else: textpos.x = global_opts.rom_count_offset[0]
+					textpos.y = global_opts.rom_count_offset[1]
 
-						icon.blit(label.image, textpos)
+					icon.blit(label.image, textpos)
 						
 			icon = pygame.transform.smoothscale(icon, icon_size)
 			self.image.blit(icon, ((avail_icon_width - icon_size[0]) / 2 + global_opts.padding, (avail_icon_height - icon_size[1]) / 2 + global_opts.padding))
