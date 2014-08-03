@@ -5,7 +5,7 @@ options:
   header_color: "255,255,255,255"
   logo_image: "logo.png"
   background_image: ""
-  background_color: "75,75,75" 
+  background_color: "75,75,75"
   generic_menu_item: "generic_menu_item.png"
   generic_menu_item_selected: "generic_menu_item-selected.png"
   item_color: "255,255,255,128"
@@ -153,10 +153,6 @@ menu_items:
   - label: Install MAME
     icon_file: mame-install.png
     icon_selected: mame-install-selected.png
-
-  - label: Controller Setup
-    icon_file: controller-setup.png
-    icon_selected: controller-setup-selected.png
 
   - label: Cave Story
     icon_file: cave.png

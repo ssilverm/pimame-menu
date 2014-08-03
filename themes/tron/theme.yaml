@@ -79,7 +79,7 @@ options:
   boxart_max_height: 70%
   boxart_border_thickness: 3
   boxart_border_padding: 15
-  boxart_border_color: "0,255,255"
+  boxart_border_color: "0,255,255,90"
   
 menu_items:
   - label: SNES

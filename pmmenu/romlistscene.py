@@ -48,10 +48,22 @@ class RomListScene(object):
 		self.avail_width = self.screen.get_width()
 		self.avail_height = self.screen.get_height()
 		
+		
+		
 		if not self.cfg.options.rom_list_orientation == 'horizontal':
-			self.avail_width = pygame.display.Info().current_w - self.cfg.options.romlist_item_width - self.cfg.options.rom_list_alignment_padding
+			used_space = self.cfg.options.romlist_item_width + self.cfg.options.rom_list_alignment_padding
+			self.avail_width = pygame.display.Info().current_w - used_space
 		else:
-			self.avail_height = pygame.display.Info().current_h - self.cfg.options.romlist_item_height - self.cfg.options.rom_list_alignment_padding
+			used_space = self.cfg.options.romlist_item_height + self.cfg.options.rom_list_alignment_padding
+			self.avail_height = pygame.display.Info().current_h - used_space
+			
+		alignment = {'left': pygame.Rect(used_space, 0, self.avail_width, self.avail_height), 
+							'right': pygame.Rect(0, 0, self.avail_width, self.avail_height), 
+							'top': pygame.Rect(0, used_space, self.avail_width, self.avail_height),
+							'bottom': pygame.Rect(0, 0, self.avail_width, self.avail_height)
+							}
+		
+		self.avail_rect = alignment[self.cfg.options.rom_list_align]
 
 	def pre_render(self, screen):
 		
@@ -258,10 +270,11 @@ class RomListScene(object):
 		boxart = self.cfg.options.load_image(self.selected_item.boxart, self.cfg.options.missing_boxart_image)
 		boxart_rect = boxart.get_rect()
 		
-		scale = min(float((self.avail_width * self.cfg.options.boxart_max_width) / boxart_rect.w), float((self.avail_height * self.cfg.options.boxart_max_height) / boxart_rect.h))
+		scale = min(float((self.avail_rect.w * self.cfg.options.boxart_max_width) / boxart_rect.w), float((self.avail_rect.h * self.cfg.options.boxart_max_height) / boxart_rect.h))
 		self.boxart_scale_size = (int(boxart_rect.w * scale), int(boxart_rect.h * scale))
 		
-		if thread.get_ident() != self.boxart_thread: thread.exit()
+		
+		if thread.get_ident() != self.boxart_thread or boxart_rect.w == 1: thread.exit()
 		
 		#depending on type of file, either scale or smoothscale needs to be used
 		try:
@@ -269,18 +282,12 @@ class RomListScene(object):
 		except:
 			boxart = pygame.transform.scale(boxart, self.boxart_scale_size)
 		
-		rect_location = boxart.get_rect()
-			
-		self.boxart_location_x = 	((self.avail_width - self.boxart_scale_size[0])/2) + self.cfg.options.boxart_offset[0]
-		self.boxart_location_y = ((self.avail_height - self.boxart_scale_size[1])/2) +  self.cfg.options.boxart_offset[1]
-		if self.cfg.options.rom_list_align == 'left': self.boxart_location_x += self.cfg.options.romlist_item_width + self.cfg.options.rom_list_alignment_padding
-		if self.cfg.options.rom_list_align == 'top': self.boxart_location_y += self.cfg.options.romlist_item_height + self.cfg.options.rom_list_alignment_padding
-		boxart_location = (self.boxart_location_x, self.boxart_location_y)
-		rect_location = (self.boxart_location_x - self.cfg.options.boxart_border_padding, self.boxart_location_y - self.cfg.options.boxart_border_padding, rect_location.w + (self.cfg.options.boxart_border_padding * 2), rect_location.h + (self.cfg.options.boxart_border_padding * 2))
+		boxart_rect = boxart.get_rect(center=self.avail_rect.center)
 		
-		if self.manager.scene.SCENE_NAME == 'romlist' and boxart_rect.w > 1: 
-			pygame.draw.rect(self.screen, self.cfg.options.boxart_border_color, rect_location, self.cfg.options.boxart_border_thickness)
-			self.screen.blit(boxart, boxart_location)
+		if self.manager.scene.SCENE_NAME == 'romlist' and boxart_rect.w > 1:
+			inflate = self.cfg.options.boxart_border_padding + self.cfg.options.boxart_border_thickness
+			pygame.draw.rect(self.screen, self.cfg.options.boxart_border_color, boxart_rect.inflate(inflate, inflate), self.cfg.options.boxart_border_thickness)
+			self.screen.blit(boxart, boxart_rect)
 		else: thread.exit()
 		
 	def clear_rom_item(self, single_item = True):
@@ -300,9 +307,7 @@ class RomListScene(object):
 		if draw_boxart:
 			try:
 				if self.boxart_thread: 
-					padding = self.cfg.options.boxart_border_padding + self.cfg.options.boxart_border_thickness
-					self.draw_bg((self.boxart_location_x - padding, self.boxart_location_y - padding, 
-										self.boxart_scale_size[0] + (padding * 2), self.boxart_scale_size[1] + (padding * 2)))
+					self.draw_bg(self.avail_rect)
 			except: pass
 			self.boxart_thread = thread.start_new_thread(self.draw_boxart, (20,))
 		
