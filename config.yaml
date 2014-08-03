@@ -73,6 +73,8 @@ menu_items:
     command: stella
     roms: /home/pi/pimame/roms/2600/
     override_menu: yes
+    type: FRONTEND
+
 
   - label: Playstation 1
     visible: Yes
