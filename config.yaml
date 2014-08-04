@@ -26,7 +26,7 @@ menu_items:
     command: /home/pi/pimame/emulators/pisnes/snes9x
 
   - label: MAME4All
-    visible: Yes
+    visible: No
     roms: /home/pi/pimame/roms/mame4all/
     full_path: no
     override_menu: no
@@ -40,7 +40,7 @@ menu_items:
     command: /home/pi/pimame/emulators/fba/fba2x -config=/home/pi/pimame/neogeo.cfg 
 
   - label: AdvMAME
-    visible: Yes
+    visible: No
     roms: /home/pi/pimame/roms/advmame/
     full_path: no
     command: advmame 
@@ -184,7 +184,7 @@ menu_items:
     type: UTILITY
 
   - label: Install MAME
-    visible: No
+    visible: Yes
     full_path: no
     command: python /home/pi/pimame/mame_install.py
     override_menu: yes
