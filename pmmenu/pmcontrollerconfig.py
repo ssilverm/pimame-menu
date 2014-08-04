@@ -265,6 +265,13 @@ class PMControllerConfig(pygame.sprite.Sprite):
 								running = False
 							else:
 								self.render()
+								
+				self.cfg.menu_back_sound.play()
+				if self.cfg.use_scene_transitions: effect = PMUtil.fade_out(self)
+				running = False
+				self.draw_menu()
+				pygame.display.update()
+				return
 
 				#  Output our mapping
 				with open(self.controller['name'] + ".json", "w") as output_file:
