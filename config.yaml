@@ -26,7 +26,7 @@ menu_items:
     command: /home/pi/pimame/emulators/pisnes/snes9x
 
   - label: MAME4All
-    visible: No
+    visible: Yes
     roms: /home/pi/pimame/roms/mame4all/
     full_path: no
     override_menu: no
@@ -40,7 +40,7 @@ menu_items:
     command: /home/pi/pimame/emulators/fba/fba2x -config=/home/pi/pimame/neogeo.cfg 
 
   - label: AdvMAME
-    visible: No
+    visible: Yes
     roms: /home/pi/pimame/roms/advmame/
     full_path: no
     command: advmame 
@@ -74,7 +74,6 @@ menu_items:
     roms: /home/pi/pimame/roms/2600/
     override_menu: yes
     type: FRONTEND
-
 
   - label: Playstation 1
     visible: Yes
@@ -184,9 +183,8 @@ menu_items:
     override_menu: yes
     type: UTILITY
 
-
   - label: Install MAME
-    visible: Yes
+    visible: No
     full_path: no
     command: python /home/pi/pimame/mame_install.py
     override_menu: yes
@@ -199,3 +197,16 @@ menu_items:
     override_menu: yes
     type: UTILITY
 
+  - label: raspi-config
+    visible: Yes
+    full_path: no
+    command: sudo raspi-config
+    override_menu: yes
+    type: UTILITY
+
+  - label: Exit
+    visible: Yes
+    full_path: no
+    command: 
+    override_menu: yes
+    type: UTILITY
