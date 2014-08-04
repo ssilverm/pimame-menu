@@ -157,15 +157,17 @@ class PMControllerConfig(pygame.sprite.Sprite):
 			self.screen.blit(self.menu, ((pygame.display.Info().current_w - self.rect.w)/2, (pygame.display.Info().current_h - self.rect.h)/2))
 		
 	def take_action(self, dict = []):
-	
+		
+		avail_controllers = self.controllers
+		
 		if self.answer == "CANCEL":
 			self.menu_open = False
 			self.screen.blit(self.cfg.blur_image,(0,0))
 			
 		#run the configurator!
 		elif self.answer in self.buttons:
-			if self.answer != 'All': self.controllers = [self.answer]
-			for selected_controller in self.controllers:
+			if self.answer != 'All': avail_controllers = [self.answer]
+			for selected_controller in avail_controllers:
 				events_to_capture = [KEYUP, JOYBUTTONUP, JOYHATMOTION, JOYAXISMOTION]
 				
 				input_path = self.DIRECTORY + "controllers/" + selected_controller
