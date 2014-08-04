@@ -207,6 +207,6 @@ menu_items:
   - label: Exit
     visible: Yes
     full_path: no
-    command: 
+    command: exit_piplay
     override_menu: yes
     type: UTILITY

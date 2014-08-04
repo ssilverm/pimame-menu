@@ -322,6 +322,9 @@ class MainScene(object):
 				self.cfg.options.fade_image.blit(self.screen,(0,0))
 				self.cfg.options.menu_select_sound.play()
 				self.manager.go_to(RomListScene(sprite.get_rom_list()))
+		elif sprite.command == 'exit_piplay':
+				pygame.quit()
+				sys.exit()
 		elif sprite.type == PMMenuItem.COMMAND:
 				self.cfg.options.menu_select_sound.play()
 				PMUtil.run_command_and_continue(sprite.command)
