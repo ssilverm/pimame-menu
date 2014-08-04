@@ -158,16 +158,15 @@ class PMControllerConfig(pygame.sprite.Sprite):
 		
 	def take_action(self, dict = []):
 		
-		avail_controllers = self.controllers
-		
+		avail_controller = self.controllers
 		if self.answer == "CANCEL":
 			self.menu_open = False
 			self.screen.blit(self.cfg.blur_image,(0,0))
 			
 		#run the configurator!
 		elif self.answer in self.buttons:
-			if self.answer != 'All': avail_controllers = [self.answer]
-			for selected_controller in avail_controllers:
+			if self.answer != 'All': avail_controller = [self.answer]
+			for selected_controller in avail_controller:
 				events_to_capture = [KEYUP, JOYBUTTONUP, JOYHATMOTION, JOYAXISMOTION]
 				
 				input_path = self.DIRECTORY + "controllers/" + selected_controller
@@ -267,13 +266,6 @@ class PMControllerConfig(pygame.sprite.Sprite):
 								running = False
 							else:
 								self.render()
-								
-				self.cfg.menu_back_sound.play()
-				if self.cfg.use_scene_transitions: effect = PMUtil.fade_out(self)
-				running = False
-				self.draw_menu()
-				pygame.display.update()
-				return
 
 				#  Output our mapping
 				with open(self.controller['name'] + ".json", "w") as output_file:
@@ -301,6 +293,13 @@ class PMControllerConfig(pygame.sprite.Sprite):
 						print e.message, e.args
 						print formatter + " has failed."
 					count += 1
+					
+			self.cfg.menu_back_sound.play()
+			if self.cfg.use_scene_transitions: effect = PMUtil.fade_out(self)
+			running = False
+			self.draw_menu()
+			pygame.display.update()
+			return
 			
 		
 
