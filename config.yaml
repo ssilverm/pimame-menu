@@ -147,6 +147,7 @@ menu_items:
     roms: /home/pi/pimame/roms/zxspectrum
     override_menu: Yes
     command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && cd /home/pi/pimame/emulators/usp_0.0.43/ && ./unreal_speccy_portable && cd /home/pi/pimame/pimame-menu
+    type: FRONTEND
 
   - label: Cave Story
     visible: Yes
