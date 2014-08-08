@@ -36,7 +36,7 @@ class PMCfg:
 		
 		self.screen = self.init_screen(self.options.resolution, self.options.fullscreen)
 		self.screen.set_alpha(None)
-		pygame.mouse.set_visible(self.options.show_cursor)
+		pygame.mouse.set_visible(self.options.show_cursor) 
 		
 		#loading screen
 		background_image = self.options.load_image(self.options.loading_image, "/home/pi/pimame/pimame-menu/assets/images/loading_screen.png")
@@ -46,17 +46,46 @@ class PMCfg:
 		scale = min(float(background_rect.w) / float(screen_width), float(background_rect.h) / float(screen_height))
 		background_rect = (int(background_rect.w / scale), int(background_rect.h / scale))
 		
-		background_image =  pygame.transform.smoothscale(background_image, background_rect)
+		background_image = pygame.transform.smoothscale(background_image, background_rect)
 		self.screen.blit(background_image, (0,0))
 		pygame.display.flip()
-
 		
+		#resize main menu background image
+		background_rect =  self.options.pre_loaded_background.get_rect()
+		scale = min(float(background_rect.w) / float(screen_width), float(background_rect.h) / float(screen_height))
+		background_rect = (int(background_rect.w / scale), int(background_rect.h / scale))
+		
+		self.options.pre_loaded_background =  pygame.transform.smoothscale(self.options.pre_loaded_background, background_rect)
+		
+		#resize rom list background image
+		background_rect =  self.options.pre_loaded_rom_list_background.get_rect()
+		scale = min(float(background_rect.w) / float(screen_width), float(background_rect.h) / float(screen_height))
+		background_rect = (int(background_rect.w / scale), int(background_rect.h / scale))
+		
+		self.options.pre_loaded_rom_list_background =  pygame.transform.smoothscale(self.options.pre_loaded_rom_list_background, background_rect)
+		
+		#load audio
 		self.options.menu_move_sound = self.options.load_audio(self.options.menu_move_sound)
 		self.options.menu_select_sound = self.options.load_audio(self.options.menu_select_sound)
 		self.options.menu_back_sound = self.options.load_audio(self.options.menu_back_sound)
 		self.options.menu_navigation_sound = self.options.load_audio(self.options.menu_navigation_sound)
-		self.options.blur_image = pygame.Surface([self.screen.get_width(), self.screen.get_height()]).convert_alpha()
-		self.options.fade_image = pygame.Surface([self.screen.get_width(), self.screen.get_height()]).convert()
+		
+		#pre-load surfaces
+		self.options.blur_image = pygame.Surface([screen_width, screen_height]).convert_alpha()
+		self.options.fade_image = pygame.Surface([screen_width, screen_height]).convert()
+		
+		
+		self.options.draw_rect = pygame.Surface([screen_width, screen_height], pygame.SRCALPHA)
+		self.options.draw_rect.fill((0,0,0,0))
+		self.options.draw_rect.convert()
+		
+		try:
+			if self.options.boxart_border_color[3] == 0:
+				self.options.draw_rect = None
+			else:
+				self.options.draw_rect.set_alpha(self.options.boxart_border_color[3])
+		except:
+			pass
 		
 	def init_screen(self, size, fullscreen):
 		
@@ -195,6 +224,7 @@ class PMOptions:
 		#items to be pre-loaded for efficiency
 		pygame.font.init()
 		self.fade_image = None
+		self.draw_rect = None
 		self.blank_image = pygame.image.load('/home/pi/pimame/pimame-menu/assets/images/blank.png')
 		self.font = pygame.font.Font(self.theme_pack + self.font_file, self.default_font_size)
 		self.popup_font = pygame.font.Font(self.theme_pack + self.font_file, self.popup_menu_font_size)

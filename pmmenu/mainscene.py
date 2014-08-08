@@ -46,21 +46,8 @@ class MainScene(object):
 		
 
 	def draw_bg(self):
-		background_image = self.cfg.options.pre_loaded_background
-		background_rect = background_image.get_rect()
-		screen_width = pygame.display.Info().current_w
-		screen_height = pygame.display.Info().current_h
-		scale = min(float(background_rect.w) / float(screen_width), float(background_rect.h) / float(screen_height))
-		background_rect = (int(background_rect.w / scale), int(background_rect.h / scale))
-		
-		self.cfg.options.pre_loaded_background =  pygame.transform.smoothscale(self.cfg.options.pre_loaded_background, background_rect)
-		background_image = self.cfg.options.pre_loaded_background
-		
 		self.screen.fill(self.cfg.options.background_color)
-		
-		self.screen.blit(background_image, (0,0))
-
-
+		self.screen.blit(self.cfg.options.pre_loaded_background, (0,0))
 		
 	def draw_header(self):
 		# @TODO - how to prepare ahead of time:

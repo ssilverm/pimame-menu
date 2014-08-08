@@ -6,13 +6,19 @@ from pygame.locals import *
 from pmcontrols import *
 from pmutil import *
 from pmlabel import *
+from pmcontrols import *
+from pmwarning import *
 
 class PMControllerConfig(pygame.sprite.Sprite):
 
 	DIRECTORY = "/home/pi/pimame/controller-setup/"
+	OUTPUT_DIRECTORY = DIRECTORY + "output/"
+	
 
 	def __init__(self, screen, cfg, title = "ControllerMain", controller = None):
 		pygame.sprite.Sprite.__init__(self)
+		
+		self.CONTROLS = PMControls()
 		
 		self.cfg = cfg
 		self.screen = screen
@@ -26,6 +32,8 @@ class PMControllerConfig(pygame.sprite.Sprite):
 		self.rect = None
 		self.answer = None
 		
+		self.warning = None
+		
 		self.item_width = 0
 		self.item_height = 0
 		
@@ -33,6 +41,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 		self.center_x = window_rect.centerx
 		self.center_y = window_rect.centery
 		
+		self.original_screen = self.screen.copy()
 		self.cfg.blur_image.blit(self.screen,(0,0))
 		if self.cfg.use_scene_transitions:
 			self.effect = PMUtil.blurSurf(self.cfg.blur_image, 20)
@@ -43,6 +52,8 @@ class PMControllerConfig(pygame.sprite.Sprite):
 		try:
 			stick = pygame.joystick.Joystick(0)
 			stick.init()
+			stick2 = pygame.joystick.Joystick(1)
+			stick2.init()
 		except:
 			pass
 
@@ -98,7 +109,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 			else:
 				self.menu.blit(item['title'].image, ((self.list.item_width - item['title'].rect.w) / 2, y))
 					
-	def render(self):  
+	def render(self, message = None):  
 
 		
 		#  Display controller image
@@ -108,7 +119,10 @@ class PMControllerConfig(pygame.sprite.Sprite):
 		
 		
 		#  Display what button we're currently configuring
-		key_text = PMLabel("Currently configuring button: "+ self.buttons_to_update[self.current_button], self.cfg.popup_font, self.cfg.popup_menu_font_color)
+		if message: 
+			key_text = PMLabel(message, self.cfg.popup_font, self.cfg.popup_menu_font_color)
+		else:
+			key_text = PMLabel("Currently configuring button: "+ self.buttons_to_update[self.current_button].replace("*",""), self.cfg.popup_font, self.cfg.popup_menu_font_color)
 		key_text.rect.centerx = self.center_x
 		key_text.rect.centery = self.controllerImageRect[1] + self.controllerImageRect[3] + self.cfg.popup_menu_font_size
 		clear_rect =  key_text.rect.copy()
@@ -143,7 +157,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 		elif action == 'BACK':
 			self.cfg.menu_back_sound.play()
 			self.menu_open = False
-			self.screen.blit(self.cfg.blur_image,(0,0))
+			self.screen.blit(self.original_screen,(0,0))
 		
 		if action == 'SELECT':
 			self.cfg.menu_select_sound.play()
@@ -161,7 +175,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 		avail_controller = self.controllers
 		if self.answer == "CANCEL":
 			self.menu_open = False
-			self.screen.blit(self.cfg.blur_image,(0,0))
+			self.screen.blit(self.original_screen,(0,0))
 			
 		#run the configurator!
 		elif self.answer in self.buttons:
@@ -176,6 +190,8 @@ class PMControllerConfig(pygame.sprite.Sprite):
 					print "Invalid controller: %s. Skipping" % selected_controller
 					continue
 				self.controller = json.loads(input_text)
+				
+				if not 'max_players' in self.controller: self.controller['max_players'] = 1
 
 				#  Load controller image
 				self.controllerImage = pygame.image.load(input_path + '/' + self.controller['image']).convert_alpha()
@@ -218,15 +234,21 @@ class PMControllerConfig(pygame.sprite.Sprite):
 				'''
 
 				mapping = {}
+				self.total_map = []
 				running = True
 				self.render()
 				pygame.event.clear()
 				
+				
+				
 				while running:
 					for event in pygame.event.get():
 						
+						
+						
 						#ctrl+q to force quit
 						if event.type == pygame.KEYDOWN:
+							action = self.CONTROLS.get_action('keyboard', event.key)
 							if pygame.key.get_mods() & pygame.KMOD_LCTRL:
 								if event.key == pygame.K_q:
 									self.cfg.menu_back_sound.play()
@@ -235,12 +257,26 @@ class PMControllerConfig(pygame.sprite.Sprite):
 									self.draw_menu()
 									pygame.display.update()
 									return
-									
-						if event.type == QUIT:
-							pygame.quit()
-							sys.exit()
 						
-						if event.type in events_to_capture:
+						action = None	
+						if event.type == pygame.KEYUP: action = self.CONTROLS.get_action('keyboard', event.key)
+						if event.type == pygame.JOYAXISMOTION: action = self.CONTROLS.get_action('joystick', event.dict)
+						if event.type == pygame.JOYBUTTONUP: action = self.CONTROLS.get_action('joystick', event.button)
+						
+						if self.warning and self.warning.menu_open:
+							self.warning.handle_events(action)
+							if self.warning.answer:
+								if self.warning.title == 'next_player':
+									if self.warning.answer == "NO": 
+										self.warning = None
+										pygame.display.update()
+										self.render("Building Config Files... Please Wait.")
+										running = False
+									else:
+										self.warning = None
+										self.render()
+						
+						elif event.type in events_to_capture:
 							if event.type == KEYUP:
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "key":event.key, "mod": event.mod}
 							
@@ -261,22 +297,28 @@ class PMControllerConfig(pygame.sprite.Sprite):
 							
 							#  Advance to next button
 							self.current_button += 1
+							while len(self.total_map) >= 1 and self.current_button < len(self.buttons_to_update) and self.buttons_to_update[self.current_button][0] == '*': self.current_button += 1
 							if self.current_button >= len(self.buttons_to_update):
 								self.current_button = 0
-								running = False
+								self.total_map.append(mapping.copy())
+								if len(self.total_map) == self.controller['max_players']:
+									self.render("Building Config Files... Please Wait.")
+									running = False
+								else: 
+									self.warning = PMWarning(self.screen, self.cfg, "Would you like to configure Player %d?" % (len(self.total_map) + 1), "yes/no", "next_player")
 							else:
 								self.render()
 
 				#  Output our mapping
-				with open(self.controller['name'] + ".json", "w") as output_file:
-					output_file.write(json.dumps(mapping, indent=4, separators=(',', ': ')))
+				with open(self.OUTPUT_DIRECTORY + self.controller['name'] + ".json", "w") as output_file:
+					output_file.write(json.dumps(self.total_map, indent=4, separators=(',', ': ')))
 
 				output_directory = []
 				if "output_directory" in self.controller:
 					for od in self.controller['output_directory']:
 						output_directory.append(od)
 				else:
-					output_directory = "output/" + self.controller['name']  + "/" + formatter[:-3]
+					output_directory = self.OUTPUT_DIRECTORY + self.controller['name']  + "/" + formatter[:-3]
 
 				#print output_directory
 				count = 0
@@ -286,13 +328,13 @@ class PMControllerConfig(pygame.sprite.Sprite):
 						print formatter
 						#print sys.executable, "formatters/"+formatter, controller['name'] + ".json ", output_directory[count]
 						print output_directory[count]
-					try:
-							pid = os.system('python ' + self.DIRECTORY +  "formatters/"+formatter + " " + self.controller['name'] + ".json " + output_directory[count] )
+						try:
+							pid = os.system('python ' + self.DIRECTORY +  "formatters/" + formatter + " " + self.OUTPUT_DIRECTORY + self.controller['name'] + ".json " + output_directory[count] )
 							#print pid
-					except Exception as e:
-						print e.message, e.args
-						print formatter + " has failed."
-					count += 1
+						except Exception as e:
+							print e.message, e.args
+							print formatter + " has failed."
+						count += 1
 					
 			self.cfg.menu_back_sound.play()
 			if self.cfg.use_scene_transitions: effect = PMUtil.fade_out(self)
@@ -337,4 +379,3 @@ class BuildList():
 			self.item_height = self.options[0]['title'].rect.h * (len(self.options) + 1) + 40
 			
 			
-		
