@@ -107,8 +107,9 @@ menu_items:
     command: export LD_LIBRARY_PATH=/home/pi/pimame/dispmanx/build/.libs/ && /home/pi/pimame/emulators/mednafen/src/mednafen
 
   - label: Gameboy Advance
-    visible: Yes
-    full_path: no
+    visible: yes
+    full_path: yes
+    extension: yes
     command: /home/pi/pimame/emulators/gpsp/gpsp
     override_menu: yes
     roms: /home/pi/pimame/roms/gba/
