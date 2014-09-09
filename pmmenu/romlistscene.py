@@ -99,8 +99,7 @@ class RomListScene(object):
 					if event.key == pygame.K_q:
 						self.cfg.options.menu_back_sound.play()
 						if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_out(self)
-						pygame.quit()
-						sys.exit()
+						pygame.event.post(pygame.event.Event(pygame.QUIT))
 						
 			if event.type == pygame.MOUSEBUTTONUP:
 				pos = pygame.mouse.get_pos()
@@ -201,7 +200,7 @@ class RomListScene(object):
 				difference = min(self.list.first_index, len(self.list.labels))
 				self.list.set_visible_items(self.list.first_index - difference, self.list.last_index - difference)
 				self.draw_list(self.cfg.options.rom_list_orientation)
-				selected_index = min((self.items_per_screen/2),(self.list.last_index - len(self.list.labels)))
+				selected_index = min((self.items_per_screen/2),(self.list.first_index))
 				self.selected_item = self.list.labels[selected_index]
 		
 		self.draw()
@@ -249,7 +248,7 @@ class RomListScene(object):
 			self.list.draw(self.screen)
 
 	def draw_boxart(self, delay):
-		for i in range(0, delay):
+		for i in xrange(0, delay):
 			time.sleep(.01)
 			if thread.get_ident() != self.boxart_thread: thread.exit()
 			
@@ -280,7 +279,7 @@ class RomListScene(object):
 				pygame.draw.rect(self.cfg.options.draw_rect, self.cfg.options.boxart_border_color, inflate, self.cfg.options.boxart_border_thickness)
 				self.screen.blit(self.cfg.options.draw_rect, inflate, inflate)
 			self.screen.blit(boxart, boxart_rect)
-			del boxart, boxart_rect, inflate
+			del boxart, boxart_rect, inflate, self
 			thread.exit()
 		else: thread.exit()
 		
