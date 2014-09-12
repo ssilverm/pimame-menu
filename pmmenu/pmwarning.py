@@ -104,6 +104,7 @@ class PMWarning(pygame.sprite.Sprite):
 	def draw_menu(self):
 			self.screen.blit(self.effect,(0,0))
 			self.screen.blit(self.menu, ((pygame.display.Info().current_w - self.rect.w)/2, (pygame.display.Info().current_h - self.rect.h)/2))
+			pygame.display.update()
 		
 	def take_action(self, dict):
 		if self.answer in dict:

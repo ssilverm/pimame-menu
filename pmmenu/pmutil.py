@@ -43,6 +43,7 @@ class PMUtil:
 	
 	@staticmethod
 	def replace(file_path, pattern, subst, prefix = None):
+		#rewrite config.yaml file
 		#Create temp file
 		file_number, abs_path = mkstemp()
 		new_file = open(abs_path,'wb')
@@ -72,11 +73,13 @@ class PMUtil:
 	@staticmethod
 	def fade_out(self):
 		background = pygame.Surface([self.screen.get_width(), self.screen.get_height()]).convert()
-		background.fill((0,0,0,51))
+		background.fill((0,0,0))
+		background.set_alpha(80)
+		#background.convert()
 		for x in xrange(1,6):
 			self.screen.blit(background, (0,0))
 			pygame.display.update()
-		return
+		return "fade_out"
 		
 	@staticmethod
 	def fade_in(self):
@@ -89,7 +92,7 @@ class PMUtil:
 		backup.set_alpha(255)
 		self.screen.blit(backup, (0,0))
 		pygame.display.update()
-		return
+		return "fade_in"
 		
 	@staticmethod
 	def fade_into(self, prev_screen):
@@ -102,7 +105,7 @@ class PMUtil:
 		backup.set_alpha(255)
 		self.screen.blit(backup, (0,0))
 		pygame.display.update()
-		return
+		return "fade_into"
 	
 	@staticmethod
 	def blurSurf(surface, amt):

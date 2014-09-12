@@ -65,10 +65,9 @@ options:
   rom_list_item_image: "rom_list.png"
   rom_list_item_selected_image: "rom_list-selected.png"
   rom_list_background_image: "background2.jpg"
-  rom_list_offset: [20, 0, 30, 0]   #[x-position, y-position, pixels to crop from right, pixels to crop from bottom]
-  rom_list_orientation: vertical
+  rom_list_offset: [20, 5, 30, 0]   #[x-position, y-position, pixels to crop from right, pixels to crop from bottom]
   rom_list_align: left
-  rom_list_alignment_padding: 0
+  rom_list_padding: 10
   rom_list_min_background_height: auto
   rom_list_min_background_width: auto
   rom_list_max_text_width: auto
@@ -77,9 +76,9 @@ options:
   boxart_offset: [0,0] #[x,y]
   boxart_max_width: 50%
   boxart_max_height: 70%
-  boxart_border_thickness: 3
+  boxart_border_thickness: 10
   boxart_border_padding: 15
-  boxart_border_color: "0,255,255,90"
+  boxart_border_color: "0,255,255,100"
   
 menu_items:
   - label: SNES
