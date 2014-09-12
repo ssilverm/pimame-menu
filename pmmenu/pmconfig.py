@@ -209,8 +209,7 @@ class PMOptions:
 		self.rom_list_background_image = theme['rom_list_background_image']
 		self.rom_list_offset = {"left": theme['rom_list_offset'][0], "top": theme['rom_list_offset'][1], "right": theme['rom_list_offset'][2], "bottom": theme['rom_list_offset'][3]}
 		self.rom_list_align = theme['rom_list_align'].lower()
-		self.rom_list_alignment_padding = int(theme['rom_list_alignment_padding'])
-		self.rom_list_orientation = theme['rom_list_orientation'].lower() if theme['rom_list_orientation'].lower() == 'horizontal' else 'vertical'
+		self.rom_list_padding = int(theme['rom_list_padding'])
 		self.rom_list_max_text_width = self.check_type(theme['rom_list_max_text_width'])
 		
 		self.boxart_offset = theme['boxart_offset']

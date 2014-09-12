@@ -4,7 +4,7 @@ import yaml
 class PMControls:
  #check out for key reference - http://www.pygame.org/docs/ref/key.html
 	def __init__(self):
-		pygame.key.set_repeat(300, 20)
+		pygame.key.set_repeat(300, 10)
 		
 		pygame.joystick.init()
 		js_count = pygame.joystick.get_count()

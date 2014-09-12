@@ -201,14 +201,9 @@ class MainScene(object):
 					if event.key == pygame.K_q:
 						self.cfg.options.menu_back_sound.play()
 						if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_out(self)
-						pygame.quit()
-						sys.exit()
+						pygame.event.post(pygame.event.Event(pygame.QUIT))
 						
-			if event.type == pygame.QUIT:
-				self.cfg.options.menu_back_sound.play()
-				if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_out(self)
-				pygame.quit()
-				sys.exit()
+
 			elif event.type == pygame.MOUSEBUTTONUP:
 				pos = pygame.mouse.get_pos()
 

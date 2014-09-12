@@ -36,7 +36,7 @@ class PMList(pygame.sprite.OrderedUpdates):
 		#Get rom title and blit to already created rom_template
 		self.labels = []
 		for list_item in rom_list:
-			label = PMRomItem(list_item['title'], self.global_opts.rom_list_font, self.global_opts.rom_list_font_color, self.global_opts.rom_list_background_color, self.global_opts.rom_list_font_bold, self.global_opts.rom_list_offset, False, self.rom_template, [], self.global_opts.rom_list_font_align, self.global_opts.rom_list_max_text_width)
+			label = PMRomItem(list_item['title'], self.global_opts.rom_list_font, self.global_opts.rom_list_font_color, self.global_opts.rom_list_background_color, self.global_opts.rom_list_font_bold, self.global_opts.rom_list_offset, False, True, [], self.global_opts.rom_list_font_align, self.global_opts.rom_list_max_text_width)
 			label.type = list_item['type']
 			label.command = list_item['command']
 			label.boxart = list_item['image']

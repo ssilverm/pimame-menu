@@ -16,22 +16,17 @@ class PMRomItem(pygame.sprite.Sprite):
 		#new_rom = new rom item to be added to pmlist
 		if create_romlist_image or new_rom:
 			if new_rom:
-				self.image = new_rom.image.copy()
+				#self.image = new_rom.image.copy()
+				
 				font.set_bold(font_bold)
-				text = font.render(label_text, 1, color_fg)
-				text_rect = text.get_rect()
+				self.image = font.render(label_text, 1, color_fg)
+				text_rect = self.image.get_rect()
 				
 				if max_text_width and text_rect.w > max_text_width:
 					scale = float(max_text_width) / text_rect.w
-					text = pygame.transform.smoothscale(text, (max_text_width, int(text_rect.h * scale)))
-					text_rect = text.get_rect()
-					
-				if text_align == 'right': text_align = new_rom.icon_rect.w - text_rect.w
-				elif text_align == 'center': text_align = (new_rom.icon_rect.w - text_rect.w)/2
-				else: text_align = 0
-				text_rect =  (rom_list_offset['left'] + text_align , ((new_rom.icon_rect.h - text_rect.h) / 2) + rom_list_offset['top'])
-				area_rect = [0,0,new_rom.icon_rect.w - rom_list_offset['right'] - rom_list_offset['left'],new_rom.icon_rect.h - rom_list_offset['bottom'] - rom_list_offset['top']]
-				self.image.blit(text, text_rect, area_rect)
+					self.image = pygame.transform.smoothscale(self.image, (max_text_width, int(text_rect.h * scale)))
+					text_rect = self.image.get_rect()
+			
 			else:
 				self.icon = create_romlist_image
 				self.icon_rect = self.icon.get_rect()
@@ -42,6 +37,6 @@ class PMRomItem(pygame.sprite.Sprite):
 				self.image = pygame.Surface([self.icon_rect.w,self.icon_rect.h], pygame.SRCALPHA, 32).convert_alpha()
 				self.image.fill(color_bg, self.icon_rect)
 				self.image.blit(self.icon, (0,0))
-
-		self.rect = self.image.get_rect()
+				
+			self.rect = self.image.get_rect()
 		

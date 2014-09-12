@@ -66,9 +66,8 @@ options:
   rom_list_item_selected_image: ""
   rom_list_background_image: ""
   rom_list_offset: [0, 0, 0, 0] #[x-position, y-position, pixels to crop from right, pixels to crop from bottom]
-  rom_list_orientation: vertical
   rom_list_align: left
-  rom_list_alignment_padding: 0
+  rom_list_padding: 10
   rom_list_min_background_height: auto
   rom_list_min_background_width: 600
   rom_list_max_text_width: 600

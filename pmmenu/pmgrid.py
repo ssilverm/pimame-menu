@@ -75,7 +75,7 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 			next.command = PMMenuItem.NEXT_PAGE
 			page.append(next)
 			self.pages.append(page)
-			r = range(1, total_num_of_pages)
+			r = xrange(1, total_num_of_pages)
 			iteration = 0
 			for i in r:
 				iteration += num_items_to_display
