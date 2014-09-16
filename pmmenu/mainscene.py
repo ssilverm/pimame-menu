@@ -224,7 +224,8 @@ class MainScene(object):
 					if not self.warning:
 						self.ks_range = 0
 						self.ks_line = ''
-						for person in self.cfg.ks[0:19]:
+						self.cfg.options.load_ks()
+						for person in self.cfg.options.ks[0:19]:
 							self.ks_line += person + ' \n '
 						self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'kickstarter')
 						
@@ -250,8 +251,8 @@ class MainScene(object):
 								self.warning = None
 								self.ks_line = ''
 								self.ks_range += 20
-								if self.ks_range < len(self.cfg.ks):
-									for person in self.cfg.ks[self.ks_range:self.ks_range+19]:
+								if self.ks_range < len(self.cfg.options.ks):
+									for person in self.cfg.options.ks[self.ks_range:self.ks_range+19]:
 										self.ks_line += person + ' \n '
 									self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'kickstarter')
 							else:

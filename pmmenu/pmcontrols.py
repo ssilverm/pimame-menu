@@ -19,6 +19,7 @@ class PMControls:
 		
 		keyboard = contr['KEYBOARD']
 		joystick = contr['JOYSTICK']
+		options = contr['OPTIONS']
 			
 		self.KEYBOARD = {}
 		self.JOYSTICK = {}
@@ -40,6 +41,7 @@ class PMControls:
 				value = str(contr['JOYSTICK']['VERTICAL_AXIS'])  + "|" + str(value)
 			self.JOYSTICK[value] = key
 		
+		self.AXIAL_DRIFT = options['AXIS_DRIFT_TOLERANCE']
 	
 	def get_action(self, controller_source, action_type):
 		
@@ -55,8 +57,8 @@ class PMControls:
 			
 			#JOYSTICK MOVEMENT
 			if isinstance(action_type, dict):
-				if action_type['value'] < 0: action_type['value'] = -1
-				elif action_type['value'] > 0: action_type['value'] = 1
+				if action_type['value'] < -(self.AXIAL_DRIFT): action_type['value'] = -1
+				elif action_type['value'] > self.AXIAL_DRIFT: action_type['value'] = 1
 				
 				if (str(action_type['axis']) + "|" + str(action_type['value'])) in self.JOYSTICK:
 					return self.JOYSTICK[str(action_type['axis']) + "|" + str(action_type['value'])]

@@ -32,3 +32,6 @@ KEYBOARD:
   MENU:
   - pygame.K_TAB
   - pygame.K_1
+  
+OPTIONS:
+  AXIS_DRIFT_TOLERANCE: .2
