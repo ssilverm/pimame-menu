@@ -19,6 +19,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 		
 		self.CONTROLS = PMControls()
+		self.input_test = [pygame.KEYDOWN, pygame.JOYAXISMOTION, pygame.JOYBUTTONDOWN]
 		
 		self.cfg = cfg
 		self.screen = screen
@@ -158,6 +159,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 			self.cfg.menu_back_sound.play()
 			self.menu_open = False
 			self.screen.blit(self.original_screen,(0,0))
+			pygame.display.update()
 		
 		if action == 'SELECT':
 			self.cfg.menu_select_sound.play()
@@ -169,7 +171,8 @@ class PMControllerConfig(pygame.sprite.Sprite):
 	def draw_menu(self):
 			self.screen.blit(self.effect,(0,0))
 			self.screen.blit(self.menu, ((pygame.display.Info().current_w - self.rect.w)/2, (pygame.display.Info().current_h - self.rect.h)/2))
-		
+			pygame.display.update()
+			
 	def take_action(self, dict = []):
 		
 		avail_controller = self.controllers
@@ -240,15 +243,27 @@ class PMControllerConfig(pygame.sprite.Sprite):
 				pygame.event.clear()
 				
 				
-				
+				action_list = [pygame.KEYDOWN, pygame.JOYAXISMOTION, pygame.JOYBUTTONDOWN]
 				while running:
-					for event in pygame.event.get():
+					events = pygame.event.get()
+					action = self.CONTROLS.get_action(action_list, events)
+					if self.warning and self.warning.menu_open:
+							self.warning.handle_events(action)
+							if self.warning.title == 'next_player' and self.warning.answer == "NO":
+								self.warning = None
+								pygame.display.update()
+								self.render("Building Config Files... Please Wait.")
+								running = False
+							else:
+								self.warning = None
+								self.render()
+										
+					for event in events:
 						
 						
 						
 						#ctrl+q to force quit
 						if event.type == pygame.KEYDOWN:
-							action = self.CONTROLS.get_action('keyboard', event.key)
 							if pygame.key.get_mods() & pygame.KMOD_LCTRL:
 								if event.key == pygame.K_q:
 									self.cfg.menu_back_sound.play()
@@ -258,23 +273,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 									pygame.display.update()
 									return
 						
-						action = None	
-						if event.type == pygame.KEYUP: action = self.CONTROLS.get_action('keyboard', event.key)
-						if event.type == pygame.JOYAXISMOTION: action = self.CONTROLS.get_action('joystick', event.dict)
-						if event.type == pygame.JOYBUTTONUP: action = self.CONTROLS.get_action('joystick', event.button)
 						
-						if self.warning and self.warning.menu_open:
-							self.warning.handle_events(action)
-							if self.warning.answer:
-								if self.warning.title == 'next_player':
-									if self.warning.answer == "NO": 
-										self.warning = None
-										pygame.display.update()
-										self.render("Building Config Files... Please Wait.")
-										running = False
-									else:
-										self.warning = None
-										self.render()
 						
 						elif event.type in events_to_capture:
 							if event.type == KEYUP:

@@ -8,20 +8,25 @@ JOYSTICK:
   SELECT: 0
   BACK: 1
   MENU: 2
+  Quit: "[1,2]"
   
 KEYBOARD:
   UP:
   - pygame.K_UP
   - pygame.K_KP8
+  - pygame.K_w
   DOWN:
   - pygame.K_DOWN
   - pygame.K_KP2
+  - pygame.K_s
   LEFT:
   - pygame.K_LEFT
   - pygame.K_KP4
+  - pygame.K_a
   RIGHT:
   - pygame.K_RIGHT
   - pygame.K_KP6
+  - pygame.K_d
   SELECT:
   - pygame.K_RETURN
   - pygame.K_SPACE
@@ -32,6 +37,9 @@ KEYBOARD:
   MENU:
   - pygame.K_TAB
   - pygame.K_1
+  QUIT:
+  - "[pygame.K_LCTRL, pygame.K_q]"
+  - "[pygame.K_1, pygame.K_2]"
   
 OPTIONS:
-  AXIS_DRIFT_TOLERANCE: .2
+  AXIS_DRIFT_TOLERANCE: 1

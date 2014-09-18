@@ -13,6 +13,7 @@ from romlistscene import *
 class MainScene(object):
 
 	SCENE_NAME = 'main'
+	update_display = []
 	
 	selected_index = 0
 	pre_rendered = False
@@ -29,7 +30,7 @@ class MainScene(object):
 
 	def set_selected_index(self, new_selected_index, play_sound = True):
 		if play_sound: self.cfg.options.menu_move_sound.play()
-		self.erase_selection()
+		self.update_display.append(self.erase_selection())
 
 		num_menu_items = len(self.grid.sprites())
 
@@ -42,7 +43,7 @@ class MainScene(object):
 		#self.selection.clear(self.screen)
 		self.selection.update(self.get_selected_item(), self.cfg.options)
 		#self.draw_items()
-		self.draw_selection()
+		self.update_display.append(self.draw_selection())
 		
 
 	def draw_bg(self):
@@ -104,6 +105,7 @@ class MainScene(object):
 			self.screen.blit(self.cfg.options.pre_loaded_background, selected_item.rect, pygame.Rect(selected_item.rect[0], selected_item.rect[1], item_width, self.cfg.options.item_height))
 			
 			pygame.sprite.RenderPlain(selected_item).draw(self.screen)
+			return selected_item.rect
 
 	def draw_selection(self):
 		padding = self.cfg.options.padding
@@ -115,6 +117,7 @@ class MainScene(object):
 			
 		selection = pygame.sprite.RenderPlain((self.selection))
 		selection.draw(self.screen)
+		return self.selection.rect
 
 	def calc_num_items_per_page(self):
 		padding = self.cfg.options.padding
@@ -190,114 +193,108 @@ class MainScene(object):
 
 	def update(self):
 		pass
-
-	def handle_events(self, events):
-		for event in events:
-			
-			
-			#ctrl+q to force quit
-			if event.type == pygame.KEYDOWN:
-				if pygame.key.get_mods() & pygame.KMOD_LCTRL:
-					if event.key == pygame.K_q:
-						self.cfg.options.menu_back_sound.play()
-						if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_out(self)
-						pygame.event.post(pygame.event.Event(pygame.QUIT))
+		
+	def warning_check(self):
+		if self.warning.answer:
+				if self.warning.title == 'roms':
+					if self.warning.answer == "YES": 
+						PMUtil.run_command_and_continue('python /home/pi/pimame/pimame-menu/scraper/scrape_script.py --platform "' + self.get_selected_item().label + '"')
+					else:
+						self.warning = None
+						self.do_menu_item_action(self.get_selected_item())
 						
+				try:
+					if self.warning.title == 'kickstarter':
+						if self.warning.answer == "OK":
+							self.warning = None
+							self.ks_line = ''
+							self.ks_range += 20
+							if self.ks_range < len(self.cfg.options.ks):
+								for person in self.cfg.options.ks[self.ks_range:self.ks_range+19]:
+									self.ks_line += person + ' \n '
+								self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'kickstarter')
+						else:
+							self.warning = None
+				except:
+					pass
 
-			elif event.type == pygame.MOUSEBUTTONUP:
+	def handle_events(self, action):
+		
+		self.update_display = []
+		
+		if self.warning and not self.warning.menu_open: self.warning = None
+		
+		# self.warning = PMWarning(self.screen, self.cfg.options, "message goes here", "yes/no")
+		#answer will return False until selection -> yes, no, ok, or cancel
+		if self.warning and self.warning.menu_open:
+			self.warning.handle_events(action)
+			self.warning_check()
+				
+		elif self.popup and self.popup.menu_open:
+			status = self.popup.handle_events(action)
+			if status == "CONTROLLER": self.popup = PMControllerConfig(self.screen, self.cfg.options)
+			
+		else:
+			
+			#NAVIGATE MAIN MENU
+			if action == 'LEFT':
+				self.set_selected_index(self.selected_index - 1)
+			elif action == 'RIGHT':
+				self.set_selected_index(self.selected_index + 1)
+			elif action == 'UP':
+				self.set_selected_index(self.selected_index - self.cfg.options.num_items_per_row)
+			elif action == 'DOWN':
+				self.set_selected_index(self.selected_index + self.cfg.options.num_items_per_row)
+			elif action == 'SELECT':
+				sprite = self.get_selected_item()
+				#DISPLAY WARNING IF FILES HAVE CHANGED
+				if "!" in str(sprite.num_roms) and not self.warning: 
+					self.warning = PMWarning(self.screen, self.cfg.options, "Some files have changed, would you like to scrape this folder for new roms?", "yes/no", "roms")
+				elif not self.warning:
+					self.do_menu_item_action(sprite)
+			elif action == 'BACK' and self.cfg.options.allow_quit_to_console:
+				self.cfg.options.menu_back_sound.play()
+				if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_out(self)
+				pygame.quit()
+				sys.exit()
+			
+			#POPUP OPTIONS MENU
+			elif action == 'MENU':
+				self.popup = PMPopup(self.screen, self.manager.scene.SCENE_NAME, self.cfg.options, True)
+			
+			#SHOW KICKSTARTER SUPPORTERS
+			elif action == 'KICKSTARTER':
+				if not self.warning:
+					self.ks_range = 0
+					self.ks_line = ''
+					self.cfg.options.load_ks()
+					for person in self.cfg.options.ks[0:19]:
+						self.ks_line += person + ' \n '
+					self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'kickstarter')
+			
+			#MOUSE CLICK
+			elif action == "MOUSEUP":
 				pos = pygame.mouse.get_pos()
-
 				# get all rects under cursor
 				clicked_sprites = [s for s in self.grid if s.rect.collidepoint(pos)]
-
+				
 				if len(clicked_sprites) > 0:
 					sprite = clicked_sprites[0]
 					self.do_menu_item_action(sprite)
-					
-			action = None	
-			if self.warning and not self.warning.menu_open: self.warning = None
 			
-			if event.type == pygame.KEYDOWN: 
-				action = self.CONTROLS.get_action('keyboard', event.key)
-				pressed = pygame.key.get_pressed()
-				if pressed[pygame.K_k] and pressed[pygame.K_s]:
-					if not self.warning:
-						self.ks_range = 0
-						self.ks_line = ''
-						self.cfg.options.load_ks()
-						for person in self.cfg.options.ks[0:19]:
-							self.ks_line += person + ' \n '
-						self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'kickstarter')
-						
-			if event.type == pygame.JOYAXISMOTION: action = self.CONTROLS.get_action('joystick', event.dict)
-			if event.type == pygame.JOYBUTTONDOWN: action = self.CONTROLS.get_action('joystick', event.button)
-			
-			# self.warning = PMWarning(self.screen, self.cfg.options, "message goes here", "yes/no")
-			#answer will return False until selection -> yes, no, ok, or cancel
-			if self.warning and self.warning.menu_open:
-				self.warning.handle_events(action)
+			#MOUSE MOVE
+			elif action == "MOUSEMOVE":
+				pos = pygame.mouse.get_pos()
+				# get all rects under cursor
+				if not self.grid.menu_items[self.selected_index].rect.collidepoint(pos):
+					clicked_sprites = [index for index, s in enumerate(self.grid) if s.rect.collidepoint(pos)]
 				
-				if self.warning.answer:
-					if self.warning.title == 'roms':
-						if self.warning.answer == "YES": 
-							PMUtil.run_command_and_continue('python /home/pi/pimame/pimame-menu/scraper/scrape_script.py --platform "' + self.get_selected_item().label + '"')
-						else:
-							self.warning = None
-							self.do_menu_item_action(self.get_selected_item())
-							
-					try:
-						if self.warning.title == 'kickstarter':
-							if self.warning.answer == "OK":
-								self.warning = None
-								self.ks_line = ''
-								self.ks_range += 20
-								if self.ks_range < len(self.cfg.options.ks):
-									for person in self.cfg.options.ks[self.ks_range:self.ks_range+19]:
-										self.ks_line += person + ' \n '
-									self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'kickstarter')
-							else:
-								self.warning = None
-					except:
-						continue
-						
+					if len(clicked_sprites) > 0:
+						sprite = clicked_sprites[0]
+						self.set_selected_index(sprite)
 					
-			elif self.popup and self.popup.menu_open:
-				status = self.popup.handle_events(action)
-				if status == "CONTROLLER": self.popup = PMControllerConfig(self.screen, self.cfg.options)
 				
-			else:
-				
-				if action == 'LEFT':
-					self.set_selected_index(self.selected_index - 1)
-					
-				elif action == 'RIGHT':
-					self.set_selected_index(self.selected_index + 1)
-					
-				elif action == 'UP':
-					self.set_selected_index(self.selected_index - self.cfg.options.num_items_per_row)
-					
-				elif action == 'DOWN':
-					self.set_selected_index(self.selected_index + self.cfg.options.num_items_per_row)
-					
-				elif action == 'SELECT':
-					sprite = self.get_selected_item()
-					if "!" in str(sprite.num_roms) and not self.warning: 
-						self.warning = PMWarning(self.screen, self.cfg.options, "Some files have changed, would you like to scrape this folder for new roms?", "yes/no", "roms")
-					elif not self.warning:
-						self.do_menu_item_action(sprite)
-						
-				elif action == 'MENU':
-					#self.popup = PMControllerConfig(self.screen, self.cfg.options)
-					self.popup = PMPopup(self.screen, self.manager.scene.SCENE_NAME, self.cfg.options, True)
-					
-					
-				elif action == 'BACK' and self.cfg.options.allow_quit_to_console:
-					self.cfg.options.menu_back_sound.play()
-					if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_out(self)
-					pygame.quit()
-					sys.exit()
-				
-					
+		return self.update_display
 
 	#@TODO - change name:
 	def do_menu_item_action(self, sprite):

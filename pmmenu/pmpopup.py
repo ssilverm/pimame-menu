@@ -368,9 +368,13 @@ class PMPopup(pygame.sprite.Sprite):
 			system('clear')
 			PMUtil.run_command_and_continue('echo Changing settings and restarting PiPlay')
 		
+		self.screen.blit(self.cfg.blur_image,(0,0))
+		pygame.display.update()
+		
 	def draw_menu(self):
 		self.screen.blit(self.effect,(0,0))
 		self.screen.blit(self.menu, ((pygame.display.Info().current_w - self.rect.w)/2, (pygame.display.Info().current_h - self.rect.h)/2))
+		pygame.display.update()
 		
 
 		
