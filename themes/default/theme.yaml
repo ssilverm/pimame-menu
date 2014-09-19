@@ -176,3 +176,15 @@ menu_items:
   - label: ZX Spectrum
     icon_file: zxspectrum.png
     icon_selected: zxspectrum-selected.png
+
+  - label: Toggle Xbox Controller
+    icon_file: xbox-toggle.png
+    icon_selected: xbox-toggle-selected.png
+
+  - label: raspi-config
+    icon_file: raspi-config.png
+    icon_selected: raspi-config-selected.png
+
+  - label: Exit
+    icon_file: exit.png
+    icon_selected: exit-selected.png
