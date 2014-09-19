@@ -1,14 +1,18 @@
 JOYSTICK:
   HORIZONTAL_AXIS: 0
   VERTICAL_AXIS: 1
-  LEFT: -1
-  RIGHT: 1
-  UP: -1
-  DOWN: 1
-  SELECT: 0
-  BACK: 1
-  MENU: 2
-  Quit: "[1,2]"
+  
+  DIRECTIONAL:
+    LEFT: -1
+    RIGHT: 1
+    UP: -1
+    DOWN: 1
+  
+  BUTTONS:
+    SELECT: 0
+    BACK: 1
+    MENU: 2
+    Quit: [1,2]
   
 KEYBOARD:
   UP:
@@ -42,4 +46,4 @@ KEYBOARD:
   - "[pygame.K_1, pygame.K_2]"
   
 OPTIONS:
-  AXIS_DRIFT_TOLERANCE: 1
+  AXIS_DRIFT_TOLERANCE: .9

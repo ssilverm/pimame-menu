@@ -179,12 +179,13 @@ class PMControllerConfig(pygame.sprite.Sprite):
 		if self.answer == "CANCEL":
 			self.menu_open = False
 			self.screen.blit(self.original_screen,(0,0))
+			pygame.display.update()
 			
 		#run the configurator!
 		elif self.answer in self.buttons:
 			if self.answer != 'All': avail_controller = [self.answer]
 			for selected_controller in avail_controller:
-				events_to_capture = [KEYUP, JOYBUTTONUP, JOYHATMOTION, JOYAXISMOTION]
+				events_to_capture = [KEYDOWN, JOYBUTTONDOWN, JOYHATMOTION, JOYAXISMOTION]
 				
 				input_path = self.DIRECTORY + "controllers/" + selected_controller
 				try:
@@ -246,20 +247,9 @@ class PMControllerConfig(pygame.sprite.Sprite):
 				action_list = [pygame.KEYDOWN, pygame.JOYAXISMOTION, pygame.JOYBUTTONDOWN]
 				while running:
 					events = pygame.event.get()
-					action = self.CONTROLS.get_action(action_list, events)
-					if self.warning and self.warning.menu_open:
-							self.warning.handle_events(action)
-							if self.warning.title == 'next_player' and self.warning.answer == "NO":
-								self.warning = None
-								pygame.display.update()
-								self.render("Building Config Files... Please Wait.")
-								running = False
-							else:
-								self.warning = None
-								self.render()
-										
+					
 					for event in events:
-						
+						action = self.CONTROLS.get_action(action_list, [event])
 						
 						
 						#ctrl+q to force quit
@@ -273,13 +263,26 @@ class PMControllerConfig(pygame.sprite.Sprite):
 									pygame.display.update()
 									return
 						
-						
+						if self.warning and self.warning.menu_open:
+							self.warning.handle_events(action)
+							if self.warning.answer:
+								if self.warning.title == 'next_player':
+									if self.warning.answer == "NO": 
+										self.warning = None
+										pygame.display.update()
+										self.render("Building Config Files... Please Wait.")
+										running = False
+									else:
+										#calling render twice to make transition 'smoother'
+										self.render()
+										self.warning = None
+										self.render()
 						
 						elif event.type in events_to_capture:
-							if event.type == KEYUP:
+							if event.type == KEYDOWN:
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "key":event.key, "mod": event.mod}
 							
-							elif event.type == JOYBUTTONUP:
+							elif event.type == JOYBUTTONDOWN:
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "button":event.button, "joy": event.joy}
 							
 							elif event.type == JOYHATMOTION:

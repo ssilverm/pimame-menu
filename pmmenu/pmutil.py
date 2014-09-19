@@ -32,10 +32,15 @@ class PMUtil:
 	def run_command_and_continue(command):
 		pygame.quit()
 		time.sleep(1)
-		system(command + " && export LD_LIBRARY_PATH= ")
+		command = command.split("%%")
+		system(command[0] + " && export LD_LIBRARY_PATH= ")
 		
 		#restart piplay
 		python = sys.executable
+		if len(command) > 1:
+			sys.argv.append("--quicklaunch")
+			sys.argv.append(command[1])
+			
 		execl(python, python, * sys.argv)
 		
 		#not used?

@@ -1,13 +1,17 @@
+import argparse
 import pygame
 from pmmenu import pmmenu
 from pmmenu.pmconfig import *
 from pmmenu.scenemanager import *
 from pmmenu.mainscene import *
+from pmmenu.romlistscene import *
 
 #menu = pmmenu.PMMenu('config.yaml')
 #menu.draw()
 
-
+parser = argparse.ArgumentParser(description='PiPlay')
+parser.add_argument("--quicklaunch", metavar="value", help="Which platform to skip to", type=str)
+args = parser.parse_args()
 
 def main():
 	cfg = PMCfg()
@@ -22,8 +26,21 @@ def main():
 	running = True
 	input_test = [pygame.KEYDOWN, pygame.JOYAXISMOTION, pygame.JOYBUTTONDOWN, pygame.MOUSEMOTION, pygame.MOUSEBUTTONUP]
 	refresh = 0
+	total_refresh = cfg.options.max_fps * 5
 	
-	manager = SceneManager(cfg, MainScene())
+
+	
+	
+	if args.quicklaunch: 
+		manager = SceneManager(cfg, MainScene(), False)
+		print "Relaunch", args.quicklaunch
+
+		for sprite in manager.scene.grid:
+			if sprite.label == args.quicklaunch:
+				#manager = SceneManager(cfg, MainScene())
+				manager.go_to(RomListScene(sprite.get_rom_list(), sprite.label))
+	else:
+		manager = SceneManager(cfg, MainScene())
 	
 	while running:
 		timer.tick(cfg.options.max_fps)
@@ -43,9 +60,10 @@ def main():
 		if update_display: 
 			pygame.display.update(update_display)
 			manager.scene.update_display = []
-			refresh += 1
-			if refresh == 20:
-				pygame.display.flip()
+			
+		refresh += 1
+		if refresh == total_refresh:
+			pygame.display.flip()
 		pygame.event.clear()
 		
 		

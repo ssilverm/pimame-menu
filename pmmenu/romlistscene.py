@@ -18,10 +18,10 @@ class RomListScene(object):
 	
 	boxart_thread = None
 
-	def __init__(self, rom_list):
+	def __init__(self, rom_list, label):
 		super(RomListScene, self).__init__()
-		self.CONTROLS = PMControls()
 		self.rom_list = rom_list
+		self.label = label
 	
 	def draw_bg(self, rect=None):
 		if not rect:
@@ -64,7 +64,7 @@ class RomListScene(object):
 			self.description_area.left = self.info_container.left
 		
 
-	def pre_render(self, screen):
+	def pre_render(self, screen, call_render):
 		
 		self.draw_bg()
 		self.list = PMList(self.rom_list, self.cfg.options)
@@ -148,7 +148,7 @@ class RomListScene(object):
 				self.set_selected_index(action)
 				
 			#MOUSE CLICK
-			elif action == "MOUSEUP":
+			elif action == "MOUSEBUTTON":
 				pos = pygame.mouse.get_pos()
 				# get all rects under cursor
 				clicked_sprites = [s for s in self.sprites if s.rect.collidepoint(pos)]
@@ -161,20 +161,23 @@ class RomListScene(object):
 			elif action == "MOUSEMOVE":
 				pos = pygame.mouse.get_pos()
 				# get all rects under cursor
-				if not self.sprites[self.selected_index].rect.collidepoint(pos):
+				if not self.selected_item.rect.collidepoint(pos):
 					clicked_sprites = [index for index, s in enumerate(self.sprites) if s.rect.collidepoint(pos)]
 				
 					if len(clicked_sprites) > 0:
 						sprite = clicked_sprites[0]
+						self.clear_rom_item()
 						self.selected_item = self.sprites[sprite]
 						self.set_selected_index(None)
 						
 		return self.update_display
 
 	def set_selected_index(self, direction, play_sound = True):
-		self.clear_rom_item()
+
+		if direction: self.clear_rom_item()
 		#move selection up by 1
 		if play_sound: self.cfg.options.menu_move_sound.play()
+		
 		if direction == "UP":
 			self.selected_index = self.sprites.index(self.selected_item)
 			#check if selected item is highest item on screen
@@ -216,7 +219,7 @@ class RomListScene(object):
 				self.selected_item = self.list.labels[self.selected_index]
 				
 		#move selection up by number of items on screen
-		if direction == "LEFT":
+		elif direction == "LEFT":
 			self.selected_index = self.sprites.index(self.selected_item)
 			if self.selected_index > int(self.items_per_screen/2):
 				self.selected_index = min((self.items_per_screen/2),(self.list.last_index - len(self.list.labels)))
@@ -254,17 +257,6 @@ class RomListScene(object):
 
 			y += self.list.rom_template.rect.h
 			self.screen.blit(sprite.image, sprite.rect, self.crop_rect)
-				
-		#self.list_container
-		#self.list_rect
-		#self.title_rect
-		#self.crop_rect
-		#self.info_container
-		#self.boxart_area
-		#self.description_area
-		
-		#self.list.draw(self.text_canvas)
-		#self.screen.blit(self.text_canvas, rect)
 			
 		
 
@@ -316,9 +308,10 @@ class RomListScene(object):
 			self.screen.blit(self.list.rom_template.image, rect)
 
 			self.screen.blit(self.selected_item.image, self.selected_item.rect, self.crop_rect)
+			self.update_display.append(self.selected_item.rect)
 			
 		else:
-			self.draw_bg()
+			self.draw_bg(self.list_container)
 
 	
 	def draw(self, draw_boxart = True):
@@ -359,12 +352,10 @@ class RomListScene(object):
 		
 		self.update_display.append(rect)
 
-		
-		
 
 	def run_sprite_command(self, sprite):
 		if(sprite.type == 'back'):
 			self.cfg.options.menu_back_sound.play()
 			self.manager.back()
 		else:
-			PMUtil.run_command_and_continue(sprite.command)
+			PMUtil.run_command_and_continue(sprite.command + "%%" + self.label)

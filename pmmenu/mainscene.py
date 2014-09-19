@@ -20,7 +20,6 @@ class MainScene(object):
 
 	def __init__(self):
 		super(MainScene, self).__init__()
-		self.CONTROLS = PMControls()
 
 	def get_selected_item(self):
 		try:
@@ -161,16 +160,20 @@ class MainScene(object):
 		self.grid.draw(self.screen)
 
 
-	def pre_render(self, screen):
+	def pre_render(self, screen, call_render):
 		if not self.pre_rendered:
-			self.header = PMHeader(self.cfg.options)
-			self.selection = PMSelection(self.cfg.options)
 			self.grid = PMGrid(self.cfg.options.options_menu_items, self.cfg.options)
 			self.grid.set_num_items_per_page(self.calc_num_items_per_page())
 			self.popup = None
 			self.warning = None
 			self.pre_rendered = True
 		
+		if call_render: self.render(self.screen)
+		
+		
+	def render(self, screen):
+		self.header = PMHeader(self.cfg.options)
+		self.selection = PMSelection(self.cfg.options)
 		self.draw_bg()
 		self.draw_header()
 		self.draw_ip_addr()
@@ -185,11 +188,6 @@ class MainScene(object):
 			if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_in(self)
 			#self.cfg.options.fade_image = pygame.Surface([self.screen.get_width(), self.screen.get_height()]).convert()
 		self.cfg.options.fade_image.blit(self.screen,(0,0))
-
-
-
-	def render(self, screen):
-		pass
 
 	def update(self):
 		pass
@@ -219,8 +217,6 @@ class MainScene(object):
 					pass
 
 	def handle_events(self, action):
-		
-		self.update_display = []
 		
 		if self.warning and not self.warning.menu_open: self.warning = None
 		
@@ -273,7 +269,7 @@ class MainScene(object):
 					self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'kickstarter')
 			
 			#MOUSE CLICK
-			elif action == "MOUSEUP":
+			elif action == "MOUSEBUTTON":
 				pos = pygame.mouse.get_pos()
 				# get all rects under cursor
 				clicked_sprites = [s for s in self.grid if s.rect.collidepoint(pos)]
@@ -301,7 +297,7 @@ class MainScene(object):
 		if sprite.type == PMMenuItem.ROM_LIST:
 				self.cfg.options.fade_image.blit(self.screen,(0,0))
 				self.cfg.options.menu_select_sound.play()
-				self.manager.go_to(RomListScene(sprite.get_rom_list()))
+				self.manager.go_to(RomListScene(sprite.get_rom_list(), sprite.label))
 		elif sprite.type == PMMenuItem.COMMAND:
 				self.cfg.options.menu_select_sound.play()
 				PMUtil.run_command_and_continue(sprite.command)

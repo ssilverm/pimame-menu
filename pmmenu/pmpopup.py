@@ -281,13 +281,11 @@ class PMPopup(pygame.sprite.Sprite):
 			else:
 				self.cfg.menu_back_sound.play()
 				self.menu_open = False
-				self.screen.blit(self.cfg.blur_image,(0,0))
 				self.on_exit_actions()
 				
 		elif action == 'BACK':
 				self.cfg.menu_back_sound.play()
 				self.menu_open = False
-				self.screen.blit(self.cfg.blur_image,(0,0))
 				self.on_exit_actions()
 		
 		if action == 'SELECT':
@@ -299,6 +297,10 @@ class PMPopup(pygame.sprite.Sprite):
 				#check if controller setup is selected
 				if self.selected and (self.list[self.hover] == self.controller_setup):
 					return  self.run_controller_setup()
+			else:
+				self.cfg.menu_back_sound.play()
+				self.menu_open = False
+				self.on_exit_actions()
 			
 		return None
 				
