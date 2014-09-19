@@ -12,7 +12,7 @@ class PMControls:
 	MOUSE_BUTTON_EVENT = [pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP]
 	
 	def __init__(self):
-		pygame.key.set_repeat(150, 20)
+		pygame.key.set_repeat(300, 20)
 		
 		pygame.joystick.init()
 		js_count = pygame.joystick.get_count()
@@ -98,7 +98,14 @@ class PMControls:
 			
 				#KEYBOARD
 				if event.type in self.KEY_EVENT:
-					action = self.KEYBOARD[str(pygame.key.get_pressed())]
+					if event.type == pygame.KEYDOWN:
+						action = self.KEYBOARD[str(pygame.key.get_pressed())]
+					else:
+						keys_pressed = ([0] * len(pygame.key.get_pressed()))
+						for test_event in events:
+							if event.type == pygame.KEYUP:
+								keys_pressed[event.key] = 1
+						action = self.KEYBOARD[str(keys_pressed)]
 					break
 					
 				#JOYSTICK MOVEMENT
