@@ -37,9 +37,11 @@ class PMUtil:
 		
 		#restart piplay
 		python = sys.executable
+		sys.argv = [sys.argv[0]]
 		if len(command) > 1:
 			sys.argv.append("--quicklaunch")
 			sys.argv.append(command[1])
+			
 			
 		execl(python, python, * sys.argv)
 		

@@ -384,17 +384,17 @@ class Gamesdb_API(object):
 						
 				if not missing_file:
 						print ("%12s - %s")  % (rom, pcolor('green', 'Verified'))
-						image_file = os.path.splitext(rom)[0] + '.png' if isfile(join(input_data['image_path'], os.path.splitext(rom)[0] + '.png')) else ''
+						image_file = os.path.splitext(rom)[0] + '.jpg' if isfile(join(input_data['image_path'], os.path.splitext(rom)[0] + '.jpg')) else ''
 						
 						append({
 							'rom_path': input_data['rom_path'], 
 							'image_path': input_data['image_path'], 
-							'image_file': os.path.splitext(rom)[0] + '.png', 
+							'image_file': os.path.splitext(rom)[0] + '.jpg', 
 							'file': rom, 
 							'real_name': title,
-							'art': dl_image_path + os.path.splitext(rom)[0] + '.png',
-							'logo': dl_image_path + os.path.splitext(rom)[0] + '.png',
-							'thumb': dl_image_path + os.path.splitext(rom)[0] + '.png',
+							'art': dl_image_path + os.path.splitext(rom)[0] + '.jpg',
+							'logo': dl_image_path + os.path.splitext(rom)[0] + '.jpg',
+							'thumb': dl_image_path + os.path.splitext(rom)[0] + '.jpg',
 							'platform': input_data['platform']
 						})
 			else:
@@ -407,9 +407,9 @@ class Gamesdb_API(object):
 					'image_file': '', 
 					'file': rom, 
 					'real_name': rom,
-					'art': dl_image_path + os.path.splitext(rom)[0] + '.png',
-					'logo': dl_image_path + os.path.splitext(rom)[0] + '.png',
-					'thumb': dl_image_path + os.path.splitext(rom)[0] + '.png',
+					'art': dl_image_path + os.path.splitext(rom)[0] + '.jpg',
+					'logo': dl_image_path + os.path.splitext(rom)[0] + '.jpg',
+					'thumb': dl_image_path + os.path.splitext(rom)[0] + '.jpg',
 					'platform': input_data['platform']
 				})
 		return rom_list
@@ -660,15 +660,13 @@ class Gamesdb_API(object):
 		return platform_games_list
 
 	def GetGame(self, id=None, name=None, platform=None):
-		if id is not None and name is not None:  # Only one of these arguments must be passed
-			name=None
 
 		query_args = {}
 		if id is not None:
 			query_args['id'] = id
-		if name is not None:
+		elif name is not None:
 			query_args['name'] = name
-		if platform is not None:
+		elif platform is not None:
 			query_args['platform'] = platform
 			
 		API_URL = 'http://thegamesdb.net/api/GetGame.php?'
