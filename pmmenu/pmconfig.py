@@ -23,12 +23,6 @@ class PMCfg:
 		theme = yaml.safe_load(stream)
 		stream.close()
 		
-		#load theme file - use safe_load to make sure malicious code is not executed if hiding in theme.yaml
-		stream = open('/home/pi/pimame/pimame-menu/ks.yaml', 'r')
-		self.ks = yaml.safe_load(stream)
-		self.ks = sorted(self.ks)
-		stream.close()
-		
 		#roll config file + theme file into options class
 		self.options = PMOptions(config['options'], config['scraper_options'], theme['options'],config['menu_items'],theme['menu_items'])
 		config = None
@@ -282,6 +276,14 @@ class PMOptions:
 		else:
 			print 'cant load audio: ', file_path
 			return pygame.mixer.Sound('/home/pi/pimame/pimame-menu/assets/audio/blank.wav')
+			
+	def load_ks(self):
+		#load theme file - use safe_load to make sure malicious code is not executed if hiding in theme.yaml
+		stream = open('/home/pi/pimame/pimame-menu/assets/ks.yaml', 'r')
+		self.ks = yaml.safe_load(stream)
+		self.ks = sorted(self.ks)
+		self.ks.insert(0,"Thanks to all of our generous Kickstarter Backers!")
+		stream.close()
 		
 
 

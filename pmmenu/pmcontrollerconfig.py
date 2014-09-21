@@ -19,6 +19,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 		
 		self.CONTROLS = PMControls()
+		self.input_test = [pygame.KEYDOWN, pygame.JOYAXISMOTION, pygame.JOYBUTTONDOWN]
 		
 		self.cfg = cfg
 		self.screen = screen
@@ -158,6 +159,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 			self.cfg.menu_back_sound.play()
 			self.menu_open = False
 			self.screen.blit(self.original_screen,(0,0))
+			pygame.display.update()
 		
 		if action == 'SELECT':
 			self.cfg.menu_select_sound.play()
@@ -169,19 +171,21 @@ class PMControllerConfig(pygame.sprite.Sprite):
 	def draw_menu(self):
 			self.screen.blit(self.effect,(0,0))
 			self.screen.blit(self.menu, ((pygame.display.Info().current_w - self.rect.w)/2, (pygame.display.Info().current_h - self.rect.h)/2))
-		
+			pygame.display.update()
+			
 	def take_action(self, dict = []):
 		
 		avail_controller = self.controllers
 		if self.answer == "CANCEL":
 			self.menu_open = False
 			self.screen.blit(self.original_screen,(0,0))
+			pygame.display.update()
 			
 		#run the configurator!
 		elif self.answer in self.buttons:
 			if self.answer != 'All': avail_controller = [self.answer]
 			for selected_controller in avail_controller:
-				events_to_capture = [KEYUP, JOYBUTTONUP, JOYHATMOTION, JOYAXISMOTION]
+				
 				
 				input_path = self.DIRECTORY + "controllers/" + selected_controller
 				try:
@@ -239,31 +243,26 @@ class PMControllerConfig(pygame.sprite.Sprite):
 				self.render()
 				pygame.event.clear()
 				
-				
-				
+				events_to_capture = [KEYDOWN, JOYBUTTONDOWN, JOYHATMOTION, JOYAXISMOTION]
+				action_list = [pygame.KEYDOWN, pygame.JOYAXISMOTION, pygame.JOYBUTTONDOWN]
 				while running:
-					for event in pygame.event.get():
+					events = pygame.event.get()
+					
+					for event in events:
 						
 						
 						
 						#ctrl+q to force quit
-						if event.type == pygame.KEYDOWN:
-							action = self.CONTROLS.get_action('keyboard', event.key)
-							if pygame.key.get_mods() & pygame.KMOD_LCTRL:
-								if event.key == pygame.K_q:
-									self.cfg.menu_back_sound.play()
-									if self.cfg.use_scene_transitions: effect = PMUtil.fade_out(self)
-									running = False
-									self.draw_menu()
-									pygame.display.update()
-									return
+						if (pygame.key.get_mods() & pygame.KMOD_LCTRL) and event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+								self.cfg.menu_back_sound.play()
+								if self.cfg.use_scene_transitions: effect = PMUtil.fade_out(self)
+								running = False
+								self.draw_menu()
+								pygame.display.update()
+								return
 						
-						action = None	
-						if event.type == pygame.KEYUP: action = self.CONTROLS.get_action('keyboard', event.key)
-						if event.type == pygame.JOYAXISMOTION: action = self.CONTROLS.get_action('joystick', event.dict)
-						if event.type == pygame.JOYBUTTONUP: action = self.CONTROLS.get_action('joystick', event.button)
-						
-						if self.warning and self.warning.menu_open:
+						elif self.warning and self.warning.menu_open:
+							action = self.CONTROLS.get_action(action_list, events)
 							self.warning.handle_events(action)
 							if self.warning.answer:
 								if self.warning.title == 'next_player':
@@ -273,14 +272,16 @@ class PMControllerConfig(pygame.sprite.Sprite):
 										self.render("Building Config Files... Please Wait.")
 										running = False
 									else:
+										#calling render twice to make transition 'smoother'
+										self.render()
 										self.warning = None
 										self.render()
 						
 						elif event.type in events_to_capture:
-							if event.type == KEYUP:
+							if event.type == KEYDOWN:
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "key":event.key, "mod": event.mod}
 							
-							elif event.type == JOYBUTTONUP:
+							elif event.type == JOYBUTTONDOWN:
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "button":event.button, "joy": event.joy}
 							
 							elif event.type == JOYHATMOTION:
