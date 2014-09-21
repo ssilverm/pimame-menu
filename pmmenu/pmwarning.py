@@ -98,6 +98,7 @@ class PMWarning(pygame.sprite.Sprite):
 			self.cfg.menu_select_sound.play()
 			self.menu_open = False
 			self.screen.blit(self.cfg.blur_image,(0,0))
+			pygame.display.update()
 			self.answer = self.list.options[self.buttons][self.hover]['return']
 				
 		

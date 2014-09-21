@@ -86,7 +86,8 @@ class GeneralRun():
 				if image_answer:
 						scraper.download_image(rom_data, image_type = 'thumb')
 				
-				if local_data: rom_data = rom_data + local_data		
+				if local_data: rom_data = rom_data + local_data
+				
 				scraper.build_cache_file(rom_data, len(os.listdir(category['rom_path'])) )
 
 				
