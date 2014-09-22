@@ -64,6 +64,11 @@ class PMCfg:
 		self.options.menu_back_sound = self.options.load_audio(self.options.menu_back_sound)
 		self.options.menu_navigation_sound = self.options.load_audio(self.options.menu_navigation_sound)
 		
+		if self.options.menu_music: 
+			pygame.mixer.music.load(self.options.menu_music)
+			pygame.mixer.music.set_volume(.3)
+			pygame.mixer.music.play(-1)
+		
 		#pre-load surfaces
 		self.options.blur_image = pygame.Surface([screen_width, screen_height]).convert_alpha()
 		self.options.fade_image = pygame.Surface([screen_width, screen_height]).convert()
@@ -157,6 +162,8 @@ class PMOptions:
 		self.menu_select_sound = self.theme_pack + theme['menu_select_sound']
 		self.menu_back_sound = self.theme_pack + theme['menu_back_sound']
 		self.menu_navigation_sound = self.theme_pack + theme['menu_navigation_sound']
+		try: self.menu_music = self.theme_pack + theme['menu_music']
+		except: self.menu_music = None
 		
 		self.loading_image = self.theme_pack + theme['loading_image']
 		self.font_file = theme['font_file']

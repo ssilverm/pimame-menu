@@ -33,6 +33,10 @@ class PMUtil:
 		pygame.quit()
 		time.sleep(1)
 		command = command.split("%%")
+		if command[0] == "QUIT":
+			pygame.quit()
+			sys.exit()
+			
 		system(command[0] + " && export LD_LIBRARY_PATH= ")
 		
 		#restart piplay
