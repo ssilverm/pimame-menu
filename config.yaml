@@ -206,6 +206,13 @@ menu_items:
     override_menu: yes
     type: UTILITY
 
+  - label: Wifi Config
+    visible: Yes
+    full_path: no
+    command: /home/pi/pimame/wifi-setup/setup.sh
+    override_menu: yes
+    type: UTILITY
+
   - label: Exit
     visible: Yes
     full_path: no
