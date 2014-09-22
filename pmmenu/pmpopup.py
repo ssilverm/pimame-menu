@@ -244,7 +244,7 @@ class PMPopup(pygame.sprite.Sprite):
 	def handle_events(self, action):
 		
 		if action == 'LEFT':
-			self.cfg.menu_navigation_sound.play()
+			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_prev()
 			else:
 				self.list[self.hover]['prev']()
@@ -252,7 +252,7 @@ class PMPopup(pygame.sprite.Sprite):
 				self.update_menu()
 			self.draw_menu()
 		elif action == 'RIGHT':
-			self.cfg.menu_navigation_sound.play()
+			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_next()
 			else: 
 				self.list[self.hover]['next']()
@@ -260,7 +260,7 @@ class PMPopup(pygame.sprite.Sprite):
 				self.update_menu()
 			self.draw_menu()
 		elif action == 'UP':
-			self.cfg.menu_navigation_sound.play()
+			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_prev()
 			else:
 				self.list[self.hover]['prev']()
@@ -268,7 +268,7 @@ class PMPopup(pygame.sprite.Sprite):
 				self.update_menu()
 			self.draw_menu()
 		elif action == 'DOWN':
-			self.cfg.menu_navigation_sound.play()
+			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_next()
 			else: 
 				self.list[self.hover]['next']()

@@ -74,19 +74,19 @@ class PMWarning(pygame.sprite.Sprite):
 		self.answer = False
 		
 		if action == 'LEFT':
-			self.cfg.menu_navigation_sound.play()
+			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_prev()
 			self.draw_menu()
 		elif action == 'RIGHT':
-			self.cfg.menu_navigation_sound.play()
+			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_next()
 			self.draw_menu()
 		elif action == 'UP':
-			self.cfg.menu_navigation_sound.play()
+			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_prev()
 			self.draw_menu()
 		elif action == 'DOWN':
-			self.cfg.menu_navigation_sound.play()
+			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_next()
 			self.draw_menu()
 		elif action == 'BACK':
