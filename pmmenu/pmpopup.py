@@ -38,6 +38,9 @@ class PMPopup(pygame.sprite.Sprite):
 		
 		self.update_menu()
 
+		self.screen.blit(self.effect, (0,0))
+		pygame.display.update()
+		
 		self.rect = self.menu.get_rect()
 		self.draw_menu()
 	
@@ -60,12 +63,21 @@ class PMPopup(pygame.sprite.Sprite):
 	def build_menu(self, scene_type):
 		if scene_type == "main":
 			self.volume = {
-			"title": PMLabel("Volume:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title": PMLabel("System Volume:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
 			"value": PMLabel(self.menu_work.get_sound_volume(), self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMLabel("Volume:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"title_selected": PMLabel("System Volume:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"value_selected": PMLabel(self.menu_work.get_sound_volume(), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"prev": self.menu_work.volume_up,
 			"next": self.menu_work.volume_down
+			}
+			
+			self.music_volume = {
+			"title": PMLabel("Music Volume:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"value": PMLabel(self.menu_work.get_music_volume(), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+			"title_selected": PMLabel("Music Volume:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"value_selected": PMLabel(self.menu_work.get_music_volume(), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+			"prev": self.menu_work.music_volume_up,
+			"next": self.menu_work.music_volume_down
 			}
 			
 			self.theme = {
@@ -179,7 +191,7 @@ class PMPopup(pygame.sprite.Sprite):
 			
 
 			
-			popup = [self.volume, self.theme, self.cursor, self.transitions, self.show_ip, self.show_update, self.sort_alphanum,
+			popup = [self.volume, self.music_volume, self.theme, self.cursor, self.transitions, self.show_ip, self.show_update, self.sort_alphanum,
 						self.roms_first, self.hide_system_tools, self.quit_to_console, self.scraper_clones, self.scraper_overwrite_image, self.controller_setup]
 			
 			return popup
@@ -374,9 +386,11 @@ class PMPopup(pygame.sprite.Sprite):
 		pygame.display.update()
 		
 	def draw_menu(self):
-		self.screen.blit(self.effect,(0,0))
-		self.screen.blit(self.menu, ((pygame.display.Info().current_w - self.rect.w)/2, (pygame.display.Info().current_h - self.rect.h)/2))
-		pygame.display.update()
+		self.rect.x = (pygame.display.Info().current_w - self.rect.w)/2
+		self.rect.y =  (pygame.display.Info().current_h - self.rect.h)/2
+		self.screen.blit(self.effect, (self.rect.x, self.rect.y), self.rect)
+		self.screen.blit(self.menu, (self.rect.x, self.rect.y))
+		pygame.display.update(self.rect)
 		
 
 		
@@ -416,6 +430,21 @@ class WorkFunctions():
 		
 	def volume_down(self):
 		system("/usr/bin/amixer -q -c 0 sset PCM 3dB- unmute nocap")
+		
+	def get_music_volume(self):
+		try: 
+			music_volume = str(round(pygame.mixer.music.get_volume(),2) * 100) + "%"
+			return music_volume
+		except:
+			return "Not available"
+			
+	def music_volume_up(self):
+		music_volume = round(pygame.mixer.music.get_volume(), 2) + .05
+		pygame.mixer.music.set_volume(music_volume)
+		
+	def music_volume_down(self):
+		music_volume = round(pygame.mixer.music.get_volume(), 2) - .05
+		pygame.mixer.music.set_volume(music_volume)
 		
 	def get_themes(self):
 		a = [x for x in os.walk('/home/pi/pimame/pimame-menu/themes/').next()[1] if os.path.isfile('/home/pi/pimame/pimame-menu/themes/' + x + '/theme.yaml') and x != self.cfg.theme_name]
