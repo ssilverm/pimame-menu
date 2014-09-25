@@ -140,19 +140,19 @@ class PMControllerConfig(pygame.sprite.Sprite):
 	def handle_events(self, action):
 		
 		if action == 'LEFT':
-			self.cfg.menu_navigation_sound.play()
+			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_prev()
 			self.draw_menu()
 		elif action == 'RIGHT':
-			self.cfg.menu_navigation_sound.play()
+			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_next()
 			self.draw_menu()
 		elif action == 'UP':
-			self.cfg.menu_navigation_sound.play()
+			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_prev()
 			self.draw_menu()
 		elif action == 'DOWN':
-			self.cfg.menu_navigation_sound.play()
+			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_next()
 			self.draw_menu()
 		elif action == 'BACK':
@@ -259,6 +259,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 								running = False
 								self.draw_menu()
 								pygame.display.update()
+								self.menu_open = False
 								return
 						
 						elif self.warning and self.warning.menu_open:
@@ -271,6 +272,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 										pygame.display.update()
 										self.render("Building Config Files... Please Wait.")
 										running = False
+										break
 									else:
 										#calling render twice to make transition 'smoother'
 										self.render()
@@ -279,7 +281,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 						
 						elif event.type in events_to_capture:
 							if event.type == KEYDOWN:
-								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "key":event.key, "mod": event.mod}
+								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "key":event.key, "mod": event.mod, "keyname": pygame.key.name(event.key)}
 							
 							elif event.type == JOYBUTTONDOWN:
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "button":event.button, "joy": event.joy}
@@ -337,12 +339,12 @@ class PMControllerConfig(pygame.sprite.Sprite):
 							print formatter + " has failed."
 						count += 1
 					
-			self.cfg.menu_back_sound.play()
-			if self.cfg.use_scene_transitions: effect = PMUtil.fade_out(self)
-			running = False
-			self.draw_menu()
-			pygame.display.update()
-			return
+				self.cfg.menu_back_sound.play()
+				if self.cfg.use_scene_transitions: effect = PMUtil.fade_out(self)
+				running = False
+				self.draw_menu()
+				pygame.display.update()
+				return
 			
 		
 

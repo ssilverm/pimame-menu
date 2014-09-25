@@ -67,18 +67,19 @@ class PMPopup(pygame.sprite.Sprite):
 			"value": PMLabel(self.menu_work.get_sound_volume(), self.cfg.popup_font, self.cfg.popup_menu_font_color),
 			"title_selected": PMLabel("System Volume:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
 			"value_selected": PMLabel(self.menu_work.get_sound_volume(), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
-			"prev": self.menu_work.volume_up,
-			"next": self.menu_work.volume_down
+			"prev": self.menu_work.volume_down,
+			"next": self.menu_work.volume_up
 			}
 			
-			self.music_volume = {
-			"title": PMLabel("Music Volume:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"value": PMLabel(self.menu_work.get_music_volume(), self.cfg.popup_font, self.cfg.popup_menu_font_color),
-			"title_selected": PMLabel("Music Volume:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
-			"value_selected": PMLabel(self.menu_work.get_music_volume(), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
-			"prev": self.menu_work.music_volume_up,
-			"next": self.menu_work.music_volume_down
-			}
+			if self.cfg.menu_music:
+				self.music_volume = {
+				"title": PMLabel("Music Volume:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
+				"value": PMLabel(self.menu_work.get_music_volume(), self.cfg.popup_font, self.cfg.popup_menu_font_color),
+				"title_selected": PMLabel("Music Volume:", self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+				"value_selected": PMLabel(self.menu_work.get_music_volume(), self.cfg.popup_font, self.cfg.popup_menu_font_selected_color),
+				"prev": self.menu_work.music_volume_down,
+				"next": self.menu_work.music_volume_up
+				}
 			
 			self.theme = {
 			"title": PMLabel("Theme:", self.cfg.popup_font, self.cfg.popup_menu_font_color),
@@ -191,8 +192,11 @@ class PMPopup(pygame.sprite.Sprite):
 			
 
 			
-			popup = [self.volume, self.music_volume, self.theme, self.cursor, self.transitions, self.show_ip, self.show_update, self.sort_alphanum,
+			popup = [self.volume, self.theme, self.cursor, self.transitions, self.show_ip, self.show_update, self.sort_alphanum,
 						self.roms_first, self.hide_system_tools, self.quit_to_console, self.scraper_clones, self.scraper_overwrite_image, self.controller_setup]
+			
+			if self.cfg.menu_music:
+				popup.insert(1, self.music_volume)
 			
 			return popup
 			#self.themes = PMLabel(get_theme(), cfg.popup_font, cfg.popup_menu_font_color)
@@ -275,7 +279,7 @@ class PMPopup(pygame.sprite.Sprite):
 			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_prev()
 			else:
-				self.list[self.hover]['prev']()
+				self.list[self.hover]['next']()
 				self.list = self.build_menu(self.scene_type)
 				self.update_menu()
 			self.draw_menu()
@@ -283,7 +287,7 @@ class PMPopup(pygame.sprite.Sprite):
 			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_next()
 			else: 
-				self.list[self.hover]['next']()
+				self.list[self.hover]['prev']()
 				self.list = self.build_menu(self.scene_type)
 				self.update_menu()
 			self.draw_menu()
@@ -320,63 +324,70 @@ class PMPopup(pygame.sprite.Sprite):
 		config_path = '/home/pi/pimame/pimame-menu/config.yaml'
 		requires_restart = False
 		
+		#SOUND
+		system("alsactl --file ~/pimame/config/piplay-sound.state store")
+			
 		#THEME
 		if self.menu_work.theme_list[self.menu_work.theme_count] != self.cfg.theme_name:
 			PMUtil.replace(config_path, 'theme_pack: "' + self.cfg.theme_name, 'theme_pack: "' + self.menu_work.theme_list[self.menu_work.theme_count])
 			requires_restart = True
+			
+		#DEFAULT MUSIC VOLUME:
+		if self.cfg.default_music_volume != self.menu_work.music_volume:
+			PMUtil.replace(config_path, '', (self.menu_work.music_volume / 100), 'default_music_volume:')
 		
 		#CURSOR
 		if self.cfg.show_cursor != self.menu_work.cursor_bool:
 			pygame.mouse.set_visible(self.menu_work.cursor_bool)
-			PMUtil.replace(config_path, '', str(self.menu_work.cursor_bool), 'show_cursor:')
+			PMUtil.replace(config_path, '', self.menu_work.cursor_bool, 'show_cursor:')
 		
 		#SCENE TRANSITIONS
 		if self.cfg.use_scene_transitions != self.menu_work.scene_trans_bool:
 			self.cfg.use_scene_transitions = self.menu_work.scene_trans_bool
-			PMUtil.replace(config_path, '', str(self.menu_work.scene_trans_bool), 'use_scene_transitions:')
+			PMUtil.replace(config_path, '', self.menu_work.scene_trans_bool, 'use_scene_transitions:')
 		
 		#IP
 		if self.cfg.show_ip != self.menu_work.ip_bool:
 			self.cfg.show_ip = self.menu_work.ip_bool
-			PMUtil.replace(config_path, '', str(self.menu_work.ip_bool), 'show_ip:')
+			PMUtil.replace(config_path, '', self.menu_work.ip_bool, 'show_ip:')
 		
 		#SHOW UPDATE
 		if self.cfg.show_update != self.menu_work.update_bool:
 			self.cfg.show_update = self.menu_work.update_bool
-			PMUtil.replace(config_path, '', str(self.menu_work.update_bool), 'show_update:')
+			PMUtil.replace(config_path, '', self.menu_work.update_bool, 'show_update:')
 		
 		#SORT EMU BY ALPHANUM
 		if self.cfg.sort_items_alphanum != self.menu_work.sort_abc_bool:
 			self.cfg.sort_items_alphanum = self.menu_work.sort_abc_bool
-			PMUtil.replace(config_path, '', str(self.menu_work.sort_abc_bool), 'sort_items_alphanum:')
+			PMUtil.replace(config_path, '', self.menu_work.sort_abc_bool, 'sort_items_alphanum:')
 			requires_restart = True
 		
 		#SORT EMU WITH ROMS FIRST
 		if self.cfg.sort_items_with_roms_first != self.menu_work.roms_first_bool:
 			self.cfg.sort_items_with_roms_first = self.menu_work.roms_first_bool
-			PMUtil.replace(config_path, '', str(self.menu_work.roms_first_bool), 'sort_items_with_roms_first:')
+			PMUtil.replace(config_path, '', self.menu_work.roms_first_bool, 'sort_items_with_roms_first:')
 			requires_restart = True
 		
 		#HIDE ITEMS WITHOUT ROMS
 		if self.cfg.hide_system_tools != self.menu_work.hide_system_tools_bool:
 			self.cfg.hide_system_tools = self.menu_work.hide_system_tools_bool
-			PMUtil.replace(config_path, '', str(self.menu_work.hide_system_tools_bool), 'hide_system_tools:')
+			PMUtil.replace(config_path, '', self.menu_work.hide_system_tools_bool, 'hide_system_tools:')
 			requires_restart = True
 		
 		#ALLOW QUIT TO CONSOLE
 		if self.cfg.allow_quit_to_console != self.menu_work.quit_bool:
 			self.cfg.allow_quit_to_console = self.menu_work.quit_bool
-			PMUtil.replace(config_path, '', str(self.menu_work.quit_bool), 'allow_quit_to_console:')
+			PMUtil.replace(config_path, '', self.menu_work.quit_bool, 'allow_quit_to_console:')
 		
 		#SCRAPER SHOW CLONES
 		if self.cfg.show_clones != self.menu_work.scraper_clones_bool:
 			self.cfg.show_clones = self.menu_work.scraper_clones_bool
-			PMUtil.replace(config_path, '', str(self.menu_work.scraper_clones_bool), 'show_clones:')
+			PMUtil.replace(config_path, '', self.menu_work.scraper_clones_bool, 'show_clones:')
 		
 		#SCRAPER OVERWRITE IMAGES
 		if self.cfg.overwrite_images != self.menu_work.scraper_overwrite_bool:
 			self.cfg.overwrite_images = self.menu_work.scraper_overwrite_bool
-			PMUtil.replace(config_path, '', str(self.menu_work.scraper_overwrite_bool), 'overwrite_images:')
+			PMUtil.replace(config_path, '', self.menu_work.scraper_overwrite_bool, 'overwrite_images:')
 			
 		if requires_restart: 
 			system('clear')
@@ -401,6 +412,7 @@ class WorkFunctions():
 		self.cfg = cfg
 		self.theme_count = 0
 		self.theme_list = self.get_themes()
+		self.music_volume = pygame.mixer.music.get_volume()
 		self.cursor_bool = self.cfg.show_cursor
 		self.scene_trans_bool = self.cfg.use_scene_transitions
 		self.ip_bool = self.cfg.show_ip
@@ -431,20 +443,24 @@ class WorkFunctions():
 	def volume_down(self):
 		system("/usr/bin/amixer -q -c 0 sset PCM 3dB- unmute nocap")
 		
+		
 	def get_music_volume(self):
 		try: 
-			music_volume = str(round(pygame.mixer.music.get_volume(),2) * 100) + "%"
-			return music_volume
+			return (str(int(round((pygame.mixer.music.get_volume() * 100), -1))) + "%")
 		except:
 			return "Not available"
 			
 	def music_volume_up(self):
-		music_volume = round(pygame.mixer.music.get_volume(), 2) + .05
-		pygame.mixer.music.set_volume(music_volume)
+		self.music_volume = min(round(int(pygame.mixer.music.get_volume() * 100), -1) + 10, 100)
+		pygame.mixer.music.set_volume(self.music_volume / 100)
+		if self.music_volume == 10:
+			pygame.mixer.music.play(-1)
 		
 	def music_volume_down(self):
-		music_volume = round(pygame.mixer.music.get_volume(), 2) - .05
-		pygame.mixer.music.set_volume(music_volume)
+		self.music_volume = max(round(int(pygame.mixer.music.get_volume() * 100), -1) - 10, 0)
+		pygame.mixer.music.set_volume(self.music_volume / 100)
+		if self.music_volume == 0:
+			pygame.mixer.music.stop()
 		
 	def get_themes(self):
 		a = [x for x in os.walk('/home/pi/pimame/pimame-menu/themes/').next()[1] if os.path.isfile('/home/pi/pimame/pimame-menu/themes/' + x + '/theme.yaml') and x != self.cfg.theme_name]

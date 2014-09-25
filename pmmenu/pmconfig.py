@@ -10,7 +10,9 @@ class PMCfg:
 		
 		#clear command line for incoming error messages
 		system('clear')
+		
 		#initialize sound mixer
+		system("alsactl --file ~/pimame/config/piplay-sound.state restore")
 		pygame.mixer.pre_init(22050, -16, 1, 1024)
 		
 		#load config file, use open() rather than file(), file() is deprecated in python 3.
@@ -64,10 +66,11 @@ class PMCfg:
 		self.options.menu_back_sound = self.options.load_audio(self.options.menu_back_sound)
 		self.options.menu_navigation_sound = self.options.load_audio(self.options.menu_navigation_sound)
 		
+		#load music, only stream if music volume > 0
 		if self.options.menu_music: 
 			pygame.mixer.music.load(self.options.menu_music)
-			pygame.mixer.music.set_volume(.3)
-			pygame.mixer.music.play(-1)
+			pygame.mixer.music.set_volume(self.options.default_music_volume)
+			if self.options.default_music_volume: pygame.mixer.music.play(-1)
 		
 		#pre-load surfaces
 		self.options.blur_image = pygame.Surface([screen_width, screen_height]).convert_alpha()
@@ -138,6 +141,7 @@ class PMOptions:
 		self.use_scene_transitions = opts['use_scene_transitions']
 		self.theme_name = opts['theme_pack']
 		self.theme_pack = "themes/" + opts['theme_pack'] + "/"
+		self.default_music_volume = max(float(opts['default_music_volume']) , 0.0)
 		
 		#scraper options
 		self.show_clones = scraper['show_clones']

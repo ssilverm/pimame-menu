@@ -60,6 +60,9 @@ class PMUtil:
 		new_file = open(abs_path,'wb')
 		old_file = open(file_path)
 		
+		pattern = str(pattern)
+		subst = str(subst)
+		
 		pattern = pattern.replace('True', 'Yes')
 		pattern = pattern.replace('False', 'No')
 		subst = subst.replace('True', 'Yes')
@@ -67,7 +70,7 @@ class PMUtil:
 		
 		for line in old_file:
 			line = line.replace(':"', ': "')
-			if not prefix == None and prefix in line:
+			if prefix and prefix in line:
 				line = (line.split(prefix)[0] + prefix.strip() + " " + subst + '\n')
 			elif prefix == None:
 				line = (line.replace(pattern, subst))
