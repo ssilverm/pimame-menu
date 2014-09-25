@@ -13,7 +13,7 @@ class PMCfg:
 		
 		#initialize sound mixer
 		system("alsactl --file ~/pimame/config/piplay-sound.state restore")
-		pygame.mixer.pre_init(22050, -16, 1, 1024)
+		pygame.mixer.pre_init(44100, -16, 1, 2048)
 		
 		#load config file, use open() rather than file(), file() is deprecated in python 3.
 		stream = open('/home/pi/pimame/pimame-menu/config.yaml', 'r')
