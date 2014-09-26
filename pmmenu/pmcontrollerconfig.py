@@ -260,7 +260,6 @@ class PMControllerConfig(pygame.sprite.Sprite):
 								running = False
 								self.draw_menu()
 								pygame.display.update()
-								self.menu_open = False
 								return
 						
 						elif self.warning and self.warning.menu_open:
