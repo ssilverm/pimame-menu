@@ -55,6 +55,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 			stick.init()
 			stick2 = pygame.joystick.Joystick(1)
 			stick2.init()
+			self.joystickID = stick.get_numaxes() + stick.get_numballs() + stick.get_numhats() + stick.get_numbuttons()
 		except:
 			pass
 
@@ -62,7 +63,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 		formatters_available = filter(lambda x: x[-3:]==".py", os.listdir(self.DIRECTORY + 'formatters'))
 
 		#  What controller are we configuring?
-		controllers_available = os.listdir(self.DIRECTORY +'controllers')
+		controllers_available = sorted(os.listdir(self.DIRECTORY +'controllers'))
 
 		if controller:
 			self.controllers = [controller]
@@ -284,19 +285,19 @@ class PMControllerConfig(pygame.sprite.Sprite):
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "key":event.key, "mod": event.mod, "keyname": pygame.key.name(event.key)}
 							
 							elif event.type == JOYBUTTONDOWN:
-								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "button":event.button, "joy": event.joy}
+								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "button":event.button, "joy": event.joy, "joystickID": self.joystickID}
 							
 							elif event.type == JOYHATMOTION:
 								#  Skip the event of the joystick reseting to 0, 0
 								if event.value == (0,0):
 									continue
-								mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "joy": event.joy}
+								mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "joy": event.joy, "joystickID": self.joystickID}
 							
 							elif event.type == JOYAXISMOTION:
 								#  Skip if the press wasn't 'hard' enough
 								if event.value < 1.0 and event.value > -1.0:
 									continue
-								mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "axis": event.axis, "joy": event.joy}
+								mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "axis": event.axis, "joy": event.joy, "joystickID": self.joystickID}
 							
 							#  Advance to next button
 							self.current_button += 1
