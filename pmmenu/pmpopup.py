@@ -3,10 +3,8 @@ import pygame
 import subprocess
 import string
 from os import system
-from pmcontrols import *
 from pmutil import *
 from pmlabel import *
-from pmcontrollerconfig import *
 
 class PMPopup(pygame.sprite.Sprite):
 

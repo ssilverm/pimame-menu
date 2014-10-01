@@ -9,6 +9,7 @@ from pmselection import *
 from pmlabel import *
 from pmutil import *
 from romlistscene import *
+import os
 
 class MainScene(object):
 
@@ -170,7 +171,6 @@ class MainScene(object):
 		
 		if call_render: self.render(self.screen)
 		
-		
 	def render(self, screen):
 		self.header = PMHeader(self.cfg.options)
 		self.selection = PMSelection(self.cfg.options)
@@ -188,21 +188,35 @@ class MainScene(object):
 			if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_in(self)
 			#self.cfg.options.fade_image = pygame.Surface([self.screen.get_width(), self.screen.get_height()]).convert()
 		self.cfg.options.fade_image.blit(self.screen,(0,0))
+		
+		if self.cfg.options.first_run:
+			open('/home/pi/pimame/changelogs/firstrun_passed').close()
+			self.warning = PMWarning(self.screen, self.cfg.options, 
+				[["center","Welcome to PiPlay!"], 
+				["center", ""],
+				["left", "Here's the default control scheme:"],
+				["left", "-Press 'Enter' or 'joystick button 1' to make selections"],
+				["left", "-Press 'Esc' or 'joystick button 2' to go back"],
+				["left", "-Press 'Tab' or 'joystick button 3' to open your popup menu"],
+				["center", ""],
+				["left", "*Hint: try the popup menu when selecting a game"]], "ok", "FIRST_RUN")
+		else:
+			self.changelog_check()
 
 	def update(self):
 		pass
 		
 	def warning_check(self):
 		if self.warning.answer:
-				if self.warning.title == 'roms':
+				if self.warning.title == 'ROMS':
 					if self.warning.answer == "YES": 
 						PMUtil.run_command_and_continue('python /home/pi/pimame/pimame-menu/scraper/scrape_script.py --platform "' + self.get_selected_item().label + '"')
 					else:
 						self.warning = None
 						self.do_menu_item_action(self.get_selected_item())
-						
+				
 				try:
-					if self.warning.title == 'kickstarter':
+					if self.warning.title == 'KICKSTARTER':
 						if self.warning.answer == "OK":
 							self.warning = None
 							self.ks_line = ''
@@ -210,11 +224,40 @@ class MainScene(object):
 							if self.ks_range < len(self.cfg.options.ks):
 								for person in self.cfg.options.ks[self.ks_range:self.ks_range+19]:
 									self.ks_line += person + ' \n '
-								self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'kickstarter')
+								self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'KICKSTARTER')
 						else:
 							self.warning = None
 				except:
 					pass
+				
+				if self.warning.title == 'FIRST_RUN':
+					if not self.warning.menu_open: 
+						PMUtil.replace('/home/pi/pimame/pimame-menu/config.yaml', 'first_run: True', 'first_run: False')
+						self.warning = None
+						self.changelog_check()
+						
+				if self.warning.title == 'CHANGELOG':
+					self.warning = None
+					
+	def changelog_check(self):
+		#check if flag file exists
+		if os.path.isfile('/home/pi/pimame/changelogs/show_changelog'):
+			try:
+				#get current version
+				with open('/home/pi/pimame/version') as file:
+					version = file.readline().strip()
+				
+				#load current version changelog into array, Delete flag file
+				changelog = [line for line in open('/home/pi/pimame/changelogs/' + version)]
+				os.remove('/home/pi/pimame/changelogs/show_changelog')
+				
+				#build message
+				message = [["center", "Version " + changelog[0].strip() + " Changelog"]]
+				for line in changelog[1:]:
+						message.append(["left", line.strip()])
+				self.warning = PMWarning(self.screen, self.cfg.options, message, "ok", "CHANGELOG")
+			except:
+				pass
 
 	def handle_events(self, action):
 		
@@ -245,7 +288,7 @@ class MainScene(object):
 				sprite = self.get_selected_item()
 				#DISPLAY WARNING IF FILES HAVE CHANGED
 				if "!" in str(sprite.num_roms) and not self.warning: 
-					self.warning = PMWarning(self.screen, self.cfg.options, "Some files have changed, would you like to scrape this folder for new roms?", "yes/no", "roms")
+					self.warning = PMWarning(self.screen, self.cfg.options, "Some files have changed, would you like to scrape this folder for new roms?", "yes/no", "ROMS")
 				elif not self.warning:
 					self.do_menu_item_action(sprite)
 			elif action == 'BACK' and self.cfg.options.allow_quit_to_console:
@@ -266,7 +309,7 @@ class MainScene(object):
 					self.cfg.options.load_ks()
 					for person in self.cfg.options.ks[0:19]:
 						self.ks_line += person + ' \n '
-					self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'kickstarter')
+					self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'KICKSTARTER')
 			
 			#MOUSE CLICK
 			elif action == "MOUSEBUTTON":

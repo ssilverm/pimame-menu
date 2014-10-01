@@ -1,5 +1,6 @@
 options:
   max_fps: 60
+  first_run: Yes
   show_ip: Yes
   show_update: Yes
   fullscreen: Yes
