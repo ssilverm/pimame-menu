@@ -43,7 +43,7 @@ class RomListScene(object):
 		self.list_container = pygame.Rect(0, 0, self.list.rom_template.rect.w + (self.cfg.options.rom_list_padding * 2), self.avail_height)
 		self.list_rect = pygame.Rect(0,0, self.list.rom_template.rect.w, self.avail_height - (self.cfg.options.rom_list_padding *2))
 		self.crop_rect = pygame.Rect(0,0, self.list.rom_template.rect.w - cropping['left'] - cropping['right'], self.list.rom_template.rect.h - cropping['bottom'])
-		self.info_container = pygame.Rect(0, 0, self.avail_width - self.list_container.w, self.avail_height)
+		self.info_container = pygame.Rect(0, 0, max(self.avail_width - self.list_container.w, 0), self.avail_height)
 		self.boxart_area = pygame.Rect(0, 0, self.info_container.w, int(self.info_container.h * .4))
 		self.description_area = pygame.Rect(0, self.boxart_area.h, self.info_container.w, self.info_container.h - self.boxart_area.h)
 		
@@ -320,7 +320,7 @@ class RomListScene(object):
 				if self.boxart_thread: 
 					self.draw_bg(self.boxart_area)
 			except: pass
-			self.boxart_thread = thread.start_new_thread(self.draw_boxart, (20,))
+			if self.info_container.w: self.boxart_thread = thread.start_new_thread(self.draw_boxart, (20,))
 		
 
 		text = self.selected_item.text
