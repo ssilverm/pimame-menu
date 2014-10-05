@@ -214,6 +214,7 @@ class MainScene(object):
 					else:
 						self.warning = None
 						self.do_menu_item_action(self.get_selected_item())
+					return
 				
 				try:
 					if self.warning.title == 'KICKSTARTER':
@@ -227,6 +228,7 @@ class MainScene(object):
 								self.warning = PMWarning(self.screen, self.cfg.options, self.ks_line, "ok/cancel", 'KICKSTARTER')
 						else:
 							self.warning = None
+						return
 				except:
 					pass
 				
@@ -234,9 +236,11 @@ class MainScene(object):
 					if not self.warning.menu_open: 
 						self.warning = None
 						self.changelog_check()
+					return
 						
 				if self.warning.title == 'CHANGELOG':
 					self.warning = None
+					return
 					
 	def changelog_check(self):
 		#check if flag file exists
