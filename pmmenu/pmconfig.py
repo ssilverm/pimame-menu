@@ -129,7 +129,6 @@ class PMOptions:
 		self.options_menu_items = opt_menu_item
 		
 		self.max_fps = opts['max_fps']
-		self.first_run = opts['first_run']
 		self.show_ip = opts['show_ip']
 		self.show_update = opts['show_update']
 		self.fullscreen = opts['fullscreen']

@@ -410,7 +410,7 @@ class WorkFunctions():
 		self.cfg = cfg
 		self.theme_count = 0
 		self.theme_list = self.get_themes()
-		self.music_volume = pygame.mixer.music.get_volume()
+		self.music_volume = self.cfg.default_music_volume
 		self.cursor_bool = self.cfg.show_cursor
 		self.scene_trans_bool = self.cfg.use_scene_transitions
 		self.ip_bool = self.cfg.show_ip

@@ -88,7 +88,7 @@ class RomListScene(object):
 		self.selected_item = self.list.labels[0]
 		
 		self.draw()
-		if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_into(self, self.cfg.options.fade_image)
+		effect = PMUtil.fade_into(self, self.cfg.options.fade_image, self.cfg.options.use_scene_transitions)
 		self.cfg.options.fade_image.blit(self.screen,(0,0))
 		
 		#pygame.draw.rect(self.screen, (255,0,0), self.list_container,5)

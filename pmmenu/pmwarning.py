@@ -123,6 +123,7 @@ class BuildMessage():
 			self.cfg = cfg
 			self.lines = []
 			
+
 			try:
 				message + "1"
 				message = message.replace('\n', ' \n ')
@@ -131,7 +132,7 @@ class BuildMessage():
 						self.lines.append(["center", text_line.strip()])
 						text_line = ''
 					if word != '\n': text_line += word + ' '
-				self.lines.append(text_line)
+				self.lines.append(["center", text_line.strip()])
 			except:
 				self.lines = message
 				

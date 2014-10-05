@@ -51,11 +51,13 @@ class PMControllerConfig(pygame.sprite.Sprite):
 			
 		#  Try to initialize the first joystick
 		try:
+			self.joystickID = [None, None]
 			stick = pygame.joystick.Joystick(0)
 			stick.init()
+			self.joystickID[0] = stick.get_numaxes() + stick.get_numballs() + stick.get_numhats() + stick.get_numbuttons()
 			stick2 = pygame.joystick.Joystick(1)
 			stick2.init()
-			self.joystickID = stick.get_numaxes() + stick.get_numballs() + stick.get_numhats() + stick.get_numbuttons()
+			self.joystickID[1] = stick2.get_numaxes() + stick2.get_numballs() + stick2.get_numhats() + stick2.get_numbuttons()
 		except:
 			pass
 
@@ -256,7 +258,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 						#ctrl+q to force quit
 						if (pygame.key.get_mods() & pygame.KMOD_LCTRL) and event.type == pygame.KEYDOWN and event.key == pygame.K_q:
 								self.cfg.menu_back_sound.play()
-								if self.cfg.use_scene_transitions: effect = PMUtil.fade_out(self)
+								effect = PMUtil.fade_out(self, self.cfg.use_scene_transitions)
 								running = False
 								self.draw_menu()
 								pygame.display.update()
@@ -284,19 +286,19 @@ class PMControllerConfig(pygame.sprite.Sprite):
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "key":event.key, "mod": event.mod, "keyname": pygame.key.name(event.key)}
 							
 							elif event.type == JOYBUTTONDOWN:
-								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "button":event.button, "joy": event.joy, "joystickID": self.joystickID}
+								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "button":event.button, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
 							
 							elif event.type == JOYHATMOTION:
 								#  Skip the event of the joystick reseting to 0, 0
 								if event.value == (0,0):
 									continue
-								mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "joy": event.joy, "joystickID": self.joystickID}
+								mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
 							
 							elif event.type == JOYAXISMOTION:
 								#  Skip if the press wasn't 'hard' enough
 								if event.value < 1.0 and event.value > -1.0:
 									continue
-								mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "axis": event.axis, "joy": event.joy, "joystickID": self.joystickID}
+								mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "axis": event.axis, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
 							
 							#  Advance to next button
 							self.current_button += 1
@@ -340,7 +342,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 						count += 1
 					
 				self.cfg.menu_back_sound.play()
-				if self.cfg.use_scene_transitions: effect = PMUtil.fade_out(self)
+				effect = PMUtil.fade_out(self, self.cfg.use_scene_transitions)
 				running = False
 				self.draw_menu()
 				pygame.display.update()

@@ -183,14 +183,14 @@ class MainScene(object):
 		self.set_selected_index(0, play_sound = False)
 
 		if self.cfg.options.fade_image:
-			if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_into(self, self.cfg.options.fade_image)
+			effect = PMUtil.fade_into(self, self.cfg.options.fade_image, self.cfg.options.use_scene_transitions)
 		else:
-			if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_in(self)
-			#self.cfg.options.fade_image = pygame.Surface([self.screen.get_width(), self.screen.get_height()]).convert()
+			effect = PMUtil.fade_in(self, self.cfg.options.use_scene_transitions)
 		self.cfg.options.fade_image.blit(self.screen,(0,0))
 		
-		if self.cfg.options.first_run:
-			open('/home/pi/pimame/changelogs/firstrun_passed').close()
+		
+		if not os.path.isfile('/home/pi/pimame/changelogs/firstrun_passed'):
+			open('/home/pi/pimame/changelogs/firstrun_passed', 'a').close()
 			self.warning = PMWarning(self.screen, self.cfg.options, 
 				[["center","Welcome to PiPlay!"], 
 				["center", ""],
@@ -232,7 +232,6 @@ class MainScene(object):
 				
 				if self.warning.title == 'FIRST_RUN':
 					if not self.warning.menu_open: 
-						PMUtil.replace('/home/pi/pimame/pimame-menu/config.yaml', 'first_run: True', 'first_run: False')
 						self.warning = None
 						self.changelog_check()
 						
@@ -293,7 +292,7 @@ class MainScene(object):
 					self.do_menu_item_action(sprite)
 			elif action == 'BACK' and self.cfg.options.allow_quit_to_console:
 				self.cfg.options.menu_back_sound.play()
-				if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_out(self)
+				effect = PMUtil.fade_out(self, self.cfg.options.use_scene_transitions)
 				pygame.quit()
 				sys.exit()
 			
@@ -350,17 +349,16 @@ class MainScene(object):
 		elif sprite.type == PMMenuItem.NAVIGATION:
 				self.cfg.options.menu_navigation_sound.play()
 				self.cfg.options.fade_image.blit(self.screen,(0,0))
-				
 				if sprite.command == PMMenuItem.PREV_PAGE:
 					self.grid.prev_page()
 					self.draw_items()
 					self.set_selected_index(len(self.grid.sprites()) - 1, play_sound = False)
-					if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_into(self, self.cfg.options.fade_image)
+					effect = PMUtil.fade_into(self, self.cfg.options.fade_image, self.cfg.options.use_scene_transitions)
 				else:
 					self.grid.next_page()
 					self.draw_items()
 					self.set_selected_index(0, play_sound = False)
-					if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_into(self, self.cfg.options.fade_image)
+					effect = PMUtil.fade_into(self, self.cfg.options.fade_image, self.cfg.options.use_scene_transitions)
 		else:
 				self.cfg.options.menu_select_sound.play()
 				PMUtil.run_command_and_continue(sprite.command)
