@@ -1,16 +1,16 @@
 options:
   max_fps: 60
-  show_ip: No
-  show_update: No
+  show_ip: Yes
+  show_update: Yes
   fullscreen: Yes
   resolution: "0,0"
   sort_items_alphanum: True
   sort_items_with_roms_first: True
-  hide_system_tools: No
+  hide_system_tools: False
   show_cursor: No
   allow_quit_to_console: True
-  use_scene_transitions: No
-  theme_pack: "piworld"
+  use_scene_transitions: Yes
+  theme_pack: "default"
   default_music_volume: 0.2
 
 scraper_options:
@@ -218,6 +218,5 @@ menu_items:
     visible: Yes
     full_path: no
     command: exit_piplay
-
     override_menu: yes
     type: UTILITY
