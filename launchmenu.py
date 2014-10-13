@@ -6,8 +6,6 @@ from pmmenu.scenemanager import *
 from pmmenu.mainscene import *
 from pmmenu.romlistscene import *
 
-#menu = pmmenu.PMMenu('config.yaml')
-#menu.draw()
 
 parser = argparse.ArgumentParser(description='PiPlay')
 parser.add_argument("--quicklaunch", metavar="value", help="Which platform to skip to", type=str)
@@ -17,8 +15,7 @@ def main():
 	cfg = PMCfg()
 	controls = PMControls()
 	
-	#pygame.init()
-	#screen = pygame.display.set_mode(DISPLAY, FLAGS, DEPTH)
+
 	pygame.display.set_caption('PiMAME')
 	#TODO: need to set_icon
 	
@@ -37,7 +34,6 @@ def main():
 
 		for sprite in manager.scene.grid:
 			if sprite.label == args.quicklaunch:
-				#manager = SceneManager(cfg, MainScene())
 				manager.go_to(RomListScene(sprite.get_rom_list(), sprite.label))
 	else:
 		manager = SceneManager(cfg, MainScene())

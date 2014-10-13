@@ -6,7 +6,7 @@ from pmlabel import *
 
 class PMWarning(pygame.sprite.Sprite):
 
-	def __init__(self, screen, cfg, message, buttons = "ok", title = "warning"):
+	def __init__(self, screen, cfg, message, buttons = "ok", title = "warning", max_line_length = 45):
 		pygame.sprite.Sprite.__init__(self)
 		
 		self.cfg = cfg
@@ -31,7 +31,7 @@ class PMWarning(pygame.sprite.Sprite):
 		else:
 			self.effect = self.screen.copy()
 
-		self.list = BuildMessage(cfg, message)
+		self.list = BuildMessage(cfg, message, max_line_length)
 		self.update_menu()
 		self.rect = self.menu.get_rect()
 		
@@ -74,25 +74,29 @@ class PMWarning(pygame.sprite.Sprite):
 		self.answer = False
 		
 		if action == 'LEFT':
-			self.cfg.menu_navigation_sound.play()
+			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_prev()
 			self.draw_menu()
 		elif action == 'RIGHT':
-			self.cfg.menu_navigation_sound.play()
+			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_next()
 			self.draw_menu()
 		elif action == 'UP':
-			self.cfg.menu_navigation_sound.play()
+			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_prev()
 			self.draw_menu()
 		elif action == 'DOWN':
-			self.cfg.menu_navigation_sound.play()
+			self.cfg.menu_move_sound.play()
 			if not self.selected: self.hover_next()
 			self.draw_menu()
-		elif action == 'BACK':
+		#REQUIRE ANSWER FROM USER
+		#DON'T ALLOW BACK ACTION
+		'''elif action == 'BACK':
 				self.cfg.menu_back_sound.play()
 				self.menu_open = False
 				self.screen.blit(self.cfg.blur_image,(0,0))
+				pygame.display.update()
+				self.screen.blit(self.cfg.blur_image,(0,0))'''
 		
 		if action == 'SELECT':
 			self.cfg.menu_select_sound.play()
@@ -114,31 +118,42 @@ class PMWarning(pygame.sprite.Sprite):
 
 		
 class BuildMessage():
-		def __init__(self, cfg, message):
+		def __init__(self, cfg, message, max_line_length = 45):
 			text_line = ''
 			self.cfg = cfg
 			self.lines = []
-			for words in message.split(' '):
-				if len(text_line) + len(words) > 45 or words == '\n':
-					self.lines.append(text_line)
-					text_line = ''
-				if words != '\n': text_line += words + ' '
-			self.lines.append(text_line)
+			
+
+			try:
+				message + "1"
+				message = message.replace('\n', ' \n ')
+				for word in message.split(' '):
+					if (len(text_line) + len(word) > max_line_length) or ('\n' in word):
+						self.lines.append(["center", text_line.strip()])
+						text_line = ''
+					if word != '\n': text_line += word + ' '
+				self.lines.append(["center", text_line.strip()])
+			except:
+				self.lines = message
 				
 
-			self.lines = [PMLabel(line, self.cfg.popup_font, self.cfg.popup_menu_font_color) for line in self.lines]
+			#self.lines = [PMLabel(line[1], self.cfg.popup_font, self.cfg.popup_menu_font_color) for line in self.lines]
+			self.lines = [([line[0], PMLabel(line[1], self.cfg.popup_font, self.cfg.popup_menu_font_color)]) for line in self.lines]
 			
 			y = 10
-			self.item_width = max(self.lines, key=lambda x: x.rect.w).rect.w + 20
-			self.item_height = self.lines[0].rect.h * (len(self.lines) + 1) + 40
+			self.item_width = max(self.lines, key=lambda x: x[1].rect.w)[1].rect.w + 20
+			self.item_height = self.lines[0][1].rect.h * (len(self.lines) + 1) + 40
 			
 			self.message = pygame.Surface([self.item_width, self.item_height], pygame.SRCALPHA, 32).convert_alpha()
 			self.rect = self.message.get_rect()
 			self.message.fill(self.cfg.popup_menu_background_color, self.rect)
 			
 			for line in self.lines:
-				self.message.blit(line.image, ((self.item_width - line.rect.w) / 2, y))
-				y += line.rect.h
+				if line[0] == 'center': self.message.blit( line[1].image, ((self.item_width - line[1].rect.w) / 2, y) )
+				if line[0] == 'left': self.message.blit( line[1].image, (10, y) )
+				if line[0] == 'right': self.message.blit( line[1].image, ((self.item_width - line[1].rect.w - 10), y) )
+				
+				y += line[1].rect.h
 			
 			self.OK = {
 			"title": PMLabel("OK", self.cfg.popup_font, self.cfg.popup_menu_font_color),

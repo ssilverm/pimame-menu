@@ -43,7 +43,7 @@ class RomListScene(object):
 		self.list_container = pygame.Rect(0, 0, self.list.rom_template.rect.w + (self.cfg.options.rom_list_padding * 2), self.avail_height)
 		self.list_rect = pygame.Rect(0,0, self.list.rom_template.rect.w, self.avail_height - (self.cfg.options.rom_list_padding *2))
 		self.crop_rect = pygame.Rect(0,0, self.list.rom_template.rect.w - cropping['left'] - cropping['right'], self.list.rom_template.rect.h - cropping['bottom'])
-		self.info_container = pygame.Rect(0, 0, self.avail_width - self.list_container.w, self.avail_height)
+		self.info_container = pygame.Rect(0, 0, max(self.avail_width - self.list_container.w, 0), self.avail_height)
 		self.boxart_area = pygame.Rect(0, 0, self.info_container.w, int(self.info_container.h * .4))
 		self.description_area = pygame.Rect(0, self.boxart_area.h, self.info_container.w, self.info_container.h - self.boxart_area.h)
 		
@@ -88,7 +88,7 @@ class RomListScene(object):
 		self.selected_item = self.list.labels[0]
 		
 		self.draw()
-		if self.cfg.options.use_scene_transitions: effect = PMUtil.fade_into(self, self.cfg.options.fade_image)
+		effect = PMUtil.fade_into(self, self.cfg.options.fade_image, self.cfg.options.use_scene_transitions)
 		self.cfg.options.fade_image.blit(self.screen,(0,0))
 		
 		#pygame.draw.rect(self.screen, (255,0,0), self.list_container,5)
@@ -320,7 +320,7 @@ class RomListScene(object):
 				if self.boxart_thread: 
 					self.draw_bg(self.boxart_area)
 			except: pass
-			self.boxart_thread = thread.start_new_thread(self.draw_boxart, (20,))
+			if self.info_container.w: self.boxart_thread = thread.start_new_thread(self.draw_boxart, (20,))
 		
 
 		text = self.selected_item.text

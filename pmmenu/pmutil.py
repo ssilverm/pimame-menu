@@ -33,6 +33,10 @@ class PMUtil:
 		pygame.quit()
 		time.sleep(1)
 		command = command.split("%%")
+		if command[0] == "QUIT":
+			pygame.quit()
+			sys.exit()
+			
 		system(command[0] + " && export LD_LIBRARY_PATH= ")
 		
 		#restart piplay
@@ -56,6 +60,9 @@ class PMUtil:
 		new_file = open(abs_path,'wb')
 		old_file = open(file_path)
 		
+		pattern = str(pattern)
+		subst = str(subst)
+		
 		pattern = pattern.replace('True', 'Yes')
 		pattern = pattern.replace('False', 'No')
 		subst = subst.replace('True', 'Yes')
@@ -63,7 +70,7 @@ class PMUtil:
 		
 		for line in old_file:
 			line = line.replace(':"', ': "')
-			if not prefix == None and prefix in line:
+			if prefix and prefix in line:
 				line = (line.split(prefix)[0] + prefix.strip() + " " + subst + '\n')
 			elif prefix == None:
 				line = (line.replace(pattern, subst))
@@ -78,41 +85,50 @@ class PMUtil:
 		move(abs_path, file_path)
 	
 	@staticmethod
-	def fade_out(self):
-		background = pygame.Surface([self.screen.get_width(), self.screen.get_height()]).convert()
-		background.fill((0,0,0))
-		background.set_alpha(80)
-		#background.convert()
-		for x in xrange(1,6):
-			self.screen.blit(background, (0,0))
-			pygame.display.update()
-		return "fade_out"
+	def fade_out(self, run_effect = True):
+		if run_effect:
+			background = pygame.Surface([self.screen.get_width(), self.screen.get_height()]).convert()
+			background.fill((0,0,0))
+			background.set_alpha(80)
+			#background.convert()
+			for x in xrange(1,6):
+				self.screen.blit(background, (0,0))
+				pygame.display.update()
+			return "fade_out"
+		pygame.display.update()
+		return "no_effect"
 		
 	@staticmethod
-	def fade_in(self):
-		backup = pygame.Surface.copy(self.screen).convert()
-		self.screen.fill((0,0,0))
-		backup.set_alpha(80)
-		for x in xrange(1,6):
+	def fade_in(self, run_effect = True):
+		if run_effect:
+			backup = pygame.Surface.copy(self.screen).convert()
+			self.screen.fill((0,0,0))
+			backup.set_alpha(80)
+			for x in xrange(1,6):
+				self.screen.blit(backup, (0,0))
+				pygame.display.update()
+			backup.set_alpha(255)
 			self.screen.blit(backup, (0,0))
 			pygame.display.update()
-		backup.set_alpha(255)
-		self.screen.blit(backup, (0,0))
+			return "fade_in"
 		pygame.display.update()
-		return "fade_in"
+		return "no_effect"
 		
 	@staticmethod
-	def fade_into(self, prev_screen):
-		backup = pygame.Surface.copy(self.screen).convert()
-		self.screen.blit(prev_screen, (0,0))
-		backup.set_alpha(80)
-		for x in xrange(1,6):
+	def fade_into(self, prev_screen, run_effect = True):
+		if run_effect:
+			backup = pygame.Surface.copy(self.screen).convert()
+			self.screen.blit(prev_screen, (0,0))
+			backup.set_alpha(80)
+			for x in xrange(1,6):
+				self.screen.blit(backup, (0,0))
+				pygame.display.update()
+			backup.set_alpha(255)
 			self.screen.blit(backup, (0,0))
 			pygame.display.update()
-		backup.set_alpha(255)
-		self.screen.blit(backup, (0,0))
+			return "fade_into"
 		pygame.display.update()
-		return "fade_into"
+		return "no_effect"
 	
 	@staticmethod
 	def blurSurf(surface, amt):

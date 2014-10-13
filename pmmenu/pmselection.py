@@ -17,7 +17,7 @@ class PMSelection(pygame.sprite.Sprite):
 		
 		item_rect = menu_item.rect
 		if menu_item.icon_selected:
-			icon = menu_item.pre_loaded_selected_icon
+			icon = menu_item.pre_loaded_selected_icon.copy()
 			
 			# resize and center icon:
 			icon_size = icon.get_size()

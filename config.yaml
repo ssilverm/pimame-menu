@@ -11,6 +11,7 @@ options:
   allow_quit_to_console: True
   use_scene_transitions: Yes
   theme_pack: "default"
+  default_music_volume: 0.2
 
 scraper_options:
   show_clones: no
