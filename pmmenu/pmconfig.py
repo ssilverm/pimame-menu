@@ -121,7 +121,7 @@ class PMOptions:
 			if match is not None:
 				opt_menu_item[index]['icon_file'] = match['icon_file'] if ('icon_file' in match and match['icon_file']) else theme['generic_menu_item']
 				opt_menu_item[index]['icon_selected'] = match['icon_selected'] if ('icon_selected' in match and match['icon_selected']) else theme['generic_menu_item_selected']
-			else:
+			 elif 'icon_file' not in opt_menu_item[index]:	
 				opt_menu_item[index]['icon_file'] = theme['generic_menu_item']
 				opt_menu_item[index]['icon_selected'] = theme['generic_menu_item_selected']
 			
