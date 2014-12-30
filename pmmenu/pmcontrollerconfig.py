@@ -1,5 +1,6 @@
 import os
 import subprocess
+import time
 import json
 import pygame
 from pygame.locals import *
@@ -13,6 +14,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 
 	DIRECTORY = "/home/pi/pimame/controller-setup/"
 	OUTPUT_DIRECTORY = DIRECTORY + "output/"
+	DEBOUNCE_TIME = 0.2
 	
 
 	def __init__(self, screen, cfg, title = "ControllerMain", controller = None):
@@ -311,8 +313,14 @@ class PMControllerConfig(pygame.sprite.Sprite):
 									running = False
 								else: 
 									self.warning = PMWarning(self.screen, self.cfg, "Would you like to configure Player %d?" % (len(self.total_map) + 1), "yes/no", "next_player")
+									#AVOID DEBOUNCE
+									time.sleep(self.DEBOUNCE_TIME)
+									break
 							else:
 								self.render()
+								#AVOID DEBOUNCE
+								time.sleep(self.DEBOUNCE_TIME)
+								break
 
 				#  Output our mapping
 				with open(self.OUTPUT_DIRECTORY + self.controller['name'] + ".json", "w") as output_file:

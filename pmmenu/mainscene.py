@@ -22,6 +22,7 @@ class MainScene(object):
 	def __init__(self):
 		super(MainScene, self).__init__()
 
+
 	def get_selected_item(self):
 		try:
 			return self.grid.sprites()[self.selected_index]
@@ -123,6 +124,11 @@ class MainScene(object):
 		padding = self.cfg.options.padding
 		avail_height = pygame.display.Info().current_h - self.cfg.options.header_height - padding * 2
 		item_height = self.cfg.options.item_height + padding
+		
+		#trap the case where item_height in theme.yaml is larger than the available space 		
+		if item_height > avail_height:
+			item_height = avail_height
+		
 		num_rows = avail_height / item_height
 
 		return num_rows * self.cfg.options.num_items_per_row
@@ -163,7 +169,7 @@ class MainScene(object):
 
 	def pre_render(self, screen, call_render):
 		if not self.pre_rendered:
-			self.grid = PMGrid(self.cfg.options.options_menu_items, self.cfg.options)
+			self.grid = PMGrid(self.cfg.options.options_menu_items, self.cfg)
 			self.grid.set_num_items_per_page(self.calc_num_items_per_page())
 			self.popup = None
 			self.warning = None
@@ -210,8 +216,9 @@ class MainScene(object):
 		if self.warning.answer:
 				if self.warning.title == 'ROMS':
 					if self.warning.answer == "YES": 
-						PMUtil.run_command_and_continue('python /home/pi/pimame/pimame-menu/scraper/scrape_script.py --platform "' + self.get_selected_item().label + '"')
+						PMUtil.run_command_and_continue('python /home/pi/pimame/pimame-menu/scraper/scrape_script.py --platform ' + str(self.get_selected_item().id))
 					else:
+						#PMUtil.run_command_and_continue('python /home/pi/pimame/pimame-menu/scraper/scrape_script.py --dont_match True --platform ' + str(self.get_selected_item().id))
 						self.warning = None
 						self.do_menu_item_action(self.get_selected_item())
 					return
@@ -280,17 +287,37 @@ class MainScene(object):
 			
 			#NAVIGATE MAIN MENU
 			if action == 'LEFT':
-				self.set_selected_index(self.selected_index - 1)
+				if self.selected_index == 0: 
+					sprite = self.get_selected_item()
+					if sprite.type == PMMenuItem.NAVIGATION:
+						self.do_menu_item_action(sprite)
+				else:
+					self.set_selected_index(self.selected_index - 1)
 			elif action == 'RIGHT':
-				self.set_selected_index(self.selected_index + 1)
+				if self.selected_index == self.grid.num_items_per_page - 1:    #zero based
+					sprite = self.get_selected_item()
+					if sprite.type == PMMenuItem.NAVIGATION:
+						self.do_menu_item_action(sprite)
+				else:
+					self.set_selected_index(self.selected_index + 1)
 			elif action == 'UP':
-				self.set_selected_index(self.selected_index - self.cfg.options.num_items_per_row)
+				if self.selected_index == 0:
+					sprite = self.get_selected_item()
+					if sprite.type == PMMenuItem.NAVIGATION:
+						self.do_menu_item_action(sprite)
+				else:
+					self.set_selected_index(self.selected_index - self.cfg.options.num_items_per_row)
 			elif action == 'DOWN':
-				self.set_selected_index(self.selected_index + self.cfg.options.num_items_per_row)
+				if self.selected_index == self.grid.num_items_per_page - 1:    #zero based
+					sprite = self.get_selected_item()
+					if sprite.type == PMMenuItem.NAVIGATION:
+						self.do_menu_item_action(sprite)
+				else: 
+					self.set_selected_index(self.selected_index + self.cfg.options.num_items_per_row)
 			elif action == 'SELECT':
 				sprite = self.get_selected_item()
 				#DISPLAY WARNING IF FILES HAVE CHANGED
-				if "!" in str(sprite.num_roms) and not self.warning: 
+				if sprite.warning == "!" and not self.warning: 
 					self.warning = PMWarning(self.screen, self.cfg.options, "Some files have changed, would you like to scrape this folder for new roms?", "yes/no", "ROMS")
 				elif not self.warning:
 					self.do_menu_item_action(sprite)
@@ -302,7 +329,7 @@ class MainScene(object):
 			
 			#POPUP OPTIONS MENU
 			elif action == 'MENU':
-				self.popup = PMPopup(self.screen, self.manager.scene.SCENE_NAME, self.cfg.options, True)
+				self.popup = PMPopup(self.screen, self.manager.scene.SCENE_NAME, self.cfg, True)
 			
 			#SHOW KICKSTARTER SUPPORTERS
 			elif action == 'KICKSTARTER':
@@ -340,7 +367,7 @@ class MainScene(object):
 
 	#@TODO - change name:
 	def do_menu_item_action(self, sprite):
-		if sprite.type == PMMenuItem.ROM_LIST:
+		if sprite.type == PMMenuItem.EMULATOR:
 				self.cfg.options.fade_image.blit(self.screen,(0,0))
 				self.cfg.options.menu_select_sound.play()
 				self.manager.go_to(RomListScene(sprite.get_rom_list(), sprite.label))

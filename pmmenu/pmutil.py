@@ -129,6 +129,24 @@ class PMUtil:
 			return "fade_into"
 		pygame.display.update()
 		return "no_effect"
+			
+	@staticmethod
+	def offset_fade_into(self, prev_screen, offset, run_effect = True):
+		if run_effect:
+			backup = pygame.Surface.copy(self.screen).convert()
+			self.screen.blit(prev_screen, (0,0))
+			backup.set_alpha(80)
+			if len(offset) > 2:
+				kwargs = {'dest': offset, 'area': offset}
+			for x in xrange(1,6):
+				self.screen.blit(backup, **kwargs)
+				pygame.display.update(offset)
+			backup.set_alpha(255)
+			self.screen.blit(backup, **kwargs)
+			pygame.display.update(offset)
+			return "fade_into"
+		pygame.display.update(offset)
+		return "no_effect"
 	
 	@staticmethod
 	def blurSurf(surface, amt):

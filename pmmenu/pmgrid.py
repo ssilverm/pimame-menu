@@ -10,31 +10,43 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 	back_selected = 'nav_back-selected.png'
 	
 
-	def __init__(self, menu_item_cfgs, opts):
+	def __init__(self, menu_item_cfgs, cfg):
+
 		pygame.sprite.OrderedUpdates.__init__(self)
 
 		self.menu_items = []
-		self.options = opts
+		self.cfg = cfg
 		self.first_index = self.last_index = 0
 
-		if self.options.sort_items_alphanum:
+		if self.cfg.options.sort_items_alphanum:
 			menu_item_cfgs.sort(key=lambda x: x['label'])
 
 		for menu_item in menu_item_cfgs:
 			#print menu_item
 			if menu_item['visible']:
-				pm_menu_item = PMMenuItem(menu_item, opts)
-				#self.add(pm_menu_item)
-				self.menu_items.append(pm_menu_item)
+				pm_menu_item = PMMenuItem(menu_item, self.cfg)
+				if (
+				
+					(self.cfg.options.hide_emulators and pm_menu_item.num_roms == 0 and pm_menu_item.rom_path) or
+					(self.cfg.options.hide_system_tools and pm_menu_item.type.upper() == "UTILITY")
+					
+					): pm_menu_item = None
+					
+				if pm_menu_item: self.menu_items.append(pm_menu_item)
 
-		if self.options.sort_items_with_roms_first:
-			self.menu_items.sort(key=lambda x: x.num_roms if x.num_roms else "0", reverse=True) #!! FIX THIS 
+		if self.cfg.options.sort_items_with_roms_first:
+			self.menu_items.sort(key=self.roms_sort, reverse=True)	
+			
 		
 		#pull all utilities to end of list
 		self.menu_items.sort(key=self.utility_sort)
 	
-		if self.options.hide_system_tools:
+		if self.cfg.options.hide_system_tools:
 			self.menu_items = [x for x in self.menu_items if x.type != "UTILITY"]
+
+	def roms_sort (self, custom):
+		if custom.num_roms > 0: return 1
+		return 0
 			
 	def utility_sort(self, custom):
 		if custom.type == "UTILITY": return 1
@@ -43,15 +55,20 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 
 	def create_nav_menu_item(self, label, icon_file = False, icon_selected = False):
 		item = {}
-		item['label'] = '' if not self.options.display_navigation_labels else label
+		item['id'] = -1
+		item['label'] = '' if not self.cfg.options.display_navigation_labels else label
+		item['type'] = PMMenuItem.NAVIGATION
 		item['visible'] = True
-		item['icon_file'] = icon_file
-		item['icon_selected'] = icon_selected
+		item['icon_file'] = self.cfg.options.theme_pack + icon_file
+		item['icon_selected'] = self.cfg.options.theme_pack + icon_selected
 		item['command'] = ''
-		item['roms'] = ''
-		item['full_path'] = True
+		item['rom_path'] = ''
+		item['include_full_path'] = False
+		item['include_extension'] = False
+		item['scraper_id'] = None
+		item['override_menu'] = False
 
-		menu_item = PMMenuItem(item, self.options, PMMenuItem.NAVIGATION)
+		menu_item = PMMenuItem(item, self.cfg)
 
 		return menu_item
 

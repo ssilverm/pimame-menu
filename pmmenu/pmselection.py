@@ -57,9 +57,9 @@ class PMSelection(pygame.sprite.Sprite):
 			
 			#ReDraw rom-count ontop of menu_item
 			if global_opts.display_rom_count:
-				if menu_item.has_rom_folder and menu_item.num_roms != "0":
+				if menu_item.rom_path and menu_item.num_roms != 0:
 
-					label = PMLabel(str(menu_item.num_roms), global_opts.rom_count_font, global_opts.rom_count_font_selected_color, global_opts.rom_count_background_selected_color, global_opts.rom_count_font_selected_bold, global_opts.rom_count_max_text_width)
+					label = PMLabel(str(menu_item.num_roms) + menu_item.warning, global_opts.rom_count_font, global_opts.rom_count_font_selected_color, global_opts.rom_count_background_selected_color, global_opts.rom_count_font_selected_bold, global_opts.rom_count_max_text_width)
 					textpos = label.rect
 					
 					if global_opts.rom_count_text_align == 'right': textpos.x = text_align - label.rect.w + global_opts.rom_count_offset[0]

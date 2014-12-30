@@ -1,9 +1,11 @@
 import yaml
-from os.path import isfile
+import sys
+from os.path import isfile, splitext
 from os import system
 import pygame
 from menuitem import *
 from pmgrid import *
+import sqlite3
 
 class PMCfg:
 	def __init__(self):
@@ -16,9 +18,28 @@ class PMCfg:
 		pygame.mixer.pre_init(44100, -16, 1, 2048)
 		
 		#load config file, use open() rather than file(), file() is deprecated in python 3.
-		stream = open('/home/pi/pimame/pimame-menu/config.yaml', 'r')
-		config = yaml.safe_load(stream)
-		stream.close()
+		self.config_db = sqlite3.connect('/home/pi/pimame/pimame-menu/database/config.db')
+		self.config_cursor = self.config_db.cursor()
+		
+		self.local_db = sqlite3.connect('/home/pi/pimame/pimame-menu/database/local.db')
+		self.local_cursor = self.local_db.cursor()
+		
+		self.platform_db = sqlite3.connect('/home/pi/pimame/pimame-menu/database/games_master.db')
+		self.platform_cursor = self.platform_db.cursor()
+		
+		config = {'options':None, 'menu_items':None}
+		keys = [item[1] for item in self.config_cursor.execute('PRAGMA table_info(options)').fetchall()]
+		values = self.config_cursor.execute('SELECT * FROM options').fetchone()
+		config['options'] = dict(zip(keys,values))
+		
+		keys = [item[1] for item in self.config_cursor.execute('PRAGMA table_info(menu_items)').fetchall()]
+		values = self.config_cursor.execute('SELECT * FROM menu_items').fetchall()
+		config['menu_items'] = [dict(zip(keys,value)) for value in values]
+		
+		#DEPRECATED
+		#stream = open('/home/pi/pimame/pimame-menu/config.yaml', 'r')
+		#config = yaml.safe_load(stream)
+		#stream.close()
 		
 		#load theme file - use safe_load to make sure malicious code is not executed if hiding in theme.yaml
 		stream = open('/home/pi/pimame/pimame-menu/themes/' +config['options']['theme_pack'] + '/theme.yaml', 'r')
@@ -26,13 +47,13 @@ class PMCfg:
 		stream.close()
 		
 		#roll config file + theme file into options class
-		self.options = PMOptions(config['options'], config['scraper_options'], theme['options'],config['menu_items'],theme['menu_items'])
+		self.options = PMOptions(config['options'], theme['options'],config['menu_items'],theme['menu_items'])
+		self.screen = self.init_screen(config['options']['resolution'], config['options']['fullscreen'])
+		self.screen.set_alpha(None)
+		pygame.mouse.set_visible(self.options.show_cursor) 
 		config = None
 		theme = None
 		
-		self.screen = self.init_screen(self.options.resolution, self.options.fullscreen)
-		self.screen.set_alpha(None)
-		pygame.mouse.set_visible(self.options.show_cursor) 
 		
 		#loading screen
 		background_image = self.options.load_image(self.options.loading_image, "/home/pi/pimame/pimame-menu/assets/images/loading_screen.png")
@@ -76,25 +97,12 @@ class PMCfg:
 		self.options.blur_image = pygame.Surface([screen_width, screen_height]).convert_alpha()
 		self.options.fade_image = pygame.Surface([screen_width, screen_height]).convert()
 		
-		
-		self.options.draw_rect = pygame.Surface([screen_width, screen_height], pygame.SRCALPHA)
-		self.options.draw_rect.fill((0,0,0,0))
-		self.options.draw_rect.convert()
-		
-		try:
-			if self.options.boxart_border_color[3] == 0:
-				self.options.draw_rect = None
-			else:
-				self.options.draw_rect.set_alpha(self.options.boxart_border_color[3])
-		except:
-			pass
-		
 	def init_screen(self, size, fullscreen):
-		
+
 		pygame.init()
 		pygame.display.init()
 		dinfo = pygame.display.Info()
-
+		size = tuple( int(x) for x in size.split(',') )
 		#return pygame.display.set_mode(size,0,32)
 		pygame.display.init()
 		dinfo = pygame.display.Info()
@@ -105,22 +113,29 @@ class PMCfg:
 			flag = pygame.FULLSCREEN
 		#return pygame.display.set_mode(size, flag, 32)
 
-		if (pygame.display.mode_ok((dinfo.current_w,dinfo.current_h),pygame.FULLSCREEN)):
-			return pygame.display.set_mode((dinfo.current_w, dinfo.current_h), flag)
+		if (pygame.display.mode_ok((dinfo.current_w, dinfo.current_h),pygame.FULLSCREEN)):
+			return pygame.display.set_mode(size, flag)
 		else:
 			pygame.quit()
 			sys.exit()
 
 
 class PMOptions:
-	def __init__(self, opts, scraper, theme, opt_menu_item, theme_menu_item):
+	def __init__(self, opts, theme, opt_menu_item, theme_menu_item):
 	
-		#config.yaml
+	
+		self.theme_name = opts['theme_pack']
+		self.theme_pack = "themes/" + opts['theme_pack'] + "/"
+		
+		#Match theme entries to config entries:
+		#Assign icons from theme if not assigned in config
 		for index, oItem in enumerate(opt_menu_item):
 			match = next((tItem for tItem in theme_menu_item if tItem['label'].lower() == oItem['label'].lower()), None)
 			if match is not None:
-				opt_menu_item[index]['icon_file'] = match['icon_file'] if ('icon_file' in match and match['icon_file']) else theme['generic_menu_item']
-				opt_menu_item[index]['icon_selected'] = match['icon_selected'] if ('icon_selected' in match and match['icon_selected']) else theme['generic_menu_item_selected']
+				if not opt_menu_item[index]['icon_file']:
+					opt_menu_item[index]['icon_file'] = self.theme_pack + (match['icon_file'] if ('icon_file' in match and match['icon_file']) else theme['generic_menu_item'])
+				if not opt_menu_item[index]['icon_selected']:
+					opt_menu_item[index]['icon_selected'] = self.theme_pack + (match['icon_selected'] if ('icon_selected' in match and match['icon_selected']) else theme['generic_menu_item_selected'])
 			else:
 				opt_menu_item[index]['icon_file'] = theme['generic_menu_item']
 				opt_menu_item[index]['icon_selected'] = theme['generic_menu_item_selected']
@@ -131,21 +146,21 @@ class PMOptions:
 		self.max_fps = opts['max_fps']
 		self.show_ip = opts['show_ip']
 		self.show_update = opts['show_update']
-		self.fullscreen = opts['fullscreen']
-		self.resolution = self.get_screen_size(opts['resolution'])
 		self.sort_items_alphanum = opts['sort_items_alphanum']
 		self.sort_items_with_roms_first = opts['sort_items_with_roms_first']
+		self.hide_emulators = opts['hide_emulators_with_no_roms']
 		self.hide_system_tools = opts['hide_system_tools']
 		self.show_cursor = opts['show_cursor']
 		self.allow_quit_to_console = opts['allow_quit_to_console']
 		self.use_scene_transitions = opts['use_scene_transitions']
-		self.theme_name = opts['theme_pack']
-		self.theme_pack = "themes/" + opts['theme_pack'] + "/"
 		self.default_music_volume = max(float(opts['default_music_volume']) , 0.0)
 		
-		#scraper options
-		self.show_clones = scraper['show_clones']
-		self.overwrite_images = scraper['overwrite_images']
+		#romlist options
+		self.show_clones = opts['show_rom_clones']
+		self.show_unmatched_roms = opts['show_unmatched_roms']
+		self.rom_sort_category = opts['sort_roms_by'].lower()
+		self.rom_sort_order = 'des' if 'des' in opts['rom_sort_order'].lower() else 'asc'
+		self.rom_filter = opts['filter_roms_by'].lower() if opts['filter_roms_by'] else 'all'
 		
 		#theme.yaml
 		self.header_height = theme['header_height']
@@ -220,9 +235,17 @@ class PMOptions:
 		self.boxart_offset = theme['boxart_offset']
 		self.boxart_max_width = float(theme['boxart_max_width'].strip('%'))/100
 		self.boxart_max_height = float(theme['boxart_max_height'].strip('%'))/100
+		self.boxart_background_color = self.get_color(theme['boxart_background_color'])
 		self.boxart_border_thickness = theme['boxart_border_thickness']
-		self.boxart_border_padding = theme['boxart_border_padding']
 		self.boxart_border_color = self.get_color(theme['boxart_border_color'])
+		  
+		self.info_font_file = theme['info_font_file']
+		self.info_font_size = theme['info_font_size']
+		self.info_font_color = self.get_color(theme['info_font_color'])
+		self.info_bg1 = self.get_color(theme['info_extras_background_color'])
+		self.info_bg2 = self.get_color(theme['info_overview_background_color'])
+		self.info_border_color = self.get_color(theme['info_border_color'])
+		self.info_border_thickness = theme['info_border_thickness']
 		
 
 		#items to be pre-loaded for efficiency
@@ -230,12 +253,15 @@ class PMOptions:
 		self.fade_image = None
 		self.draw_rect = None
 		self.blank_image = pygame.image.load('/home/pi/pimame/pimame-menu/assets/images/blank.png')
+		
 		self.font = pygame.font.Font(self.theme_pack + self.font_file, self.default_font_size)
 		self.popup_font = pygame.font.Font(self.theme_pack + self.font_file, self.popup_menu_font_size)
-		self.popup_rom_letter_font = pygame.font.Font(self.theme_pack + self.font_file, 125)
+		self.popup_rom_letter_font = pygame.font.Font(self.theme_pack + self.font_file, 25)
 		self.label_font = pygame.font.Font(self.theme_pack + self.font_file, self.label_font_size)
 		self.rom_count_font = pygame.font.Font(self.theme_pack + self.font_file, self.rom_count_font_size)
 		self.rom_list_font = pygame.font.Font(self.theme_pack + self.font_file, self.rom_list_font_size)
+		self.info_font = pygame.font.Font(self.theme_pack + self.info_font_file, self.info_font_size)
+		
 		self.pre_loaded_background = self.load_image(self.theme_pack + self.background_image)
 		self.pre_loaded_romlist = self.load_image(self.theme_pack + theme['rom_list_item_image'])
 		self.pre_loaded_romlist_selected = self.load_image(self.theme_pack + theme['rom_list_item_selected_image'])
@@ -254,9 +280,6 @@ class PMOptions:
 
 	def get_color(self, color_str):
 		return tuple([int(x) for x in color_str.split(",")])
-
-	def get_screen_size(self, res_str):
-		return tuple([int(x) for x in res_str.split(",")])
 	
 	#test if number value or string (ie - string = 'auto')
 	def check_type(self, input):
@@ -274,10 +297,12 @@ class PMOptions:
 				try:
 					return pygame.image.load(alternate_image)
 				except:
-					print 'cant load image: ', alternate_image
+					if alternate_image and splitext(alternate_image)[1] != "":
+						print 'cant load image: ', alternate_image
+						
 					return self.blank_image
-			print 'cant load image: ', file_path
-			return self.blank_image
+					
+		return self.blank_image
 			
 	def load_audio(self, file_path):
 		if isfile(file_path):

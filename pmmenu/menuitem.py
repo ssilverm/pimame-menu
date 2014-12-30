@@ -7,84 +7,61 @@ import pygame
 from pmlabel import *
 import json
 
-
+			
 class PMMenuItem(pygame.sprite.Sprite):
-	ROM_LIST = 'rom_list'
-	COMMAND = 'command'
-	NAVIGATION = 'nav'
-	NEXT_PAGE = 'next'
-	PREV_PAGE = 'prev'
+	EMULATOR = 'EMULATOR'
+	COMMAND = 'COMMAND'
+	NAVIGATION = 'NAV'
+	NEXT_PAGE = 'NEXT'
+	PREV_PAGE = 'PREV'
 
-	num_roms = "0"
+	num_roms = 0
 	has_rom_folder = False
 
-	def __init__(self, item_opts, global_opts, type = False):
+	def __init__(self, menu_item, cfg, type = None):
 		pygame.sprite.Sprite.__init__(self)
-
-		self.label = item_opts['label']
-		self.command = item_opts['command']
-		self.full_path = item_opts['full_path']
-		self.cache = "/home/pi/pimame/pimame-menu/.cache/" + item_opts['label'].lower() + ".cache"
-		if item_opts['icon_selected']: 
-			self.icon_selected = global_opts.theme_pack + item_opts['icon_selected']
-			self.pre_loaded_selected_icon = global_opts.load_image(self.icon_selected, global_opts.generic_menu_item_selected)
-		else:
-			self.icon_selected = False
-		#self.extension = item_opts['extension']
 		
-		try:
-			type = item_opts['type']
-		except KeyError:
-			pass
-			
-		try:
-			if item_opts['roms'] != '': 
-				self.roms = item_opts['roms']
-				self.has_rom_folder = True
-		except KeyError:
-			self.roms = False
+		self.cfg = cfg
+		self.id = menu_item['id']
+		self.label = menu_item['label']
+		self.command = menu_item['command']
+		self.full_path = menu_item['include_full_path']
+		self.scraper_id = menu_item['scraper_id']
+		self.warning = ''
 		
-		try:
-			if item_opts['override_menu'] and item_opts['override_menu'] == True:
-				self.override_menu = True
-			else:
-				self.override_menu = False
-		except KeyError:
-			self.override_menu = False
+		
+		self.icon_selected = menu_item['icon_selected']
+		self.pre_loaded_selected_icon = self.cfg.options.load_image(self.icon_selected, self.cfg.options.generic_menu_item_selected)
 
-		try:
-			if item_opts['extension'] and item_opts['extension'] == True:
-				self.extension = True
-			else:
-				self.extension = False
-		except KeyError:
-			self.extension = False
-
-		#if type is not set in config.yaml, then apply a default type
-		if not type:
-			if self.has_rom_folder:
+		self.rom_path = menu_item['rom_path']
+		self.override_menu = bool(menu_item['override_menu'])
+		self.extension = bool(menu_item['include_extension'])
+		
+		
+		if not menu_item['type']:
+			if self.rom_path:
 				self.type = self.ROM_LIST
 			else:
 				self.type = self.COMMAND
 		else:
-			self.type = type
+				self.type = menu_item['type'].upper()
 
 		#@TODO this code is duplicated
 		screen_width = pygame.display.Info().current_w
-		item_width = ((screen_width - global_opts.padding) / global_opts.num_items_per_row) - global_opts.padding
+		item_width = ((screen_width - self.cfg.options.padding) / self.cfg.options.num_items_per_row) - self.cfg.options.padding
 
-		self.image = pygame.Surface([item_width, global_opts.item_height], pygame.SRCALPHA, 32).convert_alpha()
+		self.image = pygame.Surface([item_width, self.cfg.options.item_height], pygame.SRCALPHA, 32).convert_alpha()
 
-		if item_opts['icon_file']:
-			icon_file_path = global_opts.theme_pack + item_opts['icon_file']
+		if menu_item['icon_file']:
+			icon_file_path = menu_item['icon_file']
 			#load generic icon if icon_file_path doesn't exist
-			icon = global_opts.load_image(icon_file_path, global_opts.generic_menu_item)
+			icon = self.cfg.options.load_image(icon_file_path, self.cfg.options.generic_menu_item)
 
 			# resize and center icon:
 			icon_size = icon.get_size()
 			text_align = icon_size[0]
-			avail_icon_width = item_width - global_opts.padding * 2
-			avail_icon_height = global_opts.item_height - global_opts.padding * 2
+			avail_icon_width = item_width - self.cfg.options.padding * 2
+			avail_icon_height = self.cfg.options.item_height - self.cfg.options.padding * 2
 			while True:
 				icon_width = icon_size[0]
 				icon_height = icon_size[1]
@@ -105,61 +82,75 @@ class PMMenuItem(pygame.sprite.Sprite):
 
 			
 
-		if global_opts.display_labels:
-			label = PMLabel(self.label, global_opts.label_font, global_opts.label_font_color, global_opts.label_background_color, global_opts.label_font_bold, global_opts.label_max_text_width)
+		if self.cfg.options.display_labels:
+			label = PMLabel(self.label, self.cfg.options.label_font, self.cfg.options.label_font_color, self.cfg.options.label_background_color, self.cfg.options.label_font_bold, self.cfg.options.label_max_text_width)
 			textpos = label.rect
-			if global_opts.label_text_align == 'right': textpos.x = text_align - label.rect.w + global_opts.labels_offset[0]
-			elif  global_opts.label_text_align == 'center': textpos.x = ((text_align - label.rect.w)/2) + global_opts.labels_offset[0]
-			else: textpos.x = global_opts.labels_offset[0]
-			textpos.y = global_opts.labels_offset[1]
+			if self.cfg.options.label_text_align == 'right': textpos.x = text_align - label.rect.w + self.cfg.options.labels_offset[0]
+			elif  self.cfg.options.label_text_align == 'center': textpos.x = ((text_align - label.rect.w)/2) + self.cfg.options.labels_offset[0]
+			else: textpos.x = self.cfg.options.labels_offset[0]
+			textpos.y = self.cfg.options.labels_offset[1]
 			
 			
 			icon.blit(label.image, textpos)
 
-		if global_opts.display_rom_count:
-			if self.has_rom_folder:
+		if self.cfg.options.display_rom_count:
+			if self.rom_path:
 				self.update_num_roms()
 				
-				if self.num_roms != "0":
-					label = PMLabel(str(self.num_roms), global_opts.rom_count_font, global_opts.rom_count_font_color, global_opts.rom_count_background_color, global_opts.rom_count_font_bold, global_opts.rom_count_max_text_width)
+				if self.num_roms != 0:
+					label = PMLabel(str(self.num_roms) + self.warning, self.cfg.options.rom_count_font, self.cfg.options.rom_count_font_color, self.cfg.options.rom_count_background_color, self.cfg.options.rom_count_font_bold, self.cfg.options.rom_count_max_text_width)
 					textpos = label.rect
 					
-					if global_opts.rom_count_text_align == 'right': textpos.x = text_align - label.rect.w + global_opts.rom_count_offset[0]
-					elif  global_opts.rom_count_text_align == 'center': textpos.x = ((text_align - label.rect.w)/2) + global_opts.rom_count_offset[0]
-					else: textpos.x = global_opts.rom_count_offset[0]
-					textpos.y = global_opts.rom_count_offset[1]
+					if self.cfg.options.rom_count_text_align == 'right': textpos.x = text_align - label.rect.w + self.cfg.options.rom_count_offset[0]
+					elif  self.cfg.options.rom_count_text_align == 'center': textpos.x = ((text_align - label.rect.w)/2) + self.cfg.options.rom_count_offset[0]
+					else: textpos.x = self.cfg.options.rom_count_offset[0]
+					textpos.y = self.cfg.options.rom_count_offset[1]
 					
 					icon.blit(label.image, textpos)
 
 		icon = pygame.transform.smoothscale(icon, icon_size)
-		self.image.blit(icon, ((avail_icon_width - icon_size[0]) / 2 + global_opts.padding, (avail_icon_height - icon_size[1]) / 2 + global_opts.padding))
+		self.image.blit(icon, ((avail_icon_width - icon_size[0]) / 2 + self.cfg.options.padding, (avail_icon_height - icon_size[1]) / 2 + self.cfg.options.padding))
 		
 		self.rect = self.image.get_rect()
-
-	def update_num_roms(self, warning = "!"):
 		
-		self.num_roms = "0"
-		if isfile(self.cache):
-					json_data=open(self.cache)
-					raw_data = json.load(json_data)
-					files = raw_data['rom_data']
-					file_count = raw_data['file_count']
-					json_data.close()
-					if file_count == len(listdir(self.roms)): warning = ""
-					
-		else:
-			if not isdir(self.roms):
-				return None
+		
+	def update_num_roms(self):
 
-			files = [ f for f in listdir(self.roms) if isfile(join(self.roms,f)) and f != '.gitkeep'  ]
-			
-			
-		if len(files) > 0: self.num_roms = str(len(files)) + warning
-		else: self.num_roms = "0"
+		query = 'SELECT COUNT(id) FROM local_roms where system = {pid}'.format(pid = self.id if self.id else -999)
+		self.num_roms = int(self.cfg.local_cursor.execute(query).fetchone()[0])
+		
+
+		len_files = len([ f for f in listdir(self.rom_path) if isfile(join(self.rom_path,f)) and f != '.gitkeep'  ])	
+				
+		if len_files > 0 and self.num_roms != len_files and self.scraper_id: 
+			self.num_roms = len_files
+			self.warning = "!"
 
 	def get_rom_list(self):
 		#@TODO - am I using the type field?
 		
+		keys = [item[1] for item in  self.cfg.local_cursor.execute('PRAGMA table_info(local_roms)').fetchall()]
+		
+		#basic query
+		query = 'SELECT * FROM local_roms where system = {pid}'.format(pid = self.id if self.id else -999)
+		
+		#filter genres
+		if self.cfg.options.rom_filter.lower() != 'all' : query += ' AND genres LIKE "%{genre_filter}%"'.format(genre_filter = self.cfg.options.rom_filter)
+		
+		#exclude clones
+		if not self.cfg.options.show_clones: query += ' AND cloneof is NULL'
+		
+		#hide unmatched roms
+		if not self.cfg.options.show_unmatched_roms: query += ' AND (flags is null or flags not like "%no_match%")'
+		
+		#order by category
+		query += ' ORDER BY {sort_category} {sort_order}, title ASC'.format(sort_category = self.cfg.options.rom_sort_category.lower(), sort_order = 'DESC' if 'des' in self.cfg.options.rom_sort_order.lower() else 'ASC')
+		values = self.cfg.local_cursor.execute(query).fetchall()
+
+		return {'id': self.id, 'scraper_id': self.scraper_id.split(',')[0], 'list': [dict(zip(keys,value)) for value in values]}
+		
+		
+		'''
 		rom_data = None
 		if isfile(self.cache):
 					json_data=open(self.cache)
@@ -176,45 +167,12 @@ class PMMenuItem(pygame.sprite.Sprite):
 						'type': 'command',
 						'image': join( f['image_path'], f['image_file']),
 						'command': (self.command + ' \"' + (join(f['rom_path'],f['file']) if (self.full_path and self.extension) else f['file'] if (self.extension and not self.full_path) else os.path.splitext(f['file'])[0] if (not self.extension and not self.full_path) else join(f['rom_path'], os.path.splitext(f['file'])[0])) + '\"')
-					}
-					for f in rom_data
-			]
-			
-		elif "!" in str(self.num_roms) and rom_data:
-			remaining_files = listdir(self.roms)
-			list = []
-			
-			for f in rom_data:
-				if isfile(join(f['rom_path'], f['file'])) and f['file'] != '.gitkeep':
-					if f['file'] in remaining_files: remaining_files.remove(f['file'])
-					list.append({
-						'title': f['real_name'] if ('real_name' in f) else f['file'],
-						'type': 'command',
-						'image': join( f['image_path'], f['image_file']),
 						'command': (self.command + ' \"' + (join(f['rom_path'],f['file']) if (self.full_path and self.extension) else f['file'] if (self.extension and not self.full_path) else os.path.splitext(f['file'])[0] if (not self.extension and not self.full_path) else join(f['rom_path'], os.path.splitext(f['file'])[0])) + '\"')
-					})
-					
-			for f in remaining_files:
-				if isfile(join(self.roms, f)) and f != '.gitkeep':
-					list.append({
-						'title': os.path.splitext(os.path.basename(f))[0],
-						'type': 'command',
-						'image': self.roms + 'images/' +  os.path.splitext(os.path.basename(f))[0],
-						'command': (self.command + ' \"' + (join(self.roms,f) if (self.full_path and self.extension) else f if (self.extension and not self.full_path) else os.path.splitext(f)[0] if (not self.extension and not self.full_path) else join(self.roms, os.path.splitext(f)[0])) + '\"')
-					})
-					
-			return list
-			
-		else:
-			return [
-				{
-					'title': os.path.splitext(os.path.basename(f))[0],
-					'type': 'command',
-					'image': self.roms + 'images/' +  os.path.splitext(os.path.basename(f))[0],
-					'command': (self.command + ' \"' + (join(self.roms,f) if (self.full_path and self.extension) else f if (self.extension and not self.full_path) else os.path.splitext(f)[0] if (not self.extension and not self.full_path) else join(self.roms, os.path.splitext(f)[0])) + '\"')
+						'command': (self.command + ' \"' + (join(self.rom_path,f) if (self.full_path and self.extension) else f if (self.extension and not self.full_path) else os.path.splitext(f)[0] if (not self.extension and not self.full_path) else join(self.rom_path, os.path.splitext(f)[0])) + '\"')
+						'command': (self.command + ' \"' + (join(self.rom_path,f) if (self.full_path and self.extension) else f if (self.extension and not self.full_path) else os.path.splitext(f)[0] if (not self.extension and not self.full_path) else join(self.rom_path, os.path.splitext(f)[0])) + '\"')
 				}
-				for f in listdir(self.roms) if isfile(join(self.roms, f)) and f != '.gitkeep'
-			]
+				for f in listdir(self.rom_path) if isfile(join(self.rom_path, f)) and f != '.gitkeep'
+			]'''
 
 	def run_command(self):
 		print self.command

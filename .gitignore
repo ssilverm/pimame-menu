@@ -8,3 +8,4 @@ bios/
 screenshots/
 *.pyc
 *.pyc
+database/local.db

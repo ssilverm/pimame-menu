@@ -1,0 +1,146 @@
+options:
+
+  theme_name: "PiWorld"
+  header_height: 140
+  header_color: "255,255,255,0"
+  logo_image: "logo.png"
+  background_image: "background.png"
+  background_color: "75,75,75"
+  generic_menu_item: "generic_menu_item.png"
+  generic_menu_item_selected: "generic_menu_item-selected.png"
+  item_color: "255,255,255,128"
+  disabled_alpha: 128
+  item_height: 65 #main menu icon height
+  num_items_per_row: 1
+  menu_item_padding: 0
+  display_navigation_labels: no
+
+  menu_move_sound: "sfx_move.wav"
+  menu_select_sound: "sfx_select.wav"
+  menu_back_sound: "sfx_back.wav"
+  menu_navigation_sound: "sfx_navigation.wav"
+  menu_music: "music.wav"
+
+  loading_image: "loading_screen.png"
+  font_file: "8bitOperatorPlus8-Bold.ttf"
+  default_font_size: 19
+  default_font_color: "0,0,0"
+  default_font_background_color: "255,255,255,0"
+  popup_menu_font_size: 19
+  popup_menu_font_color: "255,255,255"
+  popup_menu_font_selected_color: "0,255,255"
+  popup_menu_background_color: "150,150,150,90"
+  
+  display_labels: yes
+  label_text_align: left
+  labels_offset: [300,15]
+  label_font_size: 32
+  label_font_color: "255,255,255"
+  label_font_bold: no
+  label_background_color: "255,255,255,0"
+  label_font_selected_color: "255,255,255"
+  label_font_selected_bold: no
+  label_background_selected_color: "100,100,100,150"
+  label_max_text_width: 600
+  
+  display_rom_count: yes
+  rom_count_text_align: left
+  rom_count_offset: [300,40]
+  rom_count_font_size: 18
+  rom_count_font_color: "247,55,56,255"
+  rom_count_font_bold: no
+  rom_count_background_color: "4,216,247,0"
+  rom_count_font_selected_color: "247,55,56,255"
+  rom_count_font_selected_bold: no
+  rom_count_background_selected_color: "228,56,65,0"
+  rom_count_max_text_width: auto
+  
+  rom_list_font_size: 18
+  rom_list_font_align: left
+  rom_list_font_color: "255,255,255"
+  rom_list_font_bold: no
+  rom_list_background_color: "4,216,247,180"
+  rom_list_font_selected_color: "255,255,255,255"
+  rom_list_font_selected_bold: no
+  rom_list_background_selected_color: "246,199,41,255"
+  rom_list_item_image: ""
+  rom_list_item_selected_image: ""
+  rom_list_background_image: "background.png"
+  rom_list_offset: [10, 0, 10, 0] #[x-position, y-position, pixels to crop from right, pixels to crop from bottom]
+  rom_list_align: left
+  rom_list_padding: 10
+  rom_list_min_background_height: auto
+  rom_list_min_background_width: 600
+  rom_list_max_text_width: auto
+  
+  missing_boxart_image: "missing_boxart.png"
+  boxart_offset: [0,0]
+  boxart_max_width: 95%
+  boxart_max_height: 95%
+  boxart_background_color: "246,199,41,180"
+  boxart_border_color: "255,255,255"
+  boxart_border_thickness: 3
+  
+  info_font_file: "8bitOperatorPlus8-Bold.ttf"
+  info_font_size: 16
+  info_font_color: "255,255,255"
+  info_extras_background_color: "247,55,56,180"
+  info_overview_background_color: "3,200,2,180"
+  info_border_color: "255,255,255"
+  info_border_thickness: 3
+  
+  
+menu_items:
+  - label: SNES
+
+  - label: MAME4All
+
+  - label: Neo Geo
+
+  - label: AdvMAME
+
+  - label: Final Burn
+
+  - label: Genesis
+
+  - label: NES
+
+  - label: Atari 2600
+
+  - label: Playstation 1
+
+  - label: Commodore 64
+
+  - label: ScummVM
+
+  - label: Gameboy
+
+  - label: Gameboy Advance
+
+  - label: Restart
+
+  - label: Shutdown
+
+  - label: Update PiPlay
+
+  - label: Rom Scraper
+
+  - label: Install MAME
+
+  - label: Cave Story
+
+  - label: Turbografx 16
+
+  - label: Sega Master System
+
+  - label: Game Gear
+
+  - label: Neo Geo Pocket Color
+
+  - label: ZX Spectrum
+
+  - label: Toggle Xbox Controller
+
+  - label: raspi-config
+
+  - label: Exit
