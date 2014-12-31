@@ -45,6 +45,7 @@ class RomListScene(object):
 		self.list_container = pygame.Rect(0, 0, self.list.rom_template.rect.w + (padding * 2), self.avail_height)
 		self.list_rect = pygame.Rect(0,0, self.list.rom_template.rect.w, self.avail_height - (padding *2))
 		self.crop_rect = pygame.Rect(0,0, self.list.rom_template.rect.w - cropping['left'] - cropping['right'], self.list.rom_template.rect.h - cropping['bottom'])
+		
 		self.info_container = pygame.Rect(0, padding, max(self.avail_width - self.list_container.w - padding, 0), self.avail_height - (padding * 2))
 		self.boxart_area = pygame.Rect(0, 0, self.info_container.w / 2, int(self.info_container.h * .4))
 		self.info_box = pygame.Rect(0, 0, self.info_container.w / 2 - padding, int(self.info_container.h * .4))
@@ -86,7 +87,7 @@ class RomListScene(object):
 			y += self.list.rom_template.rect.h
 
 		
-		self.info_container.height = y
+		self.info_container.height = y if y > (self.avail_height - self.cfg.options.rom_list_padding * 2) * .9 else self.info_container.height
 		self.description_area.height = self.info_container.bottom - self.description_area.top - self.cfg.options.rom_list_padding
 		
 				
