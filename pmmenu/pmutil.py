@@ -143,7 +143,7 @@ class PMUtil:
 				pygame.display.update(offset)
 			backup.set_alpha(255)
 			self.screen.blit(backup, **kwargs)
-			pygame.display.update(offset)
+			pygame.display.update()
 			return "fade_into"
 		pygame.display.update(offset)
 		return "no_effect"

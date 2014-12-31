@@ -8,9 +8,8 @@ class PMRomItem(pygame.sprite.Sprite):
 
 			
 		try:
-			for key, value in list_item.iteritems():
-				if not value:
-					list_item[key] = ''
+			list_item = dict(map(lambda (k,v): (k,v if v else ''), list_item.iteritems()))
+
 			display_text = str(list_item[cfg.options.rom_sort_category]) + ' - ' + list_item['title'] if cfg.options.rom_sort_category != 'title' else list_item['title']
 			self.text = display_text if list_item['flags'] != 'display_platform' else '<- Back'
 			self.title = list_item['title']

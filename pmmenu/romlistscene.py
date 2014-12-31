@@ -284,7 +284,7 @@ class RomListScene(object):
 		
 		self.boxart_on_screen = False
 		for i in xrange(0, delay):
-			time.sleep(.01)
+			time.sleep(.1)
 			if thread.get_ident() != self.boxart_thread: thread.exit()
 		
 		self.boxart_on_screen = True
@@ -377,7 +377,7 @@ class RomListScene(object):
 				if self.boxart_on_screen: 
 					self.draw_bg(self.info_container)
 			except: pass
-			if self.info_container.w: self.boxart_thread = thread.start_new_thread(self.draw_boxart, (20,))
+			if self.info_container.w: self.boxart_thread = thread.start_new_thread(self.draw_boxart, (5,))
 		
 		
 		text = self.selected_item.text

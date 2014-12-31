@@ -64,9 +64,14 @@ class PMList(pygame.sprite.OrderedUpdates):
 	def build_labels(self, rom_list):
 		#Get rom title and blit to already created rom_template
 		self.labels = []
-		for list_item in rom_list:
-			label = PMRomItem(list_item, self.cfg, self.cfg.options.rom_list_font, self.cfg.options.rom_list_font_color, self.cfg.options.rom_list_background_color, self.cfg.options.rom_list_font_bold, self.cfg.options.rom_list_offset, False, True, [], self.cfg.options.rom_list_font_align, self.cfg.options.rom_list_max_text_width)
-			self.labels.append(label)
+		self.labels = map(lambda x: PMRomItem(x, self.cfg, self.cfg.options.rom_list_font, 
+																self.cfg.options.rom_list_font_color, self.cfg.options.rom_list_background_color, 
+																self.cfg.options.rom_list_font_bold, self.cfg.options.rom_list_offset, False, True, [],
+																self.cfg.options.rom_list_font_align, self.cfg.options.rom_list_max_text_width), rom_list)
+		#append = self.labels.append
+		#for list_item in rom_list:
+		#	label = PMRomItem(list_item, self.cfg, self.cfg.options.rom_list_font, self.cfg.options.rom_list_font_color, self.cfg.options.rom_list_background_color, self.cfg.options.rom_list_font_bold, self.cfg.options.rom_list_offset, False, True, [], self.cfg.options.rom_list_font_align, self.cfg.options.rom_list_max_text_width)
+		#	append(label)
 
 	def set_visible_items(self, first_index, last_index):
 		self.first_index = first_index
