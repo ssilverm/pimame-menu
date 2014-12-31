@@ -158,3 +158,30 @@ class PMUtil:
 		surf = pygame.transform.smoothscale(surface, scale_size)
 		surf = pygame.transform.smoothscale(surf, surf_size)
 		return surf
+	
+	@staticmethod
+	def glass(surface, color, rect):
+		if len(color) > 3:
+			if color[3] < 255:
+				amt = 20
+				scale = 1.0/float(amt)
+				
+				backup = pygame.Surface((rect.w,rect.h), pygame.SRCALPHA, 32).convert_alpha()
+				backup.blit(surface, (0,0), rect)
+				
+				backup_size = backup.get_size()
+				scale_size = (int(backup_size[0]*scale), int(backup_size[1]*scale))
+				
+				backup = pygame.transform.smoothscale(backup, scale_size)
+				backup = pygame.transform.smoothscale(backup, backup_size)
+				
+				temp = pygame.Surface((rect.w,rect.h), pygame.SRCALPHA, 32).convert_alpha()
+
+				temp.fill(color)
+				backup.blit(temp,(0,0))
+				return backup
+				
+		backup = pygame.Surface((rect.w,rect.h)).convert_alpha()
+		backup.blit(surface, rect, rect)
+		backup.fill(color)
+		return backup

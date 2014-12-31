@@ -24,6 +24,12 @@ class PMCfg:
 		self.local_db = sqlite3.connect('/home/pi/pimame/pimame-menu/database/local.db')
 		self.local_cursor = self.local_db.cursor()
 		
+		self.local_cursor.execute('CREATE TABLE IF NOT EXISTS local_roms'  + 
+		' (id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, system INTEGER, title TEXT, search_terms TEXT, parent TEXT, cloneof TEXT, release_date TEXT, overview TEXT, esrb TEXT, genres TEXT,' +
+		' players TEXT, coop TEXT, publisher TEXT, developer TEXT, rating REAL, command TEXT, rom_file TEXT, rom_path TEXT, image_file TEXT, flags TEXT)')
+		self.local_db.commit()
+		
+		
 		self.platform_db = sqlite3.connect('/home/pi/pimame/pimame-menu/database/games_master.db')
 		self.platform_cursor = self.platform_db.cursor()
 		
@@ -71,15 +77,15 @@ class PMCfg:
 		background_rect =  self.options.pre_loaded_background.get_rect()
 		scale = min(float(background_rect.w) / float(screen_width), float(background_rect.h) / float(screen_height))
 		background_rect = (int(background_rect.w / scale), int(background_rect.h / scale))
-		
-		self.options.pre_loaded_background =  pygame.transform.smoothscale(self.options.pre_loaded_background, background_rect)
+
+		self.options.pre_loaded_background =  pygame.transform.smoothscale(self.options.pre_loaded_background, background_rect).convert()
 		
 		#resize rom list background image
 		background_rect =  self.options.pre_loaded_rom_list_background.get_rect()
 		scale = min(float(background_rect.w) / float(screen_width), float(background_rect.h) / float(screen_height))
 		background_rect = (int(background_rect.w / scale), int(background_rect.h / scale))
 		
-		self.options.pre_loaded_rom_list_background =  pygame.transform.smoothscale(self.options.pre_loaded_rom_list_background, background_rect)
+		self.options.pre_loaded_rom_list_background =  pygame.transform.smoothscale(self.options.pre_loaded_rom_list_background, background_rect).convert()
 		
 		#load audio
 		self.options.menu_move_sound = self.options.load_audio(self.options.menu_move_sound)
@@ -267,6 +273,13 @@ class PMOptions:
 		self.pre_loaded_romlist_selected = self.load_image(self.theme_pack + theme['rom_list_item_selected_image'])
 		self.pre_loaded_rom_list_background = self.load_image(self.theme_pack + self.rom_list_background_image)
 		
+	
+		if not self.background_image:
+			self.pre_loaded_background.fill(self.background_color)
+		
+		if not self.rom_list_background_image:
+			self.pre_loaded_rom_list_background.fill(self.background_color)
+		
 		#determine romlist item height
 		self.romlist_item_height = max(self.pre_loaded_romlist.get_rect().h, self.rom_list_font.size('')[1])
 		if self.check_type(theme['rom_list_min_background_height']): self.romlist_item_height = max(self.romlist_item_height, theme['rom_list_min_background_height'])
@@ -279,6 +292,8 @@ class PMOptions:
 		
 
 	def get_color(self, color_str):
+	
+
 		return tuple([int(x) for x in color_str.split(",")])
 	
 	#test if number value or string (ie - string = 'auto')

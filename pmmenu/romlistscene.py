@@ -26,15 +26,15 @@ class RomListScene(object):
 	
 	def draw_bg(self, rect=None):
 		if not rect:
-			self.screen.fill(self.cfg.options.background_color)
+			#self.screen.fill(self.cfg.options.background_color)
 			self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, (0,0))
 			self.update_display = [self.screen.get_rect()]
 		else:
-			self.screen.fill(self.cfg.options.background_color, rect)
+			#self.screen.fill(self.cfg.options.background_color, rect)
 			self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, rect, rect)
 			self.update_display.append(rect)
 	
-	def get_dimensions(self):
+	def get_dimensions(self, list_height):
 	
 		self.avail_width = self.screen.get_width()
 		self.avail_height = self.screen.get_height()
@@ -47,36 +47,59 @@ class RomListScene(object):
 		self.crop_rect = pygame.Rect(0,0, self.list.rom_template.rect.w - cropping['left'] - cropping['right'], self.list.rom_template.rect.h - cropping['bottom'])
 		
 		self.info_container = pygame.Rect(0, padding, max(self.avail_width - self.list_container.w - padding, 0), self.avail_height - (padding * 2))
-		self.boxart_area = pygame.Rect(0, 0, self.info_container.w / 2, int(self.info_container.h * .4))
-		self.info_box = pygame.Rect(0, 0, self.info_container.w / 2 - padding, int(self.info_container.h * .4))
-		self.description_area = pygame.Rect(0, self.boxart_area.h + padding, self.info_container.w, self.info_container.h - self.boxart_area.h)
 		
+		self.info_container.height = list_height if list_height > (self.avail_height - self.cfg.options.rom_list_padding * 2) * .9 else self.info_container.height
+
 		
+		self.boxart_area = pygame.Rect(0, self.info_container.top, self.info_container.w / 2, int(self.info_container.h * .4))
+		self.info_box = pygame.Rect(0, self.info_container.top, self.info_container.w / 2 - padding, int(self.info_container.h * .4))
+		self.description_area = pygame.Rect(0, self.info_container.top + self.boxart_area.h + padding, self.info_container.w, self.info_container.h - self.boxart_area.h - padding)
 		
 		if self.cfg.options.rom_list_align == 'right':
+			self.info_container.right = self.list_container.left
 			self.list_container.right = self.avail_width
 			self.list_rect.center = self.list_container.center
-			self.title_rect = self.list_rect.move(cropping['left'], cropping['top'])
-			self.boxart_area.left = self.info_container.left
 			self.info_box.right = self.info_container.right
 			self.description_area.right = self.info_container.right
-			self.info_container.right = self.list_container.left
+			self.title_rect = self.list_rect.move(cropping['left'], cropping['top'])
+			self.boxart_area.left = self.info_container.left
+			
 		else:
+			self.info_container.left = self.list_container.right
 			self.list_rect.center = self.list_container.center
 			self.title_rect = self.list_rect.move(cropping['left'], cropping['top'])
 			self.boxart_area.right = self.info_container.right
 			self.info_box.left = self.info_container.left
 			self.description_area.left = self.info_container.left
-			self.info_container.left = self.list_container.right
+			
+			
 		
+		self.info_surface = pygame.Surface([self.avail_width, self.avail_height], pygame.SRCALPHA, 32).convert_alpha()
+		self.info_surface.blit(PMUtil.glass(self.cfg.options.pre_loaded_rom_list_background, self.cfg.options.info_bg1, self.info_box), self.info_box)
+		self.info_surface.blit(PMUtil.glass(self.cfg.options.pre_loaded_rom_list_background, self.cfg.options.info_bg2, self.description_area), self.description_area)
+		self.info_surface.blit(PMUtil.glass(self.cfg.options.pre_loaded_rom_list_background, self.cfg.options.boxart_background_color, self.boxart_area), self.boxart_area)
+		
+		if self.cfg.options.info_border_thickness > 0:
+			IBT = self.cfg.options.info_border_thickness
+			pygame.draw.rect(self.info_surface, self.cfg.options.info_border_color, self.description_area.inflate(-IBT+2,-IBT+2), IBT)
+			pygame.draw.rect(self.info_surface, self.cfg.options.info_border_color, self.info_box.inflate(-IBT+2,-IBT+2), IBT)
 
+		#self.info_surface.fill(self.cfg.options.info_bg2, self.description_area)
+		#self.info_surface.fill(self.cfg.options.info_bg1, self.info_box)
+		#self.info_surface.fill(self.cfg.options.boxart_background_color, self.boxart_area)
+
+		
 	def pre_render(self, screen, call_render):
 		
 		self.draw_bg()
 		self.list = PMList(self.rom_list, self.cfg)
-		self.get_dimensions()
 		
-		self.list_background = pygame.Surface([self.list_rect.w, self.list_rect.h], pygame.SRCALPHA, 32).convert_alpha()
+		
+		self.list_background = pygame.Surface(
+											[self.list.rom_template.rect.w,
+											self.screen.get_height() - (self.cfg.options.rom_list_padding *2)], 
+											pygame.SRCALPHA, 32
+											).convert_alpha()
 
 		self.items_per_screen = int(self.measure_items_per_screen())
 		self.list.set_visible_items(0, self.items_per_screen)
@@ -86,9 +109,8 @@ class RomListScene(object):
 			self.list_background.blit(self.list.rom_template.image,(0,y))
 			y += self.list.rom_template.rect.h
 
+		self.get_dimensions(y)
 		
-		self.info_container.height = y if y > (self.avail_height - self.cfg.options.rom_list_padding * 2) * .9 else self.info_container.height
-		self.description_area.height = self.info_container.bottom - self.description_area.top - self.cfg.options.rom_list_padding
 		
 				
 		self.popup = None
@@ -115,11 +137,11 @@ class RomListScene(object):
 		item_size = self.cfg.options.romlist_item_height
 		screen_size = self.list_background.get_rect().h
 		
-		alignment = {'left': self.cfg.options.rom_list_padding, 
-							'right': (pygame.display.Info().current_w - self.cfg.options.romlist_item_width - self.cfg.options.rom_list_padding), 
-							}
+		#alignment = {'left': self.cfg.options.rom_list_padding, 
+		#					'right': (pygame.display.Info().current_w - self.cfg.options.romlist_item_width - self.cfg.options.rom_list_padding), 
+		#					}
 							
-		self.rom_list_align = alignment[self.cfg.options.rom_list_align]
+		#self.rom_list_align = alignment[self.cfg.options.rom_list_align]
 
 		return screen_size / item_size
 
@@ -288,7 +310,7 @@ class RomListScene(object):
 			if thread.get_ident() != self.boxart_thread: thread.exit()
 		
 		self.boxart_on_screen = True
-		info_surface = pygame.Surface([self.info_container.w, self.info_container.h], pygame.SRCALPHA, 32).convert_alpha()
+		temp_info_surface = self.info_surface.copy()
 		
 		#DESCRIPTION
 		descript_text = PMParagraph(self.selected_item.overview, self.cfg.options.info_font, self.cfg.options.info_font_color, self.description_area.w - 20, 'left')
@@ -308,11 +330,11 @@ class RomListScene(object):
 		info_text = PMParagraph(infoline, self.cfg.options.info_font, self.cfg.options.info_font_color, self.info_box.w - 20, 'left')
 		info_text.rect.center = self.info_box.center
 		
-		info_surface.fill(self.cfg.options.info_bg2, self.description_area)
-		info_surface.blit(descript_text.P, descript_text.rect)
+		#self.info_surface.fill(self.cfg.options.info_bg2, self.description_area)
+		temp_info_surface.blit(descript_text.P, descript_text.rect)
 		
-		info_surface.fill(self.cfg.options.info_bg1, self.info_box)
-		info_surface.blit(info_text.P, info_text.rect)
+		#self.info_surface.fill(self.cfg.options.info_bg1, self.info_box)
+		temp_info_surface.blit(info_text.P, info_text.rect)
 		
 
 		#BOXART
@@ -334,20 +356,17 @@ class RomListScene(object):
 		
 		#boxart_rect = boxart.get_rect(center=self.boxart_area.center)
 		if self.manager.scene.SCENE_NAME == 'romlist':
-			info_surface.fill(self.cfg.options.boxart_background_color, self.boxart_area)
-			info_surface.blit(boxart, boxart_rect)
+			#self.info_surface.fill(self.cfg.options.boxart_background_color, self.boxart_area)
+			temp_info_surface.blit(boxart, boxart_rect)
 			
 			if self.cfg.options.boxart_border_thickness > 0:
 				IBT = self.cfg.options.boxart_border_thickness
-				pygame.draw.rect(info_surface, self.cfg.options.boxart_border_color, self.boxart_area.inflate(-IBT+2,-IBT+2), IBT)
-			if self.cfg.options.info_border_thickness > 0:
-				IBT = self.cfg.options.info_border_thickness
-				pygame.draw.rect(info_surface, self.cfg.options.info_border_color, self.description_area.inflate(-IBT+2,-IBT+2), IBT)
-				pygame.draw.rect(info_surface, self.cfg.options.info_border_color, self.info_box.inflate(-IBT+2,-IBT+2), IBT)
+				pygame.draw.rect(temp_info_surface, self.cfg.options.boxart_border_color, self.boxart_area.inflate(-IBT+2,-IBT+2), IBT)
+			
 			
 			self.draw_bg(self.info_container)
 			self.cfg.options.fade_image.blit(self.screen,(0,0))
-			self.screen.blit(info_surface, self.info_container)
+			self.screen.blit(temp_info_surface, self.info_container, self.info_container)
 			effect = PMUtil.offset_fade_into(self, self.cfg.options.fade_image, self.info_container, run_effect = self.cfg.options.use_scene_transitions)
 			
 			del boxart, boxart_rect, self
@@ -388,7 +407,7 @@ class RomListScene(object):
 		#build and draw selected item on the fly
 		selected_romlist_image = self.cfg.options.pre_loaded_romlist_selected.convert_alpha()
 		
-		self.screen.fill(self.cfg.options.background_color, rect)
+		#self.screen.fill(self.cfg.options.background_color, rect)
 		self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, rect, rect)
 
 		selected_label = PMRomItem(text, self.cfg, self.cfg.options.rom_list_font, self.cfg.options.rom_list_font_selected_color, self.cfg.options.rom_list_background_selected_color, self.cfg.options.rom_list_font_selected_bold, self.cfg.options.rom_list_offset, False, self.list.selected_rom_template, [], self.cfg.options.rom_list_font_align, self.cfg.options.rom_list_max_text_width)
