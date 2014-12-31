@@ -74,11 +74,19 @@ options:
   
   missing_boxart_image: "missing_boxart.png"
   boxart_offset: [0,0]
-  boxart_max_width: 50%
-  boxart_max_height: 70%
-  boxart_border_thickness: 1
-  boxart_border_padding: 5
-  boxart_border_color: "255,255,255"
+  boxart_max_width: 95%
+  boxart_max_height: 95%
+  boxart_background_color: "0,0,0,180"
+  boxart_border_color: "255,255,255,0"
+  boxart_border_thickness: 3
+  
+  info_font_file: "Lato-Bold.ttf"
+  info_font_size: 16
+  info_font_color: "255,255,255"
+  info_extras_background_color: "228,56,65,180"
+  info_overview_background_color: "228,56,65,180"
+  info_border_color: "255,255,255,0"
+  info_border_thickness: 3
   
 menu_items:
   - label: SNES
