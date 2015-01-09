@@ -19,10 +19,10 @@ class RomListScene(object):
 	
 	boxart_thread = None
 
-	def __init__(self, rom_list, label):
+	def __init__(self, rom_list, menu_id):
 		super(RomListScene, self).__init__()
 		self.rom_list = rom_list
-		self.label = label
+		self.menu_id = menu_id
 	
 	def draw_bg(self, rect=None):
 		if not rect:
@@ -434,4 +434,4 @@ class RomListScene(object):
 			self.cfg.options.menu_back_sound.play()
 			self.manager.back()
 		else:
-			PMUtil.run_command_and_continue(sprite.command + "%%" + self.label)
+			PMUtil.run_command_and_continue(sprite.command + "%%" + str(self.menu_id))

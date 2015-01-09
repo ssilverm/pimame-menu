@@ -23,11 +23,14 @@ class PMMenuItem(pygame.sprite.Sprite):
 		
 		self.cfg = cfg
 		self.id = menu_item['id']
+		self.display_label = menu_item['display_label']
 		self.label = menu_item['label']
 		self.command = menu_item['command']
 		self.full_path = menu_item['include_full_path']
 		self.scraper_id = menu_item['scraper_id']
+		self.banner = self.cfg.options.load_image(menu_item['banner'], verbose = True) #verbose=True, will return None, rather than blank image
 		self.warning = ''
+		
 		
 		
 		self.icon_selected = menu_item['icon_selected']
@@ -82,7 +85,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 
 			
 
-		if self.cfg.options.display_labels:
+		if self.display_label:
 			label = PMLabel(self.label, self.cfg.options.label_font, self.cfg.options.label_font_color, self.cfg.options.label_background_color, self.cfg.options.label_font_bold, self.cfg.options.label_max_text_width)
 			textpos = label.rect
 			if self.cfg.options.label_text_align == 'right': textpos.x = text_align - label.rect.w + self.cfg.options.labels_offset[0]

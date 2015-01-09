@@ -1,10 +1,9 @@
 import yaml
 import sys
-from os.path import isfile, splitext
+import os.path
 from os import system
 import pygame
 from menuitem import *
-from pmgrid import *
 import sqlite3
 
 class PMCfg:
@@ -18,10 +17,12 @@ class PMCfg:
 		pygame.mixer.pre_init(44100, -16, 1, 2048)
 		
 		#load config file, use open() rather than file(), file() is deprecated in python 3.
-		self.config_db = sqlite3.connect('/home/pi/pimame/pimame-menu/database/config.db')
+		path = os.path.realpath('/home/pi/pimame/pimame-menu/database/config.db')
+		self.config_db = sqlite3.connect(path)
 		self.config_cursor = self.config_db.cursor()
 		
-		self.local_db = sqlite3.connect('/home/pi/pimame/pimame-menu/database/local.db')
+		path = os.path.realpath('/home/pi/pimame/pimame-menu/database/local.db')
+		self.local_db = sqlite3.connect(path)
 		self.local_cursor = self.local_db.cursor()
 		
 		self.local_cursor.execute('CREATE TABLE IF NOT EXISTS local_roms'  + 
@@ -29,8 +30,8 @@ class PMCfg:
 		' players TEXT, coop TEXT, publisher TEXT, developer TEXT, rating REAL, command TEXT, rom_file TEXT, rom_path TEXT, image_file TEXT, flags TEXT)')
 		self.local_db.commit()
 		
-		
-		self.platform_db = sqlite3.connect('/home/pi/pimame/pimame-menu/database/games_master.db')
+		path = os.path.realpath('/home/pi/pimame/pimame-menu/database/games_master.db')
+		self.platform_db = sqlite3.connect(path)
 		self.platform_cursor = self.platform_db.cursor()
 		
 		config = {'options':None, 'menu_items':None}
@@ -94,14 +95,19 @@ class PMCfg:
 		self.options.menu_navigation_sound = self.options.load_audio(self.options.menu_navigation_sound)
 		
 		#load music, only stream if music volume > 0
+		pygame.mixer.music.set_volume(self.options.default_music_volume)
 		if self.options.menu_music: 
 			pygame.mixer.music.load(self.options.menu_music)
-			pygame.mixer.music.set_volume(self.options.default_music_volume)
 			if self.options.default_music_volume: pygame.mixer.music.play(-1)
 		
 		#pre-load surfaces
 		self.options.blur_image = pygame.Surface([screen_width, screen_height]).convert_alpha()
 		self.options.fade_image = pygame.Surface([screen_width, screen_height]).convert()
+		
+	def load_ks(self):
+		#load kickstarter names when called
+		self.ks = [item[0] for item in self.config_cursor.execute('SELECT name FROM kickstarter_backers ORDER BY name ASC').fetchall()]
+		self.ks.insert(0,"Thanks to all of our generous Kickstarter Backers!")
 		
 	def init_screen(self, size, fullscreen):
 
@@ -127,27 +133,43 @@ class PMCfg:
 
 
 class PMOptions:
-	def __init__(self, opts, theme, opt_menu_item, theme_menu_item):
+	def __init__(self, opts, theme, opt_menu_items, theme_menu_items):
 	
 	
 		self.theme_name = opts['theme_pack']
+		self.theme_style = theme['theme_style'] if 'theme_style' in theme else 'grid'
+		
 		self.theme_pack = "themes/" + opts['theme_pack'] + "/"
 		
-		#Match theme entries to config entries:
+		
+
 		#Assign icons from theme if not assigned in config
-		for index, oItem in enumerate(opt_menu_item):
-			match = next((tItem for tItem in theme_menu_item if tItem['label'].lower() == oItem['label'].lower()), None)
-			if match is not None:
-				if not opt_menu_item[index]['icon_file']:
-					opt_menu_item[index]['icon_file'] = self.theme_pack + (match['icon_file'] if ('icon_file' in match and match['icon_file']) else theme['generic_menu_item'])
-				if not opt_menu_item[index]['icon_selected']:
-					opt_menu_item[index]['icon_selected'] = self.theme_pack + (match['icon_selected'] if ('icon_selected' in match and match['icon_selected']) else theme['generic_menu_item_selected'])
-			else:
-				opt_menu_item[index]['icon_file'] = theme['generic_menu_item']
-				opt_menu_item[index]['icon_selected'] = theme['generic_menu_item_selected']
+		for index, item in enumerate(opt_menu_items):
+			#assign theme icons
+			opt_menu_items[index]['display_label'] = theme['display_labels']
 			
-			
-		self.options_menu_items = opt_menu_item
+			if item['icon_id'] in theme_menu_items:
+				#let theme set label to blank on case by case basis
+				if not theme_menu_items[item['icon_id']]['label']:
+					opt_menu_items[index]['display_label'] = False
+				else:
+					opt_menu_items[index]['label'] = theme_menu_items[item['icon_id']]['label']
+				if theme_menu_items[item['icon_id']]['icon_file']:
+					opt_menu_items[index]['icon_file'] = self.theme_pack + theme_menu_items[item['icon_id']]['icon_file']
+				if theme_menu_items[item['icon_id']]['icon_selected']:
+					opt_menu_items[index]['icon_selected'] = self.theme_pack + theme_menu_items[item['icon_id']]['icon_selected']
+				
+				try: opt_menu_items[index]['banner'] = (self.theme_pack + theme_menu_items[item['icon_id']]['banner'])
+				except TypeError: opt_menu_items[index]['banner'] = None
+				
+			#if icons not specified by theme or menu_items table, then use theme generic icon
+			if not opt_menu_items[index]['icon_file']: 
+				opt_menu_items[index]['icon_file'] =  self.theme_pack + theme['generic_menu_item']
+			if not opt_menu_items[index]['icon_selected']: 
+				opt_menu_items[index]['icon_selected'] =  self.theme_pack + theme['generic_menu_item_selected']
+
+
+		self.options_menu_items = opt_menu_items
 		
 		self.max_fps = opts['max_fps']
 		self.show_ip = opts['show_ip']
@@ -160,6 +182,7 @@ class PMOptions:
 		self.allow_quit_to_console = opts['allow_quit_to_console']
 		self.use_scene_transitions = opts['use_scene_transitions']
 		self.default_music_volume = max(float(opts['default_music_volume']) , 0.0)
+		self.first_run = opts['first_run']
 		
 		#romlist options
 		self.show_clones = opts['show_rom_clones']
@@ -258,7 +281,7 @@ class PMOptions:
 		pygame.font.init()
 		self.fade_image = None
 		self.draw_rect = None
-		self.blank_image = pygame.image.load('/home/pi/pimame/pimame-menu/assets/images/blank.png')
+		self.blank_image = pygame.Surface((1,1), pygame.SRCALPHA, 32)#pygame.image.load(os.path.realpath('/home/pi/pimame/pimame-menu/assets/images/blank.png'))
 		
 		self.font = pygame.font.Font(self.theme_pack + self.font_file, self.default_font_size)
 		self.popup_font = pygame.font.Font(self.theme_pack + self.font_file, self.popup_menu_font_size)
@@ -275,9 +298,11 @@ class PMOptions:
 		
 	
 		if not self.background_image:
+			self.pre_loaded_background = pygame.Surface([100,100], pygame.SRCALPHA, 32)
 			self.pre_loaded_background.fill(self.background_color)
 		
 		if not self.rom_list_background_image:
+			self.pre_loaded_rom_list_background = pygame.Surface([100,100], pygame.SRCALPHA, 32)
 			self.pre_loaded_rom_list_background.fill(self.background_color)
 		
 		#determine romlist item height
@@ -288,12 +313,10 @@ class PMOptions:
 		if str(theme['rom_list_min_background_width']).lower() == 'auto' : self.romlist_item_width = max(self.pre_loaded_romlist.get_rect().w, 300)
 		else: self.romlist_item_width = max(self.pre_loaded_romlist.get_rect().w, int(theme['rom_list_min_background_width']))
 		
-		self.missing_boxart_image = (self.theme_pack + theme['missing_boxart_image']) if isfile(self.theme_pack + theme['missing_boxart_image']) else ('/home/pi/pimame/pimame-menu/assets/images/missing_boxart.png')
+		self.missing_boxart_image = (self.theme_pack + theme['missing_boxart_image']) if os.path.isfile(self.theme_pack + theme['missing_boxart_image']) else (os.path.realpath('/home/pi/pimame/pimame-menu/assets/images/missing_boxart.png'))
 		
 
 	def get_color(self, color_str):
-	
-
 		return tuple([int(x) for x in color_str.split(",")])
 	
 	#test if number value or string (ie - string = 'auto')
@@ -304,7 +327,7 @@ class PMOptions:
 		except TypeError:
 			return False
 		
-	def load_image(self, file_path, alternate_image = None):
+	def load_image(self, file_path, alternate_image = None, verbose = False):
 		try:
 			return pygame.image.load(file_path)
 		except:
@@ -312,29 +335,23 @@ class PMOptions:
 				try:
 					return pygame.image.load(alternate_image)
 				except:
-					if alternate_image and splitext(alternate_image)[1] != "":
+					if alternate_image and os.path.splitext(alternate_image)[1] != "":
 						print 'cant load image: ', alternate_image
 						
-					return self.blank_image
+					if verbose: return None
+					return self.blank_image.copy()
 					
-		return self.blank_image
+		if verbose: return None
+		return self.blank_image.copy()
 			
 	def load_audio(self, file_path):
-		if isfile(file_path):
+		if os.path.isfile(file_path):
 			sound_file = pygame.mixer.Sound(file_path)
 			sound_file.set_volume(1.0)
 			return sound_file
 		else:
 			print 'cant load audio: ', file_path
-			return pygame.mixer.Sound('/home/pi/pimame/pimame-menu/assets/audio/blank.wav')
-			
-	def load_ks(self):
-		#load theme file - use safe_load to make sure malicious code is not executed if hiding in theme.yaml
-		stream = open('/home/pi/pimame/pimame-menu/assets/ks.yaml', 'r')
-		self.ks = yaml.safe_load(stream)
-		self.ks = sorted(self.ks)
-		self.ks.insert(0,"Thanks to all of our generous Kickstarter Backers!")
-		stream.close()
+			return pygame.mixer.Sound(os.path.realpath('/home/pi/pimame/pimame-menu/assets/audio/blank.wav'))
 		
 
 

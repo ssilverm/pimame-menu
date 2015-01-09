@@ -83,7 +83,7 @@ class API(object):
 		self.LOCAL = sqlite3.connect(self.DATABASE_PATH + 'local.db')
 		self.LC = self.LOCAL.cursor()
 		
-		self.LC.execute('''PRAGMA journal_mode = OFF''')
+		#self.LC.execute('''PRAGMA journal_mode = OFF''')
 		self.LC.execute('CREATE TABLE IF NOT EXISTS local_roms'  + 
 		' (id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, system INTEGER, title TEXT, search_terms TEXT, parent TEXT, cloneof TEXT, release_date TEXT, overview TEXT, esrb TEXT, genres TEXT,' +
 		' players TEXT, coop TEXT, publisher TEXT, developer TEXT, rating REAL, command TEXT, rom_file TEXT, rom_path TEXT, image_file TEXT, flags TEXT)')
@@ -249,7 +249,10 @@ class API(object):
 		for platform in platforms:
 		
 			if platform['scraper_id']:
-				run_system = self.raw_input_with_timeout('Scrape roms for %s?' % pcolor('cyan', platform['label']))
+				if dont_match == False:
+					run_system = self.raw_input_with_timeout('Scrape roms for %s?' % pcolor('cyan', platform['label']))
+				else:
+					run_system = True
 			
 			if platform['scraper_id'] and run_system:
 					#platform['scraper_id'] = tuple([int(id) for id in platform['scraper_id'].split(',')])
@@ -285,10 +288,11 @@ class API(object):
 			query = 'DELETE FROM local_roms WHERE system = {platform_id}'.format(platform_id = platform['id'])
 			self.LC.execute(query)
 		else:
-			#delete all entries that no longer have roms + previously unmatched entries
-			query_roms = tuple([x.encode('UTF8') for x in roms]) if len(roms) != 1 else ("('" + roms[0].encode('UTF8') + "')")
-			query = 'DELETE FROM local_roms WHERE system = {0} and (rom_file not in {1} or flags like "%no_match%")'.format( platform['id'], query_roms )
-			self.LC.execute(query)
+			if dont_match == False:
+				#delete all entries that no longer have roms + previously unmatched entries
+				query_roms = tuple([x.encode('UTF8') for x in roms]) if len(roms) != 1 else ("('" + roms[0].encode('UTF8') + "')")
+				query = 'DELETE FROM local_roms WHERE system = {0} and (rom_file not in {1} or flags like "%no_match%")'.format( platform['id'], query_roms )
+				self.LC.execute(query)
 			
 			#remove any remaining entries from list of roms
 			query = 'SELECT rom_file FROM local_roms WHERE system = {platform_id}'.format( platform_id = platform['id'])
@@ -339,13 +343,6 @@ class API(object):
 							hi_score = Lratio
 							best_match_game = entry
 				
-				#Let user know current progress
-				if VERBOSE:
-					status = r"%10d/%d roms  [%3.2f%%]" % (index+1, len(roms), (index+1) * 100. / len(roms))
-					status = status + chr(8)*(len(status)+1)
-					sys.stdout.write('%s      \r' % (status))
-					sys.stdout.flush()
-				
 				#in verbose mode: ask if game matches
 				if (VERBOSE == "SEMI" or VERBOSE == "FULL") and hi_score < .94 and best_match_game:
 					best_match_game = best_match_game if self.raw_input_with_timeout('Does %s match %s - %s' % (pcolor('cyan', "["+ rom +"]"), 
@@ -356,6 +353,13 @@ class API(object):
 						print 'Closest match for %s is %s - %s' % (pcolor('green', "["+ rom +"]"), pcolor('green', "["+ best_match_game[2] +"]"), pcolor('yellow', "["+"{0:.0f}%".format(float(hi_score) * 100)+"]"))
 					else:
 						print 'No match found for %s' % (pcolor('red', "[" + rom + "]"))
+						
+			#Let user know current progress
+			if VERBOSE:
+				status = r"%10d/%d roms  [%3.2f%%]" % (index+1, len(roms), (index+1) * 100. / len(roms))
+				status = status + chr(8)*(len(status)+1)
+				sys.stdout.write('%s      \r' % (status))
+				sys.stdout.flush()
 			
 			
 			#If a suitable match was found, pull info
@@ -377,24 +381,27 @@ class API(object):
 				game_info.flags = 'no_match,'
 			
 			#if name contains brackets [] with a minus '-' inside, glob will error out
-			try:
-				#prefer (user added) image, named same as rom + any extension
-				temp_image_path = glob.glob( os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.*')
-				game_info.image_file = temp_image_path[0]
-			except:
+			if dont_match == False:
 				try:
-					#if no rom named image, then find title named image
-					if not game_info.image_file:
-					
-						image_search = self.GC.execute('SELECT image_file FROM image_match WHERE system=? and id=?', (best_match_game[0], best_match_game[3])).fetchone()[0]
-						if image_search: image_search =  [os.path.join(platform['rom_path'], 'images/') + image_search + '.*',
-																		os.path.join( os.path.join(platform['rom_path'], 'images/'), self.strip_accents(temp_game_info['title']) + '.*')]
-						for image in image_search:
-							temp_image_path.extend( glob.glob( image ) )
-						game_info.image_file = temp_image_path[0]
+					#prefer (user added) image, named same as rom + any extension
+					temp_image_path = glob.glob( os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.*')
+					game_info.image_file = temp_image_path[0]
 				except:
-					#if no image found, default to rom name with '.jpg' extension, in case user adds image later.
-					game_info.image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.jpg'
+					try:
+						#if no rom named image, then find title named image
+						if not game_info.image_file:
+						
+							image_search = self.GC.execute('SELECT image_file FROM image_match WHERE system=? and id=?', (best_match_game[0], best_match_game[3])).fetchone()[0]
+							if image_search: image_search =  [os.path.join(platform['rom_path'], 'images/') + image_search + '.*',
+																			os.path.join( os.path.join(platform['rom_path'], 'images/'), self.strip_accents(temp_game_info['title']) + '.*')]
+							for image in image_search:
+								temp_image_path.extend( glob.glob( image ) )
+							game_info.image_file = temp_image_path[0]
+					except:
+						#if no image found, default to rom name with '.jpg' extension, in case user adds image later.
+						game_info.image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.jpg'
+			else:
+				game_info.image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.jpg'
 			
 			
 			rom_list_append((game_info.id, game_info.system,

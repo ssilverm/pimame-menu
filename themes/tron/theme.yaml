@@ -1,6 +1,7 @@
 options:
 
   theme_name: "Tron - by MholgateM"
+  theme_style: 'grid'
   header_height: 140
   header_color: "255,255,255,0"
   logo_image: "logo.png"
@@ -88,53 +89,144 @@ options:
   info_border_color: "255,255,255,0"
   info_border_thickness: 3
   
-menu_items:
-  - label: SNES
-
-  - label: MAME4All
-
-  - label: Neo Geo
-
-  - label: AdvMAME
-
-  - label: Final Burn
-
-  - label: Genesis
-
-  - label: NES
-
-  - label: Atari 2600
-
-  - label: Playstation 1
-
-  - label: Commodore 64
-
-  - label: ScummVM
-
-  - label: Gameboy
-
-  - label: Gameboy Advance
-
-  - label: Restart
-
-  - label: Shutdown
-
-  - label: Update PiMAME
-
-  - label: Rom Scraper
-
-  - label: Install MAME
-
-  - label: Controller Setup
-
-  - label: Cave Story
-
-  - label: Turbografx 16
-
-  - label: Sega Master System
-
-  - label: Game Gear
-
-  - label: Neo Geo Pocket Color
-
-  - label: ZX Spectrum
+menu_items: 
+  SNES: 
+    label: Super Nintendo
+    icon_file: 
+    icon_selected: 
+    banner: 
+  M4A: 
+    label: MAME4All
+    icon_file: 
+    icon_selected: 
+    banner: 
+  NG: 
+    label: Neo Geo
+    icon_file: 
+    icon_selected: 
+    banner: 
+  ADVM: 
+    label: AdvMAME
+    icon_file: 
+    icon_selected: 
+    banner: 
+  FBA: 
+    label: Final Burn
+    icon_file: 
+    icon_selected: 
+    banner: 
+  SG: 
+    label: Genesis
+    icon_file: 
+    icon_selected: 
+    banner: 
+  NES: 
+    label: NES
+    icon_file: 
+    icon_selected: 
+    banner: 
+  A2600: 
+    label: Atari 2600
+    icon_file: 
+    icon_selected: 
+    banner: 
+  PS1: 
+    label: Playstation 1
+    icon_file: 
+    icon_selected: 
+    banner: 
+  C64: 
+    label: Commodore 64
+    icon_file: 
+    icon_selected: 
+    banner: 
+  SCUMM: 
+    label: ScummVM
+    icon_file: 
+    icon_selected: 
+    banner: 
+  GB: 
+    label: Gameboy
+    icon_file: 
+    icon_selected: 
+    banner: 
+  GBA: 
+    label: Gameboy Advance
+    icon_file: 
+    icon_selected: 
+    banner: 
+  CAVE: 
+    label: Cave Story
+    icon_file: 
+    icon_selected: 
+    banner: 
+  TG16: 
+    label: Turbografx 16
+    icon_file: 
+    icon_selected: 
+    banner: 
+  SMS: 
+    label: Sega Master System
+    icon_file: 
+    icon_selected: 
+    banner: 
+  GG: 
+    label: Game Gear
+    icon_file: 
+    icon_selected: 
+    banner: 
+  NGPC: 
+    label: Neo Geo Pocket Color
+    icon_file: 
+    icon_selected: 
+    banner: 
+  ZXS: 
+    label: ZX Spectrum
+    icon_file: 
+    icon_selected: 
+    banner: 
+  RESTART: 
+    label: Restart
+    icon_file: 
+    icon_selected: 
+    banner: 
+  SHUTDOWN: 
+    label: Shutdown
+    icon_file: 
+    icon_selected: 
+    banner: 
+  UPDATE: 
+    label: Update PiPlay
+    icon_file: 
+    icon_selected: 
+    banner: 
+  SCRAPER: 
+    label: Rom Scraper
+    icon_file: 
+    icon_selected: 
+    banner: 
+  INSTALLMAME: 
+    label: Install MAME
+    icon_file: 
+    icon_selected: 
+    banner: 
+  XBOXCONTR: 
+    label: Toggle Xbox Controller
+    icon_file: 
+    icon_selected: 
+    banner: 
+  RASPICONFIG: 
+    label: raspi-config
+    icon_file: 
+    icon_selected: 
+    banner: 
+  WIFICONFIG: 
+    label: WiFi Config
+    icon_file: 
+    icon_selected: 
+    banner: 
+  EXIT: 
+    label: Exit
+    icon_file: 
+    icon_selected: 
+    banner: 

@@ -32,9 +32,9 @@ def main():
 		manager = SceneManager(cfg, MainScene(), False)
 		print "Relaunch", args.quicklaunch
 
-		for sprite in manager.scene.grid:
-			if sprite.label == args.quicklaunch:
-				manager.go_to(RomListScene(sprite.get_rom_list(), sprite.label))
+		for sprite in manager.scene.menu_style:
+			if sprite.id == int(args.quicklaunch):
+				manager.go_to(RomListScene(sprite.get_rom_list(), sprite.id))
 	else:
 		manager = SceneManager(cfg, MainScene())
 	
@@ -59,6 +59,7 @@ def main():
 			
 		refresh += 1
 		if refresh == total_refresh:
+			refresh = 0
 			pygame.display.flip()
 		pygame.event.clear()
 		

@@ -9,3 +9,5 @@ screenshots/
 *.pyc
 *.pyc
 database/local.db
+assets/dat/
+assets/test/

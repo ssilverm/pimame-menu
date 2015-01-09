@@ -150,6 +150,15 @@ class PMPopup(pygame.sprite.Sprite):
 			"next": self.menu_work.roms_first_swap
 			}
 			
+			self.hide_emu_no_roms = {
+			"title": PMLabel("Hide Unused Emulators:", self.cfg.options.popup_font, self.cfg.options.popup_menu_font_color),
+			"value": PMLabel(str(bool(self.menu_work.hide_emu_no_roms_bool)), self.cfg.options.popup_font, self.cfg.options.popup_menu_font_color),
+			"title_selected": PMLabel("Hide Unused Emulators:", self.cfg.options.popup_font, self.cfg.options.popup_menu_font_selected_color),
+			"value_selected": PMLabel(str(bool(self.menu_work.hide_emu_no_roms_bool)), self.cfg.options.popup_font, self.cfg.options.popup_menu_font_selected_color),
+			"prev": self.menu_work.hide_emu_no_roms_swap,
+			"next": self.menu_work.hide_emu_no_roms_swap
+			}
+			
 			self.hide_system_tools = {
 			"title": PMLabel("Hide System Tools:", self.cfg.options.popup_font, self.cfg.options.popup_menu_font_color),
 			"value": PMLabel(str(bool(self.menu_work.hide_system_tools_bool)), self.cfg.options.popup_font, self.cfg.options.popup_menu_font_color),
@@ -180,7 +189,7 @@ class PMPopup(pygame.sprite.Sprite):
 
 			
 			popup = [self.volume, self.theme, self.cursor, self.transitions, self.show_ip, self.show_update, self.sort_alphanum,
-						self.roms_first, self.hide_system_tools, self.quit_to_console, self.controller_setup]
+						self.roms_first, self.hide_emu_no_roms, self.hide_system_tools, self.quit_to_console, self.controller_setup]
 			
 			if self.cfg.options.menu_music:
 				popup.insert(1, self.music_volume)
@@ -455,11 +464,11 @@ class PMPopup(pygame.sprite.Sprite):
 				
 			update_options = (self.menu_work.theme_list[self.menu_work.theme_count], self.menu_work.cursor_bool, (self.menu_work.music_volume / 100),
 								 self.menu_work.scene_trans_bool, self.menu_work.ip_bool, self.menu_work.update_bool, self.menu_work.sort_abc_bool,  
-								self.menu_work.roms_first_bool, self.menu_work.hide_system_tools_bool, self.menu_work.quit_bool)
+								self.menu_work.roms_first_bool, self.menu_work.hide_emu_no_roms_bool, self.menu_work.hide_system_tools_bool, self.menu_work.quit_bool)
 								
 			self.cfg.config_cursor.execute('UPDATE options SET theme_pack=?, show_cursor=?, ' + 
 				'default_music_volume=?, use_scene_transitions=?, show_ip=?, show_update=?, ' + 
-				'sort_items_alphanum=?, sort_items_with_roms_first=?, hide_system_tools=?, allow_quit_to_console=?', update_options)
+				'sort_items_alphanum=?, sort_items_with_roms_first=?, hide_emulators_with_no_roms=?, hide_system_tools=?, allow_quit_to_console=?', update_options)
 			self.cfg.config_db.commit()
 			
 			pygame.mouse.set_visible(self.menu_work.cursor_bool)
@@ -468,6 +477,7 @@ class PMPopup(pygame.sprite.Sprite):
 			self.cfg.options.show_update = self.menu_work.update_bool
 			self.cfg.options.sort_items_alphanum = self.menu_work.sort_abc_bool
 			self.cfg.options.sort_items_with_roms_first = self.menu_work.roms_first_bool
+			self.cfg.options.hide_emulators = self.menu_work.hide_emu_no_roms_bool
 			self.cfg.options.hide_system_tools = self.menu_work.hide_system_tools_bool
 			self.cfg.options.allow_quit_to_console = self.menu_work.quit_bool
 
@@ -519,6 +529,7 @@ class WorkFunctions():
 		self.update_bool = self.cfg.options.show_update
 		self.sort_abc_bool = self.cfg.options.sort_items_alphanum
 		self.roms_first_bool = self.cfg.options.sort_items_with_roms_first
+		self.hide_emu_no_roms_bool = self.cfg.options.hide_emulators
 		self.hide_system_tools_bool = self.cfg.options.hide_system_tools
 		self.quit_bool = self.cfg.options.allow_quit_to_console
 		self.scraper_clones_bool = self.cfg.options.show_clones
@@ -614,6 +625,10 @@ class WorkFunctions():
 		self.roms_first_bool = not self.roms_first_bool
 		return self.roms_first_bool
 		
+	def hide_emu_no_roms_swap(self, calling_event):
+		self.hide_emu_no_roms_bool = not self.hide_emu_no_roms_bool
+		return self.hide_emu_no_roms_bool
+			
 	def hide_items_swap(self, calling_event):
 		self.hide_system_tools_bool = not self.hide_system_tools_bool
 		return self.hide_system_tools_bool
