@@ -167,6 +167,7 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 		item['include_full_path'] = False
 		item['include_extension'] = False
 		item['scraper_id'] = None
+		item['icon_id'] = None
 		item['override_menu'] = False
 		item['display_label'] = self.cfg.options.display_navigation_labels
 		item['banner'] = None

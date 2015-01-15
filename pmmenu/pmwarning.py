@@ -31,7 +31,7 @@ class PMWarning(pygame.sprite.Sprite):
 		else:
 			self.effect = self.screen.copy()
 
-		self.list = BuildMessage(cfg, message, max_line_length)
+		self.list = BuildMessage(cfg, message, self.buttons, max_line_length)
 		self.update_menu()
 		self.rect = self.menu.get_rect()
 		
@@ -118,42 +118,10 @@ class PMWarning(pygame.sprite.Sprite):
 
 		
 class BuildMessage():
-		def __init__(self, cfg, message, max_line_length = 45):
+		def __init__(self, cfg, message, buttons, max_line_length = 45):
 			text_line = ''
 			self.cfg = cfg
 			self.lines = []
-			
-
-			try:
-				message + "1"
-				message = message.replace('\n', ' \n ')
-				for word in message.split(' '):
-					if (len(text_line) + len(word) > max_line_length) or ('\n' in word):
-						self.lines.append(["center", text_line.strip()])
-						text_line = ''
-					if word != '\n': text_line += word + ' '
-				self.lines.append(["center", text_line.strip()])
-			except:
-				self.lines = message
-				
-
-			#self.lines = [PMLabel(line[1], self.cfg.popup_font, self.cfg.popup_menu_font_color) for line in self.lines]
-			self.lines = [([line[0], PMLabel(line[1], self.cfg.popup_font, self.cfg.popup_menu_font_color)]) for line in self.lines]
-			
-			y = 10
-			self.item_width = max(self.lines, key=lambda x: x[1].rect.w)[1].rect.w + 20
-			self.item_height = self.lines[0][1].rect.h * (len(self.lines) + 1) + 40
-			
-			self.message = pygame.Surface([self.item_width, self.item_height], pygame.SRCALPHA, 32).convert_alpha()
-			self.rect = self.message.get_rect()
-			self.message.fill(self.cfg.popup_menu_background_color, self.rect)
-			
-			for line in self.lines:
-				if line[0] == 'center': self.message.blit( line[1].image, ((self.item_width - line[1].rect.w) / 2, y) )
-				if line[0] == 'left': self.message.blit( line[1].image, (10, y) )
-				if line[0] == 'right': self.message.blit( line[1].image, ((self.item_width - line[1].rect.w - 10), y) )
-				
-				y += line[1].rect.h
 			
 			self.OK = {
 			"title": PMLabel("OK", self.cfg.popup_font, self.cfg.popup_menu_font_color),
@@ -185,4 +153,39 @@ class BuildMessage():
 			"yes/no": [self.YES, self.NO], 
 			"yes/no/cancel": [self.YES, self.NO, self.CANCEL]
 			}
+			
+						
+
+			try:
+				message + "1"
+				message = message.replace('\n', ' \n ')
+				for word in message.split(' '):
+					if (len(text_line) + len(word) > max_line_length) or ('\n' in word):
+						self.lines.append(["center", text_line.strip()])
+						text_line = ''
+					if word != '\n': text_line += word + ' '
+				self.lines.append(["center", text_line.strip()])
+			except:
+				self.lines = message
+				
+
+			#self.lines = [PMLabel(line[1], self.cfg.popup_font, self.cfg.popup_menu_font_color) for line in self.lines]
+			self.lines = [([line[0], PMLabel(line[1], self.cfg.popup_font, self.cfg.popup_menu_font_color)]) for line in self.lines]
+			
+			y = 10
+			self.item_width = max(self.lines, key=lambda x: x[1].rect.w)[1].rect.w + 20
+			button_width = sum((button['title_selected'].rect.w+20) for button in self.options[buttons]) + 10
+			self.item_width = max(self.item_width, button_width)
+			self.item_height = self.lines[0][1].rect.h * (len(self.lines) + 1) + 40
+			
+			self.message = pygame.Surface([self.item_width, self.item_height], pygame.SRCALPHA, 32).convert_alpha()
+			self.rect = self.message.get_rect()
+			self.message.fill(self.cfg.popup_menu_background_color, self.rect)
+			
+			for line in self.lines:
+				if line[0] == 'center': self.message.blit( line[1].image, ((self.item_width - line[1].rect.w) / 2, y) )
+				if line[0] == 'left': self.message.blit( line[1].image, (10, y) )
+				if line[0] == 'right': self.message.blit( line[1].image, ((self.item_width - line[1].rect.w - 10), y) )
+				
+				y += line[1].rect.h
 		

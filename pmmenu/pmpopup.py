@@ -9,7 +9,7 @@ import sqlite3
 
 class PMPopup(pygame.sprite.Sprite):
 
-	def __init__(self, screen, scene_type, cfg, popup_open = False, list = None, ):
+	def __init__(self, screen, scene_type, cfg, popup_open = False, list = None, selected_item = None):
 		pygame.sprite.Sprite.__init__(self)
 		
 		self.cfg = cfg
@@ -25,7 +25,9 @@ class PMPopup(pygame.sprite.Sprite):
 		self.effect = None
 		
 		self.menu_work = WorkFunctions(self.cfg)
+		self.selected_item = selected_item
 		self.list = list if list != None else self.build_menu(self.scene_type)
+		
 		
 		self.item_height = self.list[0]['title'].rect.h
 		self.item_width = 0
@@ -261,12 +263,59 @@ class PMPopup(pygame.sprite.Sprite):
 			"prev": self.reset_search,
 			"next": self.reset_search
 			}
+						
+			if self.selected_item and self.selected_item.favorite:
+				favorite_title = 'Remove Rom from Favorites'
+			else:
+				favorite_title = 'Add Rom to Favorites'
+				
+			self.favorite = {
+			"title": PMLabel(favorite_title, self.cfg.options.popup_font, self.cfg.options.popup_menu_font_color),
+			"value": PMLabel('', self.cfg.options.popup_font, self.cfg.options.popup_menu_font_color),
+			"on_select": "self.favorite_toggle()",
+			"title_selected": PMLabel(favorite_title, self.cfg.options.popup_font, self.cfg.options.popup_menu_font_selected_color),
+			"value_selected": PMLabel('', self.cfg.options.popup_font, self.cfg.options.popup_menu_font_selected_color),
+			"prev": self.favorite_toggle,
+			"next": self.favorite_toggle
+			}
+			
 			
 			self.list_items = [self.sort_by, self.sort_order, self.genres, self.hide_clones, self.hide_unmatched, self.reset_rom_sort]
-			popup = self.letter + self.list_items
+			self.rom_specific = [self.favorite] if self.selected_item.flags != 'display_platform' else []
+			popup = self.letter + self.list_items + self.rom_specific
 			
 			return popup
-	
+	def favorite_toggle(self):
+		
+		#if favorite, set to not favorite. then set favorite title to 'add rom to favorites'
+		if self.selected_item.favorite:
+			self.selected_item.favorite = ''
+			favorite_title = 'Add Rom to Favorites'
+			self.cfg.local_cursor.execute("UPDATE local_roms SET flags = REPLACE(flags,'favorite,','') WHERE id=?", (self.selected_item.id,))
+			self.cfg.local_db.commit()
+		#if not favorite, set to favorite. then set favorite ittle to 'remove rom from favorites'
+		else:
+			self.selected_item.favorite = 'favorite,'
+			favorite_title = 'Remove Rom from Favorites'
+			self.cfg.local_cursor.execute("UPDATE local_roms SET flags = ifnull(flags,'') || 'favorite,' WHERE id=?", (self.selected_item.id,))
+			self.cfg.local_db.commit()
+		
+		self.favorite = {
+		"title": PMLabel(favorite_title, self.cfg.options.popup_font, self.cfg.options.popup_menu_font_color),
+		"value": PMLabel('', self.cfg.options.popup_font, self.cfg.options.popup_menu_font_color),
+		"on_select": "self.favorite_toggle()",
+		"title_selected": PMLabel(favorite_title, self.cfg.options.popup_font, self.cfg.options.popup_menu_font_selected_color),
+		"value_selected": PMLabel('', self.cfg.options.popup_font, self.cfg.options.popup_menu_font_selected_color),
+		"prev": self.favorite_toggle,
+		"next": self.favorite_toggle
+		}
+		
+		#un-select and redraw
+		self.selected = False
+		self.list = self.build_menu(self.scene_type)
+		self.update_menu()
+		self.draw_menu()
+		
 	def reset_search(self):
 
 		self.cfg.options.show_clones = self.menu_work.show_clones_bool = 1
@@ -344,7 +393,7 @@ class PMPopup(pygame.sprite.Sprite):
 				x += x_spacing
 			
 			x = 10
-			y += 25
+			y += item['title'].rect.height * 2
 			
 			if self.item_width == 0: 
 				self.item_width = max(self.list_items, key=lambda x: x['title'].rect.w)['title'].rect.w + 40 + x
@@ -361,6 +410,8 @@ class PMPopup(pygame.sprite.Sprite):
 						self.menu.blit(item['value'].image, (self.item_width, y))
 						
 					y += item['title'].rect.height
+					if item == self.list_items[-1]: 
+						y+= item['title'].rect.height
 					
 			
 	def handle_events(self, action):
@@ -484,10 +535,27 @@ class PMPopup(pygame.sprite.Sprite):
 		
 		elif self.scene_type == 'romlist':
 			#romlist options
+			cfg_check = [self.cfg.options.show_clones, 
+								self.cfg.options.show_unmatched_roms,
+								self.cfg.options.rom_sort_category.lower(), 
+								self.cfg.options.rom_sort_order.lower(), 
+								self.cfg.options.rom_filter.lower()]
+			
+			change_check = [self.menu_work.show_clones_bool, 
+									self.menu_work.show_unmatched_bool,
+									self.menu_work.sort_by_list[self.menu_work.sort_by_count].lower(),
+									self.menu_work.sort_order_list[self.menu_work.sort_order_count][:3].lower(),
+									self.menu_work.genre_list[self.menu_work.genre_count].lower()]
+			
+			
+			if cfg_check != change_check: 
+				self.answer = ['CHANGES MADE']
+				print cfg_check,change_check
+			
 			self.cfg.options.show_clones = self.menu_work.show_clones_bool
 			self.cfg.options.show_unmatched_roms = self.menu_work.show_unmatched_bool
 			self.cfg.options.rom_sort_category = self.menu_work.sort_by_list[self.menu_work.sort_by_count].lower()
-			self.cfg.options.rom_sort_order = self.menu_work.sort_order_list[self.menu_work.sort_order_count].lower()
+			self.cfg.options.rom_sort_order = self.menu_work.sort_order_list[self.menu_work.sort_order_count][:3].lower()
 			self.cfg.options.rom_filter = self.menu_work.genre_list[self.menu_work.genre_count]
 			
 			update_options = (self.cfg.options.show_clones, self.cfg.options.show_unmatched_roms, 
@@ -544,8 +612,10 @@ class WorkFunctions():
 		except ValueError: self.sort_by_count = 0
 		
 		self.sort_order_list = ['Ascending', 'Descending']
-		try: self.sort_order_count = self.sort_order_list.index(self.cfg.options.rom_sort_order.capitalize())
-		except ValueError: self.sort_order_count = 0
+		if self.cfg.options.rom_sort_order[:3].lower() == 'asc':
+			self.sort_order_count = 0
+		else:
+			self.sort_order_count = 1
 		
 		self.genre_list = ['All', 'Action', 'Sports', 'Platform', 'Racing', 'Adventure', 'RPG', 'Puzzle', 'Shooter', 'Side-Scroller', 'Fighting', 'Misc.Sports', 'Strategy', 'Run-and-Gun', 'Soccer', 'Football(World)', 'Football(USA)', "Beat'em Up", 'Arcade', 'Baseball', 'Basketball', 'Scrolling-Shooter', 'Golf', 'Turn-Based', 'Vertical-Scroller', 'Hockey']
 		try: self.genre_count = self.genre_list.index(self.cfg.options.rom_filter)

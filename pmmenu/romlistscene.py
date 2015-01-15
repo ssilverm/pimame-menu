@@ -171,9 +171,11 @@ class RomListScene(object):
 						
 			elif self.popup.menu_open == False:
 				self.list.sort_list()
-				self.list.set_visible_items(0, self.items_per_screen)
+				if self.popup.answer and self.popup.answer[0] == 'CHANGES MADE':
+					self.list.set_visible_items(0, self.items_per_screen)
+					self.selected_item = self.list.labels[0]
+				self.selected_item.toggle_selection()
 				self.draw_list()
-				self.selected_item = self.list.labels[0]
 				self.draw()
 				
 		else:
@@ -183,9 +185,10 @@ class RomListScene(object):
 				self.cfg.options.menu_back_sound.play()
 				self.manager.back()
 			elif action == 'MENU':
-				self.popup = PMPopup(self.screen, self.manager.scene.SCENE_NAME, self.cfg, True)
+				self.popup = PMPopup(self.screen, self.manager.scene.SCENE_NAME, self.cfg, popup_open = True, selected_item = self.selected_item)
 				
 			elif action in "UP/DOWN/LEFT/RIGHT":
+				self.selected_item.toggle_selection()
 				self.set_selected_index(action)
 				
 			#MOUSE CLICK
@@ -319,12 +322,13 @@ class RomListScene(object):
 		
 		#INFO BOX
 		infoline = '\n'.join(filter(None, 
-		[self.selected_item.title,'\r' ,
+		[self.selected_item.title,'\r' , str(self.selected_item.rom_file or ''), 
 		', '.join(filter(None, [('Players: ' + self.selected_item.players) if self.selected_item.players else '', self.selected_item.coop if self.selected_item.coop else ''])),
 		'Publisher: ' + self.selected_item.publisher if self.selected_item.publisher else '',
 		'Developer: ' + self.selected_item.developer if self.selected_item.developer else '',
 		'Date: ' + self.selected_item.release_date if self.selected_item.release_date else '',
-		'Score: ' + str(self.selected_item.rating) if self.selected_item.rating else '']
+		'Score: ' + str(self.selected_item.rating) if self.selected_item.rating else '',
+		'Played: ' + str(self.selected_item.number_of_runs or 0)  + ' times']
 		))
 		
 		info_text = PMParagraph(infoline, self.cfg.options.info_font, self.cfg.options.info_font_color, self.info_box.w - 20, 'left')
@@ -363,11 +367,11 @@ class RomListScene(object):
 				IBT = self.cfg.options.boxart_border_thickness
 				pygame.draw.rect(temp_info_surface, self.cfg.options.boxart_border_color, self.boxart_area.inflate(-IBT+2,-IBT+2), IBT)
 			
-			
-			self.draw_bg(self.info_container)
-			self.cfg.options.fade_image.blit(self.screen,(0,0))
-			self.screen.blit(temp_info_surface, self.info_container, self.info_container)
-			effect = PMUtil.offset_fade_into(self, self.cfg.options.fade_image, self.info_container, run_effect = self.cfg.options.use_scene_transitions)
+			if not self.popup or not self.popup.menu_open:
+				self.draw_bg(self.info_container)
+				self.cfg.options.fade_image.blit(self.screen,(0,0))
+				self.screen.blit(temp_info_surface, self.info_container, self.info_container)
+				effect = PMUtil.offset_fade_into(self, self.cfg.options.fade_image, self.info_container, run_effect = self.cfg.options.use_scene_transitions)
 			
 			del boxart, boxart_rect, self
 			thread.exit()
@@ -398,33 +402,17 @@ class RomListScene(object):
 			except: pass
 			if self.info_container.w: self.boxart_thread = thread.start_new_thread(self.draw_boxart, (5,))
 		
-		
-		text = self.selected_item.text
+		self.selected_item.toggle_selection()
+
+		#text = self.selected_item.text
 		rect = self.list.rom_template.rect.copy()
 		rect.left = self.list_rect.left
 		rect.top = self.list_rect.top + (self.list.rom_template.rect.h * self.sprites.index(self.selected_item))
 		
 		#build and draw selected item on the fly
-		selected_romlist_image = self.cfg.options.pre_loaded_romlist_selected.convert_alpha()
-		
-		#self.screen.fill(self.cfg.options.background_color, rect)
 		self.screen.blit(self.cfg.options.pre_loaded_rom_list_background, rect, rect)
-
-		selected_label = PMRomItem(text, self.cfg, self.cfg.options.rom_list_font, self.cfg.options.rom_list_font_selected_color, self.cfg.options.rom_list_background_selected_color, self.cfg.options.rom_list_font_selected_bold, self.cfg.options.rom_list_offset, False, self.list.selected_rom_template, [], self.cfg.options.rom_list_font_align, self.cfg.options.rom_list_max_text_width)
-		
 		self.screen.blit(self.list.selected_rom_template.image, rect)
-		
-		if self.cfg.options.rom_list_font_align == 'center':
-			selected_label.rect.width = min(selected_label.rect.width,self.crop_rect.width)
-			selected_label.rect.centerx = self.title_rect.centerx
-		elif self.cfg.options.rom_list_font_align == 'right':
-			selected_label.rect.right = self.title_rect.right
-		else:
-			selected_label.rect.x = self.title_rect.x
-
-		selected_label.rect.y = self.title_rect.y + (self.list.rom_template.rect.h * self.sprites.index(self.selected_item))
-
-		self.screen.blit(selected_label.image, selected_label.rect, self.crop_rect)
+		self.screen.blit(self.selected_item.image, self.selected_item.rect, self.crop_rect)
 		
 		self.update_display.append(rect)
 
@@ -434,4 +422,6 @@ class RomListScene(object):
 			self.cfg.options.menu_back_sound.play()
 			self.manager.back()
 		else:
+			self.cfg.local_cursor.execute("UPDATE local_roms SET number_of_runs = ifnull(number_of_runs,0) + 1 WHERE id = ?", (sprite.id,))
+			self.cfg.local_db.commit()
 			PMUtil.run_command_and_continue(sprite.command + "%%" + str(self.menu_id))

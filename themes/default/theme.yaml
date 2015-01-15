@@ -56,6 +56,7 @@ options:
   rom_count_max_text_width: auto
   
   rom_list_font_size: 19
+  rom_list_favorite_icon: "star.png"
   rom_list_font_align: left
   rom_list_font_color: "0,255,255"
   rom_list_font_bold: no
@@ -90,6 +91,11 @@ options:
   info_border_thickness: 3
   
 menu_items: 
+  FAVORITE: 
+    label: Favorites
+    icon_file: favorite.png
+    icon_selected: favorite-selected.png
+    banner:
   SNES: 
     label: Super Nintendo
     icon_file: snes.png

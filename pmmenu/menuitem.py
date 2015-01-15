@@ -23,11 +23,12 @@ class PMMenuItem(pygame.sprite.Sprite):
 		
 		self.cfg = cfg
 		self.id = menu_item['id']
+		self.icon_id = menu_item['icon_id']
 		self.display_label = menu_item['display_label']
 		self.label = menu_item['label']
 		self.command = menu_item['command']
 		self.full_path = menu_item['include_full_path']
-		self.scraper_id = menu_item['scraper_id']
+		self.scraper_id = menu_item['scraper_id'] if menu_item['scraper_id'] else ''
 		self.banner = self.cfg.options.load_image(menu_item['banner'], verbose = True) #verbose=True, will return None, rather than blank image
 		self.warning = ''
 		
@@ -118,11 +119,11 @@ class PMMenuItem(pygame.sprite.Sprite):
 		
 		
 	def update_num_roms(self):
-
+		
 		query = 'SELECT COUNT(id) FROM local_roms where system = {pid}'.format(pid = self.id if self.id else -999)
+		if self.icon_id == 'FAVORITE': query = "SELECT COUNT(id) FROM local_roms WHERE flags like '%favorite%'"
 		self.num_roms = int(self.cfg.local_cursor.execute(query).fetchone()[0])
 		
-
 		len_files = len([ f for f in listdir(self.rom_path) if isfile(join(self.rom_path,f)) and f != '.gitkeep'  ])	
 				
 		if len_files > 0 and self.num_roms != len_files and self.scraper_id: 
@@ -148,9 +149,15 @@ class PMMenuItem(pygame.sprite.Sprite):
 		
 		#order by category
 		query += ' ORDER BY {sort_category} {sort_order}, title ASC'.format(sort_category = self.cfg.options.rom_sort_category.lower(), sort_order = 'DESC' if 'des' in self.cfg.options.rom_sort_order.lower() else 'ASC')
+		
+		if self.icon_id == 'FAVORITE': 
+			query = "SELECT * FROM local_roms WHERE flags like '%favorite%'  ORDER BY {sort_category} {sort_order}, title ASC".format(
+							sort_category = self.cfg.options.rom_sort_category.lower(), sort_order = 'DESC' if 'des' in self.cfg.options.rom_sort_order.lower() else 'ASC')
+		
 		values = self.cfg.local_cursor.execute(query).fetchall()
-
-		return {'id': self.id, 'scraper_id': self.scraper_id.split(',')[0], 'list': [dict(zip(keys,value)) for value in values]}
+		
+		
+		return {'id': self.id, 'icon_id': self.icon_id,  'scraper_id': self.scraper_id.split(',')[0], 'list': [dict(zip(keys,value)) for value in values]}
 		
 		
 		'''

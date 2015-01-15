@@ -74,6 +74,13 @@ class PMCfg:
 		self.screen.blit(background_image, (0,0))
 		pygame.display.flip()
 		
+		#resize favorite icon
+		scale_size = self.options.rom_list_favorite_icon.get_rect()
+		scale_size = (self.options.romlist_item_height, self.options.romlist_item_height)
+		try: self.options.rom_list_favorite_icon = pygame.transform.smoothscale(self.options.rom_list_favorite_icon, scale_size).convert_alpha()
+		except: self.options.rom_list_favorite_icon = pygame.transform.scale(self.options.rom_list_favorite_icon, scale_size).convert_alpha()
+		self.options.rom_list_favorite_icon_rect = self.options.rom_list_favorite_icon.get_rect()
+		
 		#resize main menu background image
 		background_rect =  self.options.pre_loaded_background.get_rect()
 		scale = min(float(background_rect.w) / float(screen_width), float(background_rect.h) / float(screen_height))
@@ -248,6 +255,7 @@ class PMOptions:
 		self.rom_count_max_text_width = self.check_type(theme['rom_count_max_text_width'])
 		
 		self.rom_list_font_size = theme['rom_list_font_size']
+		self.rom_list_favorite_icon = self.load_image(self.theme_pack + theme['rom_list_favorite_icon'], 'assets/images/star.png')
 		self.rom_list_font_align = theme['rom_list_font_align'].lower()
 		self.rom_list_font_color = self.get_color(theme['rom_list_font_color'])
 		self.rom_list_background_color = self.get_color(theme['rom_list_background_color'])

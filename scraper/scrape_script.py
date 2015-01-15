@@ -86,7 +86,7 @@ class API(object):
 		#self.LC.execute('''PRAGMA journal_mode = OFF''')
 		self.LC.execute('CREATE TABLE IF NOT EXISTS local_roms'  + 
 		' (id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, system INTEGER, title TEXT, search_terms TEXT, parent TEXT, cloneof TEXT, release_date TEXT, overview TEXT, esrb TEXT, genres TEXT,' +
-		' players TEXT, coop TEXT, publisher TEXT, developer TEXT, rating REAL, command TEXT, rom_file TEXT, rom_path TEXT, image_file TEXT, flags TEXT)')
+		' players TEXT, coop TEXT, publisher TEXT, developer TEXT, rating REAL, command TEXT, rom_file TEXT, rom_path TEXT, image_file TEXT, number_of_runs INTEGER, flags TEXT)')
 		self.LOCAL.commit()
 
 		
@@ -247,14 +247,14 @@ class API(object):
 		platforms = self.get_platform(menu_item_id)
 
 		for platform in platforms:
-		
 			if platform['scraper_id']:
 				if dont_match == False:
-					run_system = self.raw_input_with_timeout('Scrape roms for %s?' % pcolor('cyan', platform['label']))
+					platform['scrape_me'] = self.raw_input_with_timeout('Scrape roms for %s?' % pcolor('cyan', platform['label']))
 				else:
-					run_system = True
-			
-			if platform['scraper_id'] and run_system:
+					platform['scrape_me'] = True
+		
+		for platform in platforms:
+			if platform['scraper_id'] and platform['scrape_me']:
 					#platform['scraper_id'] = tuple([int(id) for id in platform['scraper_id'].split(',')])
 
 					#check if arcade or console
@@ -300,127 +300,140 @@ class API(object):
 			
 		self.LOCAL.commit()
 
-		
-		#assign append to keep rom_list from being evaluated each iteration
-		rom_list = []
-		rom_list_append = rom_list.append
-		
-		for index, rom in enumerate(roms):
+		if roms:
+			#assign append to keep rom_list from being evaluated each iteration
+			rom_list = []
+			rom_list_append = rom_list.append
 			
-			#get rom name
-			current_file_search_terms = find_name.send(os.path.join(platform['rom_path'], rom))
-			find_name.send('get_ready')
-			
-			#create run command
-			if platform['include_extension']: 
-				build_command = rom
-			else:
-				build_command = os.path.splitext(rom)[0]
-			
-			if platform['include_full_path']:
-				build_command = os.path.join(platform['rom_path'], build_command)
-			
-			game_command = platform['command'] + ' "' + build_command + '"'
-			
-			#update what is already known about current entry
-			game_info = Game(title = rom, system = platform['id'], search_terms = current_file_search_terms, command = game_command, rom_path = platform['rom_path'], rom_file = rom)
+			for index, rom in enumerate(roms):
+				
+				#get rom name
+				current_file_search_terms = find_name.send(os.path.join(platform['rom_path'], rom))
+				find_name.send('get_ready')
+				
+				#create run command
+				if platform['include_extension']: 
+					build_command = rom
+				else:
+					build_command = os.path.splitext(rom)[0]
+				
+				if platform['include_full_path']:
+					build_command = os.path.join(platform['rom_path'], build_command)
+				
+				game_command = platform['command'] + ' "' + build_command + '"'
+				
+				#update what is already known about current entry
+				game_info = Game(title = rom, system = platform['id'], search_terms = current_file_search_terms, command = game_command, rom_path = platform['rom_path'], rom_file = rom)
 
-			#set minimum match ratio
-			hi_score = default_match_rate
-			best_match_game = None
-			
-			if dont_match == False:
-				#build search query
-				#we are grabbing any entry that has at least 1 matching search term
-				search_query = '%" OR search_terms LIKE "%'.join(unicode(current_file_search_terms).split())
-				for entry in self.GC.execute('SELECT id, search_terms, title, system FROM temp_system WHERE (search_terms LIKE "%' + search_query + '%")').fetchall():
-					
-					Lratio = setratio( unicode(current_file_search_terms).split(), entry[1].split() )
-					if Lratio > hi_score:
-					
-						#check if check to make sure sequels don't get mat5hed to originals
-						if [x for x in current_file_search_terms if x.isdigit()] == [y for y in entry[1] if y.isdigit()]:
-							hi_score = Lratio
-							best_match_game = entry
+				#set minimum match ratio
+				hi_score = default_match_rate
+				best_match_game = None
 				
-				#in verbose mode: ask if game matches
-				if (VERBOSE == "SEMI" or VERBOSE == "FULL") and hi_score < .94 and best_match_game:
-					best_match_game = best_match_game if self.raw_input_with_timeout('Does %s match %s - %s' % (pcolor('cyan', "["+ rom +"]"), 
-																																							pcolor('cyan', "["+ best_match_game[2] +"]"),
-																																							pcolor('yellow', "["+"{0:.0f}%".format(float(hi_score) * 100)+"]")), timeout = 10.0) else None
-				if VERBOSE == "FULL":
-					if best_match_game:
-						print 'Closest match for %s is %s - %s' % (pcolor('green', "["+ rom +"]"), pcolor('green', "["+ best_match_game[2] +"]"), pcolor('yellow', "["+"{0:.0f}%".format(float(hi_score) * 100)+"]"))
-					else:
-						print 'No match found for %s' % (pcolor('red', "[" + rom + "]"))
+				if dont_match == False:
+					#build search query
+					#we are grabbing any entry that has at least 1 matching search term
+					search_query = '%" OR search_terms LIKE "%'.join(unicode(current_file_search_terms).split())
+					for entry in self.GC.execute('SELECT id, search_terms, title, system FROM temp_system WHERE (search_terms LIKE "%' + search_query + '%")').fetchall():
 						
-			#Let user know current progress
-			if VERBOSE:
-				status = r"%10d/%d roms  [%3.2f%%]" % (index+1, len(roms), (index+1) * 100. / len(roms))
-				status = status + chr(8)*(len(status)+1)
-				sys.stdout.write('%s      \r' % (status))
-				sys.stdout.flush()
-			
-			
-			#If a suitable match was found, pull info
-			if best_match_game:
-				temp_game_info = dict(zip(column_names, self.GC.execute('SELECT * from temp_system where id=?', (best_match_game[0],)).fetchone()))
+						Lratio = setratio( unicode(current_file_search_terms).split(), entry[1].split() )
+						if Lratio > hi_score:
+						
+							#check if check to make sure sequels don't get matched to originals
+							if [x for x in current_file_search_terms if x.isdigit()] == [y for y in entry[1] if y.isdigit()]:
+								hi_score = Lratio
+								best_match_game = entry
+					
+					#if no satisfactory match found, do second pass comparing each letter separately
+					if not best_match_game:
+						for entry in self.GC.execute('SELECT id, search_terms, title, system FROM temp_system WHERE (search_terms LIKE "%' + search_query + '%")').fetchall():
+						
+							Lratio = setratio( map(unicode,current_file_search_terms), map(unicode, entry[1]) )
+							if Lratio > hi_score:
+							
+								#check if check to make sure sequels don't get matched to originals
+								if [x for x in current_file_search_terms if x.isdigit()] == [y for y in entry[1] if y.isdigit()]:
+									hi_score = Lratio
+									best_match_game = entry
+								
+								
+					#in verbose mode: ask if game matches
+					if (VERBOSE == "SEMI" or VERBOSE == "FULL") and hi_score < .94 and best_match_game:
+						best_match_game = best_match_game if self.raw_input_with_timeout('Does %s match %s - %s' % (pcolor('cyan', "["+ rom +"]"), 
+																																								pcolor('cyan', "["+ best_match_game[2] +"]"),
+																																								pcolor('yellow', "["+"{0:.0f}%".format(float(hi_score) * 100)+"]")), timeout = 10.0) else None
+					if VERBOSE == "FULL":
+						if best_match_game:
+							print 'Closest match for %s is %s - %s' % (pcolor('green', "["+ rom +"]"), pcolor('green', "["+ best_match_game[2] +"]"), pcolor('yellow', "["+"{0:.0f}%".format(float(hi_score) * 100)+"]"))
+						else:
+							print 'No match found for %s' % (pcolor('red', "[" + rom + "]"))
+							
+				#Let user know current progress
+				if VERBOSE:
+					status = r"%10d/%d roms  [%3.2f%%]" % (index+1, len(roms), (index+1) * 100. / len(roms))
+					status = status + chr(8)*(len(status)+1)
+					sys.stdout.write('%s      \r' % (status))
+					sys.stdout.flush()
 				
-				game_info.title = temp_game_info['title']
-				game_info.search_terms = temp_game_info['search_terms']
-				game_info.release_date = temp_game_info['release_date']
-				game_info.overview = temp_game_info['overview']
-				game_info.esrb = temp_game_info['esrb']
-				game_info.genres = temp_game_info['genres']
-				game_info.players = temp_game_info['players']
-				game_info.coop = temp_game_info['coop']
-				game_info.publisher = temp_game_info['publisher']
-				game_info.developer = temp_game_info['developer']
-				game_info.rating = temp_game_info['rating']
-			else:
-				game_info.flags = 'no_match,'
-			
-			#if name contains brackets [] with a minus '-' inside, glob will error out
-			if dont_match == False:
-				try:
-					#prefer (user added) image, named same as rom + any extension
-					temp_image_path = glob.glob( os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.*')
-					game_info.image_file = temp_image_path[0]
-				except:
+				
+				#If a suitable match was found, pull info
+				if best_match_game:
+					temp_game_info = dict(zip(column_names, self.GC.execute('SELECT * from temp_system where id=?', (best_match_game[0],)).fetchone()))
+					
+					game_info.title = temp_game_info['title']
+					game_info.search_terms = temp_game_info['search_terms']
+					game_info.release_date = temp_game_info['release_date']
+					game_info.overview = temp_game_info['overview']
+					game_info.esrb = temp_game_info['esrb']
+					game_info.genres = temp_game_info['genres']
+					game_info.players = temp_game_info['players']
+					game_info.coop = temp_game_info['coop']
+					game_info.publisher = temp_game_info['publisher']
+					game_info.developer = temp_game_info['developer']
+					game_info.rating = temp_game_info['rating']
+				else:
+					game_info.flags = 'no_match,'
+				
+				#if name contains brackets [] with a minus '-' inside, glob will error out
+				if dont_match == False:
 					try:
-						#if no rom named image, then find title named image
-						if not game_info.image_file:
-						
-							image_search = self.GC.execute('SELECT image_file FROM image_match WHERE system=? and id=?', (best_match_game[0], best_match_game[3])).fetchone()[0]
-							if image_search: image_search =  [os.path.join(platform['rom_path'], 'images/') + image_search + '.*',
-																			os.path.join( os.path.join(platform['rom_path'], 'images/'), self.strip_accents(temp_game_info['title']) + '.*')]
-							for image in image_search:
-								temp_image_path.extend( glob.glob( image ) )
-							game_info.image_file = temp_image_path[0]
+						#prefer (user added) image, named same as rom + any extension
+						temp_image_path = glob.glob( os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.*')
+						game_info.image_file = temp_image_path[0]
 					except:
-						#if no image found, default to rom name with '.jpg' extension, in case user adds image later.
-						game_info.image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.jpg'
-			else:
-				game_info.image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.jpg'
+						try:
+							#if no rom named image, then find title named image
+							if not game_info.image_file:
+							
+								image_search = self.GC.execute('SELECT image_file FROM image_match WHERE system=? and id=?', (best_match_game[0], best_match_game[3])).fetchone()[0]
+								if image_search: image_search =  [os.path.join(platform['rom_path'], 'images/') + image_search + '.*',
+																				os.path.join( os.path.join(platform['rom_path'], 'images/'), self.strip_accents(temp_game_info['title']) + '.*')]
+								for image in image_search:
+									temp_image_path.extend( glob.glob( image ) )
+								game_info.image_file = temp_image_path[0]
+						except:
+							#if no image found, default to rom name with '.jpg' extension, in case user adds image later.
+							game_info.image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.jpg'
+				else:
+					game_info.image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.jpg'
+				
+				
+				rom_list_append((game_info.id, game_info.system,
+										game_info.title, game_info.search_terms,
+										None, None, #parent, cloneof -> for arcade
+										game_info.release_date, game_info.overview,
+										game_info.esrb, game_info.genres,
+										game_info.players, game_info.coop,
+										game_info.publisher, game_info.developer,
+										game_info.rating, game_info.command,
+										game_info.rom_file, game_info.rom_path,
+										game_info.image_file, 0, game_info.flags))
 			
-			
-			rom_list_append((game_info.id, game_info.system,
-									game_info.title, game_info.search_terms,
-									None, None, #parent, cloneof -> for arcade
-									game_info.release_date, game_info.overview,
-									game_info.esrb, game_info.genres,
-									game_info.players, game_info.coop,
-									game_info.publisher, game_info.developer,
-									game_info.rating, game_info.command,
-									game_info.rom_file, game_info.rom_path,
-									game_info.image_file, game_info.flags))
-		
-		self.LC.executemany('INSERT INTO local_roms '  + 
-			'(id, system, title, search_terms, parent, cloneof, release_date, overview, esrb, genres, ' +
-			'players, coop, publisher, developer, rating, command, rom_file, rom_path, image_file, flags) ' +
-			'VALUES (' + ('?,' * 20)[:-1] + ')', rom_list)
-		self.LOCAL.commit()
-		print	
+			self.LC.executemany('INSERT INTO local_roms '  + 
+				'(id, system, title, search_terms, parent, cloneof, release_date, overview, esrb, genres, ' +
+				'players, coop, publisher, developer, rating, command, rom_file, rom_path, image_file, number_of_runs, flags) ' +
+				'VALUES (' + ('?,' * 21)[:-1] + ')', rom_list)
+			self.LOCAL.commit()
+			print	
 	
 	
 	def image_match(self, id, image_path, default_match_rate=.79, VERBOSE='SEMI'):
@@ -522,135 +535,135 @@ class API(object):
 				
 			self.LOCAL.commit()
 			
-			
-			select_roms = tuple(os.path.splitext(rom)[0].encode('UTF8') for rom in roms) if len(roms)>1 else ('("' + roms[0] + '")')
-			rom_dict = dict(zip(select_roms, roms))
+			if roms:
+				select_roms = tuple(os.path.splitext(rom)[0].encode('UTF8') for rom in roms) if len(roms)>1 else ('("' + roms[0] + '")')
+				rom_dict = dict(zip(select_roms, roms))
 
-			#assign append to keep rom_list from being evaluated each iteration
-			rom_list = []
-			rom_list_append = rom_list.append
-			index = 0
-			
-			query = 'SELECT * FROM arcade WHERE id in {0}'.format(select_roms)
-			for value in self.GC.execute(query).fetchall():
-				index += 1
-				temp_game_info = dict(zip(column_names, value))
-			
-				rom = rom_dict[temp_game_info['id']]
+				#assign append to keep rom_list from being evaluated each iteration
+				rom_list = []
+				rom_list_append = rom_list.append
+				index = 0
 				
-				del rom_dict[temp_game_info['id']]
+				query = 'SELECT * FROM arcade WHERE id in {0}'.format(select_roms)
+				for value in self.GC.execute(query).fetchall():
+					index += 1
+					temp_game_info = dict(zip(column_names, value))
 				
-				if dont_match == False:
+					rom = rom_dict[temp_game_info['id']]
+					
+					del rom_dict[temp_game_info['id']]
+					
+					if dont_match == False:
+						#create run command
+						if platform['include_extension']: 
+							build_command = rom
+						else:
+							build_command = os.path.splitext(rom)[0]
+						
+						if platform['include_full_path']:
+							build_command = os.path.join(platform['rom_path'], build_command)
+						
+						game_command = platform['command'] + ' "' + build_command + '"'
+						
+						
+						#Let user know current progress
+						if VERBOSE:
+							status = r"%10d/%d roms  [%3.2f%%]" % (index, len(roms), (index) * 100. / len(roms))
+							status = status + chr(8)*(len(status)+1)
+							sys.stdout.write('%s      \r' % (status))
+							sys.stdout.flush()
+							
+						
+						if VERBOSE == 'SEMI' or VERBOSE == 'FULL':
+							if best_match_game:
+								print 'Closest match for %s is %s' % (pcolor('green', "["+ rom +"]"), pcolor('green', "["+ temp_game_info['title'] +"]"))
+						
+						
+						#If a suitable match was found, pull info
+						if temp_game_info:
+							game_info= Game(title = temp_game_info['title'],
+													system = platform['id'],
+													parent = temp_game_info['parent'],
+													search_terms = temp_game_info['search_terms'],
+													release_date = temp_game_info['release_date'],
+													overview = temp_game_info['overview'],
+													esrb = temp_game_info['esrb'],
+													genres = temp_game_info['genres'],
+													players = temp_game_info['players'],
+													coop = temp_game_info['coop'],
+													publisher = temp_game_info['publisher'],
+													developer = temp_game_info['developer'],
+													rating = temp_game_info['rating'],
+													command = game_command,
+													rom_path = platform['rom_path'],
+													rom_file = rom)
+						
+						#if name contains brackets [] with a minus '-' inside, glob will error out
+						try:
+							#named same as rom + any extension
+							game_info.image_file = glob.glob( os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.*')[0]
+						except:
+							game_info.image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.jpg'
+						
+						rom_list_append((game_info.id, game_info.system,
+												game_info.title, game_info.search_terms,
+												game_info.parent, game_info.cloneof, #parent, cloneof -> for arcade items
+												game_info.release_date, game_info.overview,
+												game_info.esrb, game_info.genres,
+												game_info.players, game_info.coop,
+												game_info.publisher, game_info.developer,
+												game_info.rating, game_info.command,
+												game_info.rom_file, game_info.rom_path,
+												game_info.image_file, 0, game_info.flags))
+				
+				#roms not found in database
+				for key, value in rom_dict.iteritems():
+					index += 1
+					if VERBOSE == 'SEMI' or VERBOSE == 'FULL':
+						print 'No match found for %s' % (pcolor('red', "[" + value + "]"))
+
+					#Let user know current progress
+					if not VERBOSE:
+						status = r"%10d/%d roms  [%3.2f%%]" % (index, len(roms), (index) * 100. / len(roms))
+						status = status + chr(8)*(len(status)+1)
+						sys.stdout.write('%s      \r' % (status))
+						sys.stdout.flush()
+						
 					#create run command
 					if platform['include_extension']: 
-						build_command = rom
+						build_command = value
 					else:
-						build_command = os.path.splitext(rom)[0]
+						build_command = os.path.splitext(value)[0]
 					
 					if platform['include_full_path']:
 						build_command = os.path.join(platform['rom_path'], build_command)
 					
 					game_command = platform['command'] + ' "' + build_command + '"'
 					
-					
-					#Let user know current progress
-					if VERBOSE:
-						status = r"%10d/%d roms  [%3.2f%%]" % (index, len(roms), (index) * 100. / len(roms))
-						status = status + chr(8)*(len(status)+1)
-						sys.stdout.write('%s      \r' % (status))
-						sys.stdout.flush()
-						
-					
-					if VERBOSE == 'SEMI' or VERBOSE == 'FULL':
-						if best_match_game:
-							print 'Closest match for %s is %s' % (pcolor('green', "["+ rom +"]"), pcolor('green', "["+ temp_game_info['title'] +"]"))
-					
-					
-					#If a suitable match was found, pull info
-					if temp_game_info:
-						game_info= Game(title = temp_game_info['title'],
-												system = platform['id'],
-												parent = temp_game_info['parent'],
-												search_terms = temp_game_info['search_terms'],
-												release_date = temp_game_info['release_date'],
-												overview = temp_game_info['overview'],
-												esrb = temp_game_info['esrb'],
-												genres = temp_game_info['genres'],
-												players = temp_game_info['players'],
-												coop = temp_game_info['coop'],
-												publisher = temp_game_info['publisher'],
-												developer = temp_game_info['developer'],
-												rating = temp_game_info['rating'],
-												command = game_command,
-												rom_path = platform['rom_path'],
-												rom_file = rom)
-					
-					#if name contains brackets [] with a minus '-' inside, glob will error out
 					try:
 						#named same as rom + any extension
-						game_info.image_file = glob.glob( os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.*')[0]
+						image_file = glob.glob( os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.*')[0]
 					except:
-						game_info.image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.jpg'
+						image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.jpg'
 					
-					rom_list_append((game_info.id, game_info.system,
-											game_info.title, game_info.search_terms,
-											game_info.parent, game_info.cloneof, #parent, cloneof -> for arcade items
-											game_info.release_date, game_info.overview,
-											game_info.esrb, game_info.genres,
-											game_info.players, game_info.coop,
-											game_info.publisher, game_info.developer,
-											game_info.rating, game_info.command,
-											game_info.rom_file, game_info.rom_path,
-											game_info.image_file, game_info.flags))
+					rom_list_append((None, platform['id'], 			#id, system
+											value, key,							#title, search_terms
+											None, None,							#parent file
+											None, None, 						#release_date, overview
+											None, None, 						#esrb, genres
+											None, None,						# players, coop
+											None, None, 						#publisher, developer
+											None, game_command, 		#rating, command
+											value, platform['rom_path'], 	#rom_file, rom_path
+											image_file, 0, 'no_match,')) 		#image_file, flags
+				
 			
-			#roms not found in database
-			for key, value in rom_dict.iteritems():
-				index += 1
-				if VERBOSE == 'SEMI' or VERBOSE == 'FULL':
-					print 'No match found for %s' % (pcolor('red', "[" + value + "]"))
-
-				#Let user know current progress
-				if not VERBOSE:
-					status = r"%10d/%d roms  [%3.2f%%]" % (index, len(roms), (index) * 100. / len(roms))
-					status = status + chr(8)*(len(status)+1)
-					sys.stdout.write('%s      \r' % (status))
-					sys.stdout.flush()
-					
-				#create run command
-				if platform['include_extension']: 
-					build_command = value
-				else:
-					build_command = os.path.splitext(value)[0]
-				
-				if platform['include_full_path']:
-					build_command = os.path.join(platform['rom_path'], build_command)
-				
-				game_command = platform['command'] + ' "' + build_command + '"'
-				
-				try:
-					#named same as rom + any extension
-					image_file = glob.glob( os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.*')[0]
-				except:
-					image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.jpg'
-				
-				rom_list_append((None, platform['id'], 			#id, system
-										value, key,							#title, search_terms
-										None, None,							#parent file
-										None, None, 						#release_date, overview
-										None, None, 						#esrb, genres
-										None, None,						# players, coop
-										None, None, 						#publisher, developer
-										None, game_command, 		#rating, command
-										value, platform['rom_path'], 	#rom_file, rom_path
-										image_file, 'no_match,')) 		#image_file, flags
-			
-		
-			self.LC.executemany('INSERT INTO local_roms '  + 
-				'(id, system, title, search_terms, parent, cloneof, release_date, overview, esrb, genres, ' +
-				'players, coop, publisher, developer, rating, command, rom_file, rom_path, image_file, flags) ' +
-				'VALUES (' + ('?,' * 20)[:-1] + ')', rom_list)
-			self.LOCAL.commit()
-			print
+				self.LC.executemany('INSERT INTO local_roms '  + 
+					'(id, system, title, search_terms, parent, cloneof, release_date, overview, esrb, genres, ' +
+					'players, coop, publisher, developer, rating, command, rom_file, rom_path, image_file, flags) ' +
+					'VALUES (' + ('?,' * 21)[:-1] + ')', rom_list)
+				self.LOCAL.commit()
+				print
 	
 api = API()
 
