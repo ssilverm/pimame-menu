@@ -666,7 +666,7 @@ class API(object):
 				print
 	
 api = API()
-
+#dont_match argument k
 api.match_rom_to_db(menu_item_id = args.platform, get_rom_name_with_crc = args.crc, default_match_rate = args.match_rate, VERBOSE = args.verbose, RUN_WHOLE_SYSTEM_FOLDER = args.clean_slate, dont_match = args.dont_match)
 
 
