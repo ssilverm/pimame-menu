@@ -95,7 +95,7 @@ menu_items:
     label: 
     icon_file: favorite.png
     icon_selected: favorite.png
-    banner:
+    banner: favorite-background.png
   SNES: 
     label: 
     icon_file: snes.png
@@ -184,12 +184,12 @@ menu_items:
   NGPC: 
     label: 
     icon_file: ngpc.png
-    icon_selected: ngpc-selected.png
+    icon_selected: ngpc.png
     banner: ngpc-background.png
   ZXS: 
     label: 
     icon_file: zxspectrum.png
-    icon_selected: zxspectrum-selected.png
+    icon_selected: zxspectrum.png
     banner: zxspectrum-background.png
   RESTART: 
     label: Restart
