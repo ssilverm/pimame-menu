@@ -124,9 +124,18 @@ class PMMenuItem(pygame.sprite.Sprite):
 		if self.icon_id == 'FAVORITE': query = "SELECT COUNT(id) FROM local_roms WHERE flags like '%favorite%'"
 		self.num_roms = int(self.cfg.local_cursor.execute(query).fetchone()[0])
 		
-		len_files = len([ f for f in listdir(self.rom_path) if isfile(join(self.rom_path,f)) and f != '.gitkeep'  ])	
-				
-		if len_files > 0 and self.num_roms != len_files and self.scraper_id: 
+		if '21' in self.scraper_id: #special check for scummvm:
+			len_files = len(set([ splitext(f)[0] for f in listdir(self.rom_path) if isdir(join(self.rom_path,f)) and f != 'images'  ]))	
+		else:
+			len_files = len([ f for f in listdir(self.rom_path) if isfile(join(self.rom_path,f)) and f != '.gitkeep'  ])	
+			
+		
+		if (len_files > 0  
+			and self.num_roms != len_files  
+				and self.scraper_id  
+					and self.override_menu != True  
+						and self.type != 'FRONTEND'):
+						
 			self.num_roms = len_files
 			self.warning = "!"
 
@@ -148,41 +157,21 @@ class PMMenuItem(pygame.sprite.Sprite):
 		if not self.cfg.options.show_unmatched_roms: query += ' AND (flags is null or flags not like "%no_match%")'
 		
 		#order by category
-		query += ' ORDER BY {sort_category} {sort_order}, title ASC'.format(sort_category = self.cfg.options.rom_sort_category.lower(), sort_order = 'DESC' if 'des' in self.cfg.options.rom_sort_order.lower() else 'ASC')
+		if self.cfg.options.rom_sort_category.lower() == 'favorites first':
+			query += ' ORDER BY CASE WHEN flags LIKE "%favorite%" THEN 0 ELSE 1 END ASC, title ASC'
+		else:
+			query += ' ORDER BY {sort_category} {sort_order}, title ASC'.format(sort_category = self.cfg.options.rom_sort_category.lower().replace(' ', '_'), sort_order = 'DESC' if 'des' in self.cfg.options.rom_sort_order.lower() else 'ASC')
 		
 		if self.icon_id == 'FAVORITE': 
 			query = "SELECT * FROM local_roms WHERE flags like '%favorite%'  ORDER BY {sort_category} {sort_order}, title ASC".format(
-							sort_category = self.cfg.options.rom_sort_category.lower(), sort_order = 'DESC' if 'des' in self.cfg.options.rom_sort_order.lower() else 'ASC')
+							sort_category = self.cfg.options.rom_sort_category.lower() if self.cfg.options.rom_sort_category.lower() != 'favorites first' else 'title',
+							sort_order = 'DESC' if 'des' in self.cfg.options.rom_sort_order.lower() else 'ASC')
 		
 		values = self.cfg.local_cursor.execute(query).fetchall()
 		
 		
 		return {'id': self.id, 'icon_id': self.icon_id,  'scraper_id': self.scraper_id.split(',')[0], 'list': [dict(zip(keys,value)) for value in values]}
-		
-		
-		'''
-		rom_data = None
-		if isfile(self.cache):
-					json_data=open(self.cache)
-					raw_data = json.load(json_data)
-					file_count = raw_data['file_count']
-					rom_data = raw_data['rom_data']
-					json_data.close()
-					
-		if not "!" in str(self.num_roms) and rom_data:
-			return [
-				
-					{
-						'title': f['real_name'] if ('real_name' in f) else f['file'],
-						'type': 'command',
-						'image': join( f['image_path'], f['image_file']),
-						'command': (self.command + ' \"' + (join(f['rom_path'],f['file']) if (self.full_path and self.extension) else f['file'] if (self.extension and not self.full_path) else os.path.splitext(f['file'])[0] if (not self.extension and not self.full_path) else join(f['rom_path'], os.path.splitext(f['file'])[0])) + '\"')
-						'command': (self.command + ' \"' + (join(f['rom_path'],f['file']) if (self.full_path and self.extension) else f['file'] if (self.extension and not self.full_path) else os.path.splitext(f['file'])[0] if (not self.extension and not self.full_path) else join(f['rom_path'], os.path.splitext(f['file'])[0])) + '\"')
-						'command': (self.command + ' \"' + (join(self.rom_path,f) if (self.full_path and self.extension) else f if (self.extension and not self.full_path) else os.path.splitext(f)[0] if (not self.extension and not self.full_path) else join(self.rom_path, os.path.splitext(f)[0])) + '\"')
-						'command': (self.command + ' \"' + (join(self.rom_path,f) if (self.full_path and self.extension) else f if (self.extension and not self.full_path) else os.path.splitext(f)[0] if (not self.extension and not self.full_path) else join(self.rom_path, os.path.splitext(f)[0])) + '\"')
-				}
-				for f in listdir(self.rom_path) if isfile(join(self.rom_path, f)) and f != '.gitkeep'
-			]'''
+
 
 	def run_command(self):
 		print self.command

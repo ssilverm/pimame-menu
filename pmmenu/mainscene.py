@@ -10,7 +10,7 @@ from pmlabel import *
 from pmutil import *
 from romlistscene import *
 
-import os
+import os, time
 
 class MainScene(object):
 
@@ -217,6 +217,11 @@ class MainScene(object):
 			elif action == 'BACK' and self.cfg.options.allow_quit_to_console:
 				self.cfg.options.menu_back_sound.play()
 				effect = PMUtil.fade_out(self, self.cfg.options.use_scene_transitions)
+				
+				for wait_time in xrange(0,15):
+					if not pygame.mixer.get_busy(): break 
+					time.sleep(.01)
+
 				pygame.quit()
 				sys.exit()
 			

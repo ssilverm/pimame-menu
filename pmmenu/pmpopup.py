@@ -482,7 +482,6 @@ class PMPopup(pygame.sprite.Sprite):
 				if self.selected:
 					try: exec( self.list[self.hover]['on_select'] )
 					except KeyError: pass
-				self.cfg.options.menu_back_sound.play()
 				self.update_menu()
 				self.draw_menu()
 
@@ -550,7 +549,6 @@ class PMPopup(pygame.sprite.Sprite):
 			
 			if cfg_check != change_check: 
 				self.answer = ['CHANGES MADE']
-				print cfg_check,change_check
 			
 			self.cfg.options.show_clones = self.menu_work.show_clones_bool
 			self.cfg.options.show_unmatched_roms = self.menu_work.show_unmatched_bool
@@ -607,7 +605,7 @@ class WorkFunctions():
 		self.abc_count = 0
 		self.abc_list = map(chr, range(65, 91))
 		
-		self.sort_by_list = ['Title', 'Release_date', 'Players', 'Rating', 'Esrb', 'Coop', 'Publisher', 'Developer']
+		self.sort_by_list = ['Title', 'Favorites First', 'Release date', 'Players', 'Rating', 'Esrb', 'Coop', 'Publisher', 'Developer']
 		try: self.sort_by_count = self.sort_by_list.index(self.cfg.options.rom_sort_category.capitalize())
 		except ValueError: self.sort_by_count = 0
 		

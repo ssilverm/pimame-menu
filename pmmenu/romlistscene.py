@@ -422,6 +422,11 @@ class RomListScene(object):
 			self.cfg.options.menu_back_sound.play()
 			self.manager.back()
 		else:
+			self.cfg.options.menu_select_sound.play()
+			effect = PMUtil.fade_out(self, self.cfg.options.use_scene_transitions)
+			for wait_time in xrange(0,15):
+				if not pygame.mixer.get_busy(): break 
+				time.sleep(.01)
 			self.cfg.local_cursor.execute("UPDATE local_roms SET number_of_runs = ifnull(number_of_runs,0) + 1 WHERE id = ?", (sprite.id,))
 			self.cfg.local_db.commit()
 			PMUtil.run_command_and_continue(sprite.command + "%%" + str(self.menu_id))

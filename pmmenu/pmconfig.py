@@ -16,7 +16,6 @@ class PMCfg:
 		system("alsactl --file ~/pimame/config/piplay-sound.state restore")
 		pygame.mixer.pre_init(44100, -16, 1, 2048)
 		
-		#load config file, use open() rather than file(), file() is deprecated in python 3.
 		path = os.path.realpath('/home/pi/pimame/pimame-menu/database/config.db')
 		self.config_db = sqlite3.connect(path)
 		self.config_cursor = self.config_db.cursor()
@@ -337,7 +336,13 @@ class PMOptions:
 		
 	def load_image(self, file_path, alternate_image = None, verbose = False):
 		try:
-			return pygame.image.load(file_path)
+			if os.path.splitext(file_path)[1] != "":
+				return pygame.image.load(file_path)
+			else:
+				try:
+					return pygame.image.load(os.path.join(file_path, '.jpg'))
+				except:
+					return pygame.image.load(os.path.join(file_path, '.png'))
 		except:
 			if alternate_image: 
 				try:

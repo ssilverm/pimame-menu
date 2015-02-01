@@ -3,10 +3,10 @@
 #						[python get-pip.py]
 
 
-import zipfile, zlib, os, re, sys, sqlite3, glob, unicodedata, argparse
+import zipfile, zlib, os, re, sys, sqlite3, glob, unicodedata, argparse, copy
 from Levenshtein import setratio
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, isdir, join
 from select import select
 
 
@@ -171,13 +171,28 @@ class API(object):
 		return rom_locations
 		
 		
-	def get_stored_roms(self, path):
-		#Return only files in directory, need to add whitelist of potential rom extensions (.nes, .bin, .zip)	
-		try:
-			fname = [ f for f in listdir(path) if isfile(join(path,f)) and f != '.gitkeep' ]
-			return sorted(fname)
-		except:
-			return []
+	def get_stored_roms(self, path, is_scummvm = False):
+		
+		if is_scummvm:
+			try:
+				dirname = [ d for d in listdir(path) if isdir(join(path,d)) and d != 'images' ]
+				fname = {}
+				all_files = []
+				for dir in dirname:
+					temp_dir = join(path, dir)
+					fname[dir] = list(set([ os.path.splitext(f)[0].lower() for f in listdir(temp_dir) if isfile(join(temp_dir,f)) and f != '.gitkeep' ]))
+					all_files += fname[dir]
+				return {'all_files': all_files, 'directories': fname}
+			except:
+				return []
+		
+		else:
+			#Return only files in directory, need to add whitelist of potential rom extensions (.nes, .bin, .zip)	
+			try:
+				fname = [ f for f in listdir(path) if isfile(join(path,f)) and f != '.gitkeep' ]
+				return sorted(fname)
+			except:
+				return []
 	
 	
 	def get_platform(self, menu_item_id=None, return_all_menu_items = False):
@@ -260,6 +275,7 @@ class API(object):
 					#check if arcade or console
 					if platform['table_name']:
 						if 'arcade' in platform['table_name']: self.arcade_match(platform, default_match_rate, VERBOSE, RUN_WHOLE_SYSTEM_FOLDER, dont_match)
+						if 'scummvm' in platform['table_name']: self.scumm_match(platform, default_match_rate, VERBOSE, RUN_WHOLE_SYSTEM_FOLDER, dont_match)
 						if 'console' in platform['table_name']: self.console_match(platform, get_rom_name_with_crc, default_match_rate, VERBOSE, RUN_WHOLE_SYSTEM_FOLDER, dont_match)
 	
 	
@@ -411,10 +427,10 @@ class API(object):
 									temp_image_path.extend( glob.glob( image ) )
 								game_info.image_file = temp_image_path[0]
 						except:
-							#if no image found, default to rom name with '.jpg' extension, in case user adds image later.
-							game_info.image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.jpg'
+							#if no image found, default to rom name with no extension. Boxart thread in romlistscene will try both .jpg and .png extensions
+							game_info.image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] )
 				else:
-					game_info.image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.jpg'
+					game_info.image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] )
 				
 				
 				rom_list_append((game_info.id, game_info.system,
@@ -603,7 +619,7 @@ class API(object):
 							#named same as rom + any extension
 							game_info.image_file = glob.glob( os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.*')[0]
 						except:
-							game_info.image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.jpg'
+							game_info.image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] )
 						
 						rom_list_append((game_info.id, game_info.system,
 												game_info.title, game_info.search_terms,
@@ -655,12 +671,128 @@ class API(object):
 											None, None, 						#publisher, developer
 											None, game_command, 		#rating, command
 											value, platform['rom_path'], 	#rom_file, rom_path
-											image_file, 0, 'no_match,')) 		#image_file, flags
+											image_file, 0, 'no_match,')) 		#image_file, number_of_runs, flags
 				
 			
 				self.LC.executemany('INSERT INTO local_roms '  + 
 					'(id, system, title, search_terms, parent, cloneof, release_date, overview, esrb, genres, ' +
-					'players, coop, publisher, developer, rating, command, rom_file, rom_path, image_file, flags) ' +
+					'players, coop, publisher, developer, rating, command, rom_file, rom_path, image_file, number_of_runs, flags) ' +
+					'VALUES (' + ('?,' * 21)[:-1] + ')', rom_list)
+				self.LOCAL.commit()
+				print
+	
+
+	def scumm_match(self, platform, default_match_rate, VERBOSE, RUN_WHOLE_SYSTEM_FOLDER, dont_match):
+						
+		column_names = [item[1] for item in self.GC.execute('PRAGMA table_info(scummvm)').fetchall()]
+			
+		#load rom filenames, initialize rom_list to return matches
+		print 'Fetching %s rom list...' % pcolor('cyan', platform['label'])
+		everything = self.get_stored_roms(platform['rom_path'], is_scummvm = True)
+		roms = everything['directories']
+		all_files = everything['all_files']
+		
+		if roms:
+			#Create Temp table with only currently 
+			print 'Connecting to PiPlay Database...'
+
+			if RUN_WHOLE_SYSTEM_FOLDER:
+				#delete all entries for system
+				query = 'DELETE FROM local_roms WHERE system = {platform_id}'.format(platform_id = platform['id'])
+				self.LC.execute(query)
+			else:
+				#delete all entries that no longer have roms + previously unmatched entries
+				query_roms = tuple([ path.encode('UTF8') for path in roms ] + ['']) #add [''] to keep tuple length of 1 from creating error
+				query = 'DELETE FROM local_roms WHERE system ={system} and (rom_path not in {query_path} or flags like "%no_match%")'.format( system = platform['id'], query_path = query_roms )
+				self.LC.execute(query)
+				
+				#remove any remaining entries from list of roms
+				query = 'SELECT id FROM local_roms WHERE system = {platform_id}'.format( platform_id = platform['id'])
+				rom_query = [ item[0] for item in self.LC.execute(query).fetchall() ]
+				#remove already scraped roms
+				for k in roms.keys():
+					for entry in rom_query:
+						if entry in roms[k]:
+							del roms[k]
+							break
+						
+
+				
+			self.LOCAL.commit()
+			
+			if roms:
+				#select_roms = tuple([ file.encode('UTF8') for dir, file in roms.iteritems() ]  + [''] )
+				#rom_dict = dict(zip(select_roms, roms))
+
+				#assign append to keep rom_list from being evaluated each iteration
+				rom_list = []
+				rom_list_append = rom_list.append
+				current_rom_count = 0
+				
+				query = 'SELECT * FROM scummvm'
+				master_entries = [dict(zip(column_names, value)) for value in self.GC.execute(query).fetchall()]
+				
+				#iterate through rom folders
+				for k in roms.keys():
+					#iterate through all scumm master entries
+					rom = {}
+					for index, entry in enumerate(master_entries):
+						#if master_entry 'id' matches a file name
+						if entry['id'] in roms[k]:
+							rom = {'entry': master_entries[index], 'folder': k, 'files': roms[k]}
+							break
+							
+					
+					current_rom_count += 1
+					if rom:
+						temp_game_info = rom['entry']
+						os.path.realpath
+						
+						#use os.path.realpath -> scummvm can't handle symlinks
+						game_command = ' '.join([ platform['command'], '"' + os.path.realpath( os.path.join(platform['rom_path'], rom['folder']) ) + '"', temp_game_info['id'] ])
+						
+						#Let user know current progress
+						if VERBOSE:
+							status = r"%10d/%d roms  [%3.2f%%]" % (current_rom_count, len(roms), (current_rom_count) * 100. / len(roms))
+							status = status + chr(8)*(len(status)+1)
+							sys.stdout.write('%s      \r' % (status))
+							sys.stdout.flush()
+						
+						#If a suitable match was found, pull info
+						if temp_game_info:
+							game_info= Game(title = temp_game_info['title'],
+													system = platform['id'],
+													search_terms = temp_game_info['search_terms'],
+													release_date = temp_game_info['release_date'],
+													overview = temp_game_info['overview'],
+													players = 1,
+													publisher = temp_game_info['publisher'],
+													developer = temp_game_info['developer'],
+													command = game_command,
+													rom_path = platform['rom_path'],
+													rom_file = temp_game_info['id'])
+						
+						#if name contains brackets [] with a minus '-' inside, glob will error out
+						try:
+							#named same as rom + any extension
+							game_info.image_file = glob.glob( os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(temp_game_info['id'])[0] ) + '.*')[0]
+						except:
+							game_info.image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(temp_game_info['id'])[0] )
+						
+						rom_list_append((game_info.id, game_info.system,
+												game_info.title, game_info.search_terms,
+												game_info.parent, game_info.cloneof, #parent, cloneof -> for arcade items
+												game_info.release_date, game_info.overview,
+												game_info.esrb, game_info.genres,
+												game_info.players, game_info.coop,
+												game_info.publisher, game_info.developer,
+												game_info.rating, game_info.command,
+												game_info.rom_file, game_info.rom_path,
+												game_info.image_file, 0, game_info.flags))
+			
+				self.LC.executemany('INSERT INTO local_roms '  + 
+					'(id, system, title, search_terms, parent, cloneof, release_date, overview, esrb, genres, ' +
+					'players, coop, publisher, developer, rating, command, rom_file, rom_path, image_file, number_of_runs, flags) ' +
 					'VALUES (' + ('?,' * 21)[:-1] + ')', rom_list)
 				self.LOCAL.commit()
 				print

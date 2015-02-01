@@ -23,7 +23,11 @@ class PMRomItem(pygame.sprite.Sprite):
 		else:
 			list_item = dict(map(lambda (k,v): (k,v if v else ''), list_item.iteritems()))
 			
-			display_text = str(list_item[ self.cfg.options.rom_sort_category]) + ' - ' + list_item['title'] if self.cfg.options.rom_sort_category != 'title' else list_item['title']
+			if self.cfg.options.rom_sort_category == 'title' or self.cfg.options.rom_sort_category == 'favorites first':
+				display_text = list_item['title']
+			else:
+				display_text = str( list_item[self.cfg.options.rom_sort_category] ) + ' - ' + list_item['title']
+				
 			self.text = display_text if list_item['flags'] != 'display_platform' else '<- Back'
 			self.title = list_item['title']
 			self.id = list_item['id']

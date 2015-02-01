@@ -94,6 +94,9 @@ class PMUtil:
 			for x in xrange(1,6):
 				self.screen.blit(background, (0,0))
 				pygame.display.update()
+			background.set_alpha(255)
+			self.screen.blit(background, (0,0))
+			pygame.display.update()
 			return "fade_out"
 		pygame.display.update()
 		return "no_effect"

@@ -57,12 +57,16 @@ class PMList(pygame.sprite.OrderedUpdates):
 		if not self.cfg.options.show_unmatched_roms: query += ' AND (flags is null or flags not like "%no_match%")'
 		
 		#order by category
-		query += ' ORDER BY {sort_category} {sort_order}, title ASC'.format(sort_category = self.cfg.options.rom_sort_category.lower(), sort_order = 'DESC' if 'des' in self.cfg.options.rom_sort_order.lower() else 'ASC')
+		if self.cfg.options.rom_sort_category.lower() == 'favorites first':
+			query += ' ORDER BY CASE WHEN flags LIKE "%favorite%" THEN 0 ELSE 1 END ASC, title ASC'
+		else:
+			query += ' ORDER BY {sort_category} {sort_order}, title ASC'.format(sort_category = self.cfg.options.rom_sort_category.lower().replace(' ','_'), sort_order = 'DESC' if 'des' in self.cfg.options.rom_sort_order.lower() else 'ASC')
 		
 		#if favorites category, change query
 		if self.icon_id == 'FAVORITE': 
 			query = "SELECT * FROM local_roms WHERE flags like '%favorite%' ORDER BY {sort_category} {sort_order}, title ASC".format(
-							sort_category = self.cfg.options.rom_sort_category.lower(), sort_order = 'DESC' if 'des' in self.cfg.options.rom_sort_order.lower() else 'ASC')
+							sort_category = self.cfg.options.rom_sort_category.lower() if self.cfg.options.rom_sort_category.lower() != 'favorites first' else 'title', 
+							sort_order = 'DESC' if 'des' in self.cfg.options.rom_sort_order.lower() else 'ASC')
 
 		values = self.cfg.local_cursor.execute(query).fetchall()
 
