@@ -21,11 +21,14 @@ class PMLabel(pygame.sprite.Sprite):
 			text_rect = text.get_rect()
 		#make text smoother
 		text.blit(text, text_rect)
+
 			
 		if label_text == '': text_rect.w = 0
 		self.image = pygame.Surface([text_rect.w, text_rect.h]).convert_alpha()
 		self.image.fill(color_bg, text_rect)
-		self.image.blit(text, text_rect)
+		
+		if len(color_fg) <= 3 or (len(color_fg) > 3 and color_fg[3] > 0):
+			self.image.blit(text, text_rect)
 		
 		self.rect = self.image.get_rect()
 		

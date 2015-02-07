@@ -37,13 +37,13 @@ KEYBOARD:
   - pygame.K_KP_ENTER
   BACK:
   - pygame.K_ESCAPE
-  - pygame.K_2
+  - pygame.K_j
   MENU:
   - pygame.K_TAB
-  - pygame.K_1
+  - pygame.K_n
   QUIT:
   - "[pygame.K_LCTRL, pygame.K_q]"
-  - "[pygame.K_1, pygame.K_2]"
+  - "[pygame.K_n, pygame.K_j]"
   
 OPTIONS:
   AXIS_DRIFT_TOLERANCE: .9

@@ -94,6 +94,9 @@ class PMUtil:
 			for x in xrange(1,6):
 				self.screen.blit(background, (0,0))
 				pygame.display.update()
+			background.set_alpha(255)
+			self.screen.blit(background, (0,0))
+			pygame.display.update()
 			return "fade_out"
 		pygame.display.update()
 		return "no_effect"
@@ -107,7 +110,7 @@ class PMUtil:
 			for x in xrange(1,6):
 				self.screen.blit(backup, (0,0))
 				pygame.display.update()
-			backup.set_alpha(255)
+			backup.set_alpha(None)
 			self.screen.blit(backup, (0,0))
 			pygame.display.update()
 			return "fade_in"
@@ -123,11 +126,29 @@ class PMUtil:
 			for x in xrange(1,6):
 				self.screen.blit(backup, (0,0))
 				pygame.display.update()
-			backup.set_alpha(255)
+			backup.set_alpha(None)
 			self.screen.blit(backup, (0,0))
 			pygame.display.update()
 			return "fade_into"
 		pygame.display.update()
+		return "no_effect"
+			
+	@staticmethod
+	def offset_fade_into(self, prev_screen, offset, run_effect = True, duration = 6):
+		if run_effect:
+			backup = pygame.Surface.copy(self.screen).convert()
+			self.screen.blit(prev_screen, (0,0))
+			backup.set_alpha(255 / (duration/2))
+			if len(offset) > 2:
+				kwargs = {'dest': offset, 'area': offset}
+			for x in xrange(1, duration):
+				self.screen.blit(backup, **kwargs)
+				pygame.display.update(offset)
+			backup.set_alpha(None)
+			self.screen.blit(backup, **kwargs)
+			pygame.display.update()
+			return "fade_into"
+		pygame.display.update(offset)
 		return "no_effect"
 	
 	@staticmethod
@@ -140,3 +161,29 @@ class PMUtil:
 		surf = pygame.transform.smoothscale(surface, scale_size)
 		surf = pygame.transform.smoothscale(surf, surf_size)
 		return surf
+	
+	@staticmethod
+	def glass(surface, color, rect):
+		if len(color) > 3 and (0 < color[3] < 255):
+			amt = 20
+			scale = 1.0/float(amt)
+			
+			backup = pygame.Surface((rect.w,rect.h), pygame.SRCALPHA, 32).convert_alpha()
+			backup.blit(surface, (0,0), rect)
+			
+			backup_size = backup.get_size()
+			scale_size = (int(backup_size[0]*scale), int(backup_size[1]*scale))
+			
+			backup = pygame.transform.smoothscale(backup, scale_size)
+			backup = pygame.transform.smoothscale(backup, backup_size)
+			
+			temp = pygame.Surface((rect.w,rect.h), pygame.SRCALPHA, 32).convert_alpha()
+
+			temp.fill(color)
+			backup.blit(temp,(0,0))
+			return backup
+				
+		backup = pygame.Surface((rect.w,rect.h)).convert_alpha()
+		backup.blit(surface, rect, rect)
+		backup.fill(color)
+		return backup

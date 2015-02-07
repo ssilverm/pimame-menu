@@ -1,6 +1,7 @@
 options:
 
   theme_name: "default"
+  theme_style: "grid"
   header_height: 140
   header_color: "255,255,255,255"
   logo_image: "logo.png"
@@ -10,7 +11,7 @@ options:
   generic_menu_item_selected: "generic_menu_item-selected.png"
   item_color: "255,255,255,128"
   disabled_alpha: 128
-  item_height: 220 #main menu icon height
+  item_height: 220
   num_items_per_row: 6
   menu_item_padding: 10
   display_navigation_labels: no
@@ -55,6 +56,7 @@ options:
   rom_count_max_text_width: auto
   
   rom_list_font_size: 19
+  rom_list_favorite_icon: "star.png"
   rom_list_font_align: left
   rom_list_font_color: "0,255,255"
   rom_list_font_bold: no
@@ -74,121 +76,163 @@ options:
   
   missing_boxart_image: "missing_boxart.png"
   boxart_offset: [0,0]
-  boxart_max_width: 50%
-  boxart_max_height: 70%
-  boxart_border_thickness: 1
-  boxart_border_padding: 5
-  boxart_border_color: "255,255,255"
+  boxart_max_width: 95%
+  boxart_max_height: 95%
+  boxart_background_color: "0,0,0,0"
+  boxart_border_color: "255,255,255,0"
+  boxart_border_thickness: 3
   
-menu_items:
-  - label: SNES
+  info_font_file: "Lato-Bold.ttf"
+  info_font_size: 16
+  info_font_color: "255,255,255"
+  info_extras_background_color: "228,56,65,180"
+  info_overview_background_color: "228,56,65,180"
+  info_border_color: "255,255,255,0"
+  info_border_thickness: 3
+  
+menu_items: 
+  FAVORITE: 
+    label: Favorites
+    icon_file: favorite.png
+    icon_selected: favorite-selected.png
+    banner:
+  SNES: 
+    label: Super Nintendo
     icon_file: snes.png
     icon_selected: snes-selected.png
-
-  - label: MAME4All
+    banner: 
+  M4A: 
+    label: MAME4All
     icon_file: mame4all.png
     icon_selected: mame4all-selected.png
-
-  - label: Neo Geo
+    banner: 
+  NG: 
+    label: Neo Geo
     icon_file: neogeo.png
     icon_selected: neogeo-selected.png
-
-  - label: AdvMAME
+    banner: 
+  ADVM: 
+    label: AdvMAME
     icon_file: advmame.png
     icon_selected: advmame-selected.png
-
-  - label: Final Burn
+    banner: 
+  FBA: 
+    label: Final Burn
     icon_file: fba.png
     icon_selected: fba-selected.png
-
-  - label: Genesis
+    banner: 
+  SG: 
+    label: Genesis
     icon_file: genesis.png
     icon_selected: genesis-selected.png
-
-  - label: NES
+    banner: 
+  NES: 
+    label: NES
     icon_file: nes.png
     icon_selected: nes-selected.png
-
-  - label: Atari 2600
+    banner: 
+  A2600: 
+    label: Atari 2600
     icon_file: 2600.png
     icon_selected: 2600-selected.png
-
-  - label: Playstation 1
+    banner: 
+  PS1: 
+    label: Playstation 1
     icon_file: psx.png
     icon_selected: psx-selected.png
-
-  - label: Commodore 64
+    banner: 
+  C64: 
+    label: Commodore 64
     icon_file: c64.png
     icon_selected: c64-selected.png
-
-  - label: ScummVM
+    banner: 
+  SCUMM: 
+    label: ScummVM
     icon_file: scummvm.png
     icon_selected: scummvm-selected.png
-
-  - label: Gameboy
+    banner: 
+  GB: 
+    label: Gameboy
     icon_file: gameboy.png
     icon_selected: gameboy-selected.png
-
-  - label: Gameboy Advance
+    banner: 
+  GBA: 
+    label: Gameboy Advance
     icon_file: gba.png
     icon_selected: gba-selected.png
-
-  - label: Restart
-    icon_file: restart.png
-    icon_selected: restart-selected.png
-
-  - label: Shutdown
-    icon_file: shutdown.png
-    icon_selected: shutdown-selected.png
-
-  - label: Update PiPlay
-    icon_file: update.png
-    icon_selected: update-selected.png
-
-  - label: Rom Scraper
-    icon_file: scraper.png
-    icon_selected: scraper-selected.png
-
-  - label: Install MAME
-    icon_file: mame-install.png
-    icon_selected: mame-install-selected.png
-
-  - label: Cave Story
+    banner: 
+  CAVE: 
+    label: Cave Story
     icon_file: cave.png
     icon_selected: cave-selected.png
-
-  - label: Turbografx 16
+    banner: 
+  TG16: 
+    label: Turbografx 16
     icon_file: tg16.png
     icon_selected: tg16-selected.png
-
-  - label: Sega Master System
+    banner: 
+  SMS: 
+    label: Sega Master System
     icon_file: sms.png
     icon_selected: sms-selected.png
-
-  - label: Game Gear
+    banner: 
+  GG: 
+    label: Game Gear
     icon_file: gg.png
     icon_selected: gg-selected.png
-
-  - label: Neo Geo Pocket Color
+    banner: 
+  NGPC: 
+    label: Neo Geo Pocket Color
     icon_file: ngpc.png
     icon_selected: ngpc-selected.png
-
-  - label: ZX Spectrum
+    banner: 
+  ZXS: 
+    label: ZX Spectrum
     icon_file: zxspectrum.png
     icon_selected: zxspectrum-selected.png
-
-  - label: Toggle Xbox Controller
+    banner: 
+  RESTART: 
+    label: Restart
+    icon_file: restart.png
+    icon_selected: restart-selected.png
+    banner: 
+  SHUTDOWN: 
+    label: Shutdown
+    icon_file: shutdown.png
+    icon_selected: shutdown-selected.png
+    banner: 
+  UPDATE: 
+    label: Update PiPlay
+    icon_file: update.png
+    icon_selected: update-selected.png
+    banner: 
+  SCRAPER: 
+    label: Rom Scraper
+    icon_file: scraper.png
+    icon_selected: scraper-selected.png
+    banner: 
+  INSTALLMAME: 
+    label: Install MAME
+    icon_file: mame-install.png
+    icon_selected: mame-install-selected.png
+    banner: 
+  XBOXCONTR: 
+    label: Toggle Xbox Controller
     icon_file: xbox-toggle.png
     icon_selected: xbox-toggle-selected.png
-
-  - label: raspi-config
+    banner: 
+  RASPICONFIG: 
+    label: raspi-config
     icon_file: raspi-config.png
     icon_selected: raspi-config-selected.png
-  
-  - label: WiFi Config
+    banner: 
+  WIFICONFIG: 
+    label: WiFi Config
     icon_file: wifi.png
     icon_selected: wifi-selected.png
-
-  - label: Exit
+    banner: 
+  EXIT: 
+    label: Exit
     icon_file: exit.png
     icon_selected: exit-selected.png
+    banner: 

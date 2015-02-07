@@ -1,0 +1,238 @@
+options:
+
+  theme_name: "slide"
+  theme_style: "slide"
+  header_height: 140
+  header_color: "255,255,255,0"
+  logo_image: "logo.png"
+  background_image: "background2.png"
+  background_color: "0,0,0"
+  generic_menu_item: "generic_menu_item.png"
+  generic_menu_item_selected: "generic_menu_item-selected.png"
+  item_color: "255,255,255,128"
+  disabled_alpha: 128
+  item_height: 220
+  num_items_per_row: 1
+  menu_item_padding: 10
+  display_navigation_labels: no
+
+  menu_move_sound: "sfx_move.wav"
+  menu_select_sound: "sfx_select.wav"
+  menu_back_sound: "sfx_back.wav"
+  menu_navigation_sound: "sfx_select.wav"
+
+  loading_image: "loading_screen.png"
+  font_file: "Lato-Bold.ttf"
+  default_font_size: 19
+  default_font_color: "255,255,255"
+  default_font_background_color: "255,255,255,0"
+  popup_menu_font_size: 19
+  popup_menu_font_color: "255,255,255"
+  popup_menu_font_selected_color: "0,255,255"
+  popup_menu_background_color: "150,150,150,90"
+  
+  display_labels: yes
+  label_text_align: center
+  labels_offset: [0,0]
+  label_font_size: 24
+  label_font_color: "0,0,0,0"
+  label_font_bold: no
+  label_background_color: "255,255,255,0"
+  label_font_selected_color: "255,255,255"
+  label_font_selected_bold: no
+  label_background_selected_color: "100,100,100,0"
+  label_max_text_width: 238
+  
+  display_rom_count: yes
+  rom_count_text_align: right
+  rom_count_offset: [0,225]
+  rom_count_font_size: 24
+  rom_count_font_color: "255,255,255,0"
+  rom_count_font_bold: no
+  rom_count_background_color: "228,56,65,0"
+  rom_count_font_selected_color: "255,255,255,255"
+  rom_count_font_selected_bold: no
+  rom_count_background_selected_color: "228,56,65,255"
+  rom_count_max_text_width: auto
+  
+  rom_list_font_size: 19
+  rom_list_favorite_icon: "star.png"
+  rom_list_font_align: left
+  rom_list_font_color: "0,255,255"
+  rom_list_font_bold: no
+  rom_list_background_color: "0,0,0,180"
+  rom_list_font_selected_color: "255,255,255,255"
+  rom_list_font_selected_bold: no
+  rom_list_background_selected_color: "0,174,255,255"
+  rom_list_item_image: ""
+  rom_list_item_selected_image: ""
+  rom_list_background_image: "background2.png"
+  rom_list_offset: [0, 0, 0, 0] #[x-position, y-position, pixels to crop from right, pixels to crop from bottom]
+  rom_list_align: left
+  rom_list_padding: 10
+  rom_list_min_background_height: auto
+  rom_list_min_background_width: 600
+  rom_list_max_text_width: 600
+  
+  missing_boxart_image: "missing_boxart.png"
+  boxart_offset: [0,0]
+  boxart_max_width: 95%
+  boxart_max_height: 95%
+  boxart_background_color: "0,0,0,0"
+  boxart_border_color: "255,255,255,0"
+  boxart_border_thickness: 3
+  
+  info_font_file: "Lato-Bold.ttf"
+  info_font_size: 16
+  info_font_color: "255,255,255"
+  info_extras_background_color: "0,174,255,180"
+  info_overview_background_color: "0,174,255,180"
+  info_border_color: "255,255,255,0"
+  info_border_thickness: 3
+  
+menu_items: 
+  FAVORITE: 
+    label: 
+    icon_file: favorite.png
+    icon_selected: favorite.png
+    banner: favorite-background.png
+  SNES: 
+    label: 
+    icon_file: snes.png
+    icon_selected: snes.png
+    banner: snes-background.png
+  M4A: 
+    label: 
+    icon_file: mame4all.png
+    icon_selected: mame4all.png
+    banner: mame-background.png
+  NG: 
+    label: 
+    icon_file: neogeo.png
+    icon_selected: neogeo.png
+    banner: neogeo-background.png
+  ADVM: 
+    label: 
+    icon_file: advmame.png
+    icon_selected: advmame.png
+    banner: mame-background.png
+  FBA: 
+    label: 
+    icon_file: fba.png
+    icon_selected: fba.png
+    banner: fba-background.png
+  SG: 
+    label: 
+    icon_file: genesis.png
+    icon_selected: genesis.png
+    banner: genesis-background.png
+  NES: 
+    label: 
+    icon_file: nes.png
+    icon_selected: nes.png
+    banner: nes-background.png
+  A2600: 
+    label: 
+    icon_file: 2600.png
+    icon_selected: 2600.png
+    banner: 2600-background.png
+  PS1: 
+    label: 
+    icon_file: psx.png
+    icon_selected: psx.png
+    banner: psx-background.png
+  C64: 
+    label: 
+    icon_file: c64.png
+    icon_selected: c64.png
+    banner: c64-background.png
+  SCUMM: 
+    label: 
+    icon_file: scummvm.png
+    icon_selected: scummvm.png
+    banner: scummvm-background.png
+  GB: 
+    label: 
+    icon_file: gameboy.png
+    icon_selected: gameboy.png
+    banner: gameboy-background.png
+  GBA: 
+    label: 
+    icon_file: gba.png
+    icon_selected: gba.png
+    banner: gba-background.png
+  CAVE: 
+    label: 
+    icon_file: cave.png
+    icon_selected: cave.png
+    banner: cave-background.png
+  TG16: 
+    label: 
+    icon_file: tg16.png
+    icon_selected: tg16.png
+    banner: tg16-background.png
+  SMS: 
+    label: 
+    icon_file: sms.png
+    icon_selected: sms.png
+    banner: sms-background.png
+  GG: 
+    label: 
+    icon_file: gg.png
+    icon_selected: gg.png
+    banner: gg-background.png
+  NGPC: 
+    label: 
+    icon_file: ngpc.png
+    icon_selected: ngpc.png
+    banner: ngpc-background.png
+  ZXS: 
+    label: 
+    icon_file: zxspectrum.png
+    icon_selected: zxspectrum.png
+    banner: zxspectrum-background.png
+  RESTART: 
+    label: Restart
+    icon_file: restart.png
+    icon_selected: restart.png
+    banner: 
+  SHUTDOWN: 
+    label: Shutdown
+    icon_file: shutdown.png
+    icon_selected: shutdown.png
+    banner: 
+  UPDATE: 
+    label: Update PiPlay
+    icon_file: update.png
+    icon_selected: update.png
+    banner: 
+  SCRAPER: 
+    label: Rom Scraper
+    icon_file: scraper.png
+    icon_selected: scraper.png
+    banner: 
+  INSTALLMAME: 
+    label: 
+    icon_file: mame-install.png
+    icon_selected: mame-install.png
+    banner: 
+  XBOXCONTR: 
+    label: Toggle Xbox Controller
+    icon_file: xbox-toggle.png
+    icon_selected: xbox-toggle.png
+    banner: 
+  RASPICONFIG: 
+    label: raspi-config
+    icon_file: raspi-config.png
+    icon_selected: raspi-config.png
+    banner: 
+  WIFICONFIG: 
+    label: WiFi Config
+    icon_file: wifi.png
+    icon_selected: wifi.png
+    banner: 
+  EXIT: 
+    label: 
+    icon_file: exit.png
+    icon_selected: exit.png
+    banner: 

@@ -6,41 +6,85 @@ from romitem import *
 class PMList(pygame.sprite.OrderedUpdates):
 	labels = []
 
-	def __init__(self, rom_list, global_opts, get_labels = False):
+	def __init__(self, rom_data, cfg, get_labels = False):
 		pygame.sprite.OrderedUpdates.__init__(self)
 
-		self.global_opts = global_opts
+		self.cfg = cfg
 		self.first_index = self.last_index = 0
 		self.labels = []
-
-		self.rom_list = sorted(rom_list, key=lambda rom: rom['title'])
-
-		back_item = {'type': 'back', 'title': '<- Back', 'image': '/home/pi/pimame/pimame-menu/assets/images/blank.png', 'command': None}
-		self.rom_list.insert(0, back_item)
+		self.icon_id = rom_data['icon_id']
+		
+		#rom_list contains -> id (of menu item that called it), scraper_id, list
+		self.rom_data = rom_data
+		self.rom_list = self.rom_data['list']
+		
+		platform = self.cfg.platform_cursor.execute('SELECT id, title, overview, release_date FROM system_id where id=?', (self.rom_data['scraper_id'],)).fetchone()
+		
+		try: self.back_item = {'type': 'back', 'id': platform[0], 'title': str(platform[1]), 'image_file': '/home/pi/pimame/pimame-menu/assets/images/' + str(platform[0]) + '.png', 'command': None,
+							'release_date': platform[3], 'overview': platform[2], 'esrb': '', 'genres': '', 'players':'', 'coop':'', 'publisher': '', 'developer': '', 'rating': '', 'rom_file': '', 'number_of_runs': 0, 'flags':'display_platform'}
+		
+		except: self.back_item = {'type': 'back', 'id': '', 'title': str(''), 'image_file': '/home/pi/pimame/pimame-menu/assets/images/' + str('') + '.png', 'command': None,
+							'release_date': '', 'overview': '', 'esrb': '', 'genres': '', 'players':'', 'coop':'', 'publisher': '', 'developer': '', 'rating': '', 'rom_file': '', 'number_of_runs': 0, 'flags':'display_platform'}
+		
+		self.rom_list.insert(0, self.back_item)
 		
 		#get pre-loaded (unselected) rom list image
-		create_romlist_image = global_opts.pre_loaded_romlist
-		create_romlist_selected = global_opts.pre_loaded_romlist_selected
+		create_romlist_image = self.cfg.options.pre_loaded_romlist
+		create_romlist_selected = self.cfg.options.pre_loaded_romlist_selected
 		
 		#make sure each romlist item reaches minimum sizes
-		min_scale_size = [global_opts.romlist_item_width, global_opts.romlist_item_height]
+		min_scale_size = [self.cfg.options.romlist_item_width, self.cfg.options.romlist_item_height]
 		
 		#Create rom list surface/image with no text
-		self.rom_template = PMRomItem('', global_opts.rom_list_font, global_opts.rom_list_font_color, global_opts.rom_list_background_color, global_opts.rom_list_font_bold, global_opts.rom_list_offset, create_romlist_image, False, min_scale_size)
-		
-		self.selected_rom_template = PMRomItem('', global_opts.rom_list_font, global_opts.rom_list_font_selected_color, global_opts.rom_list_background_selected_color, global_opts.rom_list_font_selected_bold, global_opts.rom_list_offset, create_romlist_selected, False, min_scale_size)
+		self.rom_template = PMRomItem('', self.cfg, create_romlist_image, min_scale_size = min_scale_size)
+		self.selected_rom_template = PMRomItem('', self.cfg, create_romlist_selected, min_scale_size = min_scale_size)
+		self.selected_rom_template.toggle_selection()
 		
 		if get_labels: self.build_labels(self.rom_list)
+	
+	def requery_database(self):
+		keys = [item[1] for item in  self.cfg.local_cursor.execute('PRAGMA table_info(local_roms)').fetchall()]
+		#basic query
+		query = 'SELECT * FROM local_roms where system = {pid}'.format(pid = self.rom_data['id'] if self.rom_data['id'] else -999)
 		
+		#filter genres
+		if self.cfg.options.rom_filter.lower() != 'all' : query += ' AND genres LIKE "%{genre_filter}%"'.format(genre_filter = self.cfg.options.rom_filter)
+		
+		#exclude clones
+		if not self.cfg.options.show_clones: query += ' AND cloneof is NULL'
+		
+		#hide unmatched roms
+		if not self.cfg.options.show_unmatched_roms: query += ' AND (flags is null or flags not like "%no_match%")'
+		
+		#order by category
+		if self.cfg.options.rom_sort_category.lower() == 'favorites first':
+			query += ' ORDER BY CASE WHEN flags LIKE "%favorite%" THEN 0 ELSE 1 END ASC, title ASC'
+		else:
+			query += ' ORDER BY {sort_category} {sort_order}, title ASC'.format(sort_category = self.cfg.options.rom_sort_category.lower().replace(' ','_'), sort_order = 'DESC' if 'des' in self.cfg.options.rom_sort_order.lower() else 'ASC')
+		
+		#if favorites category, change query
+		if self.icon_id == 'FAVORITE': 
+			query = "SELECT * FROM local_roms WHERE flags like '%favorite%' ORDER BY {sort_category} {sort_order}, title ASC".format(
+							sort_category = self.cfg.options.rom_sort_category.lower() if self.cfg.options.rom_sort_category.lower() != 'favorites first' else 'title', 
+							sort_order = 'DESC' if 'des' in self.cfg.options.rom_sort_order.lower() else 'ASC')
+
+		values = self.cfg.local_cursor.execute(query).fetchall()
+
+		return [dict(zip(keys,value)) for value in values]
+	
+	def sort_list(self):
+		
+		self.rom_list = self.requery_database()
+		self.rom_list.insert(0, self.back_item)
+	
 	def build_labels(self, rom_list):
 		#Get rom title and blit to already created rom_template
 		self.labels = []
-		for list_item in rom_list:
-			label = PMRomItem(list_item['title'], self.global_opts.rom_list_font, self.global_opts.rom_list_font_color, self.global_opts.rom_list_background_color, self.global_opts.rom_list_font_bold, self.global_opts.rom_list_offset, False, True, [], self.global_opts.rom_list_font_align, self.global_opts.rom_list_max_text_width)
-			label.type = list_item['type']
-			label.command = list_item['command']
-			label.boxart = list_item['image']
-			self.labels.append(label)
+		self.labels = map(lambda x: PMRomItem(x, self.cfg, new_rom = True), rom_list)
+		#append = self.labels.append
+		#for list_item in rom_list:
+		#	label = PMRomItem(list_item, self.cfg, self.cfg.options.rom_list_font, self.cfg.options.rom_list_font_color, self.cfg.options.rom_list_background_color, self.cfg.options.rom_list_font_bold, self.cfg.options.rom_list_offset, False, True, [], self.cfg.options.rom_list_font_align, self.cfg.options.rom_list_max_text_width)
+		#	append(label)
 
 	def set_visible_items(self, first_index, last_index):
 		self.first_index = first_index
