@@ -26,7 +26,7 @@ class PMCfg:
 		
 		self.local_cursor.execute('CREATE TABLE IF NOT EXISTS local_roms'  + 
 		' (id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, system INTEGER, title TEXT, search_terms TEXT, parent TEXT, cloneof TEXT, release_date TEXT, overview TEXT, esrb TEXT, genres TEXT,' +
-		' players TEXT, coop TEXT, publisher TEXT, developer TEXT, rating REAL, command TEXT, rom_file TEXT, rom_path TEXT, image_file TEXT, flags TEXT)')
+		' players TEXT, coop TEXT, publisher TEXT, developer TEXT, rating REAL, command TEXT, rom_file TEXT, rom_path TEXT, image_file TEXT, number_of_runs INTEGER, flags TEXT)')
 		self.local_db.commit()
 		
 		path = os.path.realpath('/home/pi/pimame/pimame-menu/database/games_master.db')
@@ -141,7 +141,6 @@ class PMCfg:
 class PMOptions:
 	def __init__(self, opts, theme, opt_menu_items, theme_menu_items):
 	
-
 	
 		self.theme_name = opts['theme_pack']
 		self.theme_style = theme['theme_style'] if 'theme_style' in theme else 'grid'
@@ -154,7 +153,6 @@ class PMOptions:
 		for index, item in enumerate(opt_menu_items):
 			#assign theme icons
 			opt_menu_items[index]['display_label'] = theme['display_labels']
-
 			
 			if item['icon_id'] in theme_menu_items:
 				#let theme set label to blank on case by case basis
