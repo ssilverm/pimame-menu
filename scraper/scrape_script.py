@@ -560,16 +560,16 @@ class API(object):
 				rom_list_append = rom_list.append
 				index = 0
 				
-				query = 'SELECT * FROM arcade WHERE id in {0}'.format(select_roms)
-				for value in self.GC.execute(query).fetchall():
-					index += 1
-					temp_game_info = dict(zip(column_names, value))
-				
-					rom = rom_dict[temp_game_info['id']]
+				if dont_match == False:
+					query = 'SELECT * FROM arcade WHERE id in {0}'.format(select_roms)
+					for value in self.GC.execute(query).fetchall():
+						index += 1
+						temp_game_info = dict(zip(column_names, value))
 					
-					del rom_dict[temp_game_info['id']]
+						rom = rom_dict[temp_game_info['id']]
+						
+						del rom_dict[temp_game_info['id']]
 					
-					if dont_match == False:
 						#create run command
 						if platform['include_extension']: 
 							build_command = rom
@@ -639,7 +639,7 @@ class API(object):
 						print 'No match found for %s' % (pcolor('red', "[" + value + "]"))
 
 					#Let user know current progress
-					if not VERBOSE:
+					if VERBOSE:
 						status = r"%10d/%d roms  [%3.2f%%]" % (index, len(roms), (index) * 100. / len(roms))
 						status = status + chr(8)*(len(status)+1)
 						sys.stdout.write('%s      \r' % (status))
@@ -656,15 +656,12 @@ class API(object):
 					
 					game_command = platform['command'] + ' "' + build_command + '"'
 					
-					try:
-						#named same as rom + any extension
-						image_file = glob.glob( os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.*')[0]
-					except:
-						image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(rom)[0] ) + '.jpg'
+					#set boxart image = path + rom name (the boxart renderer will try to load as .jpg and then .png)
+					image_file = os.path.join( os.path.join(platform['rom_path'], 'images/'), os.path.splitext(value)[0] )
 					
 					rom_list_append((None, platform['id'], 			#id, system
 											value, key,							#title, search_terms
-											None, None,							#parent file
+											None, None,						#parent file
 											None, None, 						#release_date, overview
 											None, None, 						#esrb, genres
 											None, None,						# players, coop

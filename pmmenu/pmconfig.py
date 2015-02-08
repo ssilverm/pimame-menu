@@ -340,9 +340,9 @@ class PMOptions:
 				return pygame.image.load(file_path)
 			else:
 				try:
-					return pygame.image.load(os.path.join(file_path, '.jpg'))
+					return pygame.image.load( file_path + '.jpg' )
 				except:
-					return pygame.image.load(os.path.join(file_path, '.png'))
+					return pygame.image.load( file_path + '.png' )
 		except:
 			if alternate_image: 
 				try:
