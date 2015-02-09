@@ -21,7 +21,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 		
 		self.CONTROLS = PMControls()
-		self.input_test = [pygame.KEYDOWN, pygame.JOYAXISMOTION, pygame.JOYBUTTONDOWN]
+		#self.input_test = [pygame.KEYDOWN, pygame.JOYAXISMOTION, pygame.JOYBUTTONDOWN]
 		
 		self.cfg = cfg
 		self.screen = screen
@@ -248,14 +248,12 @@ class PMControllerConfig(pygame.sprite.Sprite):
 				self.render()
 				pygame.event.clear()
 				
-				events_to_capture = [KEYDOWN, JOYBUTTONDOWN, JOYHATMOTION, JOYAXISMOTION]
-				action_list = [pygame.KEYDOWN, pygame.JOYAXISMOTION, pygame.JOYBUTTONDOWN]
+				events_to_capture = [KEYUP, JOYBUTTONUP, JOYHATMOTION, JOYAXISMOTION]
+				action_list = [pygame.KEYUP, pygame.JOYAXISMOTION, pygame.JOYBUTTONUP]
 				while running:
 					events = pygame.event.get()
 					
 					for event in events:
-						
-						
 						
 						#ctrl+q to force quit
 						if (pygame.key.get_mods() & pygame.KMOD_LCTRL) and event.type == pygame.KEYDOWN and event.key == pygame.K_q:
@@ -282,25 +280,24 @@ class PMControllerConfig(pygame.sprite.Sprite):
 										self.render()
 										self.warning = None
 										self.render()
+										break
 						
 						elif event.type in events_to_capture:
-							if event.type == KEYDOWN:
+							if event.type == KEYUP:
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "key":event.key, "mod": event.mod, "keyname": pygame.key.name(event.key)}
 							
-							elif event.type == JOYBUTTONDOWN:
+							elif event.type == JOYBUTTONUP:
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "button":event.button, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
 							
 							elif event.type == JOYHATMOTION:
 								#  Skip the event of the joystick reseting to 0, 0
-								if event.value == (0,0):
-									continue
-								mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
+								if -1 in event.value or 1 in event.value:
+									mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
 							
 							elif event.type == JOYAXISMOTION:
 								#  Skip if the press wasn't 'hard' enough
-								if event.value < 1.0 and event.value > -1.0:
-									continue
-								mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "axis": event.axis, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
+								if event.value == 1.0 and event.value == -1.0:
+									mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "axis": event.axis, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
 							
 							#  Advance to next button
 							self.current_button += 1
