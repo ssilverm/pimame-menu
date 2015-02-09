@@ -91,11 +91,9 @@ class PMControls:
 		
 		action = None
 		
-		
-
 		for event in events:
-			try:
-			
+
+			if event.type in input_test:
 				#KEYBOARD
 				if event.type in self.KEY_EVENT:
 					if event.type == pygame.KEYDOWN:
@@ -103,9 +101,9 @@ class PMControls:
 					else:
 						keys_pressed = ([0] * len(pygame.key.get_pressed()))
 						for test_event in events:
-							if event.type == pygame.KEYUP:
-								keys_pressed[event.key] = 1
-						action = self.KEYBOARD[str(keys_pressed)]
+							if test_event.type == pygame.KEYUP:
+								keys_pressed[test_event.key] = 1
+						action = self.KEYBOARD[str(tuple(keys_pressed))]
 					break
 					
 				#JOYSTICK MOVEMENT
@@ -116,14 +114,20 @@ class PMControls:
 			
 				#JOYSTICK BUTTONS
 				elif event.type in self.JOY_BUTTON_EVENT:
-					#ic - buttons come in separate events, is this really necessary?
-					#ic - JOY_PAD may be removable if not referenced externally
+					#We do it this way to support button combos
 					js = pygame.joystick.Joystick(event.joy)
 
 					joy_buttons = ([0] * 100)
-					for i in xrange(0,js.get_numbuttons()):
-						button = js.get_button( i )
-						if button: joy_buttons[ i ] = 1
+					if pygame.JOYBUTTONDOWN in input_test:
+						for i in xrange(0, js.get_numbuttons()):
+							button = js.get_button( i )
+							if button: joy_buttons[ i ] = 1
+
+					elif pygame.JOYBUTTONUP in input_test:
+						for test_event in events:
+							if test_event.type == pygame.JOYBUTTONUP:
+								joy_buttons[test_event.button] = 1
+					
 					action = self.JOYSTICK[str(joy_buttons)]
 				
 				#MOUSE CLICK
@@ -133,8 +137,7 @@ class PMControls:
 				#MOUSE MOVE
 				elif event.type == pygame.MOUSEMOTION:
 					action = "MOUSEMOVE"
-			except:
-				pass
+
 		
 
 		return action
