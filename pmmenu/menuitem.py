@@ -124,10 +124,13 @@ class PMMenuItem(pygame.sprite.Sprite):
 		if self.icon_id == 'FAVORITE': query = "SELECT COUNT(id) FROM local_roms WHERE flags like '%favorite%'"
 		self.num_roms = int(self.cfg.local_cursor.execute(query).fetchone()[0])
 		
-		if '21' in self.scraper_id: #special check for scummvm:
-			len_files = len(set([ splitext(f)[0] for f in listdir(self.rom_path) if isdir(join(self.rom_path,f)) and f != 'images'  ]))	
+		if isdir(self.rom_path):
+			if '21' in self.scraper_id: #special check for scummvm:
+				len_files = len(set([ splitext(f)[0] for f in listdir(self.rom_path) if isdir(join(self.rom_path,f)) and f != 'images'  ]))	
+			else:
+				len_files = len([ f for f in listdir(self.rom_path) if isfile(join(self.rom_path,f)) and f != '.gitkeep'  ])
 		else:
-			len_files = len([ f for f in listdir(self.rom_path) if isfile(join(self.rom_path,f)) and f != '.gitkeep'  ])	
+			len_files = 0
 			
 		
 		if (len_files > 0  
