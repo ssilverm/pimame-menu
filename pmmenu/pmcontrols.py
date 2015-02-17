@@ -92,51 +92,54 @@ class PMControls:
 		action = None
 		
 		for event in events:
-
-			if event.type in input_test:
-				#KEYBOARD
-				if event.type in self.KEY_EVENT:
-					if event.type == pygame.KEYDOWN:
-						action = self.KEYBOARD[str(pygame.key.get_pressed())]
-					else:
-						keys_pressed = ([0] * len(pygame.key.get_pressed()))
-						for test_event in events:
-							if test_event.type == pygame.KEYUP:
-								keys_pressed[test_event.key] = 1
-						action = self.KEYBOARD[str(tuple(keys_pressed))]
-					break
-					
-				#JOYSTICK MOVEMENT
-				elif event.type == pygame.JOYAXISMOTION:
-					if event.dict['value'] <= -(self.AXIAL_DRIFT): event.dict['value'] = -1
-					elif event.dict['value'] >= self.AXIAL_DRIFT: event.dict['value'] = 1
-					action = self.JOYSTICK[str(event.dict['axis']) + "|" + str(event.dict['value'])]
-			
-				#JOYSTICK BUTTONS
-				elif event.type in self.JOY_BUTTON_EVENT:
-					#We do it this way to support button combos
-					js = pygame.joystick.Joystick(event.joy)
-
-					joy_buttons = ([0] * 100)
-					if pygame.JOYBUTTONDOWN in input_test:
-						for i in xrange(0, js.get_numbuttons()):
-							button = js.get_button( i )
-							if button: joy_buttons[ i ] = 1
-
-					elif pygame.JOYBUTTONUP in input_test:
-						for test_event in events:
-							if test_event.type == pygame.JOYBUTTONUP:
-								joy_buttons[test_event.button] = 1
-					
-					action = self.JOYSTICK[str(joy_buttons)]
+			try:
+				if event.type in input_test:
+					#KEYBOARD
+					if event.type in self.KEY_EVENT:
+						if event.type == pygame.KEYDOWN:
+							action = self.KEYBOARD[str(pygame.key.get_pressed())]
+						else:
+							keys_pressed = ([0] * len(pygame.key.get_pressed()))
+							for test_event in events:
+								if test_event.type == pygame.KEYUP:
+									keys_pressed[test_event.key] = 1
+							action = self.KEYBOARD[str(tuple(keys_pressed))]
+						break
+						
+					#JOYSTICK MOVEMENT
+					elif event.type == pygame.JOYAXISMOTION:
+						if event.dict['value'] <= -(self.AXIAL_DRIFT): event.dict['value'] = -1
+						elif event.dict['value'] >= self.AXIAL_DRIFT: event.dict['value'] = 1
+						action = self.JOYSTICK[str(event.dict['axis']) + "|" + str(event.dict['value'])]
 				
-				#MOUSE CLICK
-				elif event.type in self.MOUSE_BUTTON_EVENT:
-					action = "MOUSEBUTTON"
+					#JOYSTICK BUTTONS
+					elif event.type in self.JOY_BUTTON_EVENT:
+						#We do it this way to support button combos
+						js = pygame.joystick.Joystick(event.joy)
+
+						joy_buttons = ([0] * 100)
+						if pygame.JOYBUTTONDOWN in input_test:
+							for i in xrange(0, js.get_numbuttons()):
+								button = js.get_button( i )
+								if button: joy_buttons[ i ] = 1
+
+						elif pygame.JOYBUTTONUP in input_test:
+							for test_event in events:
+								if test_event.type == pygame.JOYBUTTONUP:
+									joy_buttons[test_event.button] = 1
+						
+						action = self.JOYSTICK[str(joy_buttons)]
 					
-				#MOUSE MOVE
-				elif event.type == pygame.MOUSEMOTION:
-					action = "MOUSEMOVE"
+					#MOUSE CLICK
+					elif event.type in self.MOUSE_BUTTON_EVENT:
+						action = "MOUSEBUTTON"
+						
+					#MOUSE MOVE
+					elif event.type == pygame.MOUSEMOTION:
+						action = "MOUSEMOVE"
+			except KeyError: #if button not assigned to an action
+				action = None
+				
 
 		
 
