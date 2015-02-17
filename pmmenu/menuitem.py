@@ -48,7 +48,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 			else:
 				self.type = self.COMMAND
 		else:
-				self.type = menu_item['type'].upper()
+			self.type = menu_item['type'].upper()
 
 		#@TODO this code is duplicated
 		screen_width = pygame.display.Info().current_w
@@ -135,9 +135,9 @@ class PMMenuItem(pygame.sprite.Sprite):
 		
 		if (len_files > 0  
 			and self.num_roms != len_files  
-				and self.scraper_id  
-					and self.override_menu != True  
-						and self.type != 'FRONTEND'):
+			and self.scraper_id  
+			and self.override_menu != True  
+			and self.type != 'FRONTEND'):
 						
 			self.num_roms = len_files
 			self.warning = "!"

@@ -2,19 +2,26 @@
 #Next get pip - [curl -O https://raw.github.com/pypa/pip/master/contrib/get-pip.py]
 #						[python get-pip.py]
 
+import atexit
+import argparse
+import copy
+import glob
+import os
+import re
+import select
+import sqlite3
+import sys
+import unicodedata
+import zlib
+import zipfile
 
-import zipfile, zlib, os, re, sys, sqlite3, glob, unicodedata, argparse, copy
 from Levenshtein import setratio
-from os import listdir
-from os.path import isfile, isdir, join
-from select import select
-
 
 
 parser = argparse.ArgumentParser(description='PiScraper')
 parser.add_argument("--platform", default=None, metavar="value", help="Which platform to scrape", type=str)
 parser.add_argument("--crc", default=True, metavar="value", help="use crc to find name", type=bool)
-parser.add_argument("--match_rate", metavar="value", default=.85, help="Name Comparison match rate.    (0.58 = default match, 1.0 = names must match exactly, 0.0 = throw caution to the wind.)", type=float)
+parser.add_argument("--match_rate", metavar="value", default=.85, help="Name Comparison match rate. (0.85 = default match, 1.0 = names must match exactly, 0.0 = throw caution to the wind.)", type=float)
 parser.add_argument("--verbose", metavar="value", default=True, help="Display Prompts (False= nothing, True=show progress, SEMI=Prompt on close matches, Full=Prompt+display every match)")
 parser.add_argument("--clean_slate", metavar="value", default=False, help="Re-Scrape all roms (default=False)",type=bool)
 parser.add_argument("--dont_match", metavar="value", default=False, help="just add roms to local database, don't try to match them", type=bool)
@@ -73,6 +80,7 @@ class APIException(Exception):
 		
 class API(object):
 	def __init__(self):
+		atexit.register(self.enable_cursor)
 		self.OPT_SHOW_CLONES = True
 		self.OPT_OVERWRITE_IMAGES = False
 		self.DATABASE_PATH = '/home/pi/pimame/pimame-menu/database/'
@@ -82,6 +90,7 @@ class API(object):
 		self.CC = self.CONFIG.cursor()
 		self.LOCAL = sqlite3.connect(self.DATABASE_PATH + 'local.db')
 		self.LC = self.LOCAL.cursor()
+        
 		
 		#self.LC.execute('''PRAGMA journal_mode = OFF''')
 		self.LC.execute('CREATE TABLE IF NOT EXISTS local_roms'  + 
@@ -89,7 +98,9 @@ class API(object):
 		' players TEXT, coop TEXT, publisher TEXT, developer TEXT, rating REAL, command TEXT, rom_file TEXT, rom_path TEXT, image_file TEXT, number_of_runs INTEGER, flags TEXT)')
 		self.LOCAL.commit()
 
-		
+	def enable_cursor(self):
+		os.system('setterm -cursor on')
+        
 	def raw_input_with_timeout(self, prompt, timeout=5.0, response = {'y': True, 'ye': True, 'yes': True, 't': True, 'n': False, 'no': False, 'f': False}):
 		
 		answer = ''
@@ -98,7 +109,7 @@ class API(object):
 		while (not answer in response) and timeout >= 0:
 			sys.stdout.write('\r[%ds] %s ' % (timeout, prompt)),
 			sys.stdout.flush()
-			rlist, _, _ = select([sys.stdin], [], [], 1)
+			rlist, _, _ = select.select([sys.stdin], [], [], 1)
 			if rlist:
 				answer = sys.stdin.readline().replace('\n','').lower()
 			timeout -= 1
@@ -163,7 +174,7 @@ class API(object):
 		for data_block in config_query['menu_items']:
 			if 'roms' in data_block:
 				if 'images' in data_block: image_path = data_block['images']
-				else: image_path = join(data_block['roms'] ,"images/")
+				else: image_path = os.path.join(data_block['roms'] ,"images/")
 				if search_platform == 'all':
 					append({'rom_path': data_block['roms'], 'image_path': image_path, 'platform':data_block['label']})
 				elif search_platform.lower() == data_block['label'].lower():
@@ -175,12 +186,12 @@ class API(object):
 		
 		if is_scummvm:
 			try:
-				dirname = [ d for d in listdir(path) if isdir(join(path,d)) and d != 'images' ]
+				dirname = [ d for d in os.listdir(path) if os.path.isdir(os.path.join(path,d)) and d != 'images' ]
 				fname = {}
 				all_files = []
 				for dir in dirname:
-					temp_dir = join(path, dir)
-					fname[dir] = list(set([ os.path.splitext(f)[0].lower() for f in listdir(temp_dir) if isfile(join(temp_dir,f)) and f != '.gitkeep' ]))
+					temp_dir = os.path.join(path, dir)
+					fname[dir] = list(set([ os.path.splitext(f)[0].lower() for f in os.listdir(temp_dir) if os.path.isfile(os.path.join(temp_dir,f)) and f != '.gitkeep' ]))
 					all_files += fname[dir]
 				return {'all_files': all_files, 'directories': fname}
 			except:
@@ -189,7 +200,7 @@ class API(object):
 		else:
 			#Return only files in directory, need to add whitelist of potential rom extensions (.nes, .bin, .zip)	
 			try:
-				fname = [ f for f in listdir(path) if isfile(join(path,f)) and f != '.gitkeep' ]
+				fname = [ f for f in os.listdir(path) if os.path.isfile(os.path.join(path,f)) and f != '.gitkeep' ]
 				return sorted(fname)
 			except:
 				return []
@@ -735,7 +746,7 @@ class API(object):
 					rom = {}
 					for index, entry in enumerate(master_entries):
 						#if master_entry 'id' matches a file name
-						if entry['id'] in roms[k]:
+						if entry['id'] in roms[k] or entry['id'] == k:
 							rom = {'entry': master_entries[index], 'folder': k, 'files': roms[k]}
 							break
 							
@@ -795,9 +806,13 @@ class API(object):
 				print
 	
 api = API()
-#dont_match argument k
-api.match_rom_to_db(menu_item_id = args.platform, get_rom_name_with_crc = args.crc, default_match_rate = args.match_rate, VERBOSE = args.verbose, RUN_WHOLE_SYSTEM_FOLDER = args.clean_slate, dont_match = args.dont_match)
-
+#dont_match = True, just add roms to database without finding match
+try:
+	api.match_rom_to_db(menu_item_id = args.platform, get_rom_name_with_crc = args.crc, default_match_rate = args.match_rate, VERBOSE = args.verbose, RUN_WHOLE_SYSTEM_FOLDER = args.clean_slate, dont_match = args.dont_match)
+except KeyboardInterrupt:
+	print 'Now Exiting... Some of your changes may not have been saved'
+finally:
+	os.system('setterm -cursor on')
 
 
 

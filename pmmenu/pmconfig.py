@@ -13,7 +13,8 @@ class PMCfg:
 		system('clear')
 		
 		#initialize sound mixer
-		system("alsactl --file ~/pimame/config/piplay-sound.state restore")
+		try: system("alsactl --file ~/pimame/config/piplay-sound.state restore")
+		except: pass
 		pygame.mixer.pre_init(44100, -16, 1, 2048)
 		
 		path = os.path.realpath('/home/pi/pimame/pimame-menu/database/config.db')
