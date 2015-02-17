@@ -165,8 +165,8 @@ class PMOptions:
 				if theme_menu_items[item['icon_id']]['icon_selected']:
 					opt_menu_items[index]['icon_selected'] = self.theme_pack + theme_menu_items[item['icon_id']]['icon_selected']
 				
-				try: opt_menu_items[index]['banner'] = (self.theme_pack + theme_menu_items[item['icon_id']]['banner'])
-				except TypeError: opt_menu_items[index]['banner'] = None
+			try: opt_menu_items[index]['banner'] = (self.theme_pack + theme_menu_items[item['icon_id']]['banner'])
+			except (TypeError, KeyError): opt_menu_items[index]['banner'] = None
 				
 			#if icons not specified by theme or menu_items table, then use theme generic icon
 			if not opt_menu_items[index]['icon_file']: 
