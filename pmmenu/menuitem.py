@@ -126,22 +126,21 @@ class PMMenuItem(pygame.sprite.Sprite):
 		
 		if isdir(self.rom_path):
 			if '21' in self.scraper_id: #special check for scummvm:
-				len_files = len(set([ splitext(f)[0] for f in listdir(self.rom_path) if isdir(join(self.rom_path,f)) and f != 'images'  ]))	
+				len_files = len([ f for f in listdir(self.rom_path) if isdir(join(self.rom_path,f)) and f != 'images'])	
 			else:
-				len_files = len([ f for f in listdir(self.rom_path) if isfile(join(self.rom_path,f)) and f != '.gitkeep'  ])
+				len_files = len([ f for f in listdir(self.rom_path) if isfile(join(self.rom_path,f)) and f != '.gitkeep' ])
 		else:
 			len_files = 0
 			
-		
-		if (len_files > 0  
-			and self.num_roms != len_files  
+			
+		if (self.num_roms != len_files  
 			and self.scraper_id  
-			and self.override_menu != True  
+			and self.override_menu != True
 			and self.type != 'FRONTEND'):
 						
 			self.num_roms = len_files
 			self.warning = "!"
-
+		
 	def get_rom_list(self):
 		#@TODO - am I using the type field?
 		

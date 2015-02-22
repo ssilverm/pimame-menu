@@ -1,4 +1,5 @@
 import pygame
+import subprocess
 from pmcontrols import *
 from pmpopup import *
 from pmwarning import *
@@ -121,8 +122,7 @@ class MainScene(object):
 				["left", "-Press 'Tab' or 'joystick button 3' to open your popup menu"],
 				["center", ""],
 				["left", "*Hint: try the popup menu when viewing a list of roms"]], "ok", "FIRST_RUN")
-		else:
-			self.changelog_check()
+
 
 	def update(self):
 		pass
@@ -138,7 +138,11 @@ class MainScene(object):
 				
 				if self.warning.title == 'ROMS_CONFIRM':
 					if self.warning.answer == "YES":
-						PMUtil.run_command_and_continue('python /home/pi/pimame/pimame-menu/scraper/scrape_script.py --crc False --dont_match True --platform ' + str(self.menu_style.get_selected_item().id) + "%%" +str(self.menu_style.get_selected_item().id))
+						self.warning = PMWarning(self.screen, self.cfg.options, [["center","Updating roms."],["center","This may take a minute."]], "ok", "")
+						subprocess.call(['python', '/home/pi/pimame/pimame-menu/scraper/scrape_script.py','--crc', 'False', '--dont_match', 'True', '--platform', str(self.menu_style.get_selected_item().id)])
+						self.warning = None
+						self.do_menu_item_action(self.menu_style.get_selected_item())
+						#PMUtil.run_command_and_continue('python /home/pi/pimame/pimame-menu/scraper/scrape_script.py --crc False --dont_match True --platform ' + str(self.menu_style.get_selected_item().id) + "%%" +str(self.menu_style.get_selected_item().id))
 					else:
 						self.warning = None
 						self.do_menu_item_action(self.menu_style.get_selected_item())
@@ -161,32 +165,11 @@ class MainScene(object):
 				if self.warning.title == 'FIRST_RUN':
 					if not self.warning.menu_open: 
 						self.warning = None
-						self.changelog_check()
 					return
 						
 				if self.warning.title == 'CHANGELOG':
 					self.warning = None
 					return
-					
-	def changelog_check(self):
-		#check if flag file exists
-		if os.path.isfile('/home/pi/pimame/changelogs/show_changelog'):
-			try:
-				#get current version
-				with open('/home/pi/pimame/version') as file:
-					version = file.readline().strip()
-				
-				#load current version changelog into array, Delete flag file
-				changelog = [line for line in open('/home/pi/pimame/changelogs/' + version)]
-				os.remove('/home/pi/pimame/changelogs/show_changelog')
-				
-				#build message
-				message = [["center", "Version " + changelog[0].strip() + " Changelog"]]
-				for line in changelog[1:]:
-						message.append(["left", line.strip()])
-				self.warning = PMWarning(self.screen, self.cfg.options, message, "ok", "CHANGELOG")
-			except:
-				pass
 
 	def handle_events(self, action):
 		
@@ -211,6 +194,7 @@ class MainScene(object):
 				sprite = self.menu_style.get_selected_item()
 				#DISPLAY WARNING IF FILES HAVE CHANGED
 				if sprite.warning == "!" and not self.warning: 
+					self.cfg.options.menu_select_sound.play()
 					self.warning = PMWarning(self.screen, self.cfg.options, "Some files have changed, would you like to scrape this folder for new roms?", "yes/no", "ROMS")
 				elif not self.warning:
 					self.do_menu_item_action(sprite)
