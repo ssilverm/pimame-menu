@@ -251,9 +251,9 @@ class PMControllerConfig(pygame.sprite.Sprite):
 				events_to_capture = [KEYUP, JOYBUTTONUP, JOYHATMOTION, JOYAXISMOTION]
 				action_list = [pygame.KEYUP, pygame.JOYAXISMOTION, pygame.JOYBUTTONUP]
 				while running:
-					events = pygame.event.get()
+					#events = pygame.event.get()
 					
-					for event in events:
+					for event in pygame.event.get():
 						
 						#ctrl+q to force quit
 						if (pygame.key.get_mods() & pygame.KMOD_LCTRL) and event.type == pygame.KEYDOWN and event.key == pygame.K_q:
@@ -265,7 +265,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 								return
 						
 						elif self.warning and self.warning.menu_open:
-							action = self.CONTROLS.get_action(action_list, events)
+							action = self.CONTROLS.get_action(action_list, [event])
 							self.warning.handle_events(action)
 							if self.warning.answer:
 								if self.warning.title == 'next_player':
@@ -291,12 +291,13 @@ class PMControllerConfig(pygame.sprite.Sprite):
 							
 							elif event.type == JOYHATMOTION:
 								#  Skip the event of the joystick reseting to 0, 0
+								# joyhat = digital input, values can only be -1,0,1 ->nothing in between
 								if -1 in event.value or 1 in event.value:
 									mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
 							
 							elif event.type == JOYAXISMOTION:
 								#  Skip if the press wasn't 'hard' enough
-								if event.value == 1.0 and event.value == -1.0:
+								if event.value == 1.0 or event.value == -1.0:
 									mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "axis": event.axis, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
 							
 							#  Advance to next button
@@ -317,6 +318,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 								self.render()
 								#AVOID DEBOUNCE
 								time.sleep(self.DEBOUNCE_TIME)
+								clear_debounce_events = pygame.event.get()
 								break
 
 				#  Output our mapping

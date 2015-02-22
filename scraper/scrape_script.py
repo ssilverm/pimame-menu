@@ -431,7 +431,7 @@ class API(object):
 							#if no rom named image, then find title named image
 							if not game_info.image_file:
 							
-								image_search = self.GC.execute('SELECT image_file FROM image_match WHERE system=? and id=?', (best_match_game[0], best_match_game[3])).fetchone()[0]
+								image_search = self.GC.execute('SELECT image_file FROM image_match WHERE system=? and id=?', (best_match_game[3], best_match_game[0])).fetchone()[0]
 								if image_search: image_search =  [os.path.join(platform['rom_path'], 'images/') + image_search + '.*',
 																				os.path.join( os.path.join(platform['rom_path'], 'images/'), self.strip_accents(temp_game_info['title']) + '.*')]
 								for image in image_search:
@@ -493,7 +493,7 @@ class API(object):
 				Lratio = setratio( unicode(current_file_search_terms).split(), entry[1].split() )
 				if Lratio > hi_score:
 				
-					#check if check to make sure sequels don't get mat5hed to originals
+					#check if check to make sure sequels don't get matched to originals
 					if [x for x in current_file_search_terms if x.isdigit()] == [y for y in entry[1] if y.isdigit()]:
 						hi_score = Lratio
 						best_match_game = entry
