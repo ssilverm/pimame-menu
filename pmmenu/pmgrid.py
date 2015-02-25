@@ -12,7 +12,7 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 	selected_index = 0
 	update_display = []
 
-	def __init__(self, menu_item_cfgs, cfg):
+	def __init__(self, menu_item_cfgs, cfg, toggle_item_visibility = False):
 
 		pygame.sprite.OrderedUpdates.__init__(self)
 
@@ -28,7 +28,7 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 
 		for menu_item in menu_item_cfgs:
 			#print menu_item
-			if menu_item['visible']:
+			if menu_item['visible'] or toggle_item_visibility:
 				pm_menu_item = PMMenuItem(menu_item, self.cfg)
 				if (
 				
@@ -94,8 +94,7 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 		y = self.cfg.options.header_height + padding
 		i = 1
 
-		sprites = self.sprites()
-		for menu_item in sprites:
+		for menu_item in self.sprites():
 			menu_item.rect.x = x
 			menu_item.rect.y = y
 
@@ -323,7 +322,9 @@ class PMGrid(pygame.sprite.OrderedUpdates):
 			item_width = ((screen_width - self.cfg.options.padding) / self.cfg.options.num_items_per_row) - self.cfg.options.padding
 
 			self.image = pygame.Surface([item_width, self.cfg.options.item_height], pygame.SRCALPHA, 32).convert_alpha()
-
+			if not menu_item.visible:
+				self.image = self.image.convert()
+				self.image.set_alpha(100)
 			
 			item_rect = menu_item.rect
 			if menu_item.icon_selected:
