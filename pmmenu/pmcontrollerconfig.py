@@ -255,6 +255,8 @@ class PMControllerConfig(pygame.sprite.Sprite):
 					
 					for event in pygame.event.get():
 						
+						goto_next_button = False
+						
 						#ctrl+q to force quit
 						if (pygame.key.get_mods() & pygame.KMOD_LCTRL) and event.type == pygame.KEYDOWN and event.key == pygame.K_q:
 								self.cfg.menu_back_sound.play()
@@ -285,23 +287,30 @@ class PMControllerConfig(pygame.sprite.Sprite):
 						elif event.type in events_to_capture:
 							if event.type == KEYUP:
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "key":event.key, "mod": event.mod, "keyname": pygame.key.name(event.key)}
+								goto_next_button = True
 							
 							elif event.type == JOYBUTTONUP:
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "button":event.button, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
+								goto_next_button = True
 							
 							elif event.type == JOYHATMOTION:
 								#  Skip the event of the joystick reseting to 0, 0
 								# joyhat = digital input, values can only be -1,0,1 ->nothing in between
 								if -1 in event.value or 1 in event.value:
 									mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
+									goto_next_button = True
 							
 							elif event.type == JOYAXISMOTION:
 								#  Skip if the press wasn't 'hard' enough
 								if event.value == 1.0 or event.value == -1.0:
 									mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "axis": event.axis, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
+									goto_next_button = True
 							
 							#  Advance to next button
-							self.current_button += 1
+							if goto_next_button:
+								self.current_button += 1
+								
+							#for player 2 (and beyond?) skip button configs that start with *
 							while len(self.total_map) >= 1 and self.current_button < len(self.buttons_to_update) and self.buttons_to_update[self.current_button][0] == '*': self.current_button += 1
 							if self.current_button >= len(self.buttons_to_update):
 								self.current_button = 0

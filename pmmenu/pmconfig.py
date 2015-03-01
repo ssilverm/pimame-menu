@@ -123,9 +123,6 @@ class PMCfg:
 		dinfo = pygame.display.Info()
 		size = tuple( int(x) for x in size.split(',') )
 		#return pygame.display.set_mode(size,0,32)
-		pygame.display.init()
-		dinfo = pygame.display.Info()
-
 
 		flag = 0
 		if fullscreen:
