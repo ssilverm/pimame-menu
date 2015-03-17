@@ -21,7 +21,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 		
 		self.CONTROLS = PMControls()
-		#self.input_test = [pygame.KEYDOWN, pygame.JOYAXISMOTION, pygame.JOYBUTTONDOWN]
+		self.input_test = [pygame.KEYDOWN, pygame.JOYAXISMOTION, pygame.JOYBUTTONDOWN]
 		
 		self.cfg = cfg
 		self.screen = screen
@@ -248,14 +248,14 @@ class PMControllerConfig(pygame.sprite.Sprite):
 				self.render()
 				pygame.event.clear()
 				
-				events_to_capture = [KEYUP, JOYBUTTONUP, JOYHATMOTION, JOYAXISMOTION]
-				action_list = [pygame.KEYUP, pygame.JOYAXISMOTION, pygame.JOYBUTTONUP]
+				events_to_capture = [KEYDOWN, JOYBUTTONDOWN, JOYHATMOTION, JOYAXISMOTION]
+				action_list = [pygame.KEYDOWN, pygame.JOYAXISMOTION, pygame.JOYBUTTONDOWN]
 				while running:
-					#events = pygame.event.get()
+					events = pygame.event.get()
 					
-					for event in pygame.event.get():
+					for event in events:
 						
-						goto_next_button = False
+						
 						
 						#ctrl+q to force quit
 						if (pygame.key.get_mods() & pygame.KMOD_LCTRL) and event.type == pygame.KEYDOWN and event.key == pygame.K_q:
@@ -267,7 +267,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 								return
 						
 						elif self.warning and self.warning.menu_open:
-							action = self.CONTROLS.get_action(action_list, [event])
+							action = self.CONTROLS.get_action(action_list, events)
 							self.warning.handle_events(action)
 							if self.warning.answer:
 								if self.warning.title == 'next_player':
@@ -282,35 +282,28 @@ class PMControllerConfig(pygame.sprite.Sprite):
 										self.render()
 										self.warning = None
 										self.render()
-										break
 						
 						elif event.type in events_to_capture:
-							if event.type == KEYUP:
+							if event.type == KEYDOWN:
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "key":event.key, "mod": event.mod, "keyname": pygame.key.name(event.key)}
-								goto_next_button = True
 							
-							elif event.type == JOYBUTTONUP:
+							elif event.type == JOYBUTTONDOWN:
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "button":event.button, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
-								goto_next_button = True
 							
 							elif event.type == JOYHATMOTION:
 								#  Skip the event of the joystick reseting to 0, 0
-								# joyhat = digital input, values can only be -1,0,1 ->nothing in between
-								if -1 in event.value or 1 in event.value:
-									mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
-									goto_next_button = True
+								if event.value == (0,0):
+									continue
+								mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
 							
 							elif event.type == JOYAXISMOTION:
 								#  Skip if the press wasn't 'hard' enough
-								if event.value == 1.0 or event.value == -1.0:
-									mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "axis": event.axis, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
-									goto_next_button = True
+								if event.value < 1.0 and event.value > -1.0:
+									continue
+								mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "axis": event.axis, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
 							
 							#  Advance to next button
-							if goto_next_button:
-								self.current_button += 1
-								
-							#for player 2 (and beyond?) skip button configs that start with *
+							self.current_button += 1
 							while len(self.total_map) >= 1 and self.current_button < len(self.buttons_to_update) and self.buttons_to_update[self.current_button][0] == '*': self.current_button += 1
 							if self.current_button >= len(self.buttons_to_update):
 								self.current_button = 0
@@ -327,7 +320,6 @@ class PMControllerConfig(pygame.sprite.Sprite):
 								self.render()
 								#AVOID DEBOUNCE
 								time.sleep(self.DEBOUNCE_TIME)
-								clear_debounce_events = pygame.event.get()
 								break
 
 				#  Output our mapping
