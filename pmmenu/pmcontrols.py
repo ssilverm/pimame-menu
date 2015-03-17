@@ -12,7 +12,7 @@ class PMControls:
 	
 	def __init__(self):
 		pygame.key.set_repeat(300, 20)
-		self.joystick_repeat = (300, 20)
+		self.joystick_repeat = (300, 40)
 		self.joystick_repeat_start = None
 		
 		pygame.joystick.init()

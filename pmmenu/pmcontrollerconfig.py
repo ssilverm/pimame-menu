@@ -51,17 +51,19 @@ class PMControllerConfig(pygame.sprite.Sprite):
 		else:
 			self.effect = self.screen.copy()
 			
-		#  Try to initialize the first joystick
-		try:
-			self.joystickID = [None, None]
-			stick = pygame.joystick.Joystick(0)
-			stick.init()
-			self.joystickID[0] = stick.get_numaxes() + stick.get_numballs() + stick.get_numhats() + stick.get_numbuttons()
-			stick2 = pygame.joystick.Joystick(1)
-			stick2.init()
-			self.joystickID[1] = stick2.get_numaxes() + stick2.get_numballs() + stick2.get_numhats() + stick2.get_numbuttons()
-		except:
-			pass
+
+		pygame.joystick.init()
+		self.js_count = pygame.joystick.get_count()
+		self.js = []
+		for i in range(self.js_count):
+			self.js.append(pygame.joystick.Joystick(i))
+			self.js[i].init()
+			
+		self.joystickID = []
+		for joy in self.js:
+			joy.init()
+			self.joystickID.append(joy.get_numaxes() + joy.get_numballs() + joy.get_numhats() + joy.get_numbuttons())
+
 
 		#  Formatters available 
 		formatters_available = filter(lambda x: x[-3:]==".py", os.listdir(self.DIRECTORY + 'formatters'))
@@ -177,6 +179,32 @@ class PMControllerConfig(pygame.sprite.Sprite):
 			self.screen.blit(self.effect,(0,0))
 			self.screen.blit(self.menu, ((pygame.display.Info().current_w - self.rect.w)/2, (pygame.display.Info().current_h - self.rect.h)/2))
 			pygame.display.update()
+	
+	def check_joystick_neutrality(self):
+		ready = False
+		i = 0
+		while i < 5 and not ready:
+			clear_events = pygame.event.get()
+			for joy in self.js:
+				axes = [(1 if abs(joy.get_axis(axis)) > self.CONTROLS.AXIAL_DRIFT else 0) for axis in range(joy.get_numaxes())]
+				if 1 not in axes:
+					buttons = [joy.get_button(b) for b in range(joy.get_numbuttons())]
+					if True not in buttons:
+						ready = True
+					else:
+						ready = False
+						break
+				else:
+					ready = False
+					break
+			time.sleep(self.DEBOUNCE_TIME)
+			i += 1
+			
+		
+		
+				
+	
+		
 			
 	def take_action(self, dict = []):
 		
@@ -248,7 +276,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 				self.render()
 				pygame.event.clear()
 				
-				events_to_capture = [KEYDOWN, JOYBUTTONDOWN, JOYHATMOTION, JOYAXISMOTION]
+				events_to_capture = [KEYDOWN, JOYBUTTONDOWN, JOYAXISMOTION] #, JOYHATMOTION]
 				action_list = [pygame.KEYDOWN, pygame.JOYAXISMOTION, pygame.JOYBUTTONDOWN]
 				while running:
 					events = pygame.event.get()
@@ -288,19 +316,21 @@ class PMControllerConfig(pygame.sprite.Sprite):
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "key":event.key, "mod": event.mod, "keyname": pygame.key.name(event.key)}
 							
 							elif event.type == JOYBUTTONDOWN:
-								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "button":event.button, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
+								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "button":event.button, "joy": event.joy, "joystickID": self.joystickID[event.joy]}
+								self.check_joystick_neutrality()
 							
-							elif event.type == JOYHATMOTION:
+							#elif event.type == JOYHATMOTION:
 								#  Skip the event of the joystick reseting to 0, 0
-								if event.value == (0,0):
-									continue
-								mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
+								#if event.value == (0,0):
+									#continue
+								#mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "joy": event.joy, "joystickID": self.joystickID[event.joy]}
 							
 							elif event.type == JOYAXISMOTION:
 								#  Skip if the press wasn't 'hard' enough
 								if event.value < 1.0 and event.value > -1.0:
 									continue
-								mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "axis": event.axis, "joy": event.joy, "joystickID": self.joystickID[len(self.total_map)]}
+								mapping[self.buttons_to_update[self.current_button]] = {"type": event.type, "value": event.value, "axis": event.axis, "joy": event.joy, "joystickID": self.joystickID[event.joy]}
+								self.check_joystick_neutrality()
 							
 							#  Advance to next button
 							self.current_button += 1
