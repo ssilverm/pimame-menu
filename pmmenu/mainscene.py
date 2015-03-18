@@ -139,6 +139,7 @@ class MainScene(object):
 			self.warning.handle_events('SELECT')
 	
 	def render(self, screen):
+		self.last_update = 0
 		self.header = PMHeader(self.cfg.options)
 		self.draw_bg()
 		self.draw_header()
@@ -173,7 +174,18 @@ class MainScene(object):
 
 
 	def update(self):
-		pass
+		if pygame.time.get_ticks() - self.last_update > 10000:
+			update_screen = False
+			for menu_item in self.menu_style.menu_items:
+				rect = menu_item.check_changes()
+				if rect: 
+					update_screen = True
+			if update_screen:
+				self.menu_style.draw_items()
+				self.menu_style.erase_selection()
+				self.menu_style.draw_selection()
+				pygame.display.update()
+		self.last_update = pygame.time.get_ticks()
 		
 	def warning_check(self):
 		if self.warning.answer:
@@ -301,7 +313,7 @@ class MainScene(object):
 						sprite = clicked_sprites[0]
 						self.set_selected_index(sprite)
 					
-				
+		self.update()
 		return self.update_display
 
 	#@TODO - change name:

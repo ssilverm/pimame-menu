@@ -110,7 +110,6 @@ class PMMenuItem(pygame.sprite.Sprite):
 		if self.cfg.options.display_rom_count:
 			if self.rom_path:
 				self.update_num_roms()
-				
 				if self.num_roms != 0:
 					label = PMLabel(str(self.num_roms) + self.warning, self.cfg.options.rom_count_font, self.cfg.options.rom_count_font_color, self.cfg.options.rom_count_background_color, self.cfg.options.rom_count_font_bold, self.cfg.options.rom_count_max_text_width)
 					textpos = label.rect
@@ -127,13 +126,21 @@ class PMMenuItem(pygame.sprite.Sprite):
 		
 		if init: self.rect = self.image.get_rect()
 	
-	
+	def check_changes(self):
+		
+		query = 'SELECT COUNT(id) FROM local_roms where system = {pid}'.format(pid = self.id if self.id else -999)
+		if self.icon_id == 'FAVORITE': query = "SELECT COUNT(id) FROM local_roms WHERE flags like '%favorite%'"
+		if self.num_roms != int(self.cfg.local_cursor.execute(query).fetchone()[0]):
+			self.update_image(init = False)
+			return [self.rect]
+		return []
+		
 	def update_num_roms(self):
 		
 		query = 'SELECT COUNT(id) FROM local_roms where system = {pid}'.format(pid = self.id if self.id else -999)
 		if self.icon_id == 'FAVORITE': query = "SELECT COUNT(id) FROM local_roms WHERE flags like '%favorite%'"
 		self.num_roms = int(self.cfg.local_cursor.execute(query).fetchone()[0])
-		
+		'''
 		if isdir(self.rom_path):
 			if '21' in self.scraper_id: #special check for scummvm:
 				len_files = len([ f for f in listdir(self.rom_path) if isdir(join(self.rom_path,f)) and f != 'images'])	
@@ -150,7 +157,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 						
 			self.num_roms = len_files
 			self.warning = "!"
-		
+		'''
 	def get_rom_list(self):
 		#@TODO - am I using the type field?
 		
