@@ -276,8 +276,8 @@ class PMControllerConfig(pygame.sprite.Sprite):
 				self.render()
 				pygame.event.clear()
 				
-				events_to_capture = [KEYDOWN, JOYBUTTONDOWN, JOYAXISMOTION] #, JOYHATMOTION]
-				action_list = [pygame.KEYDOWN, pygame.JOYAXISMOTION, pygame.JOYBUTTONDOWN]
+				events_to_capture = [KEYUP, JOYBUTTONUP, JOYAXISMOTION] #, JOYHATMOTION]
+
 				while running:
 					events = pygame.event.get()
 					
@@ -295,7 +295,7 @@ class PMControllerConfig(pygame.sprite.Sprite):
 								return
 						
 						elif self.warning and self.warning.menu_open:
-							action = self.CONTROLS.get_action(action_list, events)
+							action = self.CONTROLS.get_action(events_to_capture, events)
 							self.warning.handle_events(action)
 							if self.warning.answer:
 								if self.warning.title == 'next_player':
