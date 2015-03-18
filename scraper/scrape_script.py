@@ -207,8 +207,9 @@ class API(object):
 	
 	
 	def get_platform(self, menu_item_id=None, return_all_menu_items = False):
-		
-		query = 'SELECT id, label, command, rom_path, include_full_path, include_extension, scraper_id FROM menu_items WHERE %s' % (('id=' + str(menu_item_id)) if menu_item_id else '1=1')
+		#UGLY: but converts menu_item_id to format (#,#,#,...)
+		if menu_item_id: menu_item_id = str(tuple(menu_item_id.split(','))).replace(',)',')')
+		query = 'SELECT id, label, command, rom_path, include_full_path, include_extension, scraper_id FROM menu_items WHERE %s' % (('id IN ' + menu_item_id) if menu_item_id else '1=1')
 		keys = ['id', 'label', 'command', 'rom_path', 'include_full_path', 'include_extension', 'scraper_id']
 
 		values = self.CC.execute(query).fetchall()
@@ -493,7 +494,7 @@ class API(object):
 				Lratio = setratio( unicode(current_file_search_terms).split(), entry[1].split() )
 				if Lratio > hi_score:
 				
-					#check if check to make sure sequels don't get matched to originals
+					#check if check to make sure sequels don't get mat5hed to originals
 					if [x for x in current_file_search_terms if x.isdigit()] == [y for y in entry[1] if y.isdigit()]:
 						hi_score = Lratio
 						best_match_game = entry
