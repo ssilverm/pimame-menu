@@ -179,6 +179,15 @@ class PMPopup(pygame.sprite.Sprite):
 			"next": self.menu_work.quit_swap
 			}
 			
+			self.hide_icons = {
+			"title": PMLabel("Hide Icons", self.cfg.options.popup_font, self.cfg.options.popup_menu_font_color),
+			"value": PMLabel("", self.cfg.options.popup_font, self.cfg.options.popup_menu_font_color),
+			"title_selected": PMLabel("Hide Icons", self.cfg.options.popup_font, self.cfg.options.popup_menu_font_selected_color),
+			"value_selected": PMLabel("", self.cfg.options.popup_font, self.cfg.options.popup_menu_font_selected_color),
+			"prev": self.run_hide_icons,
+			"next": self.run_hide_icons
+			}
+			
 			self.controller_setup = {
 			"title": PMLabel("Controller Setup", self.cfg.options.popup_font, self.cfg.options.popup_menu_font_color),
 			"value": PMLabel("", self.cfg.options.popup_font, self.cfg.options.popup_menu_font_color),
@@ -191,7 +200,7 @@ class PMPopup(pygame.sprite.Sprite):
 
 			
 			popup = [self.volume, self.theme, self.cursor, self.transitions, self.show_ip, self.show_update, self.sort_alphanum,
-						self.roms_first, self.hide_emu_no_roms, self.hide_system_tools, self.quit_to_console, self.controller_setup]
+						self.roms_first, self.hide_emu_no_roms, self.hide_system_tools, self.quit_to_console, self.hide_icons, self.controller_setup]
 			
 			if self.cfg.options.menu_music:
 				popup.insert(1, self.music_volume)
@@ -348,6 +357,11 @@ class PMPopup(pygame.sprite.Sprite):
 	def run_controller_setup(self):
 		self.screen.blit(self.cfg.options.blur_image,(0,0))
 		return "CONTROLLER"
+		
+	def run_hide_icons(self):
+		self.menu_open = False
+		self.on_exit_actions()
+		return "HIDE_ICONS"
 	
 	def update_menu(self):
 		if self.scene_type == 'main':
@@ -476,6 +490,8 @@ class PMPopup(pygame.sprite.Sprite):
 				#check if controller setup is selected
 				if self.selected and (self.list[self.hover] == self.controller_setup):
 					return  self.run_controller_setup()
+				if self.selected and (self.list[self.hover] == self.hide_icons):
+					return  self.run_hide_icons()
 			else:
 				self.cfg.options.menu_select_sound.play()
 				self.selected = not self.selected

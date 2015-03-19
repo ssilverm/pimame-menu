@@ -6,7 +6,6 @@ from pmwarning import *
 from pmcontrollerconfig import *
 from pmconfig import *
 from pmheader import *
-#from pmselection import *
 from pmlabel import *
 from pmutil import *
 from romlistscene import *
@@ -19,6 +18,7 @@ class MainScene(object):
 	update_display = []
 	
 	pre_rendered = False
+	toggle_item_visibility = False
 
 	def __init__(self):
 		super(MainScene, self).__init__()
@@ -89,8 +89,57 @@ class MainScene(object):
 		if call_render: 
 			if self.cfg.options.theme_style == 'slide': self.menu_style.selected_index = None #do this to fix premature update when backing out of romlist
 			self.render(self.screen)
+	
+	def set_item_visibility(self):
 		
+		self.temp_cfg = {'item_height':self.cfg.options.item_height, 
+								'num_items_per_row': self.cfg.options.num_items_per_row,
+								'header_height': self.cfg.options.header_height}
+								
+		self.cfg.options.item_height = 100
+		self.cfg.options.num_items_per_row = 10
+		self.cfg.options.header_height = 0
+		
+		from pmgrid import *
+		self.menu_style = PMGrid(self.cfg.options.options_menu_items, self.cfg, toggle_item_visibility = True)
+		
+		if self.warning:
+			self.warning.handle_events('SELECT')
+		
+		self.draw_bg()
+	
+		self.menu_style.draw_items()
+		self.menu_style.set_selected_index(None, play_sound = False)
+		
+		if self.cfg.options.fade_image:
+			effect = PMUtil.fade_into(self, self.cfg.options.fade_image, self.cfg.options.use_scene_transitions)
+		else:
+			effect = PMUtil.fade_in(self, self.cfg.options.use_scene_transitions)
+		self.cfg.options.fade_image.blit(self.screen,(0,0))
+	
+	def exit_item_visibility(self):
+		self.toggle_item_visibility = False
+		
+		self.warning = PMWarning(self.screen, self.cfg.options, "Saving settings...\nThis may take a minute.", "ok", "HIDE_ICONS")
+		
+		for sprite in self.menu_style.sprites():
+			self.cfg.config_cursor.execute('UPDATE menu_items SET visible=? where id=? and icon_id=?',(sprite.visible, sprite.id, sprite.icon_id))
+			for index, item in enumerate(self.cfg.options.options_menu_items):
+				if sprite.id == item['id']:
+					self.cfg.options.options_menu_items[index]['visible'] = sprite.visible
+		
+		self.cfg.config_db.commit()
+		self.cfg.options.item_height = self.temp_cfg['item_height']
+		self.cfg.options.num_items_per_row = self.temp_cfg['num_items_per_row']
+		self.cfg.options.header_height = self.temp_cfg['header_height']
+		self.pre_rendered = False
+		self.pre_render(self.screen, call_render = True)
+		
+		if self.warning:
+			self.warning.handle_events('SELECT')
+	
 	def render(self, screen):
+		self.last_update = 0
 		self.header = PMHeader(self.cfg.options)
 		self.draw_bg()
 		self.draw_header()
@@ -125,7 +174,18 @@ class MainScene(object):
 
 
 	def update(self):
-		pass
+		if pygame.time.get_ticks() - self.last_update > 10000:
+			update_screen = False
+			for menu_item in self.menu_style.menu_items:
+				rect = menu_item.check_changes()
+				if rect: 
+					update_screen = True
+			if update_screen:
+				self.menu_style.draw_items()
+				self.menu_style.erase_selection()
+				self.menu_style.draw_selection()
+				pygame.display.update()
+		self.last_update = pygame.time.get_ticks()
 		
 	def warning_check(self):
 		if self.warning.answer:
@@ -138,7 +198,7 @@ class MainScene(object):
 				
 				if self.warning.title == 'ROMS_CONFIRM':
 					if self.warning.answer == "YES":
-						self.warning = PMWarning(self.screen, self.cfg.options, [["center","Updating roms."],["center","This may take a minute."]], "ok", "")
+						self.warning = PMWarning(self.screen, self.cfg.options, [["center","Updating roms."], ["center","This may take a minute."]], "ok", "")
 						subprocess.call(['python', '/home/pi/pimame/pimame-menu/scraper/scrape_script.py','--crc', 'False', '--dont_match', 'True', '--platform', str(self.menu_style.get_selected_item().id)])
 						self.warning = None
 						self.do_menu_item_action(self.menu_style.get_selected_item())
@@ -184,7 +244,12 @@ class MainScene(object):
 		elif self.popup and self.popup.menu_open:
 			status = self.popup.handle_events(action)
 			if status == "CONTROLLER": self.popup = PMControllerConfig(self.screen, self.cfg.options)
-			
+			if status == "HIDE_ICONS": 
+				status = None
+				self.popup = None
+				self.toggle_item_visibility = True
+				self.warning = PMWarning(self.screen, self.cfg.options, "Loading icons...\nThis may take a minute.", "ok", "HIDE_ICONS")
+				self.set_item_visibility()
 		else:
 			
 			#NAVIGATE MAIN MENU
@@ -199,20 +264,26 @@ class MainScene(object):
 				elif not self.warning:
 					self.do_menu_item_action(sprite)
 			elif action == 'BACK' and self.cfg.options.allow_quit_to_console:
-				self.cfg.options.menu_back_sound.play()
-				effect = PMUtil.fade_out(self, self.cfg.options.use_scene_transitions)
+				if not self.toggle_item_visibility:
+					self.cfg.options.menu_back_sound.play()
+					effect = PMUtil.fade_out(self, self.cfg.options.use_scene_transitions)
 				
-				for wait_time in xrange(0,15):
-					if not pygame.mixer.get_busy(): break 
-					time.sleep(.01)
+					for wait_time in xrange(0,15):
+						if not pygame.mixer.get_busy(): break 
+						time.sleep(.01)
 
-				pygame.quit()
-				sys.exit()
+					pygame.quit()
+					sys.exit()
+				else:
+					self.exit_item_visibility()
 			
 			#POPUP OPTIONS MENU
 			elif action == 'MENU':
-				self.popup = PMPopup(self.screen, self.manager.scene.SCENE_NAME, self.cfg, True)
-			
+				if not self.toggle_item_visibility:
+					self.popup = PMPopup(self.screen, self.manager.scene.SCENE_NAME, self.cfg, True)
+				else:
+					self.exit_item_visibility()
+					
 			#SHOW KICKSTARTER SUPPORTERS
 			elif action == 'KICKSTARTER':
 				if not self.warning:
@@ -242,34 +313,41 @@ class MainScene(object):
 						sprite = clicked_sprites[0]
 						self.set_selected_index(sprite)
 					
-				
+		self.update()
 		return self.update_display
 
 	#@TODO - change name:
 	def do_menu_item_action(self, sprite):
-		if sprite.type == PMMenuItem.EMULATOR:
-				self.cfg.options.fade_image.blit(self.screen,(0,0))
-				self.cfg.options.menu_select_sound.play()
-				self.manager.go_to(RomListScene(sprite.get_rom_list(), sprite.id))
-		elif sprite.command == 'exit_piplay':
-				pygame.quit()
-				sys.exit()
-		elif sprite.type == PMMenuItem.COMMAND:
-				self.cfg.options.menu_select_sound.play()
-				PMUtil.run_command_and_continue(sprite.command)
-		elif sprite.type == PMMenuItem.NAVIGATION:
-				self.cfg.options.menu_navigation_sound.play()
-				self.cfg.options.fade_image.blit(self.screen,(0,0))
-				if sprite.command == PMMenuItem.PREV_PAGE:
-					self.menu_style.prev_page()
-					self.menu_style.draw_items()
-					self.menu_style.set_selected_index(len(self.menu_style.sprites()) - 1, play_sound = False)
-					effect = PMUtil.fade_into(self, self.cfg.options.fade_image, self.cfg.options.use_scene_transitions)
-				else:
-					self.menu_style.next_page()
-					self.menu_style.draw_items()
-					self.menu_style.set_selected_index(0, play_sound = False)
-					effect = PMUtil.fade_into(self, self.cfg.options.fade_image, self.cfg.options.use_scene_transitions)
+		
+		if self.toggle_item_visibility and sprite.type != PMMenuItem.NAVIGATION:
+			sprite.visible = not sprite.visible
+			sprite.update_image()
+			self.menu_style.set_selected_index(self.menu_style.selected_index, False)
+			pygame.display.update(sprite.rect)
 		else:
-				self.cfg.options.menu_select_sound.play()
-				PMUtil.run_command_and_continue(sprite.command)
+			if sprite.type == PMMenuItem.EMULATOR:
+					self.cfg.options.fade_image.blit(self.screen,(0,0))
+					self.cfg.options.menu_select_sound.play()
+					self.manager.go_to(RomListScene(sprite.get_rom_list(), sprite.id))
+			elif sprite.command == 'exit_piplay':
+					pygame.quit()
+					sys.exit()
+			elif sprite.type == PMMenuItem.COMMAND:
+					self.cfg.options.menu_select_sound.play()
+					PMUtil.run_command_and_continue(sprite.command)
+			elif sprite.type == PMMenuItem.NAVIGATION:
+					self.cfg.options.menu_navigation_sound.play()
+					self.cfg.options.fade_image.blit(self.screen,(0,0))
+					if sprite.command == PMMenuItem.PREV_PAGE:
+						self.menu_style.prev_page()
+						self.menu_style.draw_items()
+						self.menu_style.set_selected_index(len(self.menu_style.sprites()) - 1, play_sound = False)
+						effect = PMUtil.fade_into(self, self.cfg.options.fade_image, self.cfg.options.use_scene_transitions)
+					else:
+						self.menu_style.next_page()
+						self.menu_style.draw_items()
+						self.menu_style.set_selected_index(0, play_sound = False)
+						effect = PMUtil.fade_into(self, self.cfg.options.fade_image, self.cfg.options.use_scene_transitions)
+			else:
+					self.cfg.options.menu_select_sound.play()
+					PMUtil.run_command_and_continue(sprite.command)

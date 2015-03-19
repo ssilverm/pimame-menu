@@ -22,42 +22,52 @@ class PMMenuItem(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 		
 		self.cfg = cfg
-		self.id = menu_item['id']
-		self.icon_id = menu_item['icon_id']
-		self.display_label = menu_item['display_label']
-		self.label = menu_item['label']
-		self.command = menu_item['command']
-		self.full_path = menu_item['include_full_path']
-		self.scraper_id = menu_item['scraper_id'] if menu_item['scraper_id'] else ''
-		self.banner = self.cfg.options.load_image(menu_item['banner'], verbose = True) #verbose=True, will return None, rather than blank image
+		self.menu_item = menu_item
+		self.id = self.menu_item['id']
+		self.icon_id = self.menu_item['icon_id']
+		self.display_label = self.menu_item['display_label']
+		self.label = self.menu_item['label']
+		self.command = self.menu_item['command']
+		self.full_path = self.menu_item['include_full_path']
+		self.scraper_id = self.menu_item['scraper_id'] if self.menu_item['scraper_id'] else ''
+		self.banner = self.cfg.options.load_image(self.menu_item['banner'], verbose = True) #verbose=True, will return None, rather than blank image
 		self.warning = ''
+		self.visible = bool(self.menu_item['visible'])
 		
 		
 		
-		self.icon_selected = menu_item['icon_selected']
+		self.icon_selected = self.menu_item['icon_selected']
 		self.pre_loaded_selected_icon = self.cfg.options.load_image(self.icon_selected, self.cfg.options.generic_menu_item_selected)
 
-		self.rom_path = menu_item['rom_path']
-		self.override_menu = bool(menu_item['override_menu'])
-		self.extension = bool(menu_item['include_extension'])
+		self.rom_path = self.menu_item['rom_path']
+		self.override_menu = bool(self.menu_item['override_menu'])
+		self.extension = bool(self.menu_item['include_extension'])
 		
 		
-		if not menu_item['type']:
+		if not self.menu_item['type']:
 			if self.rom_path:
 				self.type = self.ROM_LIST
 			else:
 				self.type = self.COMMAND
 		else:
-			self.type = menu_item['type'].upper()
+			self.type = self.menu_item['type'].upper()
 
+		self.update_image(init = True)
+		
+	def update_image(self, init = False):
+	
 		#@TODO this code is duplicated
 		screen_width = pygame.display.Info().current_w
 		item_width = ((screen_width - self.cfg.options.padding) / self.cfg.options.num_items_per_row) - self.cfg.options.padding
 
 		self.image = pygame.Surface([item_width, self.cfg.options.item_height], pygame.SRCALPHA, 32).convert_alpha()
-
-		if menu_item['icon_file']:
-			icon_file_path = menu_item['icon_file']
+		
+		if not self.visible:
+			self.image = self.image.convert()
+			self.image.set_alpha(50)
+			
+		if self.menu_item['icon_file']:
+			icon_file_path = self.menu_item['icon_file']
 			#load generic icon if icon_file_path doesn't exist
 			icon = self.cfg.options.load_image(icon_file_path, self.cfg.options.generic_menu_item)
 
@@ -100,7 +110,6 @@ class PMMenuItem(pygame.sprite.Sprite):
 		if self.cfg.options.display_rom_count:
 			if self.rom_path:
 				self.update_num_roms()
-				
 				if self.num_roms != 0:
 					label = PMLabel(str(self.num_roms) + self.warning, self.cfg.options.rom_count_font, self.cfg.options.rom_count_font_color, self.cfg.options.rom_count_background_color, self.cfg.options.rom_count_font_bold, self.cfg.options.rom_count_max_text_width)
 					textpos = label.rect
@@ -115,15 +124,23 @@ class PMMenuItem(pygame.sprite.Sprite):
 		icon = pygame.transform.smoothscale(icon, icon_size)
 		self.image.blit(icon, ((avail_icon_width - icon_size[0]) / 2 + self.cfg.options.padding, (avail_icon_height - icon_size[1]) / 2 + self.cfg.options.padding))
 		
-		self.rect = self.image.get_rect()
+		if init: self.rect = self.image.get_rect()
+	
+	def check_changes(self):
 		
+		query = 'SELECT COUNT(id) FROM local_roms where system = {pid}'.format(pid = self.id if self.id else -999)
+		if self.icon_id == 'FAVORITE': query = "SELECT COUNT(id) FROM local_roms WHERE flags like '%favorite%'"
+		if self.num_roms != int(self.cfg.local_cursor.execute(query).fetchone()[0]):
+			self.update_image(init = False)
+			return [self.rect]
+		return []
 		
 	def update_num_roms(self):
 		
 		query = 'SELECT COUNT(id) FROM local_roms where system = {pid}'.format(pid = self.id if self.id else -999)
 		if self.icon_id == 'FAVORITE': query = "SELECT COUNT(id) FROM local_roms WHERE flags like '%favorite%'"
 		self.num_roms = int(self.cfg.local_cursor.execute(query).fetchone()[0])
-		
+		'''
 		if isdir(self.rom_path):
 			if '21' in self.scraper_id: #special check for scummvm:
 				len_files = len([ f for f in listdir(self.rom_path) if isdir(join(self.rom_path,f)) and f != 'images'])	
@@ -140,7 +157,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 						
 			self.num_roms = len_files
 			self.warning = "!"
-		
+		'''
 	def get_rom_list(self):
 		#@TODO - am I using the type field?
 		

@@ -42,8 +42,8 @@ def main():
 		timer.tick(cfg.options.max_fps)
 		action = None
 		
-		if pygame.event.peek(input_test):
-			action = controls.get_action()
+		#if pygame.event.peek(input_test):
+		action = controls.get_action()
 		
 		if action == 'QUIT':
 			pygame.quit()

@@ -3,7 +3,6 @@ import yaml
 
 class PMControls:
 	#check out for key reference - http://www.pygame.org/docs/ref/key.html
-	JOY_PAD = None
 	KEYBOARD = {}
 	JOYSTICK = {}
 	
@@ -13,15 +12,16 @@ class PMControls:
 	
 	def __init__(self):
 		pygame.key.set_repeat(300, 20)
+		self.joystick_repeat = (300, 40)
+		self.joystick_repeat_start = None
 		
 		pygame.joystick.init()
-		js_count = pygame.joystick.get_count()
-		for i in range(js_count):
-			js = pygame.joystick.Joystick(i)
-			js.init()
+		self.js_count = pygame.joystick.get_count()
+		self.js = []
+		for i in range(self.js_count):
+			self.js.append(pygame.joystick.Joystick(i))
+			self.js[i].init()
 		
-		
-		if js_count: self.JOY_PAD = pygame.joystick.Joystick(0)
 		
 		#load config file, use open() rather than file(), file() is deprecated in python 3.
 		stream = open('/home/pi/pimame/pimame-menu/controller.yaml', 'r')
@@ -91,56 +91,62 @@ class PMControls:
 		
 		action = None
 		
+		try:
+			if self.joystick_repeat_start and pygame.time.get_ticks() - self.joystick_repeat_start >= self.joystick_repeat[0]:
+				for joy in self.js:
+					for axis in range(joy.get_numaxes()):
+						if abs(joy.get_axis(axis)) > self.AXIAL_DRIFT:
+							self.joystick_repeat_start += self.joystick_repeat[1] #add repeat rate to start time
+							action = self.JOYSTICK[str(axis) + "|" + str( int(joy.get_axis(axis) / abs(joy.get_axis(axis))))]
+		except KeyError:
+			pass
+			
+
 		for event in events:
 			try:
-				if event.type in input_test:
-					#KEYBOARD
-					if event.type in self.KEY_EVENT:
-						if event.type == pygame.KEYDOWN:
-							action = self.KEYBOARD[str(pygame.key.get_pressed())]
-						else:
-							keys_pressed = ([0] * len(pygame.key.get_pressed()))
-							for test_event in events:
-								if test_event.type == pygame.KEYUP:
-									keys_pressed[test_event.key] = 1
-							action = self.KEYBOARD[str(tuple(keys_pressed))]
-						break
-						
-					#JOYSTICK MOVEMENT
-					elif event.type == pygame.JOYAXISMOTION:
-						if event.dict['value'] <= -(self.AXIAL_DRIFT): event.dict['value'] = -1
-						elif event.dict['value'] >= self.AXIAL_DRIFT: event.dict['value'] = 1
-						action = self.JOYSTICK[str(event.dict['axis']) + "|" + str(event.dict['value'])]
-				
-					#JOYSTICK BUTTONS
-					elif event.type in self.JOY_BUTTON_EVENT:
-						#We do it this way to support button combos
-						js = pygame.joystick.Joystick(event.joy)
-
-						joy_buttons = ([0] * 100)
-						if pygame.JOYBUTTONDOWN in input_test:
-							for i in xrange(0, js.get_numbuttons()):
-								button = js.get_button( i )
-								if button: joy_buttons[ i ] = 1
-
-						elif pygame.JOYBUTTONUP in input_test:
-							for test_event in events:
-								if test_event.type == pygame.JOYBUTTONUP:
-									joy_buttons[test_event.button] = 1
-						
-						action = self.JOYSTICK[str(joy_buttons)]
+			
+				#KEYBOARD
+				if event.type in self.KEY_EVENT:
+					if event.type == pygame.KEYDOWN:
+						action = self.KEYBOARD[str(pygame.key.get_pressed())]
+					else:
+						keys_pressed = ([0] * len(pygame.key.get_pressed()))
+						for test_event in events:
+							if event.type == pygame.KEYUP:
+								keys_pressed[event.key] = 1
+						action = self.KEYBOARD[str(keys_pressed)]
+					break
 					
-					#MOUSE CLICK
-					elif event.type in self.MOUSE_BUTTON_EVENT:
-						action = "MOUSEBUTTON"
-						
-					#MOUSE MOVE
-					elif event.type == pygame.MOUSEMOTION:
-						action = "MOUSEMOVE"
-			except KeyError: #if button not assigned to an action
-				action = None
+				#JOYSTICK MOVEMENT
+				elif event.type == pygame.JOYAXISMOTION:
+					if abs(event.value) > self.AXIAL_DRIFT:
+						action = self.JOYSTICK[str(event.axis) + "|" + str( int(event.value / abs(event.value)))]
+						self.joystick_repeat_start = pygame.time.get_ticks()
+					#action = self.JOYSTICK[str(self.joystick_repeat['axis']) + "|" + str(self.joystick_repeat['value'])]
+					
+			
+				#JOYSTICK BUTTONS
+				elif event.type in self.JOY_BUTTON_EVENT:
+					#ic - buttons come in separate events, is this really necessary?
+					#ic - JOY_PAD may be removable if not referenced externally
+					#js = pygame.joystick.Joystick(event.joy)
+
+					joy_buttons = ([0] * 100)
+					for i in xrange(0,self.js[event.joy].get_numbuttons()):
+						button = self.js[event.joy].get_button( i )
+						if button: joy_buttons[ i ] = 1
+					action = self.JOYSTICK[str(joy_buttons)]
 				
-
+				#MOUSE CLICK
+				elif event.type in self.MOUSE_BUTTON_EVENT:
+					action = "MOUSEBUTTON"
+					
+				#MOUSE MOVE
+				elif event.type == pygame.MOUSEMOTION:
+					action = "MOUSEMOVE"
+			except KeyError:
+				pass
 		
-
+		
+			
 		return action
