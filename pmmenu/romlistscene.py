@@ -1,4 +1,5 @@
 import thread, time
+import unicodedata
 import pygame
 from pmcontrols import *
 from pmpopup import *
@@ -322,7 +323,7 @@ class RomListScene(object):
 		
 		#INFO BOX
 		infoline = '\n'.join(filter(None, 
-		[self.selected_item.title,'\r' , str(self.selected_item.rom_file or ''), 
+		[self.selected_item.title,'\r' , str(''.join(unicodedata.normalize('NFKD', i).encode('ascii', 'ignore') for i in self.selected_item.rom_file) or ''), 
 		', '.join(filter(None, [('Players: ' + self.selected_item.players) if self.selected_item.players else '', self.selected_item.coop if self.selected_item.coop else ''])),
 		'Publisher: ' + self.selected_item.publisher if self.selected_item.publisher else '',
 		'Developer: ' + self.selected_item.developer if self.selected_item.developer else '',
