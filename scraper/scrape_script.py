@@ -19,12 +19,13 @@ from Levenshtein import setratio
 
 
 parser = argparse.ArgumentParser(description='PiScraper')
-parser.add_argument("--platform", default=None, metavar="value", help="Which platform to scrape", type=str)
-parser.add_argument("--crc", default=True, metavar="value", help="use crc to find name", type=bool)
-parser.add_argument("--match_rate", metavar="value", default=.85, help="Name Comparison match rate. (0.85 = default match, 1.0 = names must match exactly, 0.0 = throw caution to the wind.)", type=float)
+parser.add_argument("--platform", default=None, metavar="comma delimited integers", help="Which platform to scrape", type=str)
+parser.add_argument("--crc", default=True, metavar="boolean", help="use crc to find name", type=bool)
+parser.add_argument("--match_rate", metavar="0.0 to 1.0", default=.85, help="Name Comparison match rate. (0.85 = default match, 1.0 = names must match exactly, 0.0 = throw caution to the wind.)", type=float)
 parser.add_argument("--verbose", metavar="value", default=True, help="Display Prompts (False= nothing, True=show progress, SEMI=Prompt on close matches, Full=Prompt+display every match)")
-parser.add_argument("--clean_slate", metavar="value", default=False, help="Re-Scrape all roms (default=False)",type=bool)
-parser.add_argument("--dont_match", metavar="value", default=False, help="just add roms to local database, don't try to match them", type=bool)
+parser.add_argument("--clean_slate", metavar="boolean", default=False, help="Re-Scrape all roms (default=False)",type=bool)
+parser.add_argument("--dont_match", metavar="boolean", default=False, help="just add roms to local database, don't try to match them", type=bool)
+parser.add_argument("--ask", metavar="boolean", default = False, help="ask user about other arguments.", type=bool)
 
 args = parser.parse_args()
 
@@ -272,7 +273,10 @@ class API(object):
 		#Levenshtein check to get the alias for the platform to call API
 		#if menu_item_id = None, return all platforms
 		platforms = self.get_platform(menu_item_id)
-
+		
+		if args.ask:
+			RUN_WHOLE_SYSTEM_FOLDER = not self.raw_input_with_timeout('Do you want to scrape %s?' % pcolor('cyan', 'ONLY THE UNMATCHED ROMS'))
+			
 		for platform in platforms:
 			if platform['scraper_id']:
 				if dont_match == False:
@@ -397,7 +401,7 @@ class API(object):
 							
 				#Let user know current progress
 				if VERBOSE:
-					status = r"%10d/%d roms  [%3.2f%%]" % (index+1, len(roms), (index+1) * 100. / len(roms))
+					status = r"%10d/%d roms  [%3.2f%%]" % (index + 1, len(roms), (index + 1) * 100. / len(roms))
 					status = status + chr(8)*(len(status)+1)
 					sys.stdout.write('%s      \r' % (status))
 					sys.stdout.flush()
@@ -762,7 +766,7 @@ class API(object):
 						
 						#Let user know current progress
 						if VERBOSE:
-							status = r"%10d/%d roms  [%3.2f%%]" % (current_rom_count, len(roms), (current_rom_count) * 100. / len(roms))
+							status = r"%10d/%d roms  [%3.2f%%]" % (current_rom_count + 1, len(roms), (current_rom_count + 1) * 100. / len(roms))
 							status = status + chr(8)*(len(status)+1)
 							sys.stdout.write('%s      \r' % (status))
 							sys.stdout.flush()

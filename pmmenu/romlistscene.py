@@ -11,7 +11,6 @@ class RomListScene(object):
 
 	SCENE_NAME = 'romlist'
 	
-						
 	selected_item = None
 	selected_index = 0
 	update_display = []
