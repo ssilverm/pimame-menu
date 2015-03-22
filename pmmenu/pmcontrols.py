@@ -142,8 +142,6 @@ class PMControls:
 							joy_buttons = ([0] * 100)
 							for test_event in events:
 								if test_event.type == pygame.JOYBUTTONUP: joy_buttons[ test_event.button ] = 1
-							print joy_buttons
-							print self.JOYSTICK
 							action = self.JOYSTICK[str(joy_buttons)]
 							
 					

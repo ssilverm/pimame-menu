@@ -271,7 +271,6 @@ class PMControllerConfig(pygame.sprite.Sprite):
 								return
 						
 						elif self.warning and self.warning.menu_open:
-							print events
 							action = self.CONTROLS.get_action(input_test = events_to_capture, events = events)
 							self.warning.handle_events(action)
 							if self.warning.answer:
@@ -290,10 +289,10 @@ class PMControllerConfig(pygame.sprite.Sprite):
 										break
 						
 						elif event.type in events_to_capture:
-							if event.type == KEYDOWN:
+							if event.type == KEYUP:
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "key":event.key, "mod": event.mod, "keyname": pygame.key.name(event.key)}
 							
-							elif event.type == JOYBUTTONDOWN:
+							elif event.type == JOYBUTTONUP:
 								mapping[self.buttons_to_update[self.current_button]] = {"type":event.type, "button":event.button, "joy": event.joy, "joystickID": self.joystickID[event.joy]}
 								self.check_joystick_neutrality()
 							
