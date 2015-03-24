@@ -128,12 +128,15 @@ class PMMenuItem(pygame.sprite.Sprite):
 	
 	def check_changes(self):
 		
-		query = 'SELECT COUNT(id) FROM local_roms where system = {pid}'.format(pid = self.id if self.id else -999)
-		if self.icon_id == 'FAVORITE': query = "SELECT COUNT(id) FROM local_roms WHERE flags like '%favorite%'"
-		if self.num_roms != int(self.cfg.local_cursor.execute(query).fetchone()[0]):
-			self.update_image(init = False)
-			return [self.rect]
-		return []
+		if self.cfg.options.display_rom_count:
+			if self.rom_path:
+			
+				query = 'SELECT COUNT(id) FROM local_roms where system = {pid}'.format(pid = self.id if self.id else -999)
+				if self.icon_id == 'FAVORITE': query = "SELECT COUNT(id) FROM local_roms WHERE flags like '%favorite%'"
+				if self.num_roms != int(self.cfg.local_cursor.execute(query).fetchone()[0]):
+					self.update_image(init = False)
+					return [self.rect]
+				return []
 		
 	def update_num_roms(self):
 		

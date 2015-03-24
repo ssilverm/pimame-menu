@@ -98,6 +98,9 @@ class API(object):
 		' (id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, system INTEGER, title TEXT, search_terms TEXT, parent TEXT, cloneof TEXT, release_date TEXT, overview TEXT, esrb TEXT, genres TEXT,' +
 		' players TEXT, coop TEXT, publisher TEXT, developer TEXT, rating REAL, command TEXT, rom_file TEXT, rom_path TEXT, image_file TEXT, number_of_runs INTEGER, flags TEXT)')
 		self.LOCAL.commit()
+		
+		self.CC.execute('UPDATE options SET roms_added = 1')
+		self.CONFIG.commit()
 
 	def enable_cursor(self):
 		os.system('setterm -cursor on')
