@@ -1,5 +1,7 @@
 import pygame
 import subprocess
+import thread
+import time
 from pmcontrols import *
 from pmpopup import *
 from pmwarning import *
@@ -175,17 +177,21 @@ class MainScene(object):
 
 	def update(self):
 		if pygame.time.get_ticks() - self.last_update > 10000:
-			update_screen = False
-			for menu_item in self.menu_style.menu_items:
-				rect = menu_item.check_changes()
-				if rect: 
-					update_screen = True
+			update_screen = self.cfg.config_cursor.execute('SELECT roms_added FROM options').fetchone()[0]
+			
 			if update_screen:
+				for menu_item in self.menu_style.menu_items:
+					rect = menu_item.check_changes()
+
 				self.menu_style.draw_items()
 				self.menu_style.erase_selection()
 				self.menu_style.draw_selection()
 				pygame.display.update()
+				self.cfg.config_cursor.execute('UPDATE options SET roms_added = 0')
+				self.cfg.config_db.commit()
+				
 		self.last_update = pygame.time.get_ticks()
+
 		
 	def warning_check(self):
 		if self.warning.answer:
