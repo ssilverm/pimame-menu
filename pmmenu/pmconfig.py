@@ -18,14 +18,14 @@ class PMCfg:
 		pygame.mixer.pre_init(44100, -16, 1, 2048)
 		
 		path = os.path.realpath('/home/pi/pimame/pimame-menu/database/config.db')
-		self.config_db = sqlite3.connect(path)
+		self.config_db = sqlite3.connect(path, check_same_thread=False)
 		self.config_cursor = self.config_db.cursor()
 		
 		self.config_cursor.execute('UPDATE options SET roms_added = 0')
 		self.config_db.commit()
 		
 		path = os.path.realpath('/home/pi/pimame/pimame-menu/database/local.db')
-		self.local_db = sqlite3.connect(path)
+		self.local_db = sqlite3.connect(path, check_same_thread=False)
 		self.local_cursor = self.local_db.cursor()
 		
 		self.local_cursor.execute('CREATE TABLE IF NOT EXISTS local_roms'  + 
@@ -34,7 +34,7 @@ class PMCfg:
 		self.local_db.commit()
 		
 		path = os.path.realpath('/home/pi/pimame/pimame-menu/database/games_master.db')
-		self.platform_db = sqlite3.connect(path)
+		self.platform_db = sqlite3.connect(path, check_same_thread=False)
 		self.platform_cursor = self.platform_db.cursor()
 		
 		config = {'options':None, 'menu_items':None}

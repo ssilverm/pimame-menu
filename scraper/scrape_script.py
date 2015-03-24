@@ -85,11 +85,11 @@ class API(object):
 		self.OPT_SHOW_CLONES = True
 		self.OPT_OVERWRITE_IMAGES = False
 		self.DATABASE_PATH = '/home/pi/pimame/pimame-menu/database/'
-		self.GAMES = sqlite3.connect(self.DATABASE_PATH + 'games_master.db')
+		self.GAMES = sqlite3.connect(self.DATABASE_PATH + 'games_master.db', check_same_thread=False)
 		self.GC = self.GAMES.cursor()
-		self.CONFIG = sqlite3.connect(self.DATABASE_PATH + 'config.db')
+		self.CONFIG = sqlite3.connect(self.DATABASE_PATH + 'config.db', check_same_thread=False)
 		self.CC = self.CONFIG.cursor()
-		self.LOCAL = sqlite3.connect(self.DATABASE_PATH + 'local.db')
+		self.LOCAL = sqlite3.connect(self.DATABASE_PATH + 'local.db', check_same_thread=False)
 		self.LC = self.LOCAL.cursor()
         
 		
