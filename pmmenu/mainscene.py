@@ -1,7 +1,5 @@
 import pygame
 import subprocess
-import thread
-import time
 from pmcontrols import *
 from pmpopup import *
 from pmwarning import *
