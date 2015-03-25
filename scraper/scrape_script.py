@@ -619,6 +619,7 @@ class API(object):
 							game_info= Game(title = temp_game_info['title'],
 													system = platform['id'],
 													parent = temp_game_info['parent'],
+													cloneof = temp_game_info['cloneof'],
 													search_terms = temp_game_info['search_terms'],
 													release_date = temp_game_info['release_date'],
 													overview = temp_game_info['overview'],

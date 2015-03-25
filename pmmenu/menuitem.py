@@ -173,7 +173,7 @@ class PMMenuItem(pygame.sprite.Sprite):
 		if self.cfg.options.rom_filter.lower() != 'all' : query += ' AND genres LIKE "%{genre_filter}%"'.format(genre_filter = self.cfg.options.rom_filter)
 		
 		#exclude clones
-		if not self.cfg.options.show_clones: query += ' AND cloneof is NULL'
+		if not self.cfg.options.show_clones: query += ' AND cloneof = ""'
 		
 		#hide unmatched roms
 		if not self.cfg.options.show_unmatched_roms: query += ' AND (flags is null or flags not like "%no_match%")'
